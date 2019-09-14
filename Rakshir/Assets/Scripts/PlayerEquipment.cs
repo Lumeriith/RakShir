@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
+    public float getItemRadius;
+    public LayerMask item;
     public enum EquipmentType
     {
         Weapon,
@@ -13,7 +15,7 @@ public class PlayerEquipment : MonoBehaviour
     }
 
     [SerializeField]
-    private List<IItem> listEquipment = new List<IItem>(4);
+    private List<Item> listEquipment = new List<Item>(4);
 
     private void Awake()
     {
@@ -23,16 +25,53 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
-    public void SetEquipment(IItem item, EquipmentType type)
+    private void Update()
     {
-        if (listEquipment[(int)type] != null)
-            PopEquipment((int)type);
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Collider[] hitItems = Physics.OverlapSphere(transform.position, getItemRadius, item);
+            if (hitItems != null)
+            {
+                Item targetItem = hitItems[0].GetComponent<Item>();
 
-        listEquipment[(int)type] = item;
+                if (targetItem != null)
+                {
+                    EquipmentType typeOfItem = EquipmentType.Helmet;
+                    switch (targetItem.typeOfItem)
+                    {
+                        case "Weapon":
+                            typeOfItem = EquipmentType.Weapon;
+                            break;
+                        case "Armor":
+                            typeOfItem = EquipmentType.Armor;
+                            break;
+                        case "Shoes":
+                            typeOfItem = EquipmentType.Shoes;
+                            break;
+                    }
+                    SetEquipment(targetItem, typeOfItem);
+                }
+            }
+        }
+    }
+
+    public void SetEquipment(Item targetItem, EquipmentType typeOfItem)
+    {
+        if (listEquipment[(int)typeOfItem] != null)
+            PopEquipment((int)typeOfItem);
+
+        listEquipment[(int)typeOfItem] = targetItem;
+        targetItem.transform.position = new Vector3(transform.position.x, targetItem.transform.position.y, transform.position.z);
+        targetItem.transform.parent = transform;
+        targetItem.gameObject.SetActive(false);
     }
 
     private void PopEquipment(int index)
     {
-        // Drop item (listEquipment[index])
+        Item targetItem = listEquipment[index];
+        listEquipment[index] = null;
+
+        targetItem.transform.parent = null;
+        targetItem.gameObject.SetActive(true);
     }
 }
