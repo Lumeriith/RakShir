@@ -5,8 +5,7 @@ using UnityEngine;
 public class UnitControlManager : MonoBehaviour
 {
     public PlayerSpell selectedUnit;
-    public Spell moveSpell;
-    public Spell attackSpell;
+
 
     public SpellCastType spellCastSettings = SpellCastType.Normal;
     private InputState inputState = InputState.None;
@@ -108,9 +107,68 @@ public class UnitControlManager : MonoBehaviour
         DoRightClickActions();
         DoAttackKeyActions();
 
-        HandleInputEvents();
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SpellKeyPressed(0, KeyCode.Q);
+        } else if (Input.GetKeyDown(KeyCode.W))
+        {
+            SpellKeyPressed(1, KeyCode.W);
+        } else if (Input.GetKeyDown(KeyCode.E))
+        {
+            SpellKeyPressed(2, KeyCode.E);
+        } else if (Input.GetKeyDown(KeyCode.R))
+        {
+            SpellKeyPressed(3, KeyCode.R);
+        }
+
+        HandleReserveInputEvents();
 
         SetAppropriateCursor();
+    }
+    private void IndicateCooldown(int index)
+    {
+
+    }
+    private void SpellKeyPressed(int index, KeyCode activationKey)
+    {
+
+        if (selectedUnit.spellSet.Length <= index || selectedUnit.spellSet[index] == null) return;
+        if (!selectedUnit.spellSet[index].isCooledDown)
+        {
+            IndicateCooldown(index);
+            return;
+        }
+
+        pendingSpellActivationKey = activationKey;
+
+        switch (spellCastSettings)
+        {
+            case SpellCastType.Normal:
+                if(selectedUnit.spellSet[index].targetingType == Spell.SpellTargetingType.None)
+                {
+                    TryReserveSpell(selectedUnit.spellSet[index]);
+                }
+                else
+                {
+                    pendingSpell = selectedUnit.spellSet[index];
+                    inputState = InputState.NormalCastPending;
+                }
+                break;
+            case SpellCastType.Quick:
+                TryReserveSpell(selectedUnit.spellSet[index]);
+                break;
+            case SpellCastType.OnRelease:
+                if (selectedUnit.spellSet[index].targetingType == Spell.SpellTargetingType.None)
+                {
+                    TryReserveSpell(selectedUnit.spellSet[index]);
+                }
+                else
+                {
+                    pendingSpell = selectedUnit.spellSet[index];
+                    inputState = InputState.OnReleaseCastPending;
+                }
+                break;
+        }
     }
 
     private void SetAppropriateCursor()
@@ -127,12 +185,12 @@ public class UnitControlManager : MonoBehaviour
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
                 break;
             case InputState.ContinuousCastPending:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
         }
     }
 
-    private void HandleInputEvents()
+    private void HandleReserveInputEvents()
     {
         switch (inputState)
         {

@@ -15,17 +15,13 @@ public class PlayerSpell : MonoBehaviour
     }
 
     private Player player;
-    private Camera m_mainCamera;
     private NavMeshAgent m_nma;
 
     private Spell pendingSpell;
 
-    public Spell QSpell;
-    public Spell WSpell;
-    public Spell ESpell;
-    public Spell RSpell;
+    public Spell[] spellSet = new Spell[4];
 
-    public List<Spell> availableSpells;
+    private List<Spell> availableSpells = new List<Spell>();
 
     [Header("Preconfigurations")]
     [SerializeField]
@@ -49,7 +45,6 @@ public class PlayerSpell : MonoBehaviour
     {
         player = GetComponent<Player>();
         m_nma = GetComponent<NavMeshAgent>();
-        m_mainCamera = Camera.main;
     }
 
     public void ReserveSpell_None(Spell spell)
@@ -75,6 +70,22 @@ public class PlayerSpell : MonoBehaviour
 
 
 
+    private void UpdateSpellList()
+    {
+        foreach(Spell spell in transform.Find("Spells").GetComponentsInChildren<Spell>(true))
+        {
+            spell.owner = player;
+            if (!availableSpells.Contains(spell))
+            {
+                availableSpells.Add(spell);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateSpellList();
+    }
 
     private void Update()
     {

@@ -14,8 +14,7 @@ public abstract class Spell : MonoBehaviour
     public LayerMask targetMask;
     public float range;
     public float cooldown;
-    public Player owner;
-    public bool isBasicAttack; // If set to true, the spell will repeat according to its cooldown. Also the spell will not fail to reserve even the cooldown is ticking.
+    public bool isBasicAttack; // If set to true, the spell will repeat reserving itself.
 
     [Header("Spell Blueprint Properties")]
     public float remainingCooldown;
@@ -29,9 +28,9 @@ public abstract class Spell : MonoBehaviour
     {
         get
         {
-            return remainingCooldown >= 0;
+            return remainingCooldown <= 0;
         }
     }
-
+    public Player owner;
 
 }

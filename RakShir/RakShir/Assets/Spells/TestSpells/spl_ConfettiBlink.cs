@@ -15,15 +15,16 @@ public class spl_ConfettiBlink : Spell
 
     void Update()
     {
-        if (!ps.IsAlive())
+        if (blinked && !ps.IsAlive())
         {
             Destroy(gameObject);
         }
-        if(!blinked && startTime > 0.5f)
+        if (!blinked && Time.time - startTime > .25f)
         {
-            owner.transform.position = point + Vector3.up * .5f;
-            blinked = false;
+            transform.position = point;
+            owner.transform.position = point + Vector3.up;
+            blinked = true;
             ps.Play();
-        }
+        } 
     }
 }

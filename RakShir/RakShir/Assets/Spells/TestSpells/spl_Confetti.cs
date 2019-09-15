@@ -9,7 +9,11 @@ public class spl_Confetti : Spell
     private void Start()
     {
         ps = GetComponent<ParticleSystem>();
-        transform.LookAt(target.transform);
+        if(target != null)
+        {
+            transform.LookAt(target.transform);
+        }
+
     }
 
     void Update()
