@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     public Texture2D attackCursor;
     public Vector2 attackCursorHotspot;
 
+    public enum CursorShapeType { None, Normal, Attack, Spell }
+    public CursorShapeType cursorShape = CursorShapeType.Normal;
+    private CursorShapeType lastCursorShape;
+
     private static GameManager _instance;
     public static GameManager instance
     {
@@ -24,19 +28,32 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
+    private void Update()
     {
-        SetNormalCursor();
+        if(lastCursorShape != cursorShape)
+        {
+            SetAppropriateCursor();
+            lastCursorShape = cursorShape;
+        }
     }
 
-    public void SetNormalCursor()
+    private void SetAppropriateCursor()
     {
-        Cursor.SetCursor(normalCursor, normalCursorHotspot, CursorMode.Auto);
-    }
-
-    public void SetAttackCursor()
-    {
-        Cursor.SetCursor(attackCursor, attackCursorHotspot, CursorMode.Auto);
+        switch (cursorShape)
+        {
+            case CursorShapeType.None:
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                break;
+            case CursorShapeType.Normal:
+                Cursor.SetCursor(normalCursor, normalCursorHotspot, CursorMode.Auto);
+                break;
+            case CursorShapeType.Attack:
+                Cursor.SetCursor(attackCursor, attackCursorHotspot, CursorMode.Auto);
+                break;
+            case CursorShapeType.Spell:
+                Cursor.SetCursor(attackCursor, attackCursorHotspot, CursorMode.Auto);
+                break;
+        }
     }
 
 }

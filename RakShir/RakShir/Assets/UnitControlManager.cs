@@ -1,0 +1,172 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UnitControlManager : MonoBehaviour
+{
+    public PlayerSpell selectedUnit;
+    public Spell moveSpell;
+    public Spell attackSpell;
+
+    public SpellCastType spellCastSettings = SpellCastType.Normal;
+    private InputState inputState = InputState.None;
+    private Spell pendingSpell;
+    private KeyCode pendingSpellActivationKey;
+
+    private Camera mainCamera;
+
+    [Header("Preconfigurations")]
+    public LayerMask basicattackableTargets;
+
+
+    public enum SpellCastType { Normal, Quick, OnRelease }
+    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousCastPending }
+
+
+    Vector3 GetCurrentCursorPositionInWorldSpace()
+    {
+        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
+    }
+
+    private bool TryReserveSpell(Spell spell)
+    {
+        if (spell == null) return false;
+        Vector3 flatPosition = selectedUnit.transform.position;
+        flatPosition.y = 0;
+
+        switch (spell.targetingType)
+        {
+            case Spell.SpellTargetingType.Direction:
+                Vector3 directionVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
+                directionVector.y = 0;
+                directionVector.Normalize();
+                selectedUnit.ReserveSpell_Direction(spell, directionVector);
+                return true;
+            case Spell.SpellTargetingType.None:
+                selectedUnit.ReserveSpell_None(spell);
+                return true;
+            case Spell.SpellTargetingType.PointNonStrict:
+                Vector3 differenceVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
+                differenceVector = Vector3.ClampMagnitude(differenceVector, spell.range);
+                selectedUnit.ReserveSpell_Point(spell, flatPosition + differenceVector);
+                return true;
+            case Spell.SpellTargetingType.PointStrict:
+                selectedUnit.ReserveSpell_Point(spell, GetCurrentCursorPositionInWorldSpace());
+                return true;
+            case Spell.SpellTargetingType.Target:
+                RaycastHit hit;
+                Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(cursorRay, out hit, 100, spell.targetMask))
+                {
+                    selectedUnit.ReserveSpell_Target(spell, hit.collider);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+        }
+        return false;
+    }
+
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+    }
+
+    private void DoRightClickActions()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (TryReserveSpell(selectedUnit.attackSpell))
+            {
+                inputState = InputState.None;
+            }
+            else
+            {
+                TryReserveSpell(selectedUnit.moveSpell);
+                pendingSpell = selectedUnit.moveSpell;
+                inputState = InputState.ContinuousCastPending;
+                pendingSpellActivationKey = KeyCode.Mouse1;
+            }
+        }
+    }
+
+    private void DoAttackKeyActions()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            pendingSpell = selectedUnit.attackSpell;
+            inputState = InputState.NormalCastPending;
+        }
+    }
+
+    void Update()
+    {
+        DoRightClickActions();
+        DoAttackKeyActions();
+
+        HandleInputEvents();
+
+        SetAppropriateCursor();
+    }
+
+    private void SetAppropriateCursor()
+    {
+        switch (inputState)
+        {
+            case InputState.None:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
+                break;
+            case InputState.NormalCastPending:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
+                break;
+            case InputState.OnReleaseCastPending:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
+                break;
+            case InputState.ContinuousCastPending:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
+                break;
+        }
+    }
+
+    private void HandleInputEvents()
+    {
+        switch (inputState)
+        {
+            case InputState.None:
+                break;
+            case InputState.NormalCastPending:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (TryReserveSpell(pendingSpell))
+                    {
+                        inputState = InputState.None;
+                        pendingSpell = null;
+                    }
+                }
+                break;
+            case InputState.OnReleaseCastPending:
+                if (Input.GetKeyUp(pendingSpellActivationKey))
+                {
+                    TryReserveSpell(pendingSpell);
+                    inputState = InputState.None;
+                    pendingSpell = null;
+                }
+                break;
+            case InputState.ContinuousCastPending:
+                if (Input.GetKey(pendingSpellActivationKey))
+                {
+                    TryReserveSpell(pendingSpell);
+                }
+                else
+                {
+                    inputState = InputState.None;
+                    pendingSpell = null;
+                }
+                break;
+        }
+    }
+}

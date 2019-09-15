@@ -4,37 +4,46 @@ using UnityEngine;
 using UnityEngine.AI;
 public class PlayerSpell : MonoBehaviour
 {
+    public Vector3 flatPosition
+    {
+        get
+        {
+            Vector3 pos = transform.position;
+            pos.y = 0;
+            return pos;
+        }
+    }
+
     private Player player;
     private Camera m_mainCamera;
     private NavMeshAgent m_nma;
 
     private Spell pendingSpell;
 
-    private Spell reservedSpell;
-    private Vector3 reservedSpellFowardVector;
-    private Vector3 reservedSpellPoint;
-    private Collider reservedSpellTarget;
+    public Spell QSpell;
+    public Spell WSpell;
+    public Spell ESpell;
+    public Spell RSpell;
 
     public List<Spell> availableSpells;
 
     [Header("Preconfigurations")]
     [SerializeField]
     private LayerMask groundMask;
+    public Spell moveSpell;
+    public Spell attackSpell;
 
-    Vector3 GetCurrentCursorPositionInWorldSpace()
-    {
-        Ray cursorRay = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+    [Header("Debug")]
+    [SerializeField]
+    private Spell reservedSpell;
+    [SerializeField]
+    private Vector3 reservedSpellFowardVector;
+    [SerializeField]
+    private Vector3 reservedSpellPoint;
+    [SerializeField]
+    private Collider reservedSpellTarget;
 
-        if (Physics.Raycast(cursorRay, out hit, 100, groundMask))
-        {
-            return hit.point;
-        }
-        else
-        {
-            return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
-        }
-    }
+
 
     void Awake()
     {
@@ -64,144 +73,95 @@ public class PlayerSpell : MonoBehaviour
         reservedSpellPoint = point;
     }
 
-    private bool TryToReserveSpell(Spell spell)
-    {
-        switch (spell.targetingType)
-        {
-            case Spell.SpellTargetingType.Direction:
-                Vector3 directionVector = GetCurrentCursorPositionInWorldSpace() - transform.position;
-                directionVector.y = 0;
-                directionVector.Normalize();
-                ReserveSpell_Direction(spell, directionVector);
-                return true;
-            case Spell.SpellTargetingType.None:
-                ReserveSpell_None(spell);
-                return true;
-            case Spell.SpellTargetingType.PointNonStrict:
-                Vector3 differenceVector = GetCurrentCursorPositionInWorldSpace() - transform.position;
-                differenceVector = Vector3.ClampMagnitude(differenceVector, spell.range);
-                ReserveSpell_Point(spell, transform.position + differenceVector);
-                return true;
-            case Spell.SpellTargetingType.PointStrict:
-                ReserveSpell_Point(spell, GetCurrentCursorPositionInWorldSpace());
-                return true;
-            case Spell.SpellTargetingType.Target:
-                RaycastHit hit;
-                Ray cursorRay = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(cursorRay, out hit, 100, spell.targetMask))
-                {
-                    ReserveSpell_Target(spell, hit.collider);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-        }
-        return false;
-    }
+
 
 
     private void Update()
     {
-
-
-
         foreach(Spell spell in availableSpells)
         {
-            if (Input.GetKeyDown(spell.activationKey))
-            {
-                if (spell.isCooledDown && spell.CanBeCast())
-                {
-                     pendingSpell = spell;
-                }
-                else
-                {
-                    IndicateInvalidAction();
-                }
-            }
-        }
-
-        if(pendingSpell != null)
-        {
-            if (pendingSpell.castType == Spell.SpellCastType.Normal && Input.GetMouseButtonDown(0))
-            {
-                if (TryToReserveSpell(pendingSpell))
-                {
-                    pendingSpell = null;
-                }
-            } else if (pendingSpell.castType == Spell.SpellCastType.OnRelease && Input.GetKeyUp(pendingSpell.activationKey)){
-                if (TryToReserveSpell(pendingSpell))
-                {
-                    pendingSpell = null;
-                }
-            } else if (pendingSpell.castType == Spell.SpellCastType.Quick)
-            {
-                if (TryToReserveSpell(pendingSpell))
-                {
-                    pendingSpell = null;
-                }
-            }
+            spell.remainingCooldown = Mathf.MoveTowards(spell.remainingCooldown, 0, Time.deltaTime);
         }
 
         if(reservedSpell != null)
         {
-            Spell spellInstance;
-            switch (reservedSpell.targetingType)
-            {
-                case Spell.SpellTargetingType.None:
-                    spellInstance = Instantiate(reservedSpell.gameObject, transform.position, Quaternion.identity).GetComponent<Spell>();
-                    spellInstance.gameObject.SetActive(true);
-                    reservedSpell = null;
-                    break;
-                case Spell.SpellTargetingType.Direction:
-                    spellInstance = Instantiate(reservedSpell.gameObject, transform.position, Quaternion.identity).GetComponent<Spell>();
-                    spellInstance.forwardVector = reservedSpellFowardVector;
-                    spellInstance.gameObject.SetActive(true);
-                    reservedSpell = null;
-                    break;
-                case Spell.SpellTargetingType.Target:
-                    if (Vector3.Distance(transform.position, reservedSpellTarget.transform.position) <= reservedSpell.range)
-                    {
-                        spellInstance = Instantiate(reservedSpell.gameObject, transform.position, Quaternion.identity).GetComponent<Spell>();
-                        spellInstance.forwardVector = reservedSpellFowardVector;
-                        spellInstance.gameObject.SetActive(true);
-                        reservedSpell = null;
-
-                    }
-                    else
-                    {
-                        m_nma.destination = reservedSpellTarget.transform.position;
-                    }
-                    break;
-                case Spell.SpellTargetingType.PointNonStrict:
-                    spellInstance = Instantiate(reservedSpell.gameObject, transform.position, Quaternion.identity).GetComponent<Spell>();
-                    spellInstance.point = reservedSpellPoint;
-                    spellInstance.gameObject.SetActive(true);
-                    reservedSpell = null;
-                    break;
-                case Spell.SpellTargetingType.PointStrict:
-                    if (Vector3.Distance(transform.position, reservedSpellPoint) <= reservedSpell.range)
-                    {
-                        spellInstance = Instantiate(reservedSpell.gameObject, transform.position, Quaternion.identity).GetComponent<Spell>();
-                        spellInstance.point = reservedSpellPoint;
-                        spellInstance.gameObject.SetActive(true);
-                        reservedSpell = null;
-
-                    }
-                    else
-                    {
-                        m_nma.destination = reservedSpellPoint;
-                    }
-                    break;
-            }
+            TryCastReservedSpell();
         }
-
-
-
+        else
+        {
+            m_nma.destination = transform.position;
+        }
     }
 
+    private void TryCastReservedSpell()
+    {
+        
+        Spell spellInstance = null;
+        switch (reservedSpell.targetingType)
+        {
+            case Spell.SpellTargetingType.None:
+                if (reservedSpell.remainingCooldown > 0) return;
+                spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
+                spellInstance.gameObject.SetActive(true);
+                break;
+            case Spell.SpellTargetingType.Direction:
+                if (reservedSpell.remainingCooldown > 0) return;
+                spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
+                spellInstance.forwardVector = reservedSpellFowardVector;
+                spellInstance.gameObject.SetActive(true);
+                break;
+            case Spell.SpellTargetingType.Target:
+                Vector3 targetPos = reservedSpellTarget.transform.position;
+                targetPos.y = 0;
+                if (Vector3.Distance(flatPosition, targetPos) <= reservedSpell.range)
+                {
+                    m_nma.destination = transform.position;
+                    if (reservedSpell.remainingCooldown > 0) return;
+                    spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
+                    spellInstance.target = reservedSpellTarget;
+                    spellInstance.gameObject.SetActive(true);
 
+                }
+                else
+                {
+                    m_nma.destination = targetPos;
+                }
+                break;
+            case Spell.SpellTargetingType.PointNonStrict:
+                if (reservedSpell.remainingCooldown > 0) return;
+                spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
+                spellInstance.point = reservedSpellPoint;
+                spellInstance.gameObject.SetActive(true);
+                break;
+            case Spell.SpellTargetingType.PointStrict:
+                if (Vector3.Distance(flatPosition, reservedSpellPoint) <= reservedSpell.range)
+                {
+                    m_nma.destination = transform.position;
+                    if (reservedSpell.remainingCooldown > 0) return;
+                    spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
+                    spellInstance.point = reservedSpellPoint;
+                    spellInstance.gameObject.SetActive(true);
+
+                }
+                else
+                {
+                    m_nma.destination = reservedSpellPoint;
+                }
+                break;
+        }
+
+        if(spellInstance != null)
+        {
+            reservedSpell.remainingCooldown = reservedSpell.cooldown;
+            if (!reservedSpell.isBasicAttack)
+            {
+                reservedSpell = null;
+            }
+       
+        }
+
+        
+    }
 
 
     private void IndicateInvalidAction()
