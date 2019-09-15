@@ -4,7 +4,18 @@ using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
-    public string typeOfItem;
+    [Header("Item Type")]
+    public string itemType;
 
-    public abstract void Skill();
+    /// <summary>
+    /// 아이템이 장착됐을 때 효과
+    /// 스탯의 증가, 플레이어 외형의 변경
+    /// </summary>
+    public abstract void SetItem();
+
+    /// <summary>
+    /// 아이템이 해제됐을 때 효과
+    /// 스탯의 복구, 플레이어 외형 복구
+    /// </summary>
+    public abstract void PopItem();
 }

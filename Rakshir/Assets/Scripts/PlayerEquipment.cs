@@ -15,6 +15,7 @@ public class PlayerEquipment : MonoBehaviour
     }
 
     [SerializeField]
+    [Tooltip("Index 0: Weapon | Index 1: Armor | Index 2: Shoes | Index 3: Helmet")]
     private List<Item> listEquipment = new List<Item>(4);
 
     private void Awake()
@@ -29,27 +30,27 @@ public class PlayerEquipment : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Collider[] hitItems = Physics.OverlapSphere(transform.position, getItemRadius, item);
+            Collider[] hitItems = Physics.OverlapSphere(transform.position, getItemRadius, item, QueryTriggerInteraction.Collide);
             if (hitItems != null)
             {
                 Item targetItem = hitItems[0].GetComponent<Item>();
 
                 if (targetItem != null)
                 {
-                    EquipmentType typeOfItem = EquipmentType.Helmet;
-                    switch (targetItem.typeOfItem)
+                    EquipmentType itemType = EquipmentType.Helmet;
+                    switch (targetItem.itemType)
                     {
                         case "Weapon":
-                            typeOfItem = EquipmentType.Weapon;
+                            itemType = EquipmentType.Weapon;
                             break;
                         case "Armor":
-                            typeOfItem = EquipmentType.Armor;
+                            itemType = EquipmentType.Armor;
                             break;
                         case "Shoes":
-                            typeOfItem = EquipmentType.Shoes;
+                            itemType = EquipmentType.Shoes;
                             break;
                     }
-                    SetEquipment(targetItem, typeOfItem);
+                    SetEquipment(targetItem, itemType);
                 }
             }
         }
@@ -63,6 +64,7 @@ public class PlayerEquipment : MonoBehaviour
         listEquipment[(int)typeOfItem] = targetItem;
         targetItem.transform.position = new Vector3(transform.position.x, targetItem.transform.position.y, transform.position.z);
         targetItem.transform.parent = transform;
+        targetItem.SetItem();
         targetItem.gameObject.SetActive(false);
     }
 
@@ -73,5 +75,6 @@ public class PlayerEquipment : MonoBehaviour
 
         targetItem.transform.parent = null;
         targetItem.gameObject.SetActive(true);
+        targetItem.PopItem();
     }
 }

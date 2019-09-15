@@ -5,6 +5,40 @@ using NaughtyAttributes;
 
 public class PlayerStat : MonoBehaviour
 {
+    [BoxGroup("Per Strength")]
+    [SerializeField]
+    private float hpPerStr;
+
+    [BoxGroup("Per Strength")]
+    [SerializeField]
+    private float atkPerStr;
+
+    [BoxGroup("Per Wisdom")]
+    [SerializeField]
+    private float cooldownReducePerWis;
+
+    [BoxGroup("Per Wisdom")]
+    [SerializeField]
+    private float skillAtkPerWis;
+
+    [BoxGroup("Per Dexterity")]
+    [SerializeField]
+    private float runSpeedPerDex;
+
+    [BoxGroup("Per Dexterity")]
+    [SerializeField]
+    private float atkSpeedPerDex;
+
+
+    [Header("Current Stat")]
+    public float hp;
+    public float atk;
+    public float cooldownReduce;
+    public float maxCooldownReduce;
+    public float skillAtk;
+    public float runSpeed;
+    public float atkSpeed;  // Per seconds
+
     [ShowNativeProperty]
     public int strength
     {
@@ -56,41 +90,6 @@ public class PlayerStat : MonoBehaviour
         }
     }
     private int m_dexterity;
-
-    [BoxGroup("Per Strength")]
-    [SerializeField]
-    private float hpPerStr;
-
-    [BoxGroup("Per Strength")]
-    [SerializeField]
-    private float atkPerStr;
-
-    [BoxGroup("Per Wisdom")]
-    [SerializeField]
-    private float cooldownReducePerWis;
-
-    [BoxGroup("Per Wisdom")]
-    [SerializeField]
-    private float skillAtkPerWis;
-
-    [BoxGroup("Per Dexterity")]
-    [SerializeField]
-    private float runSpeedPerDex;
-
-    [BoxGroup("Per Dexterity")]
-    [SerializeField]
-    private float atkSpeedPerDex;
-
-    [Space(10)]
-
-    [Header("Current Stat")]
-    public float hp;
-    public float atk;
-    public float cooldownReduce;
-    public float maxCooldownReduce;
-    public float skillAtk;
-    public float runSpeed;
-    public float atkSpeed;
 
 
     private void Awake()

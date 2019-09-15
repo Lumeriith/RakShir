@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class LivingThing : MonoBehaviour
 {
+    [Header("Health Value")]
     public float maxHp;
 
     [SerializeField]
@@ -24,14 +25,13 @@ public abstract class LivingThing : MonoBehaviour
 
     protected abstract void Dead();
 
-    private void UpdateHealthVar()
+    private void UpdateHealthBar()
     {
-        // 체력바 업데이트
     }
 
     private void UpdateMaxHp(float updateValue)
     {
         maxHp = updateValue;
-        UpdateHealthVar();
+        UpdateHealthBar();
     }
 }
