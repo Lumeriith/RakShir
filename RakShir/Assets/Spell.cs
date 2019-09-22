@@ -31,6 +31,6 @@ public abstract class Spell : MonoBehaviour
             return remainingCooldown <= 0;
         }
     }
-    public Player owner;
+    public LivingThing owner;
 
 }

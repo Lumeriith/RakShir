@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Player : LivingThing
 {
-    PlayerSpell spell;
     private void Awake()
     {
-        spell = GetComponent<PlayerSpell>();
+        
+        bool isLocalPlayer = true;
+        if (isLocalPlayer) UnitControlManager.instance.selectedUnit = this;
+        currentHp = maxHp;
+        spell = GetComponent<LivingThingSpell>();
     }
 
-    void Update()
-    {
-        
-    }
+
 
     protected override void Dead()
     {

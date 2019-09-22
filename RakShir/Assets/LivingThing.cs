@@ -8,11 +8,15 @@ public abstract class LivingThing : MonoBehaviour
     public float maxHp;
 
     [SerializeField]
-    private float currentHp;
+    protected float currentHp;
 
+    [HideInInspector]
+    public LivingThingSpell spell;
     private void Awake()
     {
         currentHp = maxHp;
+        spell = GetComponent<LivingThingSpell>();
+        
     }
 
     public void TakeDamage(float damage)

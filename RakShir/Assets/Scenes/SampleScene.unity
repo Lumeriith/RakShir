@@ -428,7 +428,7 @@ Transform:
 --- !u!199 &187906270
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5599,7 +5599,7 @@ Transform:
 --- !u!199 &834847762
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -10286,18 +10286,6 @@ MonoBehaviour:
   forwardVector: {x: 0, y: 0, z: 0}
   point: {x: 0, y: 0, z: 0}
   owner: {fileID: 1269564634}
---- !u!114 &865162368 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6743691439461193089, guid: bcb3b4080985158429a8f2853970201f,
-    type: 3}
-  m_PrefabInstance: {fileID: 49149351}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adf761e0873e3d34493da365e6e1b039, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &869293911
 GameObject:
   m_ObjectHideFlags: 0
@@ -10492,7 +10480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89fc5f32493adb4ea367b934e6c7549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedUnit: {fileID: 1269564635}
+  selectedUnit: {fileID: 0}
   spellCastSettings: 0
   basicattackableTargets:
     serializedVersion: 2
@@ -10762,11 +10750,11 @@ GameObject:
   - component: {fileID: 1269564630}
   - component: {fileID: 1269564634}
   - component: {fileID: 1269564635}
-  - component: {fileID: 1269564629}
   - component: {fileID: 1269564633}
+  - component: {fileID: 1269564627}
+  - component: {fileID: 1269564629}
   - component: {fileID: 1269564628}
   - component: {fileID: 1269564632}
-  - component: {fileID: 1269564627}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -10926,6 +10914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 0
   currentHp: 0
+  spell: {fileID: 0}
 --- !u!114 &1269564635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10935,23 +10924,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1269564626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ede91e70099f0584fa648cb848bc6a50, type: 3}
+  m_Script: {fileID: 11500000, guid: d426c54bee8e203489014de3467f589c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellSet:
-  - {fileID: 6308223487054946378}
-  - {fileID: 834847764}
-  - {fileID: 0}
-  - {fileID: 0}
   groundMask:
     serializedVersion: 2
     m_Bits: 512
-  moveSpell: {fileID: 1351729232}
-  attackSpell: {fileID: 865162368}
-  reservedSpell: {fileID: 0}
-  reservedSpellFowardVector: {x: 0, y: 0, z: 0}
-  reservedSpellPoint: {x: 0, y: 0, z: 0}
-  reservedSpellTarget: {fileID: 0}
+  moveSpell: {fileID: 1492413875}
+  attackSpell: {fileID: 2033755574}
+  spellKeyBindings:
+  - {fileID: 6308223487054946378}
+  - {fileID: 0}
+  - {fileID: 834847764}
+  - {fileID: 0}
 --- !u!1 &1287944072
 GameObject:
   m_ObjectHideFlags: 0
@@ -11049,7 +11034,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 940246853}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1351729232 stripped
+--- !u!114 &1492413875 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2364715496145497778, guid: 1d353483be3481d41b6176d23cf033d7,
     type: 3}
@@ -11067,6 +11052,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 691811991879460798}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2033755574 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6743691439461193089, guid: bcb3b4080985158429a8f2853970201f,
+    type: 3}
+  m_PrefabInstance: {fileID: 49149351}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf761e0873e3d34493da365e6e1b039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2117925102
 GameObject:
   m_ObjectHideFlags: 0
@@ -15870,7 +15867,7 @@ ParticleSystem:
 --- !u!199 &6308223485846727119
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20555,7 +20552,7 @@ ParticleSystem:
 --- !u!199 &6308223487054946377
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
