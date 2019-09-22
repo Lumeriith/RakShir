@@ -106,13 +106,13 @@ public class LivingThingSpell : MonoBehaviour
             case Spell.SpellTargetingType.None:
                 if (reservedSpell.remainingCooldown > 0) return;
                 spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
-                spellInstance.gameObject.SetActive(true);
+                //spellInstance.gameObject.SetActive(true);
                 break;
             case Spell.SpellTargetingType.Direction:
                 if (reservedSpell.remainingCooldown > 0) return;
                 spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
                 spellInstance.forwardVector = reservedSpellFowardVector;
-                spellInstance.gameObject.SetActive(true);
+                //spellInstance.gameObject.SetActive(true);
                 break;
             case Spell.SpellTargetingType.Target:
                 Vector3 targetPos = reservedSpellTarget.transform.position;
@@ -123,7 +123,7 @@ public class LivingThingSpell : MonoBehaviour
                     if (reservedSpell.remainingCooldown > 0) return;
                     spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
                     spellInstance.target = reservedSpellTarget;
-                    spellInstance.gameObject.SetActive(true);
+                    //spellInstance.gameObject.SetActive(true);
 
                 }
                 else
@@ -135,7 +135,7 @@ public class LivingThingSpell : MonoBehaviour
                 if (reservedSpell.remainingCooldown > 0) return;
                 spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
                 spellInstance.point = reservedSpellPoint;
-                spellInstance.gameObject.SetActive(true);
+                //spellInstance.gameObject.SetActive(true);
                 break;
             case Spell.SpellTargetingType.PointStrict:
                 if (Vector3.Distance(flatPosition, reservedSpellPoint) <= reservedSpell.range)
@@ -144,7 +144,7 @@ public class LivingThingSpell : MonoBehaviour
                     if (reservedSpell.remainingCooldown > 0) return;
                     spellInstance = Instantiate(reservedSpell.gameObject, flatPosition, Quaternion.identity).GetComponent<Spell>();
                     spellInstance.point = reservedSpellPoint;
-                    spellInstance.gameObject.SetActive(true);
+                    //spellInstance.gameObject.SetActive(true);
 
                 }
                 else

@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7557689144376072635
 Transform:
   m_ObjectHideFlags: 0
@@ -43,17 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7462f58279828b6459b14f8e7cafa9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castType: 1
   targetingType: 0
   targetMask:
     serializedVersion: 2
     m_Bits: 0
   range: 0.1
   cooldown: 0
-  owner: {fileID: 0}
-  precastDelay: 0
+  isBasicAttack: 0
   remainingCooldown: 0
-  activationKey: 115
   target: {fileID: 0}
   forwardVector: {x: 0, y: 0, z: 0}
   point: {x: 0, y: 0, z: 0}
+  owner: {fileID: 0}

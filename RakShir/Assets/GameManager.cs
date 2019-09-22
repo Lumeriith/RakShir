@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
+using Cinemachine;
 public class GameManager : MonoBehaviour
 {
     public Texture2D normalCursor;
     public Vector2 normalCursorHotspot;
     public Texture2D attackCursor;
     public Vector2 attackCursorHotspot;
-
+    public new CinemachineVirtualCamera camera;
     public enum CursorShapeType { None, Normal, Attack, Spell }
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
+    [HideInInspector]
+    public Player localPlayer;
 
     private static GameManager _instance;
     public static GameManager instance
@@ -34,6 +37,12 @@ public class GameManager : MonoBehaviour
         {
             SetAppropriateCursor();
             lastCursorShape = cursorShape;
+        }
+
+        if (camera.Follow == null && localPlayer != null)
+        {
+            camera.Follow = localPlayer.transform;
+
         }
     }
 

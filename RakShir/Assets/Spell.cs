@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public abstract class Spell : MonoBehaviour
+public abstract class Spell : MonoBehaviourPun
 {
     // Cast spells are enabled gameobjects.
     // Otherwise, spells gameobjects are put on players disabled.
@@ -33,4 +34,19 @@ public abstract class Spell : MonoBehaviour
     }
     public LivingThing owner;
 
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] initialData = info.photonView.InstantiationData;
+        target = (Collider)initialData[0];
+        forwardVector = (Vector3)initialData[1];
+        point = (Vector3)initialData[2];
+    }
+
+    private void Awake()
+    {
+        if(transform.parent != null && transform.parent.name == "Spells")
+        {
+            gameObject.SetActive(false);
+        }
+    }
 }

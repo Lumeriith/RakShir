@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public abstract class LivingThing : MonoBehaviour
+using Photon.Pun;
+public abstract class LivingThing : MonoBehaviourPun, IPunObservable
 {
     [Header("Health Value")]
     public float maxHp;
@@ -12,6 +12,20 @@ public abstract class LivingThing : MonoBehaviour
 
     [HideInInspector]
     public LivingThingSpell spell;
+    
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(currentHp);
+        }
+        else
+        {
+            maxHp = (float)stream.ReceiveNext();
+        }
+    }
+
+
     private void Awake()
     {
         currentHp = maxHp;
