@@ -45,12 +45,12 @@ public abstract class SpellTrigger : MonoBehaviour
 
     public abstract void OnCast(CastInfo info);
 
-    private bool ShouldTargetMaskFieldShow()
+    protected bool ShouldTargetMaskFieldShow()
     {
         return targetingType == TargetingType.Target;
     }
 
-    private bool ShouldRangeFieldShow()
+    protected bool ShouldRangeFieldShow()
     {
         return targetingType == TargetingType.Target || targetingType == TargetingType.PointStrict || targetingType == TargetingType.PointNonStrict;
     }

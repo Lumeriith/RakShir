@@ -9,13 +9,8 @@ public class LivingThingControl : MonoBehaviour
 
     private enum ActionType { None, Move, AttackMove, Spell }
 
-    [SerializeField]
     private ActionType reservedAction = ActionType.None;
-
-    [SerializeField]
     private SpellTrigger actionSpellTrigger;
-
-    [SerializeField]
     private SpellTrigger.CastInfo actionInfo;
 
     public SpellTrigger basicAttackSpellTrigger;

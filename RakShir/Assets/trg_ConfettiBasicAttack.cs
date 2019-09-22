@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class trg_ConfettiBasicAttack : MonoBehaviour
+public class trg_ConfettiBasicAttack : SpellTrigger
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnCast(CastInfo info)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
