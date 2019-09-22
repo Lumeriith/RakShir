@@ -9,8 +9,9 @@ public class UnitControlManager : MonoBehaviour
 
     public SpellCastType spellCastSettings = SpellCastType.Normal;
     private InputState inputState = InputState.None;
-    private Spell pendingSpell;
-    private KeyCode pendingSpellActivationKey;
+
+    private SpellTrigger pendingSpellTrigger;
+    private KeyCode pendingSpellTriggerActivationKey;
 
     private Camera mainCamera;
 
@@ -19,7 +20,7 @@ public class UnitControlManager : MonoBehaviour
 
 
     public enum SpellCastType { Normal, Quick, OnRelease }
-    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousCastPending }
+    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove }
 
     private static UnitControlManager _instance;
     public static UnitControlManager instance
@@ -40,37 +41,37 @@ public class UnitControlManager : MonoBehaviour
         return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
     }
 
-    private bool TryReserveSpell(Spell spell)
+    private bool TryReserveSpellTrigger(SpellTrigger spellTrigger)
     {
-        if (spell == null) return false;
+        if (spellTrigger == null) return false;
         Vector3 flatPosition = selectedUnit.transform.position;
         flatPosition.y = 0;
 
-        switch (spell.targetingType)
+        switch (spellTrigger.targetingType)
         {
-            case Spell.SpellTargetingType.Direction:
+            case SpellTrigger.TargetingType.Direction:
                 Vector3 directionVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
                 directionVector.y = 0;
                 directionVector.Normalize();
-                selectedUnit.spell.ReserveSpell_Direction(spell, directionVector);
+                selectedUnit.control.ReserveSpellTrigger(spellTrigger, Vector3.zero, directionVector, null);
                 return true;
-            case Spell.SpellTargetingType.None:
-                selectedUnit.spell.ReserveSpell_None(spell);
+            case SpellTrigger.TargetingType.None:
+                selectedUnit.control.ReserveSpellTrigger(spellTrigger, Vector3.zero, Vector3.zero, null);
                 return true;
-            case Spell.SpellTargetingType.PointNonStrict:
+            case SpellTrigger.TargetingType.PointNonStrict:
                 Vector3 differenceVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
-                differenceVector = Vector3.ClampMagnitude(differenceVector, spell.range);
-                selectedUnit.spell.ReserveSpell_Point(spell, flatPosition + differenceVector);
+                differenceVector = Vector3.ClampMagnitude(differenceVector, spellTrigger.range);
+                selectedUnit.control.ReserveSpellTrigger(spellTrigger, flatPosition + differenceVector, Vector3.zero, null);
                 return true;
-            case Spell.SpellTargetingType.PointStrict:
-                selectedUnit.spell.ReserveSpell_Point(spell, GetCurrentCursorPositionInWorldSpace());
+            case SpellTrigger.TargetingType.PointStrict:
+                selectedUnit.control.ReserveSpellTrigger(spellTrigger, GetCurrentCursorPositionInWorldSpace(), Vector3.zero, null);
                 return true;
-            case Spell.SpellTargetingType.Target:
+            case SpellTrigger.TargetingType.Target:
                 RaycastHit hit;
                 Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(cursorRay, out hit, 100, spell.targetMask))
+                if (Physics.Raycast(cursorRay, out hit, 100, spellTrigger.targetMask))
                 {
-                    selectedUnit.spell.ReserveSpell_Target(spell, hit.collider);
+                    selectedUnit.control.ReserveSpellTrigger(spellTrigger, Vector3.zero, Vector3.zero, hit.collider);
                     return true;
                 }
                 else
@@ -91,25 +92,24 @@ public class UnitControlManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            if (TryReserveSpell(selectedUnit.spell.attackSpell))
+            if (TryReserveSpellTrigger(selectedUnit.control.basicAttackSpellTrigger))
             {
                 inputState = InputState.None;
             }
             else
             {
-                TryReserveSpell(selectedUnit.spell.moveSpell);
-                pendingSpell = selectedUnit.spell.moveSpell;
-                inputState = InputState.ContinuousCastPending;
-                pendingSpellActivationKey = KeyCode.Mouse1;
+                selectedUnit.control.StartMove(GetCurrentCursorPositionInWorldSpace());
+                inputState = InputState.ContinuousMove;
+                pendingSpellTriggerActivationKey = KeyCode.Mouse1;
             }
         }
     }
 
     private void DoAttackKeyActions()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && selectedUnit.control.basicAttackSpellTrigger != null)
         {
-            pendingSpell = selectedUnit.spell.attackSpell;
+            pendingSpellTrigger = selectedUnit.control.basicAttackSpellTrigger;
             inputState = InputState.NormalCastPending;
         }
     }
@@ -118,7 +118,7 @@ public class UnitControlManager : MonoBehaviour
     {
         if(selectedUnit == null)
         {
-            pendingSpell = null;
+            pendingSpellTrigger = null;
             inputState = InputState.None;
             return;
         }
@@ -150,41 +150,39 @@ public class UnitControlManager : MonoBehaviour
     }
     private void SpellKeyPressed(int index, KeyCode activationKey)
     {
-        PlayerSpell ps = selectedUnit.GetComponent<PlayerSpell>();
-        if (ps == null) return;
-        if (ps.spellKeyBindings.Length <= index || ps.spellKeyBindings[index] == null) return;
-        if (!ps.spellKeyBindings[index].isCooledDown)
+        if (selectedUnit.control.keybindings.Length <= index || selectedUnit.control.keybindings[index] == null) return;
+        if (!selectedUnit.control.keybindings[index].isCooledDown)
         {
             IndicateCooldown(index);
             return;
         }
 
-        pendingSpellActivationKey = activationKey;
+        pendingSpellTriggerActivationKey = activationKey;
 
         switch (spellCastSettings)
         {
             case SpellCastType.Normal:
-                if(ps.spellKeyBindings[index].targetingType == Spell.SpellTargetingType.None)
+                if(selectedUnit.control.keybindings[index].targetingType == SpellTrigger.TargetingType.None)
                 {
-                    TryReserveSpell(ps.spellKeyBindings[index]);
+                    TryReserveSpellTrigger(selectedUnit.control.keybindings[index]);
                 }
                 else
                 {
-                    pendingSpell = ps.spellKeyBindings[index];
+                    pendingSpellTrigger = selectedUnit.control.keybindings[index];
                     inputState = InputState.NormalCastPending;
                 }
                 break;
             case SpellCastType.Quick:
-                TryReserveSpell(ps.spellKeyBindings[index]);
+                TryReserveSpellTrigger(selectedUnit.control.keybindings[index]);
                 break;
             case SpellCastType.OnRelease:
-                if (ps.spellKeyBindings[index].targetingType == Spell.SpellTargetingType.None)
+                if (selectedUnit.control.keybindings[index].targetingType == SpellTrigger.TargetingType.None)
                 {
-                    TryReserveSpell(ps.spellKeyBindings[index]);
+                    TryReserveSpellTrigger(selectedUnit.control.keybindings[index]);
                 }
                 else
                 {
-                    pendingSpell = ps.spellKeyBindings[index];
+                    pendingSpellTrigger = selectedUnit.control.keybindings[index];
                     inputState = InputState.OnReleaseCastPending;
                 }
                 break;
@@ -204,7 +202,7 @@ public class UnitControlManager : MonoBehaviour
             case InputState.OnReleaseCastPending:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Spell;
                 break;
-            case InputState.ContinuousCastPending:
+            case InputState.ContinuousMove:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
         }
@@ -219,30 +217,30 @@ public class UnitControlManager : MonoBehaviour
             case InputState.NormalCastPending:
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (TryReserveSpell(pendingSpell))
+                    if (TryReserveSpellTrigger(pendingSpellTrigger))
                     {
                         inputState = InputState.None;
-                        pendingSpell = null;
+                        pendingSpellTrigger = null;
                     }
                 }
                 break;
             case InputState.OnReleaseCastPending:
-                if (Input.GetKeyUp(pendingSpellActivationKey))
+                if (Input.GetKeyUp(pendingSpellTriggerActivationKey))
                 {
-                    TryReserveSpell(pendingSpell);
+                    TryReserveSpellTrigger(pendingSpellTrigger);
                     inputState = InputState.None;
-                    pendingSpell = null;
+                    pendingSpellTrigger = null;
                 }
                 break;
-            case InputState.ContinuousCastPending:
-                if (Input.GetKey(pendingSpellActivationKey))
+            case InputState.ContinuousMove:
+                if (Input.GetKey(pendingSpellTriggerActivationKey))
                 {
-                    TryReserveSpell(pendingSpell);
+                    selectedUnit.control.StartMove(GetCurrentCursorPositionInWorldSpace());
                 }
                 else
                 {
                     inputState = InputState.None;
-                    pendingSpell = null;
+                    pendingSpellTrigger = null;
                 }
                 break;
         }

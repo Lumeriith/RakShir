@@ -11,7 +11,7 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
     protected float currentHp;
 
     [HideInInspector]
-    public LivingThingSpell spell;
+    public LivingThingControl control;
     
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -29,7 +29,7 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
     private void Awake()
     {
         currentHp = maxHp;
-        spell = GetComponent<LivingThingSpell>();
+        control = GetComponent<LivingThingControl>();
         
     }
 

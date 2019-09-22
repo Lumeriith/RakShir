@@ -7,6 +7,7 @@ public class Player : LivingThing
 {
     private void Awake()
     {
+        control = GetComponent<LivingThingControl>();
         if (photonView.IsMine)
         {
             gameObject.layer = 10; // 12: Enemy -> 10: Player
@@ -14,13 +15,12 @@ public class Player : LivingThing
         }
         else
         {
-            GetComponent<PlayerSpell>().enabled = false;
+            GetComponent<LivingThingControl>().enabled = false;
         }
         currentHp = maxHp;
-        spell = GetComponent<LivingThingSpell>();
+        
     }
 
-   
 
     protected override void Dead()
     {
