@@ -43,12 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a531979cd0adeb4ba754e81a8d68d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetingType: 0
+  targetingType: 4
   targetMask:
     serializedVersion: 2
-    m_Bits: 0
-  range: 0
-  cooldownTime: 0
+    m_Bits: 4096
+  range: 4
+  cooldownTime: 1
 --- !u!1 &6358402018888800505
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,9 +142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567c89d767739cf4ba1a7ae5fd5e2611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackSpellTrigger: {fileID: 0}
+  reservedAction: 0
+  channelRemainingTime: 0
+  channelIsCanceledByMoveCommand: 0
+  basicAttackSpellTrigger: {fileID: 6358402018810563231}
   keybindings:
-  - {fileID: 6358402018810563231}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

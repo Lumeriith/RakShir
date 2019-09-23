@@ -6,6 +6,7 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public abstract class Spell : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
+    protected bool isCreated { get; private set; } = false;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -37,6 +38,7 @@ public abstract class Spell : MonoBehaviourPun, IPunInstantiateMagicCallback
             data[i] = initData[i + 4];
         }
 
+        isCreated = true;
         OnCreate(castInfo, data);
     }
 

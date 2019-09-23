@@ -54,10 +54,6 @@ public class SpellManager : MonoBehaviour
                 initData[4 + i] = data[i];
             }
         }
-
-
-
-
         PhotonNetwork.Instantiate(prefabName, position, rotation, 0, initData);
     }
 

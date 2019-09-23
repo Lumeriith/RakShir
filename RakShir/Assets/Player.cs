@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine.AI;
 public class Player : LivingThing
 {
+
     private void Awake()
     {
         control = GetComponent<LivingThingControl>();
@@ -21,9 +22,10 @@ public class Player : LivingThing
         
     }
 
-
     protected override void Dead()
     {
 
     }
+
+
 }

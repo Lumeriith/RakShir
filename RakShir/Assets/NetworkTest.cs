@@ -21,7 +21,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = 10;
         PhotonNetwork.CreateRoom(null, roomOptions);
         Debug.Log("Creating a room.");
     }

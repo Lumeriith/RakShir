@@ -14,6 +14,9 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
     [HideInInspector]
     public LivingThingControl control;
 
+
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
