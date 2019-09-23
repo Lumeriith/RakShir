@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+[RequireComponent(typeof(PhotonView))]
 public abstract class LivingThing : MonoBehaviourPun, IPunObservable
 {
     [Header("Health Value")]
@@ -12,7 +13,7 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
 
     [HideInInspector]
     public LivingThingControl control;
-    
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

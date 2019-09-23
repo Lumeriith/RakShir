@@ -71,7 +71,7 @@ public class UnitControlManager : MonoBehaviour
                 Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(cursorRay, out hit, 100, spellTrigger.targetMask))
                 {
-                    selectedUnit.control.ReserveSpellTrigger(spellTrigger, Vector3.zero, Vector3.zero, hit.collider);
+                    selectedUnit.control.ReserveSpellTrigger(spellTrigger, Vector3.zero, Vector3.zero, hit.collider.GetComponent<LivingThing>());
                     return true;
                 }
                 else

@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spl_ConfettiProjectile : MonoBehaviour
+public class spl_ConfettiProjectile : Spell
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnCreate(SpellManager.CastInfo castInfo, object[] data)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(castInfo.owner);
+        Debug.Log(data);
     }
 }

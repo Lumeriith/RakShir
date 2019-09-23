@@ -5,12 +5,7 @@ using NaughtyAttributes;
 public abstract class SpellTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
-    public struct CastInfo
-    {
-        public Vector3 point;
-        public Vector3 directionVector;
-        public Collider target;
-    }
+
 
     [Header("Trigger Settings")]
     public TargetingType targetingType;
@@ -43,7 +38,7 @@ public abstract class SpellTrigger : MonoBehaviour
 
     private float cooldownStartTime = 0;
 
-    public abstract void OnCast(CastInfo info);
+    public abstract void OnCast(SpellManager.CastInfo info);
 
     protected bool ShouldTargetMaskFieldShow()
     {

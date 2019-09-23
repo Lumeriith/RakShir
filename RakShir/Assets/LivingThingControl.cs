@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
 public class LivingThingControl : MonoBehaviour
 {
     private LivingThing livingThing;
@@ -11,7 +12,7 @@ public class LivingThingControl : MonoBehaviour
 
     private ActionType reservedAction = ActionType.None;
     private SpellTrigger actionSpellTrigger;
-    private SpellTrigger.CastInfo actionInfo;
+    private SpellManager.CastInfo actionInfo;
 
     public SpellTrigger basicAttackSpellTrigger;
 
@@ -21,6 +22,7 @@ public class LivingThingControl : MonoBehaviour
     {
         livingThing = GetComponent<LivingThing>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        actionInfo.owner = GetComponent<LivingThing>();
     }
 
     private Vector3 Flat(Vector3 vector)
@@ -55,7 +57,7 @@ public class LivingThingControl : MonoBehaviour
         }
     }
 
-    public void ReserveSpellTrigger(SpellTrigger spellTrigger, Vector3 point, Vector3 directionVector, Collider target)
+    public void ReserveSpellTrigger(SpellTrigger spellTrigger, Vector3 point, Vector3 directionVector, LivingThing target)
     {
         reservedAction = ActionType.Spell;
         actionSpellTrigger = spellTrigger;
