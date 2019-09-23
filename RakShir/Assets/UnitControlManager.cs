@@ -20,7 +20,7 @@ public class UnitControlManager : MonoBehaviour
 
 
     public enum SpellCastType { Normal, Quick, OnRelease }
-    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove }
+    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove, AttackMove }
 
     private static UnitControlManager _instance;
     public static UnitControlManager instance
@@ -98,7 +98,7 @@ public class UnitControlManager : MonoBehaviour
             }
             else
             {
-                selectedUnit.control.StartMove(GetCurrentCursorPositionInWorldSpace());
+                selectedUnit.control.StartMoving(GetCurrentCursorPositionInWorldSpace());
                 inputState = InputState.ContinuousMove;
                 pendingSpellTriggerActivationKey = KeyCode.Mouse1;
             }
@@ -110,7 +110,7 @@ public class UnitControlManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A) && selectedUnit.control.basicAttackSpellTrigger != null)
         {
             pendingSpellTrigger = selectedUnit.control.basicAttackSpellTrigger;
-            inputState = InputState.NormalCastPending;
+            inputState = InputState.AttackMove;
         }
     }
 
@@ -205,6 +205,9 @@ public class UnitControlManager : MonoBehaviour
             case InputState.ContinuousMove:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
+            case InputState.AttackMove:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Attack;
+                break;
         }
     }
 
@@ -235,12 +238,28 @@ public class UnitControlManager : MonoBehaviour
             case InputState.ContinuousMove:
                 if (Input.GetKey(pendingSpellTriggerActivationKey))
                 {
-                    selectedUnit.control.StartMove(GetCurrentCursorPositionInWorldSpace());
+                    selectedUnit.control.StartMoving(GetCurrentCursorPositionInWorldSpace());
                 }
                 else
                 {
                     inputState = InputState.None;
                     pendingSpellTrigger = null;
+                }
+                break;
+            case InputState.AttackMove:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (TryReserveSpellTrigger(pendingSpellTrigger))
+                    {
+                        inputState = InputState.None;
+                        pendingSpellTrigger = null;
+                    }
+                    else
+                    {
+                        inputState = InputState.None;
+                        selectedUnit.control.StartAttackMoving(GetCurrentCursorPositionInWorldSpace());
+                        pendingSpellTrigger = null;
+                    }
                 }
                 break;
         }

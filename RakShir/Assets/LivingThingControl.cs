@@ -2,30 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using NaughtyAttributes;
 public class LivingThingControl : MonoBehaviour
 {
-    private LivingThing livingThing;
     private NavMeshAgent navMeshAgent;
 
     private enum ActionType { None, Move, AttackMove, Spell, Channeling }
-    [SerializeField]
     private ActionType reservedAction = ActionType.None;
     private SpellTrigger actionSpellTrigger;
     private SpellManager.CastInfo actionInfo;
 
-    [SerializeField]
     private System.Action channelSuccessCallback;
-    [SerializeField]
     private System.Action channelCanceledCallback;
-    [SerializeField]
     private float channelRemainingTime;
-    [SerializeField]
     private bool channelIsCanceledByMoveCommand;
 
     public SpellTrigger basicAttackSpellTrigger;
 
     public SpellTrigger[] keybindings = new SpellTrigger[4];
+
+    [Header("Aggro Settings")]
+    public bool aggroAutomatically;
+    public float aggroRange;
+    public float deaggroRange;
+    public float aggroChecksPerSecond;
+
+    private float lastAggroCheckTime;
+
     public void StartChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback, bool isCanceledByMoveCommand = false)
     {
         reservedAction = ActionType.Channeling;
@@ -37,7 +40,6 @@ public class LivingThingControl : MonoBehaviour
 
     void Awake()
     {
-        livingThing = GetComponent<LivingThing>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         actionInfo.owner = GetComponent<LivingThing>();
     }
@@ -49,7 +51,7 @@ public class LivingThingControl : MonoBehaviour
         return temp;
     }
 
-    public void StartMove(Vector3 location)
+    public void StartMoving(Vector3 location)
     {
         if (reservedAction == ActionType.Channeling)
         {
@@ -69,8 +71,54 @@ public class LivingThingControl : MonoBehaviour
             reservedAction = ActionType.Move;
             navMeshAgent.SetDestination(location);
         }
+    }
+
+    public void StartAttackMoving(Vector3 location)
+    {
+        if (reservedAction == ActionType.Channeling)
+        {
+            if (channelIsCanceledByMoveCommand)
+            {
+                reservedAction = ActionType.AttackMove;
+                navMeshAgent.SetDestination(location);
+                channelCanceledCallback();
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            reservedAction = ActionType.AttackMove;
+            navMeshAgent.SetDestination(location);
+        }
+    }
 
 
+
+    private void DoAggroCheck()
+    {
+        Collider[] colliders = Physics.OverlapSphere(Flat(transform.position), aggroRange, basicAttackSpellTrigger.targetMask);
+
+        Collider closestTarget = null;
+        float closestDistance = Mathf.Infinity;
+        float distance;
+
+        foreach(Collider collider in colliders)
+        {
+            distance = Vector3.Distance(Flat(collider.transform.position), Flat(transform.position));
+            if (distance < closestDistance)
+            {
+                closestTarget = collider;
+                closestDistance = distance;
+            }
+        }
+
+        if(closestTarget != null)
+        {
+            ReserveSpellTrigger(basicAttackSpellTrigger, Vector3.zero, Vector3.zero, closestTarget.GetComponent<LivingThing>());
+        }
     }
 
     private void Update()
@@ -79,12 +127,29 @@ public class LivingThingControl : MonoBehaviour
         {
             case ActionType.None:
                 navMeshAgent.SetDestination(transform.position);
+                if(aggroAutomatically && (Time.time - lastAggroCheckTime > 1 / aggroChecksPerSecond))
+                {
+                    lastAggroCheckTime = Time.time;
+                    DoAggroCheck();
+                }
                 break;
             case ActionType.Move:
                 if (navMeshAgent.isStopped)
                 {
                     reservedAction = ActionType.None;
                 }
+                break;
+            case ActionType.AttackMove:
+                if (navMeshAgent.isStopped)
+                {
+                    reservedAction = ActionType.None;
+                }
+                if (Time.time - lastAggroCheckTime > 1 / aggroChecksPerSecond)
+                {
+                    lastAggroCheckTime = Time.time;
+                    DoAggroCheck();
+                }
+
                 break;
             case ActionType.Spell:
                 TryCastReservedSpell();
@@ -98,6 +163,8 @@ public class LivingThingControl : MonoBehaviour
                 }
                 break;
         }
+
+
     }
 
     public void ReserveSpellTrigger(SpellTrigger spellTrigger, Vector3 point, Vector3 directionVector, LivingThing target)

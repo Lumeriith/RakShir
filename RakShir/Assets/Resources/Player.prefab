@@ -48,7 +48,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   range: 4
-  cooldownTime: 1
+  cooldownTime: 0.4
 --- !u!1 &6358402018888800505
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,8 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d71bff313c7f4fb4c9ef5699e8e1f64d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  currentHp: 100
+  maximumHealth: 0
+  currentHealth: 0
   control: {fileID: 0}
 --- !u!114 &6358402018888800498
 MonoBehaviour:
@@ -142,15 +142,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567c89d767739cf4ba1a7ae5fd5e2611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reservedAction: 0
-  channelRemainingTime: 0
-  channelIsCanceledByMoveCommand: 0
   basicAttackSpellTrigger: {fileID: 6358402018810563231}
   keybindings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  aggroAutomatically: 0
+  aggroRange: 6
+  deaggroRange: 9
+  aggroChecksPerSecond: 4
 --- !u!114 &6358402018888800504
 MonoBehaviour:
   m_ObjectHideFlags: 0

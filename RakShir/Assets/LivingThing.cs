@@ -6,10 +6,10 @@ using Photon.Pun;
 public abstract class LivingThing : MonoBehaviourPun, IPunObservable
 {
     [Header("Health Value")]
-    public float maxHp;
+    public float maximumHealth;
 
     [SerializeField]
-    protected float currentHp;
+    public float currentHealth;
 
     [HideInInspector]
     public LivingThingControl control;
@@ -21,27 +21,25 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(currentHp);
+            stream.SendNext(currentHealth);
         }
         else
         {
-            maxHp = (float)stream.ReceiveNext();
+            currentHealth = (float)stream.ReceiveNext();
         }
     }
 
 
     private void Awake()
     {
-        currentHp = maxHp;
         control = GetComponent<LivingThingControl>();
-        
     }
 
     public void TakeDamage(float damage)
     {
-        currentHp -= damage;
+        currentHealth -= damage;
 
-        if (currentHp <= 0)
+        if (currentHealth <= 0)
             Dead();
     }
 
@@ -53,7 +51,7 @@ public abstract class LivingThing : MonoBehaviourPun, IPunObservable
 
     private void UpdateMaxHp(float updateValue)
     {
-        maxHp = updateValue;
+        maximumHealth = updateValue;
         UpdateHealthBar();
     }
 }

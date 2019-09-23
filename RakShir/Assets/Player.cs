@@ -18,8 +18,6 @@ public class Player : LivingThing
         {
             GetComponent<LivingThingControl>().enabled = false;
         }
-        currentHp = maxHp;
-        
     }
 
     protected override void Dead()
