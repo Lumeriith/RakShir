@@ -16,6 +16,19 @@ public abstract class SpellTrigger : MonoBehaviour
 
     public float cooldownTime;
 
+
+    private LivingThing livingThing
+    {
+        get
+        {
+            if(_livingThing == null)
+            {
+                _livingThing = transform.parent.GetComponent<LivingThing>();
+            }
+            return _livingThing;
+        }
+    }
+    private LivingThing _livingThing;
     public bool isCooledDown
     {
         get
@@ -53,6 +66,13 @@ public abstract class SpellTrigger : MonoBehaviour
     public void StartCooldown()
     {
         cooldownStartTime = Time.time;
+        if(livingThing != null &&
+           livingThing.control.basicAttackSpellTrigger != null &&
+           livingThing.control.basicAttackSpellTrigger == this &&
+           livingThing.stat != null)
+        {
+            ApplyCooldownReduction(cooldownTime * (1 - (1 / (1 + livingThing.stat.fi))));
+        }
     }
 
     public void SetCooldown(float time)

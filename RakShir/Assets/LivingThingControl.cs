@@ -6,6 +6,7 @@ using NaughtyAttributes;
 public class LivingThingControl : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
+    private LivingThing livingThing;
 
     private enum ActionType { None, Move, AttackMove, Spell, Channeling }
     private ActionType reservedAction = ActionType.None;
@@ -38,16 +39,36 @@ public class LivingThingControl : MonoBehaviour
         channelIsCanceledByMoveCommand = isCanceledByMoveCommand;
     }
 
+    public void StartBasicAttackChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback)
+    {
+        reservedAction = ActionType.Channeling;
+        channelSuccessCallback = successCallback;
+        channelCanceledCallback = canceledCallback;
+        if(livingThing.stat != null)
+        {
+            channelRemainingTime = channelTime / (1 + livingThing.stat.bonusAttackSpeedMultiplier);
+        }
+        else
+        {
+            channelRemainingTime = channelTime;
+        }
+        
+        channelIsCanceledByMoveCommand = true;
+    }
+
+
+
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         actionInfo.owner = GetComponent<LivingThing>();
+        livingThing = GetComponent<LivingThing>();
     }
 
     private Vector3 Flat(Vector3 vector)
     {
         Vector3 temp = vector;
-        vector.y = 0;
+        temp.y = 0;
         return temp;
     }
 
@@ -134,7 +155,8 @@ public class LivingThingControl : MonoBehaviour
                 }
                 break;
             case ActionType.Move:
-                if (navMeshAgent.isStopped)
+
+                if (Vector3.Distance(Flat(navMeshAgent.destination), Flat(transform.position)) < 0.1f)
                 {
                     reservedAction = ActionType.None;
                 }

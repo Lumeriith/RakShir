@@ -8,7 +8,7 @@ public class trg_ConfettiBasicAttack : SpellTrigger
     public override void OnCast(SpellManager.CastInfo info)
     {
         castInfo = info;
-        info.owner.control.StartChanneling(0.125f, Pew, NoPew, true);
+        info.owner.control.StartBasicAttackChanneling(0.15f, Pew, NoPew);
         
         StartCooldown();
     }

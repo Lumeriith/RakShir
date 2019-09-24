@@ -9,6 +9,7 @@ public class Player : LivingThing
     private void Awake()
     {
         control = GetComponent<LivingThingControl>();
+        stat = GetComponent<LivingThingStat>();
         if (photonView.IsMine)
         {
             gameObject.layer = 10; // 12: Enemy -> 10: Player
@@ -20,10 +21,7 @@ public class Player : LivingThing
         }
     }
 
-    protected override void Dead()
-    {
 
-    }
 
 
 }

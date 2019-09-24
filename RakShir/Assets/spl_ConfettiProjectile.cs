@@ -6,7 +6,8 @@ using Photon.Pun;
 public class spl_ConfettiProjectile : Spell
 {
     LivingThing target;
-    
+    LivingThing attacker;
+
     public float projectileSpeed = 15;
 
     private ParticleSystem ps_main;
@@ -19,7 +20,7 @@ public class spl_ConfettiProjectile : Spell
     protected override void OnCreate(SpellManager.CastInfo castInfo, object[] data)
     {
         target = castInfo.target;
-
+        attacker = castInfo.owner;
         transform.LookAt(castInfo.target.transform);
 
         ps_main = GetComponent<ParticleSystem>();
@@ -47,6 +48,10 @@ public class spl_ConfettiProjectile : Spell
                 ps_projectile.Clear();
                 ps_projectile.Stop();
                 ps_end.Play();
+                if (photonView.IsMine)
+                {
+                    target.ApplyNormalDamage(10, attacker);
+                }
             }
         }
         else
