@@ -9,7 +9,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.GameVersion = "1";
+        PhotonNetwork.GameVersion = "2";
         PhotonNetwork.ConnectUsingSettings();
     }
 

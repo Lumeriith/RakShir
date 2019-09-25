@@ -8,19 +8,19 @@ public class LivingThingControl : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private LivingThing livingThing;
 
-    private enum ActionType { None, Move, AttackMove, Spell, Channeling }
+    private enum ActionType { None, Move, AttackMove, AbilityInstance, Channeling }
     private ActionType reservedAction = ActionType.None;
-    private SpellTrigger actionSpellTrigger;
-    private SpellManager.CastInfo actionInfo;
+    private AbilityTrigger actionAbilityTrigger;
+    private AbilityInstanceManager.CastInfo actionInfo;
 
     private System.Action channelSuccessCallback;
     private System.Action channelCanceledCallback;
     private float channelRemainingTime;
     private bool channelIsCanceledByMoveCommand;
 
-    public SpellTrigger basicAttackSpellTrigger;
+    public AbilityTrigger basicAttackAbilityTrigger;
 
-    public SpellTrigger[] keybindings = new SpellTrigger[4];
+    public AbilityTrigger[] keybindings = new AbilityTrigger[4];
 
     [Header("Aggro Settings")]
     public bool aggroAutomatically;
@@ -39,24 +39,23 @@ public class LivingThingControl : MonoBehaviour
         channelIsCanceledByMoveCommand = isCanceledByMoveCommand;
     }
 
-    public void StartBasicAttackChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback)
+    public void StartBasicAttackChanneling(float ratio, System.Action successCallback, System.Action canceledCallback)
     {
         reservedAction = ActionType.Channeling;
         channelSuccessCallback = successCallback;
         channelCanceledCallback = canceledCallback;
-        if(livingThing.stat != null)
-        {
-            channelRemainingTime = channelTime / (1 + livingThing.stat.bonusAttackSpeedMultiplier);
-        }
-        else
-        {
-            channelRemainingTime = channelTime;
-        }
-        
+        channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond);
         channelIsCanceledByMoveCommand = true;
     }
 
-
+    public void CancelChanneling()
+    {
+        if(reservedAction == ActionType.Channeling)
+        {
+            reservedAction = ActionType.None;
+            channelCanceledCallback.Invoke();
+        }
+    }
 
     void Awake()
     {
@@ -80,7 +79,7 @@ public class LivingThingControl : MonoBehaviour
             {
                 reservedAction = ActionType.Move;
                 navMeshAgent.SetDestination(location);
-                channelCanceledCallback();
+                channelCanceledCallback.Invoke();
             }
             else
             {
@@ -102,7 +101,7 @@ public class LivingThingControl : MonoBehaviour
             {
                 reservedAction = ActionType.AttackMove;
                 navMeshAgent.SetDestination(location);
-                channelCanceledCallback();
+                channelCanceledCallback.Invoke();
             }
             else
             {
@@ -120,7 +119,7 @@ public class LivingThingControl : MonoBehaviour
 
     private void DoAggroCheck()
     {
-        Collider[] colliders = Physics.OverlapSphere(Flat(transform.position), aggroRange, basicAttackSpellTrigger.targetMask);
+        Collider[] colliders = Physics.OverlapSphere(Flat(transform.position), aggroRange, basicAttackAbilityTrigger.targetMask);
 
         Collider closestTarget = null;
         float closestDistance = Mathf.Infinity;
@@ -138,7 +137,7 @@ public class LivingThingControl : MonoBehaviour
 
         if(closestTarget != null)
         {
-            ReserveSpellTrigger(basicAttackSpellTrigger, Vector3.zero, Vector3.zero, closestTarget.GetComponent<LivingThing>());
+            ReserveAbilityTrigger(basicAttackAbilityTrigger, Vector3.zero, Vector3.zero, closestTarget.GetComponent<LivingThing>());
         }
     }
 
@@ -173,8 +172,8 @@ public class LivingThingControl : MonoBehaviour
                 }
 
                 break;
-            case ActionType.Spell:
-                TryCastReservedSpell();
+            case ActionType.AbilityInstance:
+                TryCastReservedAbilityInstance();
                 break;
             case ActionType.Channeling:
                 channelRemainingTime = Mathf.MoveTowards(channelRemainingTime, 0, Time.deltaTime);
@@ -189,39 +188,39 @@ public class LivingThingControl : MonoBehaviour
 
     }
 
-    public void ReserveSpellTrigger(SpellTrigger spellTrigger, Vector3 point, Vector3 directionVector, LivingThing target)
+    public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point, Vector3 directionVector, LivingThing target)
     {
-        reservedAction = ActionType.Spell;
-        actionSpellTrigger = spellTrigger;
+        reservedAction = ActionType.AbilityInstance;
+        actionAbilityTrigger = abilityTrigger;
 
         actionInfo.point = point;
         actionInfo.directionVector = directionVector;
         actionInfo.target = target;
     }
 
-    private void TryCastReservedSpell()
+    private void TryCastReservedAbilityInstance()
     {
-        switch (actionSpellTrigger.targetingType)
+        switch (actionAbilityTrigger.targetingType)
         {
-            case SpellTrigger.TargetingType.None:
-                if (!actionSpellTrigger.isCooledDown) break;
+            case AbilityTrigger.TargetingType.None:
+                if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
-                actionSpellTrigger.OnCast(actionInfo);
+                actionAbilityTrigger.OnCast(actionInfo);
                 break;
-            case SpellTrigger.TargetingType.Direction:
-                if (!actionSpellTrigger.isCooledDown) break;
+            case AbilityTrigger.TargetingType.Direction:
+                if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
-                actionSpellTrigger.OnCast(actionInfo);
+                actionAbilityTrigger.OnCast(actionInfo);
                 break;
-            case SpellTrigger.TargetingType.Target:
+            case AbilityTrigger.TargetingType.Target:
                 Vector3 targetPosition = Flat(actionInfo.target.transform.position);
 
-                if (Vector3.Distance(Flat(transform.position), targetPosition) <= actionSpellTrigger.range)
+                if (Vector3.Distance(Flat(transform.position), targetPosition) <= actionAbilityTrigger.range)
                 {
                     navMeshAgent.SetDestination(transform.position);
-                    if (!actionSpellTrigger.isCooledDown) break;
+                    if (!actionAbilityTrigger.isCooledDown) break;
                     reservedAction = ActionType.None;
-                    actionSpellTrigger.OnCast(actionInfo);
+                    actionAbilityTrigger.OnCast(actionInfo);
                     
                 }
                 else
@@ -229,19 +228,19 @@ public class LivingThingControl : MonoBehaviour
                     navMeshAgent.SetDestination(targetPosition);
                 }
                 break;
-            case SpellTrigger.TargetingType.PointNonStrict:
+            case AbilityTrigger.TargetingType.PointNonStrict:
                 navMeshAgent.SetDestination(transform.position);
-                if (!actionSpellTrigger.isCooledDown) break;
+                if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
-                actionSpellTrigger.OnCast(actionInfo);
+                actionAbilityTrigger.OnCast(actionInfo);
                 break;
-            case SpellTrigger.TargetingType.PointStrict:
-                if (Vector3.Distance(Flat(transform.position), Flat(actionInfo.point)) <= actionSpellTrigger.range)
+            case AbilityTrigger.TargetingType.PointStrict:
+                if (Vector3.Distance(Flat(transform.position), Flat(actionInfo.point)) <= actionAbilityTrigger.range)
                 {
                     navMeshAgent.SetDestination(transform.position);
-                    if (!actionSpellTrigger.isCooledDown) break;
+                    if (!actionAbilityTrigger.isCooledDown) break;
                     reservedAction = ActionType.None;
-                    actionSpellTrigger.OnCast(actionInfo);
+                    actionAbilityTrigger.OnCast(actionInfo);
 
                 }
                 else

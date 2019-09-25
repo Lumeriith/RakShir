@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public Texture2D attackCursor;
     public Vector2 attackCursorHotspot;
     public new CinemachineVirtualCamera camera;
-    public enum CursorShapeType { None, Normal, Attack, Spell }
+    public enum CursorShapeType { None, Normal, Attack, AbilityInstance }
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
     [HideInInspector]
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
             case CursorShapeType.Attack:
                 Cursor.SetCursor(attackCursor, attackCursorHotspot, CursorMode.Auto);
                 break;
-            case CursorShapeType.Spell:
+            case CursorShapeType.AbilityInstance:
                 Cursor.SetCursor(attackCursor, attackCursorHotspot, CursorMode.Auto);
                 break;
         }

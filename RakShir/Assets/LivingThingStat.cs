@@ -4,175 +4,231 @@ using UnityEngine;
 using NaughtyAttributes;
 using Photon.Pun;
 
-public class LivingThingStat : MonoBehaviourPun, IPunObservable
+public class LivingThingStat : MonoBehaviourPun
 {
+    [Header("Changing Stats")]
+    public float currentHealth;
+    public float currentMana;
+    public bool isDead;
+
     [Header("Base Stats")]
-    public int strength;
-    public int wisdom;
-    public int dexterity;
+    public float baseMaximumHealth;
+    public float baseHealthRegenerationPerSecond;
 
-    [Header("Bonus Stats")]
-    public float bonusHealth;
+    public float baseMaximumMana;
+    public float baseManaRegenerationPerSecond;
+
+    public float baseMovementSpeed;
+
+    public float baseAttackDamage;
+    public float baseAttacksPerSecond;
+
+    public float baseSpellPower;
+
+    public float baseCooldownReduction;
+
+    public float baseDodgeChance;
+
+    [Header("Secondary Stats")]
+    public float strength;
+    public float agility;
+    public float intelligence;
+
+    [SerializeField]
+    private bool showTemporaryAttributes;
+    [Header("Temporary Attributes")]
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusMaximumHealth;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusHealthRegenerationPerSecond;
+
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusMaximumMana;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusManaRegenerationPerSecond;
+
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusMovementSpeed;
+
+    [ShowIf("showTemporaryAttributes")]
     public float bonusAttackDamage;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusAttackSpeedPercentage;
+
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusSpellPower;
+
+    [ShowIf("showTemporaryAttributes")]
     public float bonusCooldownReduction;
-    public float bonusSpellPowerMultiplier;
-    public float bonusMovementSpeedMultiplier;
-    public float bonusAttackSpeedMultiplier;
 
-    public float bonusPhysicalArmor;
-    public float bonusSpellArmor;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusDodgeChance;
+
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusStrength;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusAgility;
+    [ShowIf("showTemporaryAttributes")]
+    public float bonusIntelligence;
+
+    [SerializeField]
+    private bool showScalingSettings;
+
+    [Header("Scaling Per Strength")]
+    [ShowIf("showScalingSettings")]
+    public float additionalMaximumHealthPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalHealthRegenerationPerSecondPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalAttackDamagePerUnit;
+    [Header("Scaling Per Agility")]
+    [ShowIf("showScalingSettings")]
+    public float additionalMovementSpeedPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalAttackSpeedPercentagePerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalDodgeChancePerUnit;
+    [Header("Scaling Per Intelligence")]
+    [ShowIf("showScalingSettings")]
+    public float additionalMaximumManaPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalManaRegenerationPerSecondPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalSpellPowerPerUnit;
+    [ShowIf("showScalingSettings")]
+    public float additionalCooldownReductionPerUnit;
     
-    [BoxGroup("Scaling Per Strength")]
-    [SerializeField]
-    private float healthPerUnit;
+    public float finalStrength {  get { return strength + bonusStrength; } }
+    public float finalAgility {  get { return agility + bonusAgility; } }
+    public float finalIntelligence { get { return intelligence + bonusIntelligence; } }
+    
 
-    [BoxGroup("Scaling Per Strength")]
-    [SerializeField]
-    private float attackDamagePerUnit;
+    public float finalMaximumHealth { get { return baseMaximumHealth + finalStrength * additionalAttackDamagePerUnit + bonusMaximumHealth; } }
+    public float finalHealthRegenerationPerSecond { get { return baseHealthRegenerationPerSecond + finalStrength * additionalHealthRegenerationPerSecondPerUnit + bonusHealthRegenerationPerSecond; } }
+    public float finalMaximumMana { get { return baseMaximumMana + finalIntelligence * additionalMaximumManaPerUnit + bonusMaximumMana; } }
+    public float finalManaRegenerationPerSecond { get { return baseManaRegenerationPerSecond + finalIntelligence * additionalManaRegenerationPerSecondPerUnit + bonusManaRegenerationPerSecond; } }
+    public float finalMovementSpeed { get { return baseMovementSpeed + finalAgility * additionalMovementSpeedPerUnit + bonusMovementSpeed; } }
+    public float finalAttackDamage { get { return baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage; } }
+    public float finalAttacksPerSecond { get { return baseAttacksPerSecond * (1 + (finalAgility * additionalAttackSpeedPercentagePerUnit / 100) + (bonusAttackSpeedPercentage / 100)); } }
+    public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower; } }
+    public float finalCooldownReduction { get { return baseCooldownReduction + finalIntelligence * additionalCooldownReductionPerUnit + bonusCooldownReduction; } }
+    public float finalDodgeChance { get { return baseDodgeChance + finalAgility * additionalDodgeChancePerUnit + bonusDodgeChance; } }
 
-    [BoxGroup("Scaling Per Wisdom")]
-    [SerializeField]
-    private float cooldownReductionPerUnit;
-
-    [BoxGroup("Scaling Per Wisdom")]
-    [SerializeField]
-    private float spellPowerMultiplierPerUnit;
-
-    [BoxGroup("Scaling Per Dexterity")]
-    [SerializeField]
-    private float movementSpeedMultiplierPerUnit;
-
-    [BoxGroup("Scaling Per Dexterity")]
-    [SerializeField]
-    private float attackSpeedMultiplierPerUnit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(0f, 0.95f)]
-    private Vector2 finalCooldownReductionLimit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(0f, 10f)]
-    private Vector2 finalSpellPowerMultiplierLimit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(0.05f, 10f)]
-    private Vector2 finalMovementSpeedMultiplierLimit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(0.05f, 10f)]
-    private Vector2 finalAttackSpeedMultiplierLimit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(-5f, 1f)]
-    private Vector2 finalPhysicalArmorLimit;
-
-    [BoxGroup("Limit Settings")]
-    [SerializeField]
-    [MinMaxSlider(-5f, 1f)]
-    private Vector2 finalSpellArmorLimit;
-
-
-
-    public float finalHealthGranted
+    private void Start()
     {
-        get
+        if (photonView.IsMine)
         {
-            return strength * healthPerUnit + bonusHealth;
+            SyncBaseStats();
+            SyncSecondaryStats();
+            SyncTemporaryAttributes();
         }
     }
 
-    public float finalAttackDamageGranted
+    private void Update()
     {
-        get
-        {
-            return strength * attackDamagePerUnit + bonusAttackDamage;
-        }
+        
     }
 
-    public float finalCooldownReductionGranted
+    public void ValidateHealth()
     {
-        get
-        {
-            return wisdom * cooldownReductionPerUnit + bonusCooldownReduction;
-        }
+        currentHealth = Mathf.Clamp(currentHealth, 0, finalMaximumHealth);
     }
 
-    public float finalSpellPowerMultiplier
+    public void SyncChangingStats()
     {
-        get
-        {
-            return 1 + wisdom * spellPowerMultiplierPerUnit + bonusSpellPowerMultiplier;
-        }
+        float[] stats = { currentHealth, currentMana };
+        photonView.RPC("RpcSyncChangingStats", RpcTarget.Others, stats);
     }
 
-    public float finalMovementSpeedMultiplier
+
+
+    public void SyncBaseStats()
     {
-        get
+        float[] stats =
         {
-            return 1 + dexterity * movementSpeedMultiplierPerUnit + bonusMovementSpeedMultiplier;
-        }
+            baseMaximumHealth, baseHealthRegenerationPerSecond,
+            baseMaximumMana, baseManaRegenerationPerSecond,
+            baseMovementSpeed,
+            baseAttackDamage, baseAttacksPerSecond,
+            baseSpellPower,
+            baseCooldownReduction,
+            baseDodgeChance
+        };
+        photonView.RPC("RpcSyncBaseStats", RpcTarget.Others, stats);
     }
 
-    public float finalAttackSpeedMultiplier
+    public void SyncSecondaryStats()
     {
-        get
-        {
-            return 1 + dexterity * attackSpeedMultiplierPerUnit + bonusAttackSpeedMultiplier;
-        }
+        float[] stats = { strength, agility, intelligence };
+        photonView.RPC("RpcSyncSecondaryStats", RpcTarget.Others, stats);
     }
 
-    public float finalPhysicalArmor
+    public void SyncTemporaryAttributes()
     {
-        get
+        float[] stats =
         {
-            return bonusPhysicalArmor;
-        }
+            bonusMaximumHealth, bonusHealthRegenerationPerSecond,
+            bonusMaximumMana, bonusManaRegenerationPerSecond,
+            bonusMovementSpeed,
+            bonusAttackDamage, bonusAttackSpeedPercentage,
+            bonusSpellPower,
+            bonusCooldownReduction,
+            bonusDodgeChance,
+            bonusStrength, bonusAgility, bonusIntelligence
+        };
+        photonView.RPC("RpcSyncTemporaryAttributes", RpcTarget.Others, stats);
     }
 
-    public float finalSpellArmor
+    [PunRPC]
+    private void RpcSyncChangingStats(float[] stats)
     {
-        get
-        {
-            return bonusSpellArmor;
-        }
+        currentHealth = stats[0];
+        currentMana = stats[1];
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    [PunRPC]
+    private void RpcSyncBaseStats(float[] stats)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(strength);
-            stream.SendNext(wisdom);
-            stream.SendNext(dexterity);
-            stream.SendNext(bonusHealth);
-            stream.SendNext(bonusAttackDamage);
-            stream.SendNext(bonusCooldownReduction);
-            stream.SendNext(bonusSpellPowerMultiplier);
-            stream.SendNext(bonusMovementSpeedMultiplier);
-            stream.SendNext(bonusAttackSpeedMultiplier);
-            stream.SendNext(bonusPhysicalArmor);
-            stream.SendNext(bonusSpellArmor);
-        }
-        else
-        {
-            strength = (int)stream.ReceiveNext();
-            wisdom = (int)stream.ReceiveNext();
-            dexterity = (int)stream.ReceiveNext();
-            bonusHealth = (float)stream.ReceiveNext();
-            bonusAttackDamage = (float)stream.ReceiveNext();
-            bonusCooldownReduction = (float)stream.ReceiveNext();
-            bonusSpellPowerMultiplier = (float)stream.ReceiveNext();
-            bonusMovementSpeedMultiplier = (float)stream.ReceiveNext();
-            bonusAttackSpeedMultiplier = (float)stream.ReceiveNext();
-            bonusPhysicalArmor = (float)stream.ReceiveNext();
-            bonusSpellArmor = (float)stream.ReceiveNext();
-        }
+        baseMaximumHealth = stats[0];
+        baseHealthRegenerationPerSecond = stats[1];
+        baseMaximumMana = stats[2];
+        baseManaRegenerationPerSecond = stats[3];
+        baseMovementSpeed = stats[4];
+        baseAttackDamage = stats[5];
+        baseAttacksPerSecond = stats[6];
+        baseSpellPower = stats[7];
+        baseCooldownReduction = stats[8];
+        baseDodgeChance = stats[9];
     }
+
+    [PunRPC]
+    public void RpcSyncSecondaryStats(float[] stats)
+    {
+        strength = stats[0];
+        agility = stats[1];
+        intelligence = stats[2];
+    }
+
+    [PunRPC]
+    public void RpcSyncTemporaryAttributes(float[] stats)
+    {
+        bonusMaximumHealth = stats[0];
+        bonusHealthRegenerationPerSecond = stats[1];
+        bonusMaximumMana = stats[2];
+        bonusManaRegenerationPerSecond = stats[3];
+        bonusMovementSpeed = stats[4];
+        bonusAttackDamage = stats[5];
+        bonusAttackSpeedPercentage = stats[6];
+        bonusSpellPower = stats[7];
+        bonusCooldownReduction = stats[8];
+        bonusDodgeChance = stats[9];
+        bonusStrength = stats[10];
+        bonusAgility = stats[11];
+        bonusIntelligence = stats[12];
+    }
+
+
+
 
 
 }

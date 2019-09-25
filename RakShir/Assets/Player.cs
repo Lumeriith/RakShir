@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Player : LivingThing
 {
 
-    private void Awake()
+    private void Start()
     {
         control = GetComponent<LivingThingControl>();
         stat = GetComponent<LivingThingStat>();

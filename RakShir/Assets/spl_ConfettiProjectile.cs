@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class spl_ConfettiProjectile : Spell
+public class spl_ConfettiProjectile : AbilityInstance
 {
     LivingThing target;
     LivingThing attacker;
@@ -17,7 +17,7 @@ public class spl_ConfettiProjectile : Spell
 
     private bool hasLanded = false;
 
-    protected override void OnCreate(SpellManager.CastInfo castInfo, object[] data)
+    protected override void OnCreate(AbilityInstanceManager.CastInfo castInfo, object[] data)
     {
         target = castInfo.target;
         attacker = castInfo.owner;
@@ -50,7 +50,8 @@ public class spl_ConfettiProjectile : Spell
                 ps_end.Play();
                 if (photonView.IsMine)
                 {
-                    target.ApplyNormalDamage(10, attacker);
+                    attacker.DoBasicAttack(target);
+                    
                 }
             }
         }
