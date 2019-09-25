@@ -28,13 +28,15 @@ public abstract class LivingThing : MonoBehaviourPun
     public LivingThingControl control;
     [HideInInspector]
     public LivingThingStat stat;
-
+    [HideInInspector]
+    public LivingThingStatusEffect statusEffect;
 
 
     private void Awake()
     {
         control = GetComponent<LivingThingControl>();
         stat = GetComponent<LivingThingStat>();
+        statusEffect = GetComponent<LivingThingStatusEffect>();
         OnDeath.Invoke();
     }
 

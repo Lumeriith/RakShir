@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum CoreStatusEffectType
+public enum CoreStatusEffectType : byte
 {
     // Neutral
     Stasis,
@@ -24,16 +24,20 @@ public class CoreStatusEffect
 {
     public int uid;
     public LivingThing caster;
+    public LivingThing owner;
     public CoreStatusEffectType type;
     public float duration;
     public object parameter;
 
-    CoreStatusEffect(LivingThing caster, CoreStatusEffectType type, float duration, object parameter = null)
+
+
+    public CoreStatusEffect(LivingThing caster, LivingThing owner, CoreStatusEffectType type, float duration, object parameter)
     {
         this.caster = caster;
+        this.owner = owner;
         this.type = type;
         this.duration = duration;
-        this.parameter = null;
+        this.parameter = parameter;
     }
 
     public bool IsHarmful()
