@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TargetValidator : System.ICloneable
 {
-    LivingThing self;
 
     public bool canTargetSelf = false;
     public bool canTargetOwnSummon = false;
@@ -36,7 +35,7 @@ public class TargetValidator : System.ICloneable
     }
 
 
-    public static TargetValidator tv_HarmfulSpellDefault = new TargetValidator
+    public static TargetValidator HarmfulSpellDefault = new TargetValidator
     {
         canTargetSelf = false,
         canTargetOwnSummon = false,
@@ -53,7 +52,7 @@ public class TargetValidator : System.ICloneable
           CoreStatusEffectType.Untargetable }
     };
 
-    public static TargetValidator tv_BeneficialSpellDefault = new TargetValidator
+    public static TargetValidator BeneficialSpellDefault = new TargetValidator
     {
         canTargetSelf = true,
         canTargetOwnSummon = true,
@@ -69,11 +68,8 @@ public class TargetValidator : System.ICloneable
           CoreStatusEffectType.Untargetable }
     };
 
-    public void SetSelf(LivingThing self)
-    {
-        this.self = self;
-    }
-    public bool IsValidOn(LivingThing target)
+
+    public bool Evaluate(LivingThing self, LivingThing target)
     {
         if (target == null || self == null) return false;
 
@@ -110,26 +106,24 @@ public class TargetValidator : System.ICloneable
 
 public class SelfValidator : System.ICloneable
 {
-    LivingThing self;
 
     public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>();
 
-    public static SelfValidator sv_CanTick = new SelfValidator
+    public static SelfValidator CanTick = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stasis }
     };
 
-    public static SelfValidator sv_CanWalk = new SelfValidator
+    public static SelfValidator CanWalk = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Root }
     };
 
-    public static SelfValidator sv_CanReserveMoveAction = new SelfValidator
+    public static SelfValidator CanCommandMove = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.ChannelingImmovable,
+        excludes = new List<CoreStatusEffectType>() {
           CoreStatusEffectType.Stun,
           CoreStatusEffectType.Airborne,
           CoreStatusEffectType.Sleep,
@@ -139,32 +133,16 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Fear }
     };
 
-    public static SelfValidator sv_CanHaveMoveActionReserved = new SelfValidator
+    public static SelfValidator CanHaveMoveActionReserved = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.ChannelingImmovable,
-          CoreStatusEffectType.Stun,
+        { CoreStatusEffectType.Stun,
           CoreStatusEffectType.Airborne,
           CoreStatusEffectType.Sleep,
           CoreStatusEffectType.Root }
     };
 
-    public static SelfValidator sv_CanReserveAbilityAction = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.ChannelingMovable,
-          CoreStatusEffectType.ChannelingImmovable,
-          CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear,
-          CoreStatusEffectType.Silence }
-    };
-
-    public static SelfValidator sv_CanHaveAbilityActionReserved = new SelfValidator
+    public static SelfValidator CanReserveAbilityAction = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stun,
@@ -177,7 +155,20 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Silence }
     };
 
-    public static SelfValidator sv_CanReserveBasicAttack = new SelfValidator
+    public static SelfValidator CanHaveAbilityActionReserved = new SelfValidator
+    {
+        excludes = new List<CoreStatusEffectType>()
+        { CoreStatusEffectType.Stun,
+          CoreStatusEffectType.Airborne,
+          CoreStatusEffectType.Sleep,
+          CoreStatusEffectType.Polymorph,
+          CoreStatusEffectType.MindControl,
+          CoreStatusEffectType.Charm,
+          CoreStatusEffectType.Fear,
+          CoreStatusEffectType.Silence }
+    };
+
+    public static SelfValidator CanReserveBasicAttack = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stun,
@@ -189,7 +180,7 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Fear }
     };
 
-    public static SelfValidator sv_CanBeChannelingBasicAttack = new SelfValidator
+    public static SelfValidator CanBeChannelingBasicAttack = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stun,
@@ -201,7 +192,7 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Fear }
     };
 
-    public static SelfValidator sv_CanBeChannelingAbility = new SelfValidator
+    public static SelfValidator CanBeChannelingAbility = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stun,
@@ -214,7 +205,7 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Silence }
     };
 
-    public static SelfValidator sv_CanBeDamaged = new SelfValidator
+    public static SelfValidator CanBeDamaged = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stasis,
@@ -222,7 +213,7 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Protected }
     };
 
-    public static SelfValidator sv_CanHaveHarmfulCoreStatusEffects = new SelfValidator
+    public static SelfValidator CanHaveHarmfulCoreStatusEffects = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Invulnerable,
@@ -236,11 +227,8 @@ public class SelfValidator : System.ICloneable
         return sv;
     }
 
-    public void SetSelf(LivingThing self)
-    {
-        this.self = self;
-    }
-    public bool IsValid()
+
+    public bool Evaluate(LivingThing self)
     {
         if (self == null) return false;
 

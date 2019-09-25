@@ -6,6 +6,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
+    //public static SelfValidator sv_CanHaveAbilityActionReserved = new SelfValidator STARTHERE
 
     [Header("Trigger Settings")]
     public TargetingType targetingType;
@@ -52,6 +53,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     private float cooldownStartTime = 0;
 
     public abstract void OnCast(AbilityInstanceManager.CastInfo info);
+
 
     protected bool ShouldTargetMaskFieldShow()
     {

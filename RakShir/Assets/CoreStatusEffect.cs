@@ -4,7 +4,7 @@ using UnityEngine;
 public enum CoreStatusEffectType : byte
 {
     // Neutral
-    Stasis, ChannelingMovable, ChannelingImmovable, ChannelingBasicAttack,
+    Stasis,
 
     // Beneficial
     Invulnerable, Untargetable, Unstoppable, Protected, Speed, Haste,

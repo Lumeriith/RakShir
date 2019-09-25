@@ -62,8 +62,24 @@ public class LivingThing : MonoBehaviourPun
         }
     }
 
+    public void CommandMove(Vector3 location)
+    {
+        if (SelfValidator.CanCommandMove.Evaluate(this))
+        {
+            control.StartMoving(location);
+        }
+    }
 
-    public void DoBasicAttack(LivingThing to)
+    public void CommandAttackMove(Vector3 location)
+    {
+        if (SelfValidator.CanCommandMove.Evaluate(this))
+        {
+            control.StartAttackMoving(location);
+        }
+    }
+
+
+    public void DoBasicAttackImmediately(LivingThing to)
     {
         if (!sv_CanBeDamaged.IsValid()) return;
         float finalAmount;

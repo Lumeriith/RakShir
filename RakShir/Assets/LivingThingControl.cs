@@ -8,7 +8,7 @@ public class LivingThingControl : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private LivingThing livingThing;
 
-    private enum ActionType { None, Move, AttackMove, Ability, Channeling } // START HERE. REMOVE CHANNELING OR THINK STRAIGHT AND DO SOMETHING GOOD.
+    private enum ActionType { None, Move, AttackMove, Ability, Channel, ChannelMovable, AttackChannel } // START HERE. REMOVE CHANNELING OR THINK STRAIGHT AND DO SOMETHING GOOD.
     [SerializeField]
     private ActionType reservedAction = ActionType.None;
     private AbilityTrigger actionAbilityTrigger;
@@ -17,7 +17,6 @@ public class LivingThingControl : MonoBehaviour
     private System.Action channelSuccessCallback;
     private System.Action channelCanceledCallback;
     private float channelRemainingTime;
-    private bool channelIsCanceledByMoveCommand;
 
     public AbilityTrigger basicAttackAbilityTrigger;
 
@@ -31,32 +30,39 @@ public class LivingThingControl : MonoBehaviour
 
     private float lastAggroCheckTime;
 
-    public void StartChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback, bool isCanceledByMoveCommand = false)
+    public void StartChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback, bool movable = false)
     {
-        reservedAction = ActionType.Channeling;
+        reservedAction = movable ? ActionType.ChannelMovable : ActionType.Channel;
         channelSuccessCallback = successCallback;
         channelCanceledCallback = canceledCallback;
         channelRemainingTime = channelTime;
-        channelIsCanceledByMoveCommand = isCanceledByMoveCommand;
     }
 
     public void StartBasicAttackChanneling(float ratio, System.Action successCallback, System.Action canceledCallback)
     {
-        reservedAction = ActionType.Channeling;
+        reservedAction = ActionType.AttackChannel;
         channelSuccessCallback = successCallback;
         channelCanceledCallback = canceledCallback;
         channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond);
-        channelIsCanceledByMoveCommand = true;
     }
 
-    public void CancelChanneling()
+    public void CancelAttackChanneling()
     {
-        if(reservedAction == ActionType.Channeling)
+        if (reservedAction == ActionType.AttackChannel)
         {
             reservedAction = ActionType.None;
             channelCanceledCallback.Invoke();
         }
     }
+    public void CancelChanneling()
+    {
+        if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable)
+        {
+            reservedAction = ActionType.None;
+            channelCanceledCallback.Invoke();
+        }
+    }
+
 
     void Awake()
     {
@@ -74,46 +80,32 @@ public class LivingThingControl : MonoBehaviour
 
     public void StartMoving(Vector3 location)
     {
-        if (reservedAction == ActionType.Channeling)
+        if(reservedAction == ActionType.AttackChannel)
         {
-            if (channelIsCanceledByMoveCommand)
-            {
-                reservedAction = ActionType.Move;
-                navMeshAgent.SetDestination(location);
-                channelCanceledCallback.Invoke();
-            }
-            else
-            {
-                return;
-            }
+            channelCanceledCallback.Invoke();
         }
-        else
+        else if (reservedAction == ActionType.Channel)
         {
-            reservedAction = ActionType.Move;
-            navMeshAgent.SetDestination(location);
+            return;
         }
+
+        reservedAction = ActionType.Move;
+        navMeshAgent.SetDestination(location);
     }
 
     public void StartAttackMoving(Vector3 location)
     {
-        if (reservedAction == ActionType.Channeling)
+        if (reservedAction == ActionType.AttackChannel)
         {
-            if (channelIsCanceledByMoveCommand)
-            {
-                reservedAction = ActionType.AttackMove;
-                navMeshAgent.SetDestination(location);
-                channelCanceledCallback.Invoke();
-            }
-            else
-            {
-                return;
-            }
+            channelCanceledCallback.Invoke();
         }
-        else
+        else if (reservedAction == ActionType.Channel)
         {
-            reservedAction = ActionType.AttackMove;
-            navMeshAgent.SetDestination(location);
+            return;
         }
+
+        reservedAction = ActionType.Move;
+        navMeshAgent.SetDestination(location);
     }
 
 

@@ -238,7 +238,7 @@ public class UnitControlManager : MonoBehaviour
             case InputState.ContinuousMove:
                 if (Input.GetKey(pendingAbilityTriggerActivationKey))
                 {
-                    selectedUnit.control.StartMoving(GetCurrentCursorPositionInWorldSpace());
+                    selectedUnit.CommandMove(GetCurrentCursorPositionInWorldSpace());
                 }
                 else
                 {
@@ -257,7 +257,7 @@ public class UnitControlManager : MonoBehaviour
                     else
                     {
                         inputState = InputState.None;
-                        selectedUnit.control.StartAttackMoving(GetCurrentCursorPositionInWorldSpace());
+                        selectedUnit.CommandAttackMove(GetCurrentCursorPositionInWorldSpace());
                         pendingAbilityTrigger = null;
                     }
                 }
