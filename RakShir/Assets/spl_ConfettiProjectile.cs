@@ -51,6 +51,13 @@ public class spl_ConfettiProjectile : AbilityInstance
                 if (photonView.IsMine)
                 {
                     attacker.DoBasicAttack(target);
+
+                    CoreStatusEffect stun = new CoreStatusEffect(attacker, CoreStatusEffectType.Stun, 5f);
+
+                    target.statusEffect.ApplyCoreStatusEffect(stun);
+                    stun.SetDuration(1f);
+
+                    
                     
                 }
             }

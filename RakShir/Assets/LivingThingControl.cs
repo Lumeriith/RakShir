@@ -8,7 +8,8 @@ public class LivingThingControl : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private LivingThing livingThing;
 
-    private enum ActionType { None, Move, AttackMove, AbilityInstance, Channeling }
+    private enum ActionType { None, Move, AttackMove, Ability, Channeling } // START HERE. REMOVE CHANNELING OR THINK STRAIGHT AND DO SOMETHING GOOD.
+    [SerializeField]
     private ActionType reservedAction = ActionType.None;
     private AbilityTrigger actionAbilityTrigger;
     private AbilityInstanceManager.CastInfo actionInfo;
@@ -120,24 +121,30 @@ public class LivingThingControl : MonoBehaviour
     private void DoAggroCheck()
     {
         Collider[] colliders = Physics.OverlapSphere(Flat(transform.position), aggroRange, basicAttackAbilityTrigger.targetMask);
-
-        Collider closestTarget = null;
+        Collider myCollider = GetComponent<Collider>();
+        LivingThing closestTarget = null;
+        LivingThing temp;
         float closestDistance = Mathf.Infinity;
         float distance;
 
         foreach(Collider collider in colliders)
         {
             distance = Vector3.Distance(Flat(collider.transform.position), Flat(transform.position));
-            if (distance < closestDistance)
+            if (distance < closestDistance && closestTarget != myCollider)
             {
-                closestTarget = collider;
-                closestDistance = distance;
+                temp = collider.GetComponent<LivingThing>();
+                if (temp != null)
+                {
+                    closestTarget = temp;
+                    closestDistance = distance;
+                }
+
             }
         }
 
         if(closestTarget != null)
         {
-            ReserveAbilityTrigger(basicAttackAbilityTrigger, Vector3.zero, Vector3.zero, closestTarget.GetComponent<LivingThing>());
+            ReserveAbilityTrigger(basicAttackAbilityTrigger, Vector3.zero, Vector3.zero, closestTarget);
         }
     }
 
@@ -172,7 +179,7 @@ public class LivingThingControl : MonoBehaviour
                 }
 
                 break;
-            case ActionType.AbilityInstance:
+            case ActionType.Ability:
                 TryCastReservedAbilityInstance();
                 break;
             case ActionType.Channeling:
@@ -190,7 +197,7 @@ public class LivingThingControl : MonoBehaviour
 
     public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point, Vector3 directionVector, LivingThing target)
     {
-        reservedAction = ActionType.AbilityInstance;
+        reservedAction = ActionType.Ability;
         actionAbilityTrigger = abilityTrigger;
 
         actionInfo.point = point;
@@ -213,6 +220,7 @@ public class LivingThingControl : MonoBehaviour
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.Target:
+                // TODO: Check if the target is valid, if invalid cancel the action
                 Vector3 targetPosition = Flat(actionInfo.target.transform.position);
 
                 if (Vector3.Distance(Flat(transform.position), targetPosition) <= actionAbilityTrigger.range)
