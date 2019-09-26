@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class UnitControlManager : MonoBehaviour
 {
     public LivingThing selectedUnit;
@@ -16,7 +16,7 @@ public class UnitControlManager : MonoBehaviour
     private Camera mainCamera;
 
     [Header("Preconfigurations")]
-    public LayerMask basicattackableTargets;
+    public LayerMask maskLivingThing;
 
 
     public enum AbilityInstanceCastType { Normal, Quick, OnRelease }
@@ -34,6 +34,23 @@ public class UnitControlManager : MonoBehaviour
             return _instance;
         }
     }
+
+    private LivingThing GetFirstValidTarget(TargetValidator tv)
+    {
+        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, maskLivingThing);
+        IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
+        foreach(RaycastHit hit in hits)
+        {
+            LivingThing lt = hit.collider.GetComponent<LivingThing>();
+            if(tv.Evaluate(selectedUnit, hit.collider.GetComponent<LivingThing>()))
+            {
+                return lt;
+            }
+        }
+        return null;
+    }
+
 
     Vector3 GetCurrentCursorPositionInWorldSpace()
     {
@@ -67,11 +84,10 @@ public class UnitControlManager : MonoBehaviour
                 selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, GetCurrentCursorPositionInWorldSpace(), Vector3.zero, null);
                 return true;
             case AbilityTrigger.TargetingType.Target:
-                RaycastHit hit;
-                Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(cursorRay, out hit, 100, abilityTrigger.targetMask))
+                LivingThing result = GetFirstValidTarget(abilityTrigger.targetValidator);
+                if (result != null)
                 {
-                    selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, Vector3.zero, Vector3.zero, hit.collider.GetComponent<LivingThing>());
+                    selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, Vector3.zero, Vector3.zero, result);
                     return true;
                 }
                 else
@@ -148,12 +164,24 @@ public class UnitControlManager : MonoBehaviour
     {
 
     }
+
+    private void IndicateCantActivate(int index)
+    {
+
+    }
+
     private void AbilityInstanceKeyPressed(int index, KeyCode activationKey)
     {
         if (selectedUnit.control.keybindings.Length <= index || selectedUnit.control.keybindings[index] == null) return;
         if (!selectedUnit.control.keybindings[index].isCooledDown)
         {
             IndicateCooldown(index);
+            return;
+        }
+
+        if (!selectedUnit.control.keybindings[index].CanActivate())
+        {
+            IndicateCantActivate(index);
             return;
         }
 

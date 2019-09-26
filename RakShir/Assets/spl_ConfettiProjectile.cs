@@ -15,6 +15,8 @@ public class spl_ConfettiProjectile : AbilityInstance
     private ParticleSystem ps_end;
     private ParticleSystem ps_projectile;
 
+    public CoreStatusEffectType effect;
+
     private bool hasLanded = false;
 
     protected override void OnCreate(AbilityInstanceManager.CastInfo castInfo, object[] data)
@@ -50,12 +52,12 @@ public class spl_ConfettiProjectile : AbilityInstance
                 ps_end.Play();
                 if (photonView.IsMine)
                 {
-                    attacker.DoBasicAttack(target);
+                    attacker.DoBasicAttackImmediately(target);
 
-                    CoreStatusEffect stun = new CoreStatusEffect(attacker, CoreStatusEffectType.Stun, 5f);
+                    CoreStatusEffect effect = new CoreStatusEffect(attacker, this.effect, 1f);
 
-                    target.statusEffect.ApplyCoreStatusEffect(stun);
-                    stun.SetDuration(1f);
+                    target.statusEffect.ApplyCoreStatusEffect(effect);
+
 
                     
                     

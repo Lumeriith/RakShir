@@ -18,8 +18,6 @@ public class LivingThing : MonoBehaviourPun
     public LivingThingType type = LivingThingType.Monster;
     public LivingThing summoner = null;
 
-    private SelfValidator sv_CanBeDamaged = (SelfValidator)SelfValidator.sv_CanBeDamaged.Clone();
-
     public float currentHealth
     {
         get
@@ -48,7 +46,7 @@ public class LivingThing : MonoBehaviourPun
         stat = GetComponent<LivingThingStat>();
         statusEffect = GetComponent<LivingThingStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
-        sv_CanBeDamaged.SetSelf(this);
+
     }
 
     private void Update()
@@ -81,7 +79,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void DoBasicAttackImmediately(LivingThing to)
     {
-        if (!sv_CanBeDamaged.IsValid()) return;
+        if (!SelfValidator.CanBeDamaged.Evaluate(to)) return;
         float finalAmount;
         finalAmount = stat.finalAttackDamage;
         to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, finalAmount);
@@ -90,7 +88,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void DoMagicDamage(float amount, LivingThing to)
     {
-        if (!sv_CanBeDamaged.IsValid()) return;
+        if (!SelfValidator.CanBeDamaged.Evaluate(to)) return;
         float finalAmount;
         finalAmount = amount * stat.finalSpellPower / 100;
         to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, finalAmount);
@@ -99,7 +97,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void DoPureDamage(float amount, LivingThing to)
     {
-        if (!sv_CanBeDamaged.IsValid()) return;
+        if (!SelfValidator.CanBeDamaged.Evaluate(to)) return;
         to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, amount);
         photonView.RPC("RpcInvokeOnDealDamage", RpcTarget.AllViaServer);
     }

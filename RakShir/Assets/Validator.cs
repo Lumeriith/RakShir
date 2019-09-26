@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[System.Serializable]
 public class TargetValidator : System.ICloneable
 {
 
@@ -104,6 +104,8 @@ public class TargetValidator : System.ICloneable
 
 }
 
+
+[System.Serializable]
 public class SelfValidator : System.ICloneable
 {
 
@@ -115,7 +117,7 @@ public class SelfValidator : System.ICloneable
         { CoreStatusEffectType.Stasis }
     };
 
-    public static SelfValidator CanWalk = new SelfValidator
+    public static SelfValidator CanHaveMoveSpeedOverZero = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Root }
@@ -138,71 +140,7 @@ public class SelfValidator : System.ICloneable
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stun,
           CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Root }
-    };
-
-    public static SelfValidator CanReserveAbilityAction = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear,
-          CoreStatusEffectType.Silence }
-    };
-
-    public static SelfValidator CanHaveAbilityActionReserved = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear,
-          CoreStatusEffectType.Silence }
-    };
-
-    public static SelfValidator CanReserveBasicAttack = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear }
-    };
-
-    public static SelfValidator CanBeChannelingBasicAttack = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear }
-    };
-
-    public static SelfValidator CanBeChannelingAbility = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Polymorph,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear,
-          CoreStatusEffectType.Silence }
+          CoreStatusEffectType.Sleep }
     };
 
     public static SelfValidator CanBeDamaged = new SelfValidator
@@ -219,6 +157,14 @@ public class SelfValidator : System.ICloneable
         { CoreStatusEffectType.Invulnerable,
           CoreStatusEffectType.Unstoppable }
     };
+
+    public static SelfValidator CanHaveNavMeshEnabled = new SelfValidator
+    {
+        excludes = new List<CoreStatusEffectType>()
+        { CoreStatusEffectType.Stasis,
+          CoreStatusEffectType.Airborne }
+    };
+
 
     public object Clone()
     {

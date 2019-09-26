@@ -7,13 +7,10 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     List<CoreStatusEffect> coreStatusEffects = new List<CoreStatusEffect>();
     private LivingThing livingThing;
 
-    private SelfValidator sv_CanHaveHarmfulCoreStatusEffects = (SelfValidator)SelfValidator.sv_CanHaveHarmfulCoreStatusEffects.Clone();
-
 
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
-        sv_CanHaveHarmfulCoreStatusEffects.SetSelf(livingThing);
     }
 
     public void ApplyCoreStatusEffect(CoreStatusEffect ce)
@@ -73,14 +70,16 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (IsAffectedBy(CoreStatusEffectType.Stasis)) return;
+        bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
+
         foreach(CoreStatusEffect ce in coreStatusEffects)
         {
             if (ce.isAboutToBeDestroyed) continue;
+            if (!canTick && ce.type != CoreStatusEffectType.Stasis) continue;
             ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
             if (photonView.IsMine)
             {
-                if(ce.duration <= 0 || (!sv_CanHaveHarmfulCoreStatusEffects.IsValid() && ce.IsHarmful()))
+                if(ce.duration <= 0 || (!SelfValidator.CanHaveHarmfulCoreStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))
                 {
                     RemoveCoreStatusEffect(ce);
                 }

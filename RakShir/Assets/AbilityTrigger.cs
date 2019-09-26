@@ -6,16 +6,20 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
-    //public static SelfValidator sv_CanHaveAbilityActionReserved = new SelfValidator STARTHERE
+
 
     [Header("Trigger Settings")]
     public TargetingType targetingType;
-    [ShowIf("ShouldTargetMaskFieldShow")]
-    public LayerMask targetMask;
     [ShowIf("ShouldRangeFieldShow")]
     public float range;
+    [ShowIf("ShouldTargetValidatorFieldShow")]
+    public TargetValidator targetValidator;
+    public SelfValidator selfValidator;
 
     public float cooldownTime;
+
+    
+
 
 
     private LivingThing livingThing
@@ -55,7 +59,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public abstract void OnCast(AbilityInstanceManager.CastInfo info);
 
 
-    protected bool ShouldTargetMaskFieldShow()
+    protected bool ShouldTargetValidatorFieldShow()
     {
         return targetingType == TargetingType.Target;
     }
@@ -88,5 +92,10 @@ public abstract class AbilityTrigger : MonoBehaviour
     public void ApplyCooldownReduction(float time)
     {
         cooldownStartTime -= time;
+    }
+
+    public virtual bool CanActivate()
+    {
+        return selfValidator.Evaluate(livingThing);
     }
 }
