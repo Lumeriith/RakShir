@@ -70,6 +70,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public void StartCooldown()
     {
         cooldownStartTime = Time.time;
+        ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
     }
 
     public void StartBasicAttackCooldown()
