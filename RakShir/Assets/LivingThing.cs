@@ -10,6 +10,8 @@ public enum LivingThingType { Monster, Player, Summon }
 
 public class LivingThing : MonoBehaviourPun
 {
+    public GameObject prototypeHealthbarToInstantiate;
+
     public System.Action OnDeath = () => { };
     public System.Action OnTakeDamage = () => { };
     public System.Action OnDealDamage = () => { };
@@ -63,11 +65,19 @@ public class LivingThing : MonoBehaviourPun
         {
             GetComponent<NavMeshAgent>().avoidancePriority++;
         }
-        
+    }
+
+    private void Start()
+    {
+        if(prototypeHealthbarToInstantiate != null)
+        {
+            Instantiate(prototypeHealthbarToInstantiate, Transform.FindObjectOfType<Canvas>().transform, false).GetComponent<PlayerHealthbarPrototype>().targetPlayer = this;
+        }
     }
 
     private void Update()
     {
+        
         if (photonView.IsMine)
         {
             if(currentHealth <= 0 && !stat.isDead)
@@ -155,20 +165,38 @@ public class LivingThing : MonoBehaviourPun
         }
     }
 
+    public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
+    {
+        float finalAmount;
+
+        finalAmount = ignoreSpellPower ? amount : amount * stat.finalSpellPower / 100;
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.AllViaServer, finalAmount);
+        
+    }
+
+
     public void DoBasicAttackImmediately(LivingThing to)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(to)) return;
         float finalAmount;
         finalAmount = stat.finalAttackDamage;
-        to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, finalAmount);
-        photonView.RPC("RpcInvokeOnDealDamage", RpcTarget.AllViaServer);
+        if(Random.value < to.stat.baseDodgeChance / 100)
+        {
+            // Dodged.
+        }
+        else
+        {
+            to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, finalAmount);
+            photonView.RPC("RpcInvokeOnDealDamage", RpcTarget.AllViaServer);
+        }
     }
 
-    public void DoMagicDamage(float amount, LivingThing to)
+    public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(to)) return;
         float finalAmount;
-        finalAmount = amount * stat.finalSpellPower / 100;
+        
+        finalAmount = ignoreSpellPower ? amount : amount * stat.finalSpellPower / 100;
         to.photonView.RPC("RpcApplyRawDamage", RpcTarget.AllViaServer, finalAmount);
         photonView.RPC("RpcInvokeOnDealDamage", RpcTarget.AllViaServer);
     }
@@ -200,6 +228,17 @@ public class LivingThing : MonoBehaviourPun
         }
     }
 
+
+    [PunRPC]
+    protected void RpcApplyHeal(float amount)
+    {
+        stat.currentHealth += amount;
+        stat.ValidateHealth();
+        if (photonView.IsMine)
+        {
+            stat.SyncChangingStats();
+        }
+    }
 
     [PunRPC]
     protected void RpcDie()

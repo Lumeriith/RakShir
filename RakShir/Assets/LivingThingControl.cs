@@ -226,12 +226,14 @@ public class LivingThingControl : MonoBehaviourPun
                 TryCastReservedAbilityInstance();
                 break;
             case ActionType.Channel:
+                navMeshAgentDestination = transform.position;
                 HandleChannelTick();
                 break;
             case ActionType.ChannelMovable:
                 HandleChannelTick();
                 break;
             case ActionType.SoftChannel:
+                navMeshAgentDestination = transform.position;
                 HandleChannelTick();
                 break;
         }
@@ -260,8 +262,10 @@ public class LivingThingControl : MonoBehaviourPun
             if (abilityTrigger.targetingType == AbilityTrigger.TargetingType.Target && !abilityTrigger.targetValidator.Evaluate(livingThing, target)) return;
         }
 
-        if ((reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) &&
-            basicAttackAbilityTrigger == abilityTrigger && actionInfo.target == target) return;
+        //if ((reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) &&
+        //    basicAttackAbilityTrigger == abilityTrigger && actionInfo.target == target) return;
+        if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) return;
+
 
         reservedAction = ActionType.AbilityTrigger;
         actionAbilityTrigger = abilityTrigger;

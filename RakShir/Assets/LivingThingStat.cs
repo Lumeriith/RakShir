@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
-public class LivingThingStat : MonoBehaviourPun
+
+public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
 {
     [Header("Changing Stats")]
     public float currentHealth;
@@ -114,24 +117,45 @@ public class LivingThingStat : MonoBehaviourPun
     public float finalCooldownReduction { get { return baseCooldownReduction + finalIntelligence * additionalCooldownReductionPerUnit + bonusCooldownReduction; } }
     public float finalDodgeChance { get { return baseDodgeChance + finalAgility * additionalDodgeChancePerUnit + bonusDodgeChance; } }
 
-    private void Start()
+    private void OnEnable()
     {
-        if (photonView.IsMine)
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+    public void OnEvent(EventData photonEvent)
+    {
+        byte code = photonEvent.Code;
+
+        if(code == NetworkingManager.event_SyncAllStats && photonView.IsMine)
         {
+            SyncChangingStats();
             SyncBaseStats();
             SyncSecondaryStats();
             SyncTemporaryAttributes();
+            print("Sync yeah");
         }
     }
 
     private void Update()
     {
-        
+        if (!PhotonNetwork.InRoom) return;
+        currentHealth = Mathf.MoveTowards(currentHealth, finalMaximumHealth, finalHealthRegenerationPerSecond * Time.deltaTime);
+        currentMana = Mathf.MoveTowards(currentMana, finalMaximumMana, finalManaRegenerationPerSecond * Time.deltaTime);
+        print(finalMaximumMana);
     }
 
     public void ValidateHealth()
     {
         currentHealth = Mathf.Clamp(currentHealth, 0, finalMaximumHealth);
+    }
+
+    public void ValidateMana()
+    {
+        currentMana = Mathf.Clamp(currentMana, 0, finalMaximumMana);
     }
 
     public void SyncChangingStats()
