@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using NaughtyAttributes;
-public class LivingThingControl : MonoBehaviour
+using Photon.Pun;
+public class LivingThingControl : MonoBehaviourPun
 {
-    private NavMeshAgent navMeshAgent;
+    [HideInInspector]
+    public NavMeshAgent navMeshAgent;
     private LivingThing livingThing;
 
     private Vector3 navMeshAgentDestination;
@@ -13,15 +15,18 @@ public class LivingThingControl : MonoBehaviour
 
     private ActionType reservedAction = ActionType.None;
     private AbilityTrigger actionAbilityTrigger;
-    private AbilityInstanceManager.CastInfo actionInfo;
+    private CastInfo actionInfo;
 
     private System.Action channelSuccessCallback;
     private System.Action channelCanceledCallback;
     private float channelRemainingTime;
 
+
+
     public AbilityTrigger basicAttackAbilityTrigger;
 
     public AbilityTrigger[] keybindings = new AbilityTrigger[4];
+
 
     [Header("Aggro Settings")]
     public bool aggroAutomatically;
@@ -34,11 +39,14 @@ public class LivingThingControl : MonoBehaviour
     [Header("Preconfigurations")]
     public LayerMask maskLivingThing;
 
-    public void StartChanneling(float channelTime, System.Action successCallback, System.Action canceledCallback, bool movable = false)
+    private const float modelTurnSpeed = 800;
+    public Quaternion desiredRotation { get; private set; }
+
+    public void StartChanneling(float channelTime, System.Action successCallback = null, System.Action canceledCallback = null, bool movable = false)
     {
         reservedAction = movable ? ActionType.ChannelMovable : ActionType.Channel;
-        channelSuccessCallback = successCallback;
-        channelCanceledCallback = canceledCallback;
+        channelSuccessCallback = successCallback != null ? successCallback : () => { };
+        channelCanceledCallback = canceledCallback != null ? canceledCallback : () => { };
         channelRemainingTime = channelTime;
     }
 
@@ -50,6 +58,24 @@ public class LivingThingControl : MonoBehaviour
         channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond);
     }
 
+    private void DoRotateTick()
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, modelTurnSpeed * Time.deltaTime);
+    }
+
+    private void LookAt(Quaternion rotation)
+    {
+        Vector3 euler = rotation.eulerAngles;
+        euler.x = 0;
+        euler.z = 0;
+        desiredRotation = Quaternion.Euler(euler);
+    }
+
+    private void LookAt(Vector3 lookLocation)
+    {
+        if ((lookLocation - transform.position).magnitude <= float.Epsilon) return;
+        LookAt(Quaternion.LookRotation(lookLocation - transform.position, Vector3.up));
+    }
 
     public void CancelChanneling()
     {
@@ -66,13 +92,7 @@ public class LivingThingControl : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         actionInfo.owner = GetComponent<LivingThing>();
         livingThing = GetComponent<LivingThing>();
-    }
-
-    private Vector3 Flat(Vector3 vector)
-    {
-        Vector3 temp = vector;
-        temp.y = 0;
-        return temp;
+        navMeshAgent.updateRotation = false;
     }
 
     public void StartMoving(Vector3 location)
@@ -102,6 +122,7 @@ public class LivingThingControl : MonoBehaviour
         }
 
         reservedAction = ActionType.AttackMove;
+        lastAggroCheckTime -= 1/aggroChecksPerSecond;
         navMeshAgentDestination = location;
     }
 
@@ -109,7 +130,7 @@ public class LivingThingControl : MonoBehaviour
 
     private void DoAggroCheck()
     {
-        Collider[] colliders = Physics.OverlapSphere(Flat(transform.position), aggroRange, maskLivingThing);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, aggroRange, maskLivingThing);
         Collider myCollider = GetComponent<Collider>();
         LivingThing closestTarget = null;
         LivingThing temp;
@@ -118,7 +139,7 @@ public class LivingThingControl : MonoBehaviour
 
         foreach(Collider collider in colliders)
         {
-            distance = Vector3.Distance(Flat(collider.transform.position), Flat(transform.position));
+            distance = Vector3.Distance(collider.transform.position, transform.position);
             if (distance < closestDistance && closestTarget != myCollider)
             {
                 temp = collider.GetComponent<LivingThing>();
@@ -139,6 +160,8 @@ public class LivingThingControl : MonoBehaviour
 
     private void Update()
     {
+        navMeshAgent.enabled = SelfValidator.CanHaveNavMeshEnabled.Evaluate(livingThing);
+        if (!photonView.IsMine) return;
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
 
         if (reservedAction == ActionType.AbilityTrigger && !actionAbilityTrigger.CanActivate())
@@ -165,8 +188,8 @@ public class LivingThingControl : MonoBehaviour
             reservedAction = ActionType.None;
         }
 
-        
-        navMeshAgent.enabled = SelfValidator.CanHaveNavMeshEnabled.Evaluate(livingThing);
+
+        DoRotateTick();
 
         switch (reservedAction)
         {
@@ -179,14 +202,16 @@ public class LivingThingControl : MonoBehaviour
                 }
                 break;
             case ActionType.Move:
-
-                if (Vector3.Distance(Flat(navMeshAgentDestination), Flat(transform.position)) < 0.1f)
+                LookAt(navMeshAgentDestination);
+                
+                if (Vector3.Distance(navMeshAgentDestination, transform.position) < 0.1f)
                 {
                     reservedAction = ActionType.None;
                 }
                 break;
             case ActionType.AttackMove:
-                if (navMeshAgent.isStopped)
+                LookAt(navMeshAgentDestination);
+                if (navMeshAgent.enabled && navMeshAgent.isStopped)
                 {
                     reservedAction = ActionType.None;
                 }
@@ -226,7 +251,7 @@ public class LivingThingControl : MonoBehaviour
             channelSuccessCallback.Invoke();
         }
     }
-    public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point, Vector3 directionVector, LivingThing target)
+    public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point = new Vector3(), Vector3 directionVector = new Vector3(), LivingThing target = null)
     {
         bool skipValidationCheck = false;
         if (!skipValidationCheck)
@@ -234,6 +259,10 @@ public class LivingThingControl : MonoBehaviour
             if (!abilityTrigger.selfValidator.Evaluate(livingThing)) return;
             if (abilityTrigger.targetingType == AbilityTrigger.TargetingType.Target && !abilityTrigger.targetValidator.Evaluate(livingThing, target)) return;
         }
+
+        if ((reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) &&
+            basicAttackAbilityTrigger == abilityTrigger && actionInfo.target == target) return;
+
         reservedAction = ActionType.AbilityTrigger;
         actionAbilityTrigger = abilityTrigger;
 
@@ -244,6 +273,9 @@ public class LivingThingControl : MonoBehaviour
 
     private void TryCastReservedAbilityInstance()
     {
+
+
+
         switch (actionAbilityTrigger.targetingType)
         {
             case AbilityTrigger.TargetingType.None:
@@ -253,16 +285,19 @@ public class LivingThingControl : MonoBehaviour
                 break;
             case AbilityTrigger.TargetingType.Direction:
                 if (!actionAbilityTrigger.isCooledDown) break;
+                LookAt(transform.position + actionInfo.directionVector);
                 reservedAction = ActionType.None;
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.Target:
                 
-                Vector3 targetPosition = Flat(actionInfo.target.transform.position);
-
-                if (Vector3.Distance(Flat(transform.position), targetPosition) <= actionAbilityTrigger.range)
+                Vector3 targetPosition = actionInfo.target.transform.position;
+                
+                if (Vector3.Distance(transform.position, targetPosition) <= actionAbilityTrigger.range)
                 {
+                    
                     navMeshAgentDestination = transform.position;
+                    LookAt(targetPosition);
                     if (!actionAbilityTrigger.isCooledDown) break;
                     reservedAction = ActionType.None;
                     actionAbilityTrigger.OnCast(actionInfo);
@@ -271,16 +306,19 @@ public class LivingThingControl : MonoBehaviour
                 else
                 {
                     navMeshAgentDestination = targetPosition;
+                    LookAt(navMeshAgentDestination);
                 }
+                
                 break;
             case AbilityTrigger.TargetingType.PointNonStrict:
                 navMeshAgentDestination = transform.position;
+                LookAt(navMeshAgentDestination);
                 if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.PointStrict:
-                if (Vector3.Distance(Flat(transform.position), Flat(actionInfo.point)) <= actionAbilityTrigger.range)
+                if (Vector3.Distance(transform.position, actionInfo.point) <= actionAbilityTrigger.range)
                 {
                     navMeshAgentDestination = transform.position;
                     if (!actionAbilityTrigger.isCooledDown) break;
@@ -292,6 +330,7 @@ public class LivingThingControl : MonoBehaviour
                 {
                     navMeshAgentDestination = actionInfo.point;
                 }
+                LookAt(navMeshAgentDestination);
                 break;
         }
     }

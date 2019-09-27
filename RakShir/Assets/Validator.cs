@@ -13,11 +13,11 @@ public class TargetValidator : System.ICloneable
     public bool canTargetAlliedSummon = false;
     public bool canTargetAlliedMonster = false;
 
-    public bool canTargetEnemyPlayer = false;
-    public bool canTargetEnemySummon = false;
+    public bool canTargetEnemyPlayer = true;
+    public bool canTargetEnemySummon = true;
     public bool canTargetEnemyMonster = true;
 
-    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stasis, CoreStatusEffectType.Untargetable };
+    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stasis, CoreStatusEffectType.Invulnerable, CoreStatusEffectType.Untargetable };
 
     public object Clone()
     {
@@ -109,7 +109,7 @@ public class TargetValidator : System.ICloneable
 public class SelfValidator : System.ICloneable
 {
 
-    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>();
+    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stun, CoreStatusEffectType.Airborne, CoreStatusEffectType.Sleep, CoreStatusEffectType.Polymorph, CoreStatusEffectType.MindControl, CoreStatusEffectType.Charm, CoreStatusEffectType.Fear, CoreStatusEffectType.Silence };
 
     public static SelfValidator CanTick = new SelfValidator
     {
@@ -162,7 +162,8 @@ public class SelfValidator : System.ICloneable
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stasis,
-          CoreStatusEffectType.Airborne }
+          CoreStatusEffectType.Airborne,
+          CoreStatusEffectType.Dash }
     };
 
 

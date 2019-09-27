@@ -22,18 +22,18 @@ public abstract class AbilityTrigger : MonoBehaviour
 
 
 
-    private LivingThing livingThing
+    public LivingThing owner
     {
         get
         {
-            if(_livingThing == null)
+            if(_owner == null)
             {
-                _livingThing = transform.parent.GetComponent<LivingThing>();
+                _owner = transform.parent.GetComponent<LivingThing>();
             }
-            return _livingThing;
+            return _owner;
         }
     }
-    private LivingThing _livingThing;
+    private LivingThing _owner;
     public bool isCooledDown
     {
         get
@@ -43,8 +43,6 @@ public abstract class AbilityTrigger : MonoBehaviour
     }
 
 
-
-    [ShowNativeProperty]
     public float remainingCooldownTime
     {
         get
@@ -56,7 +54,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     private float cooldownStartTime = 0;
 
-    public abstract void OnCast(AbilityInstanceManager.CastInfo info);
+    public abstract void OnCast(CastInfo info);
 
 
     protected bool ShouldTargetValidatorFieldShow()
@@ -76,7 +74,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void StartBasicAttackCooldown()
     {
-        cooldownStartTime = Time.time - cooldownTime + 1 / livingThing.stat.finalAttacksPerSecond;
+        cooldownStartTime = Time.time - cooldownTime + 1 / owner.stat.finalAttacksPerSecond;
     }
 
     public void SetCooldown(float time)
@@ -96,6 +94,6 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public virtual bool CanActivate()
     {
-        return selfValidator.Evaluate(livingThing);
+        return selfValidator.Evaluate(owner);
     }
 }

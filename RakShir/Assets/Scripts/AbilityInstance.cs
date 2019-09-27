@@ -7,11 +7,12 @@ using Photon.Pun;
 public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     protected bool isCreated { get; private set; } = false;
+    protected bool isDestroyed { get; private set; } = false;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
-        AbilityInstanceManager.CastInfo castInfo;
+        CastInfo castInfo;
         if ((int)initData[0] != -1)
         {
             castInfo.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
@@ -42,5 +43,50 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         OnCreate(castInfo, data);
     }
 
-    protected abstract void OnCreate(AbilityInstanceManager.CastInfo castInfo, object[] data);
+    protected abstract void OnCreate(CastInfo castInfo, object[] data);
+
+    protected virtual void AliveUpdate() { }
+
+    private void Update()
+    {
+        if (isCreated && !isDestroyed) AliveUpdate();
+    }
+
+    public void DestroySelf()
+    {
+        if (!isCreated || isDestroyed) return;
+        isDestroyed = true;
+        photonView.RPC("RpcDestroySelf",RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    protected void RpcDestroySelf()
+    {
+        isDestroyed = true;
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
+
+    }
+
+
+    public void DetachChildParticleSystemsAndAutoDelete()
+    {
+        photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    protected void RpcDetachChildParticleSystemsAndAutoDelete()
+    {
+        ParticleSystem[] psList = GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem ps in psList)
+        {
+            if (ps.transform.parent == null) continue;
+            ps.gameObject.AddComponent<ParticleSystemAutoDestroy>();
+            ps.transform.parent = null;
+        }
+    }
+
+
 }

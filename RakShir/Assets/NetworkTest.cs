@@ -34,7 +34,7 @@ public class NetworkTest : MonoBehaviourPunCallbacks
             //PhotonNetwork.LoadLevel(testLevelName);
         }
 
-        GameManager.instance.localPlayer = PhotonNetwork.Instantiate("Player", Vector3.zero + Vector3.up * 5, Quaternion.identity).GetComponent<Player>();
+        GameManager.instance.localPlayer = PhotonNetwork.Instantiate("Player", Vector3.zero + Vector3.up * 5, Quaternion.identity).GetComponent<LivingThing>();
         UnitControlManager.instance.selectedUnit = GameManager.instance.localPlayer;
         
     }

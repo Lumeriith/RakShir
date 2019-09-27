@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
     [HideInInspector]
-    public Player localPlayer;
+    public LivingThing localPlayer;
 
     private static GameManager _instance;
     public static GameManager instance

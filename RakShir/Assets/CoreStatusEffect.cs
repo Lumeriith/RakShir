@@ -4,7 +4,7 @@ using UnityEngine;
 public enum CoreStatusEffectType : byte
 {
     // Neutral
-    Stasis,
+    Stasis, Dash,
 
     // Beneficial
     Invulnerable, Untargetable, Unstoppable, Protected, Speed, Haste,

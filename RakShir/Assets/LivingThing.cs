@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
-
+using UnityEngine.AI;
+using NaughtyAttributes;
 public enum Team { None, Red, Blue, Creep }
 public enum LivingThingType { Monster, Player, Summon }
 
@@ -16,7 +16,20 @@ public class LivingThing : MonoBehaviourPun
 
     public Team team = Team.None;
     public LivingThingType type = LivingThingType.Monster;
+
+    [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
+
+    [Header("Location References")]
+    public Transform rightHand;
+    public Transform head;
+    public Transform top;
+    public Transform bottom;
+
+    bool ShouldShowSummonerField()
+    {
+        return type == LivingThingType.Summon;
+    }
 
     public float currentHealth
     {
@@ -46,19 +59,84 @@ public class LivingThing : MonoBehaviourPun
         stat = GetComponent<LivingThingStat>();
         statusEffect = GetComponent<LivingThingStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
-
+        if (photonView.IsMine)
+        {
+            GetComponent<NavMeshAgent>().avoidancePriority++;
+        }
+        
     }
 
     private void Update()
     {
         if (photonView.IsMine)
         {
-            if(currentHealth <= 0)
+            if(currentHealth <= 0 && !stat.isDead)
             {
                 photonView.RPC("RpcDie", RpcTarget.AllViaServer);
             }
         }
     }
+
+    public Vector3 GetCenterOffset()
+    {
+        Vector3 bottom = this.bottom.position - transform.position;
+        Vector3 top = this.top.position - transform.position;
+
+        return Vector3.Lerp(bottom, top, 0.5f);
+    }
+
+    public Vector3 GetRandomOffset()
+    {
+        Vector3 bottom = this.bottom.position - transform.position;
+        Vector3 top = this.top.position - transform.position;
+
+        return Vector3.Lerp(bottom, top, Random.value);
+    }
+
+
+
+    public void DashThroughForDuration(Vector3 location, float duration)
+    {
+        NavMeshPath path = new NavMeshPath();
+        Vector3 destination;
+
+        if (NavMesh.CalculatePath(transform.position, location, control.navMeshAgent.areaMask, path))
+        {
+            destination = path.corners[path.corners.Length - 1];
+        }
+        else
+        {
+            destination = location;
+            print("Unknown Error!");
+        }
+        CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, duration);
+        statusEffect.ApplyCoreStatusEffect(dash);
+        photonView.RPC("RpcLerp", RpcTarget.AllViaServer, destination, duration);
+    }
+
+    public void DashThroughWithSpeed(Vector3 location, float speed)
+    {
+        NavMeshPath path = new NavMeshPath();
+        Vector3 destination;
+        
+        if (NavMesh.CalculatePath(transform.position, location, control.navMeshAgent.areaMask, path))
+        {
+            destination = path.corners[path.corners.Length - 1];
+        }
+        else
+        {
+            destination = location;
+            print("Unknown Error!");
+        }
+
+        float time = Vector3.Distance(transform.position, destination) / (speed/100); // Fix this.
+
+        CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, time);
+        statusEffect.ApplyCoreStatusEffect(dash);
+        photonView.RPC("RpcLerp", RpcTarget.AllViaServer, destination, time);
+    }
+
+
 
     public void CommandMove(Vector3 location)
     {
@@ -68,6 +146,7 @@ public class LivingThing : MonoBehaviourPun
         }
     }
 
+
     public void CommandAttackMove(Vector3 location)
     {
         if (SelfValidator.CanCommandMove.Evaluate(this))
@@ -75,7 +154,6 @@ public class LivingThing : MonoBehaviourPun
             control.StartAttackMoving(location);
         }
     }
-
 
     public void DoBasicAttackImmediately(LivingThing to)
     {
@@ -130,5 +208,24 @@ public class LivingThing : MonoBehaviourPun
         OnDeath.Invoke();
     }
 
+    [PunRPC]
+    private void RpcLerp(Vector3 destination, float time)
+    {
+        StartCoroutine(CoroutineLerp(destination, time));
+    }
+
+    IEnumerator CoroutineLerp(Vector3 destination, float time)
+    {
+        float startTime = Time.time;
+        Vector3 startPosition = transform.position;
+
+        while(Time.time - startTime < time)
+        {
+            transform.position = Vector3.Lerp(startPosition, destination, (Time.time - startTime)/time);
+            yield return null;
+        }
+        transform.position = destination    ;
+
+    }
 
 }

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+public struct CastInfo
+{
+    public LivingThing owner;
+    public Vector3 point;
+    public Vector3 directionVector;
+    public LivingThing target;
+}
 public class AbilityInstanceManager : MonoBehaviour
 {
-    public struct CastInfo
-    {
-        public LivingThing owner;
-        public Vector3 point;
-        public Vector3 directionVector;
-        public LivingThing target;
-    }
 
     public static void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo castInfo = new CastInfo(), object[] data = null)
     {
