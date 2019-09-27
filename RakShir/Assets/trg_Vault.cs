@@ -7,6 +7,7 @@ public class trg_Vault : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         AbilityInstanceManager.CreateAbilityInstance("ai_Vault", owner.transform.position + owner.GetCenterOffset(), owner.control.desiredRotation, info);
+
         StartCooldown();
     }
 

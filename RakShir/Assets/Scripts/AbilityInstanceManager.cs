@@ -8,6 +8,14 @@ public struct CastInfo
     public Vector3 point;
     public Vector3 directionVector;
     public LivingThing target;
+
+    public Quaternion directionQuaternion
+    {
+        get
+        {
+            return Quaternion.LookRotation(directionVector, Vector3.up);
+        }
+    }
 }
 public class AbilityInstanceManager : MonoBehaviour
 {
