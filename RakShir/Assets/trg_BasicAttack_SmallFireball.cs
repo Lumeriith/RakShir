@@ -9,7 +9,7 @@ public class trg_BasicAttack_SmallFireball : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        owner.control.StartBasicAttackChanneling(0.10f, ChannelSuccess, ResetCooldown);
+        owner.control.StartBasicAttackChanneling(1f/3f, ChannelSuccess, ResetCooldown);
         StartBasicAttackCooldown();
     }
 

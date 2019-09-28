@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using NaughtyAttributes;
 public class PlayerHealthbarPrototype : MonoBehaviour
 {
     public LivingThing targetPlayer;
@@ -14,6 +15,10 @@ public class PlayerHealthbarPrototype : MonoBehaviour
 
     public Vector3 worldOffset;
     public Vector3 UIOffset;
+
+    [ReorderableList]
+    public List<CoreStatusEffectType> displayCCOrder;
+    public List<string> displayCCText;
     private void Awake()
     {
         text_Name = transform.Find("Name").GetComponent<Text>();
@@ -28,8 +33,19 @@ public class PlayerHealthbarPrototype : MonoBehaviour
         if (targetPlayer == null) return;
 
         
-
+        
         text_Name.text = targetPlayer.photonView.name;
+
+        text_Name.color = Color.white;
+        for(int i = 0;i<displayCCOrder.Count;i++)
+        {
+            if (targetPlayer.statusEffect.IsAffectedBy(displayCCOrder[i]))
+            {
+                text_Name.text = displayCCText[i];
+                text_Name.color = new Color(255, 190, 0);
+                break;
+            }
+        }
 
 
         image_HealthFill.fillAmount = targetPlayer.currentHealth / targetPlayer.maximumHealth;
@@ -44,6 +60,7 @@ public class PlayerHealthbarPrototype : MonoBehaviour
             if (targetPlayer.statusEffect.IsAffectedBy(type))
             {
                 extraText = string.Format("{0}\n", type.ToString());
+
             }
         }
 

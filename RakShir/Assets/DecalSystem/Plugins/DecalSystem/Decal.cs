@@ -55,7 +55,7 @@ namespace DecalSystem {
         }
 
         void OnEnable() {
-            if (Application.isPlaying) enabled = false;
+            //if (Application.isPlaying) enabled = false;
         }
 
         void Update() {

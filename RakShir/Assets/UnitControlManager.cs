@@ -14,7 +14,7 @@ public class UnitControlManager : MonoBehaviour
     private KeyCode pendingAbilityTriggerActivationKey;
 
     private Camera mainCamera;
-
+    private DecalSystem.Decal rangeIndicator;
     [Header("Preconfigurations")]
     public LayerMask maskLivingThing;
 
@@ -102,6 +102,7 @@ public class UnitControlManager : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+        rangeIndicator = transform.Find("Range Indicator").GetComponent<DecalSystem.Decal>();
     }
 
     private void DoRightClickActions()
@@ -159,7 +160,33 @@ public class UnitControlManager : MonoBehaviour
         HandleReserveInputEvents();
 
         SetAppropriateCursor();
+
+        DisplayAppropriateIndicator();
     }
+
+
+    private void DisplayAppropriateIndicator()
+    {
+        if(pendingAbilityTrigger == null)
+        {
+            rangeIndicator.gameObject.SetActive(false);
+        }
+        else if(pendingAbilityTrigger.targetingType == AbilityTrigger.TargetingType.Target ||
+            pendingAbilityTrigger.targetingType == AbilityTrigger.TargetingType.PointStrict ||
+            pendingAbilityTrigger.targetingType == AbilityTrigger.TargetingType.PointNonStrict)
+        {
+            rangeIndicator.transform.position = selectedUnit.transform.position;
+            rangeIndicator.gameObject.SetActive(true);
+            rangeIndicator.transform.localScale = new Vector3(pendingAbilityTrigger.range*2, pendingAbilityTrigger.range*2, 4);
+        }
+        else
+        {
+            rangeIndicator.gameObject.SetActive(false); 
+        }
+
+
+    }
+
     private void IndicateCooldown(int index)
     {
 

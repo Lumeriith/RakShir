@@ -21,7 +21,7 @@ public class LivingThingControl : MonoBehaviourPun
     private System.Action channelCanceledCallback;
     private float channelRemainingTime;
 
-
+    private bool isCurrentChannelBasicAttack = false;
 
     public AbilityTrigger basicAttackAbilityTrigger;
 
@@ -48,14 +48,31 @@ public class LivingThingControl : MonoBehaviourPun
         channelSuccessCallback = successCallback != null ? successCallback : () => { };
         channelCanceledCallback = canceledCallback != null ? canceledCallback : () => { };
         channelRemainingTime = channelTime;
+        isCurrentChannelBasicAttack = false;
     }
 
-    public void StartBasicAttackChanneling(float ratio, System.Action successCallback, System.Action canceledCallback)
+    private void WalkCheck()
     {
-        reservedAction = ActionType.SoftChannel;
+        float difference = Vector3.Distance(navMeshAgentDestination, transform.position);
+        if (wasWalking && (navMeshAgent.enabled == false || difference < float.Epsilon || navMeshAgent.speed == 0))
+        {
+            wasWalking = false;
+            photonView.RPC("RpcStopWalking", RpcTarget.All);
+        }
+        else if (!wasWalking && navMeshAgent.enabled == true && difference > float.Epsilon && navMeshAgent.speed > 0)
+        {
+            wasWalking = true;
+            photonView.RPC("RpcStartWalking", RpcTarget.All, navMeshAgentDestination);
+        }
+    }
+    public void StartBasicAttackChanneling(float ratio, System.Action successCallback, System.Action canceledCallback, bool movable = false)
+    {
+        reservedAction = movable ? ActionType.ChannelMovable : ActionType.SoftChannel;
         channelSuccessCallback = successCallback;
         channelCanceledCallback = canceledCallback;
         channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond) / ((100 + livingThing.statusEffect.totalHasteAmount) / 100f);
+        isCurrentChannelBasicAttack = true;
+        photonView.RPC("RpcChannelBasicAttack", RpcTarget.All, channelRemainingTime);
     }
 
     private void DoRotateTick()
@@ -81,6 +98,7 @@ public class LivingThingControl : MonoBehaviourPun
     {
         if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable || reservedAction == ActionType.SoftChannel)
         {
+            if (isCurrentChannelBasicAttack) photonView.RPC("RpcChannelBasicAttackCanceled", RpcTarget.All, channelRemainingTime);
             reservedAction = ActionType.None;
             channelCanceledCallback.Invoke();
         }
@@ -244,6 +262,13 @@ public class LivingThingControl : MonoBehaviourPun
         }
     }
 
+
+    private bool wasWalking = false;
+    private void LateUpdate()
+    {
+        WalkCheck();
+    }
+
     private void HandleChannelTick()
     {
         channelRemainingTime = Mathf.MoveTowards(channelRemainingTime, 0, Time.deltaTime);
@@ -251,6 +276,7 @@ public class LivingThingControl : MonoBehaviourPun
         {
             reservedAction = ActionType.None;
             channelSuccessCallback.Invoke();
+            if (isCurrentChannelBasicAttack) photonView.RPC("RpcChannelBasicAttackSuccess", RpcTarget.All);
         }
     }
     public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point = new Vector3(), Vector3 directionVector = new Vector3(), LivingThing target = null)
@@ -275,6 +301,45 @@ public class LivingThingControl : MonoBehaviourPun
         actionInfo.target = target;
     }
 
+    [PunRPC]
+    private void RpcCast(int abilityIndex, int owner_id, Vector3 point, Vector3 directionVector, int target_id)
+    {
+        CastInfo info;
+        info.owner = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
+        info.point = point;
+        info.directionVector = directionVector;
+        info.target = target_id == -1 ? null : PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
+
+        InfoAbilityCast infoAbilityCast;
+        infoAbilityCast.abilityIndex = abilityIndex;
+        infoAbilityCast.castInfo = info;
+        livingThing.OnAbilityCast.Invoke(infoAbilityCast);
+    }
+
+    private void AutoDoRpcCast()
+    {
+        for(int i = 0;i< keybindings.Length; i++)
+        {
+            if (keybindings[i] != null && keybindings[i] == actionAbilityTrigger)
+            {
+                if(actionInfo.target == null)
+                {
+                    photonView.RPC("RpcCast", RpcTarget.All, i, photonView.ViewID, actionInfo.point, actionInfo.directionVector, -1);
+                }
+                else
+                {
+                    photonView.RPC("RpcCast", RpcTarget.All, i, photonView.ViewID, actionInfo.point, actionInfo.directionVector, actionInfo.target.photonView.ViewID);
+                }
+                
+                return;
+            }
+        }
+
+        photonView.RPC("RpcCast", RpcTarget.All, -1, photonView.ViewID, actionInfo.point, actionInfo.directionVector, actionInfo.target.photonView.ViewID);
+
+
+    }
+
     private void TryCastReservedAbilityInstance()
     {
 
@@ -285,12 +350,14 @@ public class LivingThingControl : MonoBehaviourPun
             case AbilityTrigger.TargetingType.None:
                 if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
+                AutoDoRpcCast();
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.Direction:
                 if (!actionAbilityTrigger.isCooledDown) break;
                 LookAt(transform.position + actionInfo.directionVector);
                 reservedAction = ActionType.None;
+                AutoDoRpcCast();
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.Target:
@@ -304,6 +371,7 @@ public class LivingThingControl : MonoBehaviourPun
                     LookAt(targetPosition);
                     if (!actionAbilityTrigger.isCooledDown) break;
                     reservedAction = ActionType.None;
+                    AutoDoRpcCast();
                     actionAbilityTrigger.OnCast(actionInfo);
                     
                 }
@@ -319,6 +387,7 @@ public class LivingThingControl : MonoBehaviourPun
                 LookAt(navMeshAgentDestination);
                 if (!actionAbilityTrigger.isCooledDown) break;
                 reservedAction = ActionType.None;
+                AutoDoRpcCast();
                 actionAbilityTrigger.OnCast(actionInfo);
                 break;
             case AbilityTrigger.TargetingType.PointStrict:
@@ -327,6 +396,7 @@ public class LivingThingControl : MonoBehaviourPun
                     navMeshAgentDestination = transform.position;
                     if (!actionAbilityTrigger.isCooledDown) break;
                     reservedAction = ActionType.None;
+                    AutoDoRpcCast();
                     actionAbilityTrigger.OnCast(actionInfo);
 
                 }
