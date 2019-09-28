@@ -5,7 +5,7 @@ using UnityEngine;
 public class trg_BasicAttack_SmallFireball : AbilityTrigger
 {
     private CastInfo info;
-
+    
     public override void OnCast(CastInfo info)
     {
         this.info = info;
