@@ -7,6 +7,10 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     List<CoreStatusEffect> coreStatusEffects = new List<CoreStatusEffect>();
     private LivingThing livingThing;
 
+    public float totalSpeedAmount { get; private set; }
+    public float totalHasteAmount { get; private set; }
+    public float totalSlowAmount { get; private set; }
+
 
     private void Awake()
     {
@@ -71,12 +75,42 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     private void FixedUpdate()
     {
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
+        bool tickedAirborne = false;
+
+        totalHasteAmount = 0;
+        totalSlowAmount = 0;
+        totalSpeedAmount = 0;
 
         foreach(CoreStatusEffect ce in coreStatusEffects)
         {
             if (ce.isAboutToBeDestroyed) continue;
             if (!canTick && ce.type != CoreStatusEffectType.Stasis) continue;
-            ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
+            if(ce.type == CoreStatusEffectType.Airborne)
+            {
+                if (!tickedAirborne)
+                {
+                    ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
+                    tickedAirborne = true;
+                }
+            }
+            else
+            {
+                ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
+            }
+            
+            if(ce.type == CoreStatusEffectType.Haste && ce.parameter != null)
+            {
+                totalHasteAmount += (float)ce.parameter;
+            }
+            if(ce.type == CoreStatusEffectType.Slow && ce.parameter != null)
+            {
+                totalSlowAmount += (float)ce.parameter;
+            }
+            if(ce.type == CoreStatusEffectType.Speed && ce.parameter != null)
+            {
+                totalSpeedAmount += (float)ce.parameter;
+            }
+
             if (photonView.IsMine)
             {
                 if(ce.duration <= 0 || (!SelfValidator.CanHaveHarmfulCoreStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))

@@ -55,7 +55,7 @@ public class LivingThingControl : MonoBehaviourPun
         reservedAction = ActionType.SoftChannel;
         channelSuccessCallback = successCallback;
         channelCanceledCallback = canceledCallback;
-        channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond);
+        channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond) / ((100 + livingThing.statusEffect.totalHasteAmount) / 100f);
     }
 
     private void DoRotateTick()
@@ -176,7 +176,7 @@ public class LivingThingControl : MonoBehaviourPun
 
         if (SelfValidator.CanHaveMoveSpeedOverZero.Evaluate(livingThing))
         {
-            navMeshAgent.speed = livingThing.stat.finalMovementSpeed / 100;
+            navMeshAgent.speed = livingThing.stat.finalMovementSpeed / 100 * ((100 + livingThing.statusEffect.totalSpeedAmount) / 100f) * ((100 - livingThing.statusEffect.totalSlowAmount) / 100f);
         }
         else
         {

@@ -61,10 +61,17 @@ public class LivingThing : MonoBehaviourPun
         stat = GetComponent<LivingThingStat>();
         statusEffect = GetComponent<LivingThingStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
+        
         if (photonView.IsMine)
         {
             GetComponent<NavMeshAgent>().avoidancePriority++;
         }
+    }
+
+
+    public void ApplyAppropriateBaseSplat()
+    {
+
     }
 
     private void Start()
@@ -73,6 +80,7 @@ public class LivingThing : MonoBehaviourPun
         {
             Instantiate(prototypeHealthbarToInstantiate, Transform.FindObjectOfType<Canvas>().transform, false).GetComponent<PlayerHealthbarPrototype>().targetPlayer = this;
         }
+        ApplyAppropriateBaseSplat();
     }
 
     private void Update()
@@ -121,7 +129,7 @@ public class LivingThing : MonoBehaviourPun
         }
         CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, duration);
         statusEffect.ApplyCoreStatusEffect(dash);
-        photonView.RPC("RpcLerp", RpcTarget.AllViaServer, destination, duration);
+        photonView.RPC("RpcLerp", RpcTarget.All, destination, duration);
     }
 
     public void DashThroughWithSpeed(Vector3 location, float speed)

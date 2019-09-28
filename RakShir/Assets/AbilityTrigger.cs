@@ -7,7 +7,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
 
-
+    public GameObject indicator;
     [Header("Trigger Settings")]
     public TargetingType targetingType;
     [ShowIf("ShouldRangeFieldShow")]
@@ -75,7 +75,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void StartBasicAttackCooldown()
     {
-        cooldownStartTime = Time.time - cooldownTime + 1 / owner.stat.finalAttacksPerSecond;
+        cooldownStartTime = Time.time - cooldownTime + (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
     }
 
     public void SetCooldown(float time)
@@ -96,5 +96,17 @@ public abstract class AbilityTrigger : MonoBehaviour
     public virtual bool CanActivate()
     {
         return selfValidator.Evaluate(owner);
+    }
+
+    public void ShowIndicator()
+    {
+        if (indicator == null) return;
+        indicator.SetActive(true);
+    }
+
+    public void HideIndicator()
+    {
+        if (indicator == null) return;
+        indicator.SetActive(false);
     }
 }

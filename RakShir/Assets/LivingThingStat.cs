@@ -9,6 +9,9 @@ using ExitGames.Client.Photon;
 
 public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
 {
+
+    private LivingThing livingThing;
+
     [Header("Changing Stats")]
     public float currentHealth;
     public float currentMana;
@@ -110,7 +113,7 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     public float finalHealthRegenerationPerSecond { get { return baseHealthRegenerationPerSecond + finalStrength * additionalHealthRegenerationPerSecondPerUnit + bonusHealthRegenerationPerSecond; } }
     public float finalMaximumMana { get { return baseMaximumMana + finalIntelligence * additionalMaximumManaPerUnit + bonusMaximumMana; } }
     public float finalManaRegenerationPerSecond { get { return baseManaRegenerationPerSecond + finalIntelligence * additionalManaRegenerationPerSecondPerUnit + bonusManaRegenerationPerSecond; } }
-    public float finalMovementSpeed { get { return baseMovementSpeed + finalAgility * additionalMovementSpeedPerUnit + bonusMovementSpeed; } }
+    public float finalMovementSpeed { get { return (baseMovementSpeed + finalAgility * additionalMovementSpeedPerUnit + bonusMovementSpeed); } }
     public float finalAttackDamage { get { return baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage; } }
     public float finalAttacksPerSecond { get { return baseAttacksPerSecond * (1 + (finalAgility * additionalAttackSpeedPercentagePerUnit / 100) + (bonusAttackSpeedPercentage / 100)); } }
     public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower; } }
@@ -125,6 +128,11 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     private void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    private void Awake()
+    {
+        livingThing = GetComponent<LivingThing>();
     }
     public void OnEvent(EventData photonEvent)
     {
@@ -145,7 +153,6 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
         if (!PhotonNetwork.InRoom) return;
         currentHealth = Mathf.MoveTowards(currentHealth, finalMaximumHealth, finalHealthRegenerationPerSecond * Time.deltaTime);
         currentMana = Mathf.MoveTowards(currentMana, finalMaximumMana, finalManaRegenerationPerSecond * Time.deltaTime);
-        print(finalMaximumMana);
     }
 
     public void ValidateHealth()
