@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+
+
+
 [RequireComponent(typeof(PhotonView))]
 public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     protected bool isCreated { get; private set; } = false;
     protected bool isDestroyed { get; private set; } = false;
 
+    protected bool isAlive { get { return isCreated && !isDestroyed; } }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
