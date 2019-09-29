@@ -22,6 +22,7 @@ public class AbilityInstanceManager : MonoBehaviour
 
     public static void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo castInfo = new CastInfo(), object[] data = null)
     {
+
         object[] initData;
 
         if (data == null)
@@ -61,7 +62,9 @@ public class AbilityInstanceManager : MonoBehaviour
                 initData[4 + i] = data[i];
             }
         }
+
         PhotonNetwork.Instantiate(prefabName, position, rotation, 0, initData);
+        
     }
 
    

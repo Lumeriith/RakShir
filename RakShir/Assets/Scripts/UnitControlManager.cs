@@ -20,10 +20,10 @@ public class UnitControlManager : MonoBehaviour
 
     [Header("Preconfigurations")]
     public LayerMask maskLivingThing;
-
+    public LayerMask maskGroundMask;
 
     public enum AbilityInstanceCastType { Normal, Quick, OnRelease }
-    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove, AttackMove }
+    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove, AttackMove, RightClickAttackPressed }
 
     private static UnitControlManager _instance;
     public static UnitControlManager instance
@@ -58,7 +58,17 @@ public class UnitControlManager : MonoBehaviour
     Vector3 GetCurrentCursorPositionInWorldSpace()
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-        return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
+        RaycastHit hit;
+
+        if(Physics.Raycast(cursorRay, out hit, 100, maskGroundMask))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
+        }
+
     }
 
     private bool TryReserveAbilityTrigger(AbilityTrigger abilityTrigger)
@@ -116,7 +126,7 @@ public class UnitControlManager : MonoBehaviour
         {
             if (TryReserveAbilityTrigger(selectedUnit.control.basicAttackAbilityTrigger))
             {
-                inputState = InputState.None;
+                inputState = InputState.RightClickAttackPressed;
             }
             else
             {
@@ -305,6 +315,16 @@ public class UnitControlManager : MonoBehaviour
         switch (inputState)
         {
             case InputState.None:
+                if (Input.GetKey(KeyCode.Mouse1))
+                {
+                    inputState = InputState.ContinuousMove;
+                    pendingAbilityTriggerActivationKey = KeyCode.Mouse1;
+                }
+                break;
+            case InputState.RightClickAttackPressed:
+                if (Input.GetKeyUp(KeyCode.Mouse1)){
+                    inputState = InputState.None;
+                }
                 break;
             case InputState.NormalCastPending:
                 if (Input.GetMouseButtonDown(0))

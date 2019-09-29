@@ -45,6 +45,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         isCreated = true;
         OnCreate(castInfo, data);
+
     }
 
     protected abstract void OnCreate(CastInfo castInfo, object[] data);

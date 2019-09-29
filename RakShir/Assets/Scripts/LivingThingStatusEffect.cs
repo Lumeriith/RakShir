@@ -15,6 +15,8 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
+
+
     }
 
     public void ApplyCoreStatusEffect(CoreStatusEffect ce)
@@ -27,29 +29,32 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.uid = uid;
         ce.owner = livingThing;
         coreStatusEffects.Add(ce);
+        print("ApplyCoreStatusEffect");
+        StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
+
         photonView.RPC("RpcApplyCoreStatusEffect", RpcTarget.Others, uid, ce.caster.photonView.ViewID, (byte)ce.type, ce.duration, ce.parameter);
     }
 
     public void CleanseCoreStatusEffect(CoreStatusEffectType type)
     {
-        photonView.RPC("RpcCleanseCoreStatusEffect", RpcTarget.AllViaServer, (byte)type);
+        photonView.RPC("RpcCleanseCoreStatusEffect", RpcTarget.All, (byte)type);
     }
 
     public void RemoveCoreStatusEffect(CoreStatusEffect ce)
     {
         if (ce.isAboutToBeDestroyed) return;
         ce.isAboutToBeDestroyed = true;
-        photonView.RPC("RpcRemoveCoreStatusEffect", RpcTarget.AllViaServer, ce.uid);
+        photonView.RPC("RpcRemoveCoreStatusEffect", RpcTarget.All, ce.uid);
     }
 
     public void AddDurationToCoreStatusEffect(CoreStatusEffect ce, float duration)
     {
-        photonView.RPC("RpcAddDurationToCoreStatusEffect", RpcTarget.AllViaServer, ce.uid, duration);
+        photonView.RPC("RpcAddDurationToCoreStatusEffect", RpcTarget.All, ce.uid, duration);
     }
 
     public void SetDurationOfCoreStatusEffect(CoreStatusEffect ce, float duration)
     {
-        photonView.RPC("RpcSetDurationOfCoreStatusEffect", RpcTarget.AllViaServer, ce.uid, duration);
+        photonView.RPC("RpcSetDurationOfCoreStatusEffect", RpcTarget.All, ce.uid, duration);
     }
 
 
@@ -76,7 +81,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     {
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
         bool tickedAirborne = false;
-
+        List<CoreStatusEffect> removeList = new List<CoreStatusEffect>();
         totalHasteAmount = 0;
         totalSlowAmount = 0;
         totalSpeedAmount = 0;
@@ -115,12 +120,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             {
                 if(ce.duration <= 0 || (!SelfValidator.CanHaveHarmfulCoreStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))
                 {
-                    RemoveCoreStatusEffect(ce);
+                    removeList.Add(ce);
                 }
             }
 
         }
+        foreach(CoreStatusEffect ce in removeList)
+        {
+            RemoveCoreStatusEffect(ce);
+        }
     }
+
 
     [PunRPC]
     public void RpcApplyCoreStatusEffect(int uid, int casterViewID, byte type, float duration, object parameter)
@@ -132,21 +142,26 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.owner = livingThing;
         ce.uid = uid;
         coreStatusEffects.Add(ce);
+
+        StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
+        print("Apply");
+
     }
 
     [PunRPC]
     public void RpcRemoveCoreStatusEffect(int uid)
     {
-        foreach(CoreStatusEffect ce in coreStatusEffects)
+        for(int i = 0; i < coreStatusEffects.Count; i++)
         {
-            if(ce.uid == uid)
+            if (coreStatusEffects[i].uid == uid)
             {
-                ce.duration = 0;
-                ce.isAboutToBeDestroyed = true;
-                coreStatusEffects.Remove(ce); // Fix something...
+                coreStatusEffects[i].duration = 0;
+                coreStatusEffects[i].isAboutToBeDestroyed = true;
+                coreStatusEffects.RemoveAt(i);
                 break;
             }
         }
+
     }
 
     [PunRPC]
@@ -178,14 +193,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     [PunRPC]
     public void RpcCleanseCoreStatusEffect(byte type)
     {
-        foreach(CoreStatusEffect ce in coreStatusEffects)
+        for (int i = 0; i < coreStatusEffects.Count; i++)
         {
-            if(ce.type == (CoreStatusEffectType)type)
+            if (coreStatusEffects[i].type == (CoreStatusEffectType)type)
             {
-                ce.duration = 0;
-                ce.isAboutToBeDestroyed = true;
-                coreStatusEffects.Remove(ce);
+                coreStatusEffects[i].duration = 0;
+                coreStatusEffects[i].isAboutToBeDestroyed = true;
+                coreStatusEffects.RemoveAt(i);
+                RpcCleanseCoreStatusEffect(type);
+                break;
             }
         }
+
     }
 }

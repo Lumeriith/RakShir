@@ -9,12 +9,46 @@ public class GameManager : MonoBehaviour
     public Vector2 normalCursorHotspot;
     public Texture2D attackCursor;
     public Vector2 attackCursorHotspot;
-    public new CinemachineVirtualCamera camera;
+
     public enum CursorShapeType { None, Normal, Attack, AbilityInstance }
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
-    [HideInInspector]
-    public LivingThing localPlayer;
+
+
+    public LivingThing localPlayer
+    {
+        get
+        {
+            return _localPlayer;
+        }
+        set
+        {
+            _localPlayer = value;
+            _localPlayer.OnDoBasicAttackHit = (InfoBasicAttackHit info) =>
+            {
+                Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+                GameObject floatingText = Instantiate(physicalDamageFloatingText.gameObject, worldPos, Quaternion.identity);
+                floatingText.SetActive(true);
+                floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.damage).ToString();
+                
+            };
+
+            _localPlayer.OnDealMagicDamage = (InfoMagicDamage info) =>
+            {
+                Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+                GameObject floatingText = Instantiate(magicDamageFloatingText.gameObject, worldPos, Quaternion.identity);
+                floatingText.SetActive(true);
+                floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.finalDamage).ToString();
+                
+            };
+        }
+    }
+
+    private LivingThing _localPlayer;
+
+
+    public FloatingText magicDamageFloatingText;
+    public FloatingText physicalDamageFloatingText;
 
     private static GameManager _instance;
     public static GameManager instance
@@ -29,7 +63,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    private void Awake()
+    {
+        magicDamageFloatingText.gameObject.SetActive(false);
+        physicalDamageFloatingText.gameObject.SetActive(false);
+     }
 
     private void Update()
     {
@@ -39,11 +77,6 @@ public class GameManager : MonoBehaviour
             lastCursorShape = cursorShape;
         }
 
-        if (camera.Follow == null && localPlayer != null)
-        {
-            camera.Follow = localPlayer.transform;
-
-        }
     }
 
     private void SetAppropriateCursor()
@@ -64,5 +97,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    
 
 }

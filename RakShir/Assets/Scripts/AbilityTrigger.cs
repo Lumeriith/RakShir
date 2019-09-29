@@ -19,7 +19,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
 
-public AnimationClip castAnimation;
+    public AnimationClip castAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
     [Header("Trigger Settings")]
@@ -68,13 +68,13 @@ public AnimationClip castAnimation;
     }
 
 
-    private float cooldownStartTime = 0;
+    private float cooldownStartTime = -10000;
 
-    public void OnCastWithAnimation(CastInfo info)
+    public void Cast(CastInfo info)
     {
         if (castAnimation != null)
         {
-            if(owner.control.basicAttackAbilityTrigger == this)
+            if (owner.control.basicAttackAbilityTrigger == this)
             {
                 float duration = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f) + 0.05f;
                 owner.PlayCustomAnimation(castAnimation, duration);
@@ -83,10 +83,10 @@ public AnimationClip castAnimation;
             {
                 owner.PlayCustomAnimation(castAnimation, animationDuration);
             }
-            
-        }
 
+        }
         OnCast(info);
+
     }
 
     public abstract void OnCast(CastInfo info);

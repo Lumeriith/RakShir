@@ -9494,7 +9494,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.043137256}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.41960785}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9556,8 +9556,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.5
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -32569,10 +32569,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be087d8850994204eae9608915368147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 90
+  speed: 10
   explosionTime: 2
   explosionRadius: 2
-  damage: 130
+  damage: 95
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -32584,7 +32584,7 @@ MonoBehaviour:
     canTargetEnemyMonster: 1
     excludes: 000203
   ccType: 8
-  ccDuration: 1
+  ccDuration: 1.35
 --- !u!1 &6458687616823858654
 GameObject:
   m_ObjectHideFlags: 0

@@ -250,8 +250,10 @@ public class LivingThing : MonoBehaviourPun
         return Vector3.Lerp(bottom, top, Random.value);
     }
 
+
     public void DashThroughForDuration(Vector3 location, float duration)
     {
+        CancelDash();
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
 
@@ -262,15 +264,15 @@ public class LivingThing : MonoBehaviourPun
         else
         {
             destination = location;
-            print("Unknown Error!");
         }
         CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, duration);
         statusEffect.ApplyCoreStatusEffect(dash);
-        photonView.RPC("RpcLerp", RpcTarget.All, destination, duration);
+        photonView.RPC("RpcDash", RpcTarget.All, destination, duration);
     }
 
     public void DashThroughWithSpeed(Vector3 location, float speed)
     {
+        CancelDash();
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
         
@@ -281,16 +283,50 @@ public class LivingThing : MonoBehaviourPun
         else
         {
             destination = location;
-            print("Unknown Error!");
         }
 
         float time = Vector3.Distance(transform.position, destination) / (speed/100); // Fix this.
 
         CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, time);
         statusEffect.ApplyCoreStatusEffect(dash);
-        photonView.RPC("RpcLerp", RpcTarget.AllViaServer, destination, time);
+        photonView.RPC("RpcDash", RpcTarget.All, destination, time);
     }
 
+    public void AirborneForDuration(Vector3 landLocation, float duration)
+    {
+        CancelAirborne();
+        NavMeshPath path = new NavMeshPath();
+        Vector3 destination;
+
+        if (NavMesh.CalculatePath(transform.position, landLocation, control.navMeshAgent.areaMask, path))
+        {
+            destination = path.corners[path.corners.Length - 1];
+        }
+        else
+        {
+            destination = landLocation;
+        }
+        CoreStatusEffect airborne = new CoreStatusEffect(this, CoreStatusEffectType.Airborne, duration);
+        statusEffect.ApplyCoreStatusEffect(airborne);
+        photonView.RPC("RpcAirborne", RpcTarget.All, destination, duration);
+    }
+
+    public void CancelAirborne()
+    {
+        statusEffect.CleanseCoreStatusEffect(CoreStatusEffectType.Airborne);
+        photonView.RPC("RpcCancelAirborne", RpcTarget.All);
+    }
+
+    public void CancelDash()
+    {
+        statusEffect.CleanseCoreStatusEffect(CoreStatusEffectType.Dash);
+        photonView.RPC("RpcCancelDash", RpcTarget.All);
+    }
+
+    public void LookAt(Vector3 lookPosition, bool immediately = false)
+    {
+        photonView.RPC("RpcLookAt",photonView.Owner, lookPosition, immediately);
+    }
     public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
         to.photonView.RPC("RpcApplyHeal", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
@@ -374,6 +410,13 @@ public class LivingThing : MonoBehaviourPun
         info.finalDamage = finalAmount;
         OnTakeMagicDamage.Invoke(info);
         info.from.OnDealMagicDamage.Invoke(info);
+    }
+
+    [PunRPC]
+    protected void RpcLookAt(Vector3 lookPosition, bool immediately)
+    {
+        control.LookAt(lookPosition);
+        if (immediately) control.ImmediatelySetRotation();
     }
 
     [PunRPC]
@@ -514,10 +557,18 @@ public class LivingThing : MonoBehaviourPun
         OnTakeHeal.Invoke(info);
     }
 
+    private Coroutine lastDashCoroutine;
+    private Coroutine lastAirborneCoroutine;
+
     [PunRPC]
-    private void RpcLerp(Vector3 destination, float time)
+    private void RpcDash(Vector3 destination, float time)
     {
-        StartCoroutine(CoroutineLerp(destination, time));
+        lastDashCoroutine = StartCoroutine(CoroutineDash(destination, time));
+    }
+    [PunRPC]
+    private void RpcAirborne(Vector3 destination, float time)
+    {
+        lastAirborneCoroutine = StartCoroutine(CoroutineAirborne(destination, time));
     }
 
 
@@ -574,10 +625,27 @@ public class LivingThing : MonoBehaviourPun
         animator.SetFloat("CustomAnimationSpeed", duration == -1 ? 1f : newClip.length / duration);
     }
 
+    [PunRPC]
+    private void RpcCancelDash()
+    {
+        if (lastDashCoroutine == null) return;
+        StopCoroutine(lastDashCoroutine);
+        
+    }
+
+    [PunRPC]
+    private void RpcCancelAirborne()
+    {
+        if (lastAirborneCoroutine == null) return;
+        StopCoroutine(lastAirborneCoroutine);
+    }
+
+
+
 
     #endregion RPCs
 
-    IEnumerator CoroutineLerp(Vector3 destination, float time)
+    IEnumerator CoroutineAirborne(Vector3 destination, float time)
     {
         float startTime = Time.time;
         Vector3 startPosition = transform.position;
@@ -588,6 +656,21 @@ public class LivingThing : MonoBehaviourPun
             yield return null;
         }
         transform.position = destination;
+        lastAirborneCoroutine = null;
+    }
 
+
+    IEnumerator CoroutineDash(Vector3 destination, float time)
+    {
+        float startTime = Time.time;
+        Vector3 startPosition = transform.position;
+
+        while (Time.time - startTime < time)
+        {
+            transform.position = Vector3.Lerp(startPosition, destination, (Time.time - startTime) / time);
+            yield return null;
+        }
+        transform.position = destination;
+        lastDashCoroutine = null;
     }
 }

@@ -21,13 +21,11 @@ public class PlayerAnimation : MonoBehaviourPun
     private void StartWalkingAnimation(InfoStartWalking info)
     {
         animator.SetBool("IsWalking", true);
-        print("start");
     }
 
     private void StopWalkingAnimation(InfoStopWalking info)
     {
         animator.SetBool("IsWalking", false);
-        print("end");
     }
 
 
