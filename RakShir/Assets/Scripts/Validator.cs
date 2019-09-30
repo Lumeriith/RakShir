@@ -19,6 +19,8 @@ public class TargetValidator : System.ICloneable
 
     public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stasis, CoreStatusEffectType.Invulnerable, CoreStatusEffectType.Untargetable };
 
+    public bool invertResult = false;
+
     public object Clone()
     {
         TargetValidator tv = new TargetValidator();
@@ -71,7 +73,7 @@ public class TargetValidator : System.ICloneable
 
     public bool Evaluate(LivingThing self, LivingThing target)
     {
-        if (target == null || self == null) return false;
+        if (target == null || self == null) return invertResult ? true : false;
 
         bool isSelf = target == self;
         bool isAlly = !isSelf && self.team == target.team && self.team != Team.None;
@@ -92,14 +94,14 @@ public class TargetValidator : System.ICloneable
         else if (canTargetEnemySummon && isEnemy && isSummon) typeAndTeamCheck = true;
         else if (canTargetEnemyMonster && isEnemy && isMonster) typeAndTeamCheck = true;
 
-        if (!typeAndTeamCheck) return false;
+        if (!typeAndTeamCheck) return invertResult ? true : false;
 
         foreach(CoreStatusEffectType type in excludes)
         {
-            if (target.statusEffect.IsAffectedBy(type)) return false;
+            if (target.statusEffect.IsAffectedBy(type)) return invertResult ? true : false;
         }
 
-        return true;
+        return invertResult ? false : true;
     }
 
 }
@@ -111,37 +113,31 @@ public class SelfValidator : System.ICloneable
 
     public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stun, CoreStatusEffectType.Airborne, CoreStatusEffectType.Sleep, CoreStatusEffectType.Polymorph, CoreStatusEffectType.MindControl, CoreStatusEffectType.Charm, CoreStatusEffectType.Fear, CoreStatusEffectType.Silence };
 
+    public bool invertResult = false;
+
     public static SelfValidator CanTick = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>()
         { CoreStatusEffectType.Stasis }
     };
 
-    public static SelfValidator CanHaveMoveSpeedOverZero = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Root }
-    };
 
-    public static SelfValidator CanCommandMove = new SelfValidator
+    public static SelfValidator CancelsMoveCommand = new SelfValidator
     {
         excludes = new List<CoreStatusEffectType>() {
-          CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep,
-          CoreStatusEffectType.Root,
-          CoreStatusEffectType.MindControl,
-          CoreStatusEffectType.Charm,
-          CoreStatusEffectType.Fear }
+            CoreStatusEffectType.Stun,
+            CoreStatusEffectType.Airborne,
+            CoreStatusEffectType.Sleep,
+            CoreStatusEffectType.Root,
+            CoreStatusEffectType.MindControl,
+            CoreStatusEffectType.Charm,
+            CoreStatusEffectType.Fear,
+            CoreStatusEffectType.MindControl,
+            CoreStatusEffectType.Dash },
+        invertResult = true
     };
 
-    public static SelfValidator CanHaveMoveActionReserved = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stun,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Sleep }
-    };
+    
 
     public static SelfValidator CanBeDamaged = new SelfValidator
     {
@@ -158,13 +154,7 @@ public class SelfValidator : System.ICloneable
           CoreStatusEffectType.Unstoppable }
     };
 
-    public static SelfValidator CanHaveNavMeshEnabled = new SelfValidator
-    {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stasis,
-          CoreStatusEffectType.Airborne,
-          CoreStatusEffectType.Dash }
-    };
+
 
 
     public object Clone()
@@ -177,14 +167,14 @@ public class SelfValidator : System.ICloneable
 
     public bool Evaluate(LivingThing self)
     {
-        if (self == null) return false;
+        if (self == null) return invertResult ? true : false;
 
         foreach (CoreStatusEffectType type in excludes)
         {
-            if (self.statusEffect.IsAffectedBy(type)) return false;
+            if (self.statusEffect.IsAffectedBy(type)) return invertResult ? true : false;
         }
 
-        return true;
+        return invertResult ? false : true;
     }
 
 }

@@ -128,10 +128,6 @@ public abstract class AbilityTrigger : MonoBehaviour
         cooldownStartTime -= time;
     }
 
-    public virtual bool CanActivate()
-    {
-        return selfValidator.Evaluate(owner);
-    }
 
 
 }

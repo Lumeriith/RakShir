@@ -4,510 +4,214 @@ using UnityEngine;
 using UnityEngine.AI;
 using NaughtyAttributes;
 using Photon.Pun;
-public class LivingThingControl : MonoBehaviourPun
+using UnityEngine.Events;
+
+
+public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability }
+public enum CommandLockType { DisallowAll, OnlyAllowMove, AllowEverything }
+
+
+
+
+
+[System.Serializable]
+public class Channel
 {
-    [HideInInspector]
-    public NavMeshAgent navMeshAgent;
-    private LivingThing livingThing;
+    public SelfValidator channelValidator;
+    public bool shouldCancelForOtherCommand;
+    public bool canMove;
+    public float duration;
 
-    private Vector3 navMeshAgentDestination;
-    private enum ActionType { None, Move, AttackMove, AbilityTrigger, Channel, ChannelMovable, SoftChannel }
+    public UnityAction finishedCallback = null;
+    public UnityAction canceledCallback = null;
 
-    private ActionType reservedAction = ActionType.None;
-    private AbilityTrigger actionAbilityTrigger;
-    private CastInfo actionInfo;
-
-    private System.Action channelSuccessCallback;
-    private System.Action channelCanceledCallback;
-    private float channelRemainingTime;
-
-    private bool isCurrentChannelBasicAttack = false;
-
-    public AbilityTrigger basicAttackAbilityTrigger;
-
-    public AbilityTrigger[] keybindings = new AbilityTrigger[4];
-
-
-    [Header("Aggro Settings")]
-    public bool aggroAutomatically;
-    public float aggroRange;
-    public float aggroChecksPerSecond;
-    [Header("Deaggro Settings")]
-    public bool deaggroAutomatically;
-    public float deaggroRange;
-    public float deaggroTime;
+    public CommandLockType commandLock;
     
 
-    private float deaggroCurrerntTime = 0;
+    private bool hasEnded = false;
 
-    private float lastAggroCheckTime;
-
-    [Header("Preconfigurations")]
-    public LayerMask maskLivingThing;
-
-    private const float modelTurnSpeed = 800;
-    public Quaternion desiredRotation { get; private set; }
-
-    public void StartChanneling(float channelTime, System.Action successCallback = null, System.Action canceledCallback = null, bool movable = false)
+    public void Tick()
     {
-        if(reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable || reservedAction == ActionType.SoftChannel)
+        if (hasEnded) return;
+        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime);
+        if(duration == 0)
         {
-            CancelChanneling();
-        }
-        reservedAction = movable ? ActionType.ChannelMovable : ActionType.Channel;
-        channelSuccessCallback = successCallback != null ? successCallback : () => { };
-        channelCanceledCallback = canceledCallback != null ? canceledCallback : () => { };
-        channelRemainingTime = channelTime;
-        isCurrentChannelBasicAttack = false;
-    }
-
-    private void WalkCheck()
-    {
-        float difference = Vector3.Distance(navMeshAgentDestination, transform.position);
-        if (wasWalking && (navMeshAgent.enabled == false || difference < float.Epsilon || navMeshAgent.speed == 0 || navMeshAgent.desiredVelocity.magnitude < 0.1f))
-        {
-            wasWalking = false;
-            photonView.RPC("RpcStopWalking", RpcTarget.All);
-        }
-        else if (!wasWalking && navMeshAgent.enabled == true && difference > float.Epsilon && navMeshAgent.speed > 0 && navMeshAgent.desiredVelocity.magnitude > 0.1f)
-        {
-            wasWalking = true;
-            photonView.RPC("RpcStartWalking", RpcTarget.All, navMeshAgentDestination);
+            hasEnded = true;
+            if (finishedCallback != null) finishedCallback.Invoke();
         }
     }
-    public void StartBasicAttackChanneling(float ratio, System.Action successCallback, System.Action canceledCallback, bool movable = false)
+    public bool HasEnded()
     {
-        if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable || reservedAction == ActionType.SoftChannel)
-        {
-            CancelChanneling();
-        }
-        reservedAction = movable ? ActionType.ChannelMovable : ActionType.SoftChannel;
-        channelSuccessCallback = successCallback;
-        channelCanceledCallback = canceledCallback;
-        channelRemainingTime = ratio * (1 / livingThing.stat.finalAttacksPerSecond) / ((100 + livingThing.statusEffect.totalHasteAmount) / 100f);
-        isCurrentChannelBasicAttack = true;
-        photonView.RPC("RpcChannelBasicAttack", RpcTarget.All, channelRemainingTime);
+        return hasEnded;
     }
 
-    private void DoRotateTick()
+    public void Cancel()
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, modelTurnSpeed * Time.deltaTime);
+        if (hasEnded) return;
+        duration = 0;
+        hasEnded = true;
+        if (canceledCallback != null) canceledCallback.Invoke();
     }
+}
 
-    public void LookAt(Quaternion rotation)
+public class Command
+{
+    public CommandType type;
+    public object[] parameters;
+
+    private LivingThing self;
+
+    public Command(LivingThing self, CommandType type, params object[] parameters)
     {
-        Vector3 euler = rotation.eulerAngles;
-        euler.x = 0;
-        euler.z = 0;
-        desiredRotation = Quaternion.Euler(euler);
+        this.self = self;
+        this.type = type;
+        this.parameters = parameters;
     }
+    
+    public float attackMoveTargetChecksForSecond = 4f;
+    
 
-    public void LookAt(Vector3 lookLocation)
+    // returns true when the command is done and finished, returns false if the command needs another tick.
+    public bool Process()
     {
-        if ((lookLocation - transform.position).magnitude <= float.Epsilon) return;
-        LookAt(Quaternion.LookRotation(lookLocation - transform.position, Vector3.up));
-    }
-
-    public void ImmediatelySetRotation()
-    {
-        transform.rotation = desiredRotation;
-    }
-
-    public void CancelChanneling()
-    {
-        if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable || reservedAction == ActionType.SoftChannel)
+        switch (type)
         {
-            if (isCurrentChannelBasicAttack) photonView.RPC("RpcChannelBasicAttackCanceled", RpcTarget.All, channelRemainingTime);
-            reservedAction = ActionType.None;
-            channelCanceledCallback.Invoke();
-            isCurrentChannelBasicAttack = false;
+            case CommandType.Move:
+                return ProcessMove((Vector3)parameters[0]);
+            case CommandType.Attack:
+                return ProcessAttack((LivingThing)parameters[0]);
+            case CommandType.AttackMove:
+                return ProcessAttackMove((Vector3)parameters[0]);
+            case CommandType.Chase:
+                return ProcessChase((LivingThing)parameters[0]);
+            case CommandType.AutoChase:
+                return ProcessAutoChase((LivingThing)parameters[0]);
+            case CommandType.Ability:
+                return ProcessAbility((AbilityTrigger)parameters[0], (CastInfo)parameters[1]);
         }
 
-    }
-
-
-    void Awake()
-    {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        actionInfo.owner = GetComponent<LivingThing>();
-        livingThing = GetComponent<LivingThing>();
-        navMeshAgent.updateRotation = false;
-    }
-
-    public void StartMoving(Vector3 location)
-    {
-        if(reservedAction == ActionType.SoftChannel)
-        {
-            CancelChanneling();
-        }
-        else if (reservedAction == ActionType.Channel)
-        {
-            return;
-        } else if (reservedAction == ActionType.ChannelMovable)
-        {
-            navMeshAgentDestination = location;
-        }
-        else
-        {
-            navMeshAgentDestination = location;
-            reservedAction = ActionType.Move;
-        }
-
-        
-        
-    }
-
-    public void StartAttackMoving(Vector3 location)
-    {
-        if (reservedAction == ActionType.SoftChannel)
-        {
-            if (isCurrentChannelBasicAttack)
-            {
-                
-                DoAggroCheck();
-                return;
-            }
-            else
-            {
-                CancelChanneling();
-            }
-            
-        }
-        else if (reservedAction == ActionType.Channel)
-        {
-            return;
-        } else if (reservedAction == ActionType.ChannelMovable)
-        {
-            StartMoving(location);
-            return;
-        }
-
-        if (!DoAggroCheck())
-        {
-            reservedAction = ActionType.AttackMove;
-            lastAggroCheckTime = Time.time;
-            navMeshAgentDestination = location;
-        }
-
-    }
-
-
-
-    private bool DoAggroCheck()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, aggroRange, maskLivingThing);
-        Collider myCollider = GetComponent<Collider>();
-        LivingThing closestTarget = null;
-        LivingThing temp;
-        float closestDistance = Mathf.Infinity;
-        float distance;
-
-        foreach(Collider collider in colliders)
-        {
-            distance = Vector3.Distance(collider.transform.position, transform.position);
-            if (distance < closestDistance && closestTarget != myCollider)
-            {
-                temp = collider.GetComponent<LivingThing>();
-                if (temp != null && basicAttackAbilityTrigger.targetValidator.Evaluate(livingThing, temp))
-                {
-                    closestTarget = temp;
-                    closestDistance = distance;
-                }
-
-            }
-        }
-
-        if(closestTarget != null)
-        {
-            
-            ReserveAbilityTrigger(basicAttackAbilityTrigger, Vector3.zero, Vector3.zero, closestTarget);
-            return true;
-        }
         return false;
+    }
+
+    private bool ProcessMove(Vector3 destination)
+    {
+        if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
+        self.control.agent.destination = destination;
+        if (self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
+        return false;
+    }
+
+    private bool ProcessAttack(LivingThing target)
+    {
+        if (self.control.skillSet[0] == null) return true;
+        if (Vector3.Distance(self.transform.position, target.transform.position) > self.control.skillSet[0].range) return true;
+        if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
+        if (!self.control.skillSet[0].isCooledDown) return false;
+
+        CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
+        self.control.skillSet[0].Cast(info);
+        return true;
+    }
+
+    private bool ProcessAttackMove(Vector3 destination)
+    {
+        if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
+        self.control.agent.destination = destination;
+        if (self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
+        return false;
+    }
+
+    private bool ProcessChase(LivingThing target)
+    {
+        if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
+    }
+
+    private bool ProcessAutoChase(LivingThing target)
+    {
+        if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
+    }
+
+    private bool ProcessAbility(AbilityTrigger trigger, CastInfo info)
+    {
+
+    }
+
+    
+}
+
+
+
+public class LivingThingControl : MonoBehaviourPun
+{
+    private LivingThing livingThing;
+    public NavMeshAgent agent { get; private set; }
+
+    private List<Command> reservedCommands = new List<Command>();
+    private Command currentCommand { get { return reservedCommands.Count == 0 ? null : reservedCommands[0]; } }
+    private List<Channel> ongoingChannels = new List<Channel>();
+
+    public AbilityTrigger[] skillSet = new AbilityTrigger[6];
+
+    public void CommandMove(Vector3 destination, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Move, destination);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    public void CommandAttack(LivingThing target, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Attack, target);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    public void CommandAttackMove(Vector3 destination, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.AttackMove, destination);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    public void CommandChase(LivingThing target, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Chase, target);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    public void CommandAutoChase(LivingThing target, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.AutoChase, target);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Ability, trigger, info);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+    private void Awake()
+    {
+        livingThing = GetComponent<LivingThing>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
-        navMeshAgent.enabled = SelfValidator.CanHaveNavMeshEnabled.Evaluate(livingThing);
-        if (!photonView.IsMine) return;
-        bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
-
-
-        if (reservedAction == ActionType.AbilityTrigger && !actionAbilityTrigger.CanActivate())
+        
+        if(currentCommand != null)
         {
-            reservedAction = ActionType.None;
+            bool isCommandFinished = currentCommand.Process();
+            if (isCommandFinished) reservedCommands.RemoveAt(0);
         }
-
-        if((reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable || reservedAction == ActionType.SoftChannel) && !actionAbilityTrigger.CanActivate())
-        {
-            CancelChanneling();
-        }
-
-        if (SelfValidator.CanHaveMoveSpeedOverZero.Evaluate(livingThing))
-        {
-            navMeshAgent.speed = livingThing.stat.finalMovementSpeed / 100 * ((100 + livingThing.statusEffect.totalSpeedAmount) / 100f) * ((100 - livingThing.statusEffect.totalSlowAmount) / 100f);
-        }
-        else
-        {
-            navMeshAgent.speed = 0;
-        }
-
-        if (reservedAction == ActionType.Move && !SelfValidator.CanHaveMoveActionReserved.Evaluate(livingThing))
-        {
-            reservedAction = ActionType.None;
-        }
-
-        DoDeaggroCheck();
-
-        DoRotateTick();
-
-        switch (reservedAction)
-        {
-            case ActionType.None:
-                navMeshAgentDestination = transform.position;
-                if(aggroAutomatically && (Time.time - lastAggroCheckTime > 1 / aggroChecksPerSecond))
-                {
-                    lastAggroCheckTime = Time.time;
-                    DoAggroCheck();
-                }
-                break;
-            case ActionType.Move:
-                if (navMeshAgent.enabled && navMeshAgent.path.corners.Length > 1)
-                {
-                    LookAt(navMeshAgent.path.corners[1]);
-                }
-                
-                
-                if (Vector3.Distance(navMeshAgentDestination, transform.position) < 0.2f)
-                {
-                    reservedAction = ActionType.None;
-                }
-                break;
-            case ActionType.AttackMove:
-                if (navMeshAgent.enabled && navMeshAgent.path.corners.Length > 1)
-                {
-                    LookAt(navMeshAgent.path.corners[1]);
-                }
-                if (navMeshAgent.enabled && navMeshAgent.isStopped)
-                {
-                    reservedAction = ActionType.None;
-                }
-                if (Time.time - lastAggroCheckTime > 1 / aggroChecksPerSecond)
-                {
-                    lastAggroCheckTime = Time.time;
-                    DoAggroCheck();
-                }
-
-                break;
-            case ActionType.AbilityTrigger:
-                TryCastReservedAbilityInstance();
-                break;
-            case ActionType.Channel:
-                navMeshAgentDestination = transform.position;
-                HandleChannelTick();
-                break;
-            case ActionType.ChannelMovable:
-                HandleChannelTick();
-                break;
-            case ActionType.SoftChannel:
-                navMeshAgentDestination = transform.position;
-                HandleChannelTick();
-                break;
-        }
-
-        if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-        {
-            navMeshAgent.SetDestination(navMeshAgentDestination);
-        }
-    }
-
-
-    private bool wasWalking = false;
-    private void LateUpdate()
-    {
-        WalkCheck();
-    }
-
-    private void HandleChannelTick()
-    {
-        channelRemainingTime = Mathf.MoveTowards(channelRemainingTime, 0, Time.deltaTime);
-        if (channelRemainingTime <= 0)
-        {
-            reservedAction = ActionType.None;
-
-            channelSuccessCallback.Invoke();
-
-            isCurrentChannelBasicAttack = false;
-        }
-    }
-
-    void DoDeaggroCheck()
-    {
-        if (!deaggroAutomatically) return;
-
-        if (reservedAction == ActionType.AbilityTrigger && actionAbilityTrigger == basicAttackAbilityTrigger)
-        {
-            if (Vector3.Distance(transform.position, actionInfo.target.transform.position) > deaggroRange)
-            {
-                deaggroCurrerntTime += Time.deltaTime;
-                if (deaggroCurrerntTime > deaggroTime)
-                {
-                    deaggroCurrerntTime = 0;
-                    reservedAction = ActionType.None;
-                    print("Deaggroed");
-                    return;
-                }
-            }
-            else
-            {
-                deaggroCurrerntTime = 0;
-            }
-        }
-        else
-        {
-            deaggroCurrerntTime = 0;
-        }
-    }
-
-    public void ReserveAbilityTrigger(AbilityTrigger abilityTrigger, Vector3 point = new Vector3(), Vector3 directionVector = new Vector3(), LivingThing target = null)
-    {
-        bool skipValidationCheck = false;
-        if (!skipValidationCheck)
-        {
-            if (!abilityTrigger.selfValidator.Evaluate(livingThing)) return;
-            if (abilityTrigger.targetingType == AbilityTrigger.TargetingType.Target && !abilityTrigger.targetValidator.Evaluate(livingThing, target)) return;
-        }
-
-        //if ((reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) &&
-        //    basicAttackAbilityTrigger == abilityTrigger && actionInfo.target == target) return;
-        if (isCurrentChannelBasicAttack && actionAbilityTrigger == abilityTrigger && actionInfo.point == point && actionInfo.directionVector == directionVector && actionInfo.target == target) return;
-
-        if (reservedAction == ActionType.Channel || reservedAction == ActionType.ChannelMovable) return;
-
-        if (reservedAction == ActionType.SoftChannel) CancelChanneling();
-
-        reservedAction = ActionType.AbilityTrigger;
-        actionAbilityTrigger = abilityTrigger;
-
-        actionInfo.point = point;
-        actionInfo.directionVector = directionVector;
-        actionInfo.target = target;
-    }
-
-    [PunRPC]
-    private void RpcCast(int abilityIndex, int owner_id, Vector3 point, Vector3 directionVector, int target_id)
-    {
-        CastInfo info;
-        info.owner = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
-        info.point = point;
-        info.directionVector = directionVector;
-        info.target = target_id == -1 ? null : PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
-
-        InfoAbilityCast infoAbilityCast;
-        infoAbilityCast.abilityIndex = abilityIndex;
-        infoAbilityCast.castInfo = info;
-        livingThing.OnAbilityCast.Invoke(infoAbilityCast);
-    }
-
-    private void AutoDoRpcCast()
-    {
-        for(int i = 0;i< keybindings.Length; i++)
-        {
-            if (keybindings[i] != null && keybindings[i] == actionAbilityTrigger)
-            {
-                if(actionInfo.target == null)
-                {
-                    photonView.RPC("RpcCast", RpcTarget.All, i, photonView.ViewID, actionInfo.point, actionInfo.directionVector, -1);
-                }
-                else
-                {
-                    photonView.RPC("RpcCast", RpcTarget.All, i, photonView.ViewID, actionInfo.point, actionInfo.directionVector, actionInfo.target.photonView.ViewID);
-                }
-                
-                return;
-            }
-        }
-
-        photonView.RPC("RpcCast", RpcTarget.All, -1, photonView.ViewID, actionInfo.point, actionInfo.directionVector, actionInfo.target.photonView.ViewID);
 
 
     }
 
-    private void TryCastReservedAbilityInstance()
-    {
 
 
-        switch (actionAbilityTrigger.targetingType)
-        {
-            case AbilityTrigger.TargetingType.None:
-                if (!actionAbilityTrigger.isCooledDown) break;
-                reservedAction = ActionType.None;
-                AutoDoRpcCast();
-                actionAbilityTrigger.Cast(actionInfo);
-                break;
-            case AbilityTrigger.TargetingType.Direction:
-                if (!actionAbilityTrigger.isCooledDown) break;
-
-
-                LookAt(transform.position + actionInfo.directionVector);
-                reservedAction = ActionType.None;
-                AutoDoRpcCast();
-                actionAbilityTrigger.Cast(actionInfo);
-                break;
-            case AbilityTrigger.TargetingType.Target:
-                
-                Vector3 targetPosition = actionInfo.target.transform.position;
-                
-                if (Vector3.Distance(transform.position, targetPosition) <= actionAbilityTrigger.range)
-                {
-                    
-                    navMeshAgentDestination = transform.position;
-                    LookAt(targetPosition);
-                    if (!actionAbilityTrigger.isCooledDown) break;
-                    reservedAction = ActionType.None;
-                    AutoDoRpcCast();
-                    actionAbilityTrigger.Cast(actionInfo);
-                    deaggroCurrerntTime = 0;
-
-                }
-                else
-                {
-                    navMeshAgentDestination = targetPosition;
-                    if (navMeshAgent.enabled && navMeshAgent.path.corners.Length > 1)
-                    {
-                        LookAt(navMeshAgent.path.corners[1]);
-                    }
-                }
-                
-                break;
-            case AbilityTrigger.TargetingType.PointNonStrict:
-                navMeshAgentDestination = transform.position;
-                LookAt(actionInfo.point);
-                if (!actionAbilityTrigger.isCooledDown) break;
-                reservedAction = ActionType.None;
-                AutoDoRpcCast();
-                actionAbilityTrigger.Cast(actionInfo);
-                break;
-            case AbilityTrigger.TargetingType.PointStrict:
-                if (Vector3.Distance(transform.position, actionInfo.point) <= actionAbilityTrigger.range)
-                {
-                    navMeshAgentDestination = transform.position;
-                    if (!actionAbilityTrigger.isCooledDown) break;
-                    reservedAction = ActionType.None;
-                    AutoDoRpcCast();
-                    actionAbilityTrigger.Cast(actionInfo);
-                    LookAt(actionInfo.point);
-                }
-                else
-                {
-                    navMeshAgentDestination = actionInfo.point;
-                    if (navMeshAgent.enabled && navMeshAgent.path.corners.Length > 1)
-                    {
-                        LookAt(navMeshAgent.path.corners[1]);
-                    }
-                }
-                
-                break;
-        }
-    }
 }
