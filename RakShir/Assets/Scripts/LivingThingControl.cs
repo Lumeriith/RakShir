@@ -69,7 +69,7 @@ public class Command
     }
     
     public float attackMoveTargetChecksForSecond = 4f;
-    
+    public float attackMoveTargetCheckRadius = 4f;
 
     // returns true when the command is done and finished, returns false if the command needs another tick.
     public bool Process()
@@ -116,7 +116,22 @@ public class Command
     private bool ProcessAttackMove(Vector3 destination)
     {
         if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
-        self.control.agent.destination = destination;
+
+        if (!self.control.skillSet[0].selfValidator.Evaluate(self))
+        {
+            self.control.agent.destination = destination;
+            return false;
+        }
+        else
+        {
+            Collider[] colliders = Physics.OverlapSphere(self.transform.position, 4f, LayerMask.GetMask("LivingThing"));
+            float distance 
+
+
+        }
+
+        
+        
         if (self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
         return false;
     }
