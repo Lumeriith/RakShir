@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class ai_Spell_Default_DoubleKick : AbilityInstance
 {
+    public SelfValidator channelValidator;
 
     public float range;
     public float marginToTarget;
@@ -66,7 +67,8 @@ public class ai_Spell_Default_DoubleKick : AbilityInstance
         float dashDuration;
         float dashDistance = Vector3.Distance(info.owner.transform.position, targetPosition);
         dashDuration = dashDistance / dashSpeed;
-        info.owner.control.StartChanneling(dashDuration + delayBeforeFirstKick + delayBeforeSecondKick + delayAfterSecondKick, null, CancelDashKick);
+        Channel channel = new Channel(channelValidator, dashDuration + delayBeforeFirstKick + delayBeforeSecondKick + delayAfterSecondKick, false, false, true, false, CancelDashKick, null);
+        info.owner.control.StartChanneling(channel);
         info.owner.DashThroughForDuration(targetPosition, dashDuration);
         info.owner.LookAt(target.transform.position, true);
         yield return new WaitForSeconds(dashDuration - animationPreStartTime);
@@ -124,7 +126,7 @@ public class ai_Spell_Default_DoubleKick : AbilityInstance
 
     private void NoTarget()
     {
-        info.owner.control.keybindings[1].ResetCooldown();
+        info.owner.control.skillSet[2].ResetCooldown();
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }

@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class ai_Spell_Default_FrontKick : AbilityInstance
 {
+    public SelfValidator channelValidator;
     public float duration;
     public float distance;
 
@@ -33,7 +34,8 @@ public class ai_Spell_Default_FrontKick : AbilityInstance
         info = castInfo;
         if (photonView.IsMine)
         {
-            info.owner.control.StartChanneling(duration, null, End);
+            Channel channel = new Channel(channelValidator, duration, false, false, false, false, null, End);
+            info.owner.control.StartChanneling(channel);
         }
 
         whoof.Play();
@@ -66,8 +68,8 @@ public class ai_Spell_Default_FrontKick : AbilityInstance
         if(!didHit)
         {
             didHit = true;
-            if (info.owner.control.keybindings[1] == null) return;
-            trg_Spell_Default_DoubleKick trg = info.owner.control.keybindings[1] as trg_Spell_Default_DoubleKick;
+            if (info.owner.control.skillSet[2] == null) return;
+            trg_Spell_Default_DoubleKick trg = info.owner.control.skillSet[2] as trg_Spell_Default_DoubleKick;
             if (trg != null) trg.ResetCooldown();
         }
         

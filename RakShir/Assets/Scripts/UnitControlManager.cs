@@ -4,26 +4,41 @@ using UnityEngine;
 using System.Linq;
 public class UnitControlManager : MonoBehaviour
 {
+    public KeyCode castConfirmKey = KeyCode.Mouse0;
+    public KeyCode actionKey = KeyCode.Mouse1;
+
+    public KeyCode attackKey = KeyCode.A;
+    public KeyCode stopKey = KeyCode.S;
+
+    public KeyCode reservationModifier = KeyCode.LeftShift;
+    public KeyCode selfCastModifier = KeyCode.LeftAlt;
+
+    public KeyCode WeaponSkillKey = KeyCode.Q;
+    public AbilityCastMethod WeaponSkillCastMethod = AbilityCastMethod.OnRelease;
+    public KeyCode ArmorSkillKey = KeyCode.W;
+    public AbilityCastMethod ArmorSkillCastMethod = AbilityCastMethod.OnRelease;
+    public KeyCode BootsSkillKey = KeyCode.E;
+    public AbilityCastMethod BootsSkillCastMethod = AbilityCastMethod.OnRelease;
+    public KeyCode WeaponUltimateSkillKey = KeyCode.R;
+    public AbilityCastMethod WeaponUltimateSkillCastMethod = AbilityCastMethod.OnRelease;
+    public KeyCode RingSkillKey = KeyCode.Space;
+    public AbilityCastMethod RingSkillCastMethod = AbilityCastMethod.OnRelease;
+
     public LivingThing selectedUnit;
 
-
-    public AbilityInstanceCastType spellCastSettings = AbilityInstanceCastType.Normal;
     private InputState inputState = InputState.None;
 
-    private AbilityTrigger pendingAbilityTrigger;
-    private KeyCode pendingAbilityTriggerActivationKey;
+    private AbilityTrigger pendingTrigger;
+    private KeyCode pendingTriggerActivationKey;
 
     private Camera mainCamera;
     private DecalSystem.Decal rangeIndicator;
     private DecalSystem.Decal arrowHead;
     private DecalSystem.Decal arrowBase;
 
-    [Header("Preconfigurations")]
-    public LayerMask maskLivingThing;
-    public LayerMask maskGroundMask;
 
-    public enum AbilityInstanceCastType { Normal, Quick, OnRelease }
-    private enum InputState { None, OnReleaseCastPending, NormalCastPending, ContinuousMove, AttackMove, RightClickAttackPressed }
+    public enum AbilityCastMethod { Normal, Quick, OnRelease }
+    private enum InputState { None, ContinousMove, Attack, PendingOnReleaseCast, PendingNormalCast }
 
     private static UnitControlManager _instance;
     public static UnitControlManager instance
@@ -41,7 +56,7 @@ public class UnitControlManager : MonoBehaviour
     private LivingThing GetFirstValidTarget(TargetValidator tv)
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, maskLivingThing);
+        RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("LivingThing"));
         IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
         foreach(RaycastHit hit in hits)
         {
@@ -54,13 +69,12 @@ public class UnitControlManager : MonoBehaviour
         return null;
     }
 
-
     Vector3 GetCurrentCursorPositionInWorldSpace()
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if(Physics.Raycast(cursorRay, out hit, 100, maskGroundMask))
+        if(Physics.Raycast(cursorRay, out hit, 100, LayerMask.GetMask("Ground")))
         {
             return hit.point;
         }
@@ -71,36 +85,43 @@ public class UnitControlManager : MonoBehaviour
 
     }
 
-    private bool TryReserveAbilityTrigger(AbilityTrigger abilityTrigger)
+    private bool CommandAbilityOnContext(AbilityTrigger trigger, bool isReservation)
     {
-        if (abilityTrigger == null) return false;
-        Vector3 flatPosition = selectedUnit.transform.position;
-        flatPosition.y = 0;
+        if (trigger == null) return false;
+        CastInfo info = new CastInfo
+        {
+            owner = selectedUnit,
+            point = Vector3.zero,
+            directionVector = Vector3.zero,
+            target = null
+        };
 
-        switch (abilityTrigger.targetingType)
+        switch (trigger.targetingType)
         {
             case AbilityTrigger.TargetingType.Direction:
-                Vector3 directionVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
-                directionVector.y = 0;
-                directionVector.Normalize();
-                selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, Vector3.zero, directionVector, null);
+                info.directionVector = GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position;
+                info.directionVector.y = 0;
+                info.directionVector.Normalize();
+
+                selectedUnit.control.CommandAbility(trigger, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.None:
-                selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, Vector3.zero, Vector3.zero, null);
+                selectedUnit.control.CommandAbility(trigger, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.PointNonStrict:
-                Vector3 differenceVector = GetCurrentCursorPositionInWorldSpace() - flatPosition;
-                differenceVector = Vector3.ClampMagnitude(differenceVector, abilityTrigger.range);
-                selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, flatPosition + differenceVector, Vector3.zero, null);
+                info.point = GetCurrentCursorPositionInWorldSpace();
+                selectedUnit.control.CommandAbility(trigger, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.PointStrict:
-                selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, GetCurrentCursorPositionInWorldSpace(), Vector3.zero, null);
+                info.point = GetCurrentCursorPositionInWorldSpace();
+                selectedUnit.control.CommandAbility(trigger, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.Target:
-                LivingThing result = GetFirstValidTarget(abilityTrigger.targetValidator);
+                LivingThing result = GetFirstValidTarget(trigger.targetValidator);
                 if (result != null)
                 {
-                    selectedUnit.control.ReserveAbilityTrigger(abilityTrigger, Vector3.zero, Vector3.zero, result);
+                    info.target = result;
+                    selectedUnit.control.CommandAbility(trigger, info, isReservation);
                     return true;
                 }
                 else
@@ -111,7 +132,6 @@ public class UnitControlManager : MonoBehaviour
         return false;
     }
 
-
     private void Awake()
     {
         mainCamera = Camera.main;
@@ -120,82 +140,136 @@ public class UnitControlManager : MonoBehaviour
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
     }
 
-    private void DoRightClickActions()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (TryReserveAbilityTrigger(selectedUnit.control.basicAttackAbilityTrigger))
-            {
-                inputState = InputState.RightClickAttackPressed;
-            }
-            else
-            {
-                selectedUnit.control.StartMoving(GetCurrentCursorPositionInWorldSpace());
-                inputState = InputState.ContinuousMove;
-                pendingAbilityTriggerActivationKey = KeyCode.Mouse1;
-            }
-        }
-    }
 
-    private void DoAttackKeyActions()
-    {
-        if (Input.GetKeyDown(KeyCode.A) && selectedUnit.control.basicAttackAbilityTrigger != null)
-        {
-            pendingAbilityTrigger = selectedUnit.control.basicAttackAbilityTrigger;
-            inputState = InputState.AttackMove;
-        }
-    }
+    
 
     void Update()
     {
-        if(selectedUnit == null)
+        bool isReserveKeyPressed = Input.GetKey(reservationModifier);
+        
+        CheckForStop();
+        CheckForNewCast();
+        CheckForAction();
+
+        switch (inputState)
         {
-            pendingAbilityTrigger = null;
-            inputState = InputState.None;
-            return;
+            case InputState.None:
+                break;
+            case InputState.Attack:
+                if (Input.GetKeyDown(castConfirmKey))
+                {
+                    LivingThing target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                    if(target != null)
+                    {
+                        selectedUnit.control.CommandChase(target, isReserveKeyPressed);
+                    }
+                }
+                break;
+            case InputState.ContinousMove:
+                if (Input.GetKeyUp(actionKey))
+                {
+                    inputState = InputState.None;
+                }
+                else
+                {
+                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
+                }
+                break;
+            case InputState.PendingNormalCast:
+                if (Input.GetKeyDown(castConfirmKey))
+                {
+                    bool commandSuccess = CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                    if (commandSuccess) inputState = InputState.None;
+                }
+                break;
+            case InputState.PendingOnReleaseCast:
+                if (Input.GetKeyUp(pendingTriggerActivationKey))
+                {
+                    CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                }
+                break;
         }
-
-        DoRightClickActions();
-        DoAttackKeyActions();
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            AbilityInstanceKeyPressed(0, KeyCode.Q);
-        } else if (Input.GetKeyDown(KeyCode.W))
-        {
-            AbilityInstanceKeyPressed(1, KeyCode.W);
-        } else if (Input.GetKeyDown(KeyCode.E))
-        {
-            AbilityInstanceKeyPressed(2, KeyCode.E);
-        } else if (Input.GetKeyDown(KeyCode.R))
-        {
-            AbilityInstanceKeyPressed(3, KeyCode.R);
-        }
-
-        HandleReserveInputEvents();
-
         SetAppropriateCursor();
-
         DisplayAppropriateIndicator();
     }
 
 
+    private void CheckForStop()
+    {
+        if (Input.GetKeyDown(stopKey))
+        {
+            selectedUnit.control.CommandStop();
+        }
+    }
+
+    private void CheckForNewCast()
+    {
+        if (Input.GetKeyDown(WeaponSkillKey))
+        {
+            CastButtonPressed(selectedUnit.control.skillSet[1], WeaponSkillCastMethod, WeaponSkillKey);
+        }
+        if (Input.GetKeyDown(ArmorSkillKey))
+        {
+            CastButtonPressed(selectedUnit.control.skillSet[2], ArmorSkillCastMethod, ArmorSkillKey);
+        }
+        if (Input.GetKeyDown(BootsSkillKey))
+        {
+            CastButtonPressed(selectedUnit.control.skillSet[3], BootsSkillCastMethod, BootsSkillKey);
+        }
+        if (Input.GetKeyDown(WeaponUltimateSkillKey))
+        {
+            CastButtonPressed(selectedUnit.control.skillSet[4], WeaponUltimateSkillCastMethod, WeaponUltimateSkillKey);
+        }
+        if (Input.GetKeyDown(RingSkillKey))
+        {
+            CastButtonPressed(selectedUnit.control.skillSet[5], RingSkillCastMethod, RingSkillKey);
+        }
+    }
+
+    private void CastButtonPressed(AbilityTrigger trigger, AbilityCastMethod method, KeyCode button)
+    {
+        if (trigger.targetingType == AbilityTrigger.TargetingType.None)
+        {
+            selectedUnit.control.CommandAbility(trigger, new CastInfo(), Input.GetKey(reservationModifier));
+        }
+        switch (method)
+        {
+            case AbilityCastMethod.Normal:
+                inputState = InputState.PendingNormalCast;
+                pendingTrigger = trigger;
+                break;
+            case AbilityCastMethod.OnRelease:
+                inputState = InputState.PendingOnReleaseCast;
+                pendingTrigger = trigger;
+                pendingTriggerActivationKey = button;
+                break;
+            case AbilityCastMethod.Quick:
+                CommandAbilityOnContext(trigger, Input.GetKey(reservationModifier));
+                break;
+        }
+    }
+
+    private void CheckForAction()
+    {
+
+    }
+
     private void DisplayAppropriateIndicator()
     {
-        if (pendingAbilityTrigger == null || pendingAbilityTrigger.indicator.type == IndicatorType.None)
+        if (pendingTrigger == null || pendingTrigger.indicator.type == IndicatorType.None)
         {
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
         }
-        else if(pendingAbilityTrigger.indicator.type == IndicatorType.Range)
+        else if(pendingTrigger.indicator.type == IndicatorType.Range)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
-            rangeIndicator.transform.localScale = new Vector3(pendingAbilityTrigger.indicator.range * 2, pendingAbilityTrigger.indicator.range * 2, 4);
-        } else if (pendingAbilityTrigger.indicator.type == IndicatorType.Arrow)
+            rangeIndicator.transform.localScale = new Vector3(pendingTrigger.indicator.range * 2, pendingTrigger.indicator.range * 2, 4);
+        } else if (pendingTrigger.indicator.type == IndicatorType.Arrow)
         {
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(true);
@@ -207,11 +281,11 @@ public class UnitControlManager : MonoBehaviour
             Vector3 cursorPos = GetCurrentCursorPositionInWorldSpace();
             rotation.z = -Quaternion.LookRotation(cursorPos - selectedUnit.transform.position, Vector3.up).eulerAngles.y;
 
-            baseScale.x = pendingAbilityTrigger.indicator.arrowWidth;
-            baseScale.y = pendingAbilityTrigger.indicator.arrowLength - 1f;
+            baseScale.x = pendingTrigger.indicator.arrowWidth;
+            baseScale.y = pendingTrigger.indicator.arrowLength - 1f;
             baseScale.z = 4f;
 
-            headScale.x = pendingAbilityTrigger.indicator.arrowWidth;
+            headScale.x = pendingTrigger.indicator.arrowWidth;
             headScale.y = 1f;
             headScale.z = 4f;
 
@@ -231,62 +305,6 @@ public class UnitControlManager : MonoBehaviour
 
     }
 
-    private void IndicateCooldown(int index)
-    {
-
-    }
-
-    private void IndicateCantActivate(int index)
-    {
-
-    }
-
-    private void AbilityInstanceKeyPressed(int index, KeyCode activationKey)
-    {
-        if (selectedUnit.control.keybindings.Length <= index || selectedUnit.control.keybindings[index] == null) return;
-        if (!selectedUnit.control.keybindings[index].isCooledDown)
-        {
-            IndicateCooldown(index);
-            return;
-        }
-
-        if (!selectedUnit.control.keybindings[index].CanActivate())
-        {
-            IndicateCantActivate(index);
-            return;
-        }
-
-        pendingAbilityTriggerActivationKey = activationKey;
-
-        switch (spellCastSettings)
-        {
-            case AbilityInstanceCastType.Normal:
-                if(selectedUnit.control.keybindings[index].targetingType == AbilityTrigger.TargetingType.None)
-                {
-                    TryReserveAbilityTrigger(selectedUnit.control.keybindings[index]);
-                }
-                else
-                {
-                    pendingAbilityTrigger = selectedUnit.control.keybindings[index];
-                    inputState = InputState.NormalCastPending;
-                }
-                break;
-            case AbilityInstanceCastType.Quick:
-                TryReserveAbilityTrigger(selectedUnit.control.keybindings[index]);
-                break;
-            case AbilityInstanceCastType.OnRelease:
-                if (selectedUnit.control.keybindings[index].targetingType == AbilityTrigger.TargetingType.None)
-                {
-                    TryReserveAbilityTrigger(selectedUnit.control.keybindings[index]);
-                }
-                else
-                {
-                    pendingAbilityTrigger = selectedUnit.control.keybindings[index];
-                    inputState = InputState.OnReleaseCastPending;
-                }
-                break;
-        }
-    }
 
     private void SetAppropriateCursor()
     {
@@ -295,82 +313,19 @@ public class UnitControlManager : MonoBehaviour
             case InputState.None:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
-            case InputState.NormalCastPending:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.AbilityInstance;
+            case InputState.Attack:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Attack;
                 break;
-            case InputState.OnReleaseCastPending:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.AbilityInstance;
-                break;
-            case InputState.ContinuousMove:
+            case InputState.ContinousMove:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
-            case InputState.AttackMove:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.Attack;
+            case InputState.PendingNormalCast:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
+                break;
+            case InputState.PendingOnReleaseCast:
+                GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
         }
     }
 
-    private void HandleReserveInputEvents()
-    {
-        switch (inputState)
-        {
-            case InputState.None:
-                if (Input.GetKey(KeyCode.Mouse1))
-                {
-                    inputState = InputState.ContinuousMove;
-                    pendingAbilityTriggerActivationKey = KeyCode.Mouse1;
-                }
-                break;
-            case InputState.RightClickAttackPressed:
-                if (Input.GetKeyUp(KeyCode.Mouse1)){
-                    inputState = InputState.None;
-                }
-                break;
-            case InputState.NormalCastPending:
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (TryReserveAbilityTrigger(pendingAbilityTrigger))
-                    {
-                        inputState = InputState.None;
-                        pendingAbilityTrigger = null;
-                    }
-                }
-                break;
-            case InputState.OnReleaseCastPending:
-                if (Input.GetKeyUp(pendingAbilityTriggerActivationKey))
-                {
-                    TryReserveAbilityTrigger(pendingAbilityTrigger);
-                    inputState = InputState.None;
-                    pendingAbilityTrigger = null;
-                }
-                break;
-            case InputState.ContinuousMove:
-                if (Input.GetKey(pendingAbilityTriggerActivationKey))
-                {
-                    selectedUnit.CommandMove(GetCurrentCursorPositionInWorldSpace());
-                }
-                else
-                {
-                    inputState = InputState.None;
-                    pendingAbilityTrigger = null;
-                }
-                break;
-            case InputState.AttackMove:
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (TryReserveAbilityTrigger(pendingAbilityTrigger))
-                    {
-                        inputState = InputState.None;
-                        pendingAbilityTrigger = null;
-                    }
-                    else
-                    {
-                        inputState = InputState.None;
-                        selectedUnit.CommandAttackMove(GetCurrentCursorPositionInWorldSpace());
-                        pendingAbilityTrigger = null;
-                    }
-                }
-                break;
-        }
-    }
 }

@@ -8,7 +8,8 @@ public class trg_FlameShot : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        owner.control.StartChanneling(0.35f, ChannelSuccess);
+        Channel channel = new Channel(selfValidator, 0.35f, false, false, false, false, ChannelSuccess, null);
+        owner.control.StartChanneling(channel);
     }
 
     private void ChannelSuccess()

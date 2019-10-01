@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ai_Vault : AbilityInstance
 {
+    public SelfValidator channelValidator;
     public float vaultDistance = 2f;
     public float vaultSpeed = 6f;
 
@@ -11,9 +12,10 @@ public class ai_Vault : AbilityInstance
     {
 
         castInfo.owner.DashThroughWithSpeed(castInfo.owner.transform.position + castInfo.directionVector * vaultDistance, vaultSpeed*100);
-        castInfo.owner.control.StartChanneling(vaultDistance / vaultSpeed - 0.1f, movable: true);
+        Channel channel = new Channel(channelValidator, vaultDistance / vaultSpeed - 0.1f, false, false, false, false, null, castInfo.owner.CancelDash);
+        castInfo.owner.control.StartChanneling(channel);
 
-        castInfo.owner.control.basicAttackAbilityTrigger.ResetCooldown();
+        castInfo.owner.control.skillSet[0].ResetCooldown();
 
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();

@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
 using NaughtyAttributes;
+using System.Linq;
 
 #region Enums
 public enum Team { None, Red, Blue, Creep }
@@ -201,26 +202,49 @@ public class LivingThing : MonoBehaviourPun
 
     #endregion Unity
 
-    #region Functions For Local
-    public void CommandMove(Vector3 location)
-    {
-        if (SelfValidator.CanCommandMove.Evaluate(this))
-        {
-            control.StartMoving(location);
-        }
-    }
 
-
-    public void CommandAttackMove(Vector3 location)
-    {
-        if (SelfValidator.CanCommandMove.Evaluate(this))
-        {
-            control.StartAttackMoving(location);
-        }
-    }
-    #endregion Functions For Local
 
     #region Functions For Everyone
+
+    
+    public bool IsDead()
+    {
+        return stat.isDead;
+    }
+
+    public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
+    {
+        Collider[] colliders = Physics.OverlapSphere(center, 4f, LayerMask.GetMask("LivingThing"));
+        colliders = colliders.OrderBy(collider => Vector3.Distance(center, collider.transform.position)).ToArray();
+        List<LivingThing> result = new List<LivingThing>();
+        foreach(Collider collider in colliders)
+        {
+            LivingThing lv = collider.GetComponent<LivingThing>();
+            if(lv != null && targetValidator.Evaluate(this, lv))
+            {
+                result.Add(lv);
+            }
+        }
+        return result;
+    }
+
+    public List<LivingThing> GetAllTargetsInLine(Vector3 origin, Vector3 directionVector, float width, float distance, TargetValidator targetValidator)
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(origin, width / 2f, directionVector, distance, LayerMask.GetMask("LivingThing"));
+        hits = hits.OrderBy(hit => Vector3.Distance(origin, hit.collider.transform.position)).ToArray();
+        List<LivingThing> result = new List<LivingThing>();
+        foreach (RaycastHit hit in hits)
+        {
+            LivingThing lv = hit.collider.GetComponent<LivingThing>();
+            if (lv != null && targetValidator.Evaluate(this, lv))
+            {
+                result.Add(lv);
+            }
+        }
+        return result;
+    }
+
+
 
     public LivingThing GetLastAttacker()
     {
@@ -257,7 +281,7 @@ public class LivingThing : MonoBehaviourPun
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
 
-        if (NavMesh.CalculatePath(transform.position, location, control.navMeshAgent.areaMask, path))
+        if (NavMesh.CalculatePath(transform.position, location, control.agent.areaMask, path))
         {
             destination = path.corners[path.corners.Length - 1];
         }
@@ -276,7 +300,7 @@ public class LivingThing : MonoBehaviourPun
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
         
-        if (NavMesh.CalculatePath(transform.position, location, control.navMeshAgent.areaMask, path))
+        if (NavMesh.CalculatePath(transform.position, location, control.agent.areaMask, path))
         {
             destination = path.corners[path.corners.Length - 1];
         }
@@ -298,7 +322,7 @@ public class LivingThing : MonoBehaviourPun
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
 
-        if (NavMesh.CalculatePath(transform.position, landLocation, control.navMeshAgent.areaMask, path))
+        if (NavMesh.CalculatePath(transform.position, landLocation, control.agent.areaMask, path))
         {
             destination = path.corners[path.corners.Length - 1];
         }
@@ -415,8 +439,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcLookAt(Vector3 lookPosition, bool immediately)
     {
-        control.LookAt(lookPosition);
-        if (immediately) control.ImmediatelySetRotation();
+        control.LookAt(lookPosition, immediately);
     }
 
     [PunRPC]

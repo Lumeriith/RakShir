@@ -74,7 +74,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     {
         if (castAnimation != null)
         {
-            if (owner.control.basicAttackAbilityTrigger == this)
+            if (owner.control.skillSet[0] != null && owner.control.skillSet[0] == this)
             {
                 float duration = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f) + 0.05f;
                 owner.PlayCustomAnimation(castAnimation, duration);
@@ -102,16 +102,20 @@ public abstract class AbilityTrigger : MonoBehaviour
         return targetingType == TargetingType.Target || targetingType == TargetingType.PointStrict || targetingType == TargetingType.PointNonStrict;
     }
 
-    public void StartCooldown()
+    public void StartCooldown(bool isBasicAttack = false)
     {
-        cooldownStartTime = Time.time;
-        ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
+        if (isBasicAttack)
+        {
+            cooldownStartTime = Time.time - cooldownTime + (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
+        
+        }
+        else
+        {
+            cooldownStartTime = Time.time;
+            ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
+        }
     }
 
-    public void StartBasicAttackCooldown()
-    {
-        cooldownStartTime = Time.time - cooldownTime + (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
-    }
 
     public void SetCooldown(float time)
     {

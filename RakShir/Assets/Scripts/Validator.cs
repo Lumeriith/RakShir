@@ -132,12 +132,25 @@ public class SelfValidator : System.ICloneable
             CoreStatusEffectType.MindControl,
             CoreStatusEffectType.Charm,
             CoreStatusEffectType.Fear,
-            CoreStatusEffectType.MindControl,
             CoreStatusEffectType.Dash },
         invertResult = true
     };
+    public static SelfValidator CancelsChaseCommand = new SelfValidator
+    {
+        excludes = new List<CoreStatusEffectType>() {
+            CoreStatusEffectType.Stun,
+            CoreStatusEffectType.Airborne,
+            CoreStatusEffectType.Sleep,
+            CoreStatusEffectType.MindControl,
+            CoreStatusEffectType.Charm,
+            CoreStatusEffectType.Fear,
+            CoreStatusEffectType.MindControl },
+        invertResult = true
+    };
 
-    
+
+
+
 
     public static SelfValidator CanBeDamaged = new SelfValidator
     {
