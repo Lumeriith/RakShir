@@ -14,16 +14,16 @@ public enum Relation { Own, Enemy, Ally }
 #endregion Enums
 
 #region Action Info Structs
+public struct InfoManaSpent
+{
+    public LivingThing livingThing;
+    public float amount;
+}
+
 public struct InfoDeath
 {
     public LivingThing victim;
     public LivingThing killer;
-}
-
-public struct InfoAbilityCast
-{
-    public int abilityIndex;
-    public CastInfo castInfo;
 }
 
 public struct InfoMagicDamage
@@ -41,7 +41,13 @@ public struct InfoHeal
     public float originalHeal;
     public float finalHeal;
 }
-
+public struct InfoManaHeal
+{
+    public LivingThing to;
+    public LivingThing from;
+    public float originalManaHeal;
+    public float finalManaHeal;
+}
 
 
 public struct InfoBasicAttackHit
@@ -85,8 +91,6 @@ public class LivingThing : MonoBehaviourPun
 
     #region Action Declarations
 
-    public System.Action<InfoAbilityCast> OnAbilityCast = (InfoAbilityCast _) => { };
-
     public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
     public System.Action<InfoMagicDamage> OnTakeMagicDamage = (InfoMagicDamage _) => { };
 
@@ -112,6 +116,15 @@ public class LivingThing : MonoBehaviourPun
 
     public System.Action<InfoHeal> OnDoHeal = (InfoHeal _) => { };
     public System.Action<InfoHeal> OnTakeHeal = (InfoHeal _) => { };
+
+    public System.Action<InfoManaHeal> OnDoManaHeal = (InfoManaHeal _) => { };
+    public System.Action<InfoManaHeal> OnTakeManaHeal = (InfoManaHeal _) => { };
+
+
+    public System.Action OnStartStunned = () => { };
+    public System.Action OnStopStunned = () => { };
+
+    public System.Action<InfoManaSpent> OnSpendMana = (InfoManaSpent _) => { };
 
     #endregion Action Declarations
 
@@ -206,7 +219,26 @@ public class LivingThing : MonoBehaviourPun
 
     #region Functions For Everyone
 
-    
+
+
+    public bool HasMana(float amount)
+    {
+        return stat.currentMana > amount;
+    }
+
+    public bool SpendMana(float amount)
+    {
+        if(stat.currentMana > amount)
+        {
+            photonView.RPC("RpcSpendMana", RpcTarget.All, amount);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public bool IsDead()
     {
         return stat.isDead;
@@ -356,6 +388,11 @@ public class LivingThing : MonoBehaviourPun
         to.photonView.RPC("RpcApplyHeal", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
     }
 
+    public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
+    {
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
+    }
+
     public void DoBasicAttackImmediately(LivingThing to)
     {
         to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.AllViaServer, photonView.ViewID);
@@ -407,6 +444,18 @@ public class LivingThing : MonoBehaviourPun
     #endregion Functions For Everyone
 
     #region RPCs
+
+    [PunRPC]
+    protected void RpcSpendMana(float amount)
+    {
+        stat.currentMana -= amount;
+        stat.ValidateMana();
+
+        InfoManaSpent info;
+        info.livingThing = this;
+        info.amount = amount;
+        OnSpendMana.Invoke(info);
+    }
 
     [PunRPC]
     protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower)
@@ -539,22 +588,7 @@ public class LivingThing : MonoBehaviourPun
         killer.OnKill.Invoke(info);
     }
 
-    [PunRPC]
-    protected void RpcStartWalking(Vector3 destination)
-    {
-        InfoStartWalking info;
-        info.livingThing = this;
-        info.destination = destination;
-        OnStartWalking.Invoke(info);
-    }
 
-    [PunRPC]
-    protected void RpcStopWalking()
-    {
-        InfoStopWalking info;
-        info.livingThing = this;
-        OnStopWalking.Invoke(info);
-    }
 
     [PunRPC]
     protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower)
@@ -579,6 +613,29 @@ public class LivingThing : MonoBehaviourPun
         from.OnDoHeal.Invoke(info);
         OnTakeHeal.Invoke(info);
     }
+
+    [PunRPC]
+    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower)
+    {
+        float finalAmount;
+        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+
+        finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
+
+        stat.currentMana += amount;
+        stat.ValidateMana();
+
+        InfoManaHeal info;
+        info.from = from;
+        info.to = this;
+        info.originalManaHeal = amount;
+        info.finalManaHeal = finalAmount;
+        from.OnDoManaHeal.Invoke(info);
+        OnTakeManaHeal.Invoke(info);
+    }
+
+
+
 
     private Coroutine lastDashCoroutine;
     private Coroutine lastAirborneCoroutine;

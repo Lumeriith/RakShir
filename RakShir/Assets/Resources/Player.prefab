@@ -52,6 +52,7 @@ MonoBehaviour:
     arrowLength: 4
   targetingType: 3
   range: 0
+  manaCost: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -62,9 +63,11 @@ MonoBehaviour:
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
     excludes: 000203
+    invertResult: 0
   selfValidator:
     excludes: 08090a0b0c0d0e110f
-  cooldownTime: 8
+    invertResult: 0
+  cooldownTime: 2
 --- !u!1 &1914579469
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +120,7 @@ MonoBehaviour:
     arrowLength: 0
   targetingType: 0
   range: 0
+  manaCost: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -127,9 +131,11 @@ MonoBehaviour:
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
     excludes: 000203
+    invertResult: 0
   selfValidator:
     excludes: 08090a0b0c0d0e110f
-  cooldownTime: 8
+    invertResult: 0
+  cooldownTime: 2
 --- !u!1 &292297039143967082
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,22 +978,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567c89d767739cf4ba1a7ae5fd5e2611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navMeshAgent: {fileID: 0}
-  basicAttackAbilityTrigger: {fileID: 8190210891982168133}
-  keybindings:
+  skillSet:
+  - {fileID: 8190210891982168133}
   - {fileID: 8190210893458611064}
   - {fileID: 1914579471}
   - {fileID: 232644371}
   - {fileID: 0}
-  aggroAutomatically: 1
-  aggroRange: 3
-  aggroChecksPerSecond: 4
-  deaggroAutomatically: 1
-  deaggroRange: 4
-  deaggroTime: 2
-  maskLivingThing:
-    serializedVersion: 2
-    m_Bits: 1024
+  - {fileID: 0}
+  attackMoveTargetChecksForSecond: 4
+  attackMoveTargetCheckRange: 4
+  autoChaseRange: 4
+  autoChaseOutOfRangeCancelTime: 2
+  angularSpeed: 800
+  reservedCommands: []
+  agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &3802058682839231509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,6 +1057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7707ffd8663b4e34e96422cff250c479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelOffsetSpeed: 3
+  modelOffsetMultiplier: 2.5
 --- !u!136 &3802058682839231504
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2522,7 +2528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castAnimation: {fileID: 7400000, guid: b912064e9fcb70f48a660aa9f260b716, type: 2}
-  animationDuration: 1
+  animationDuration: 0.7
   indicator:
     type: 1
     range: 1.5
@@ -2530,6 +2536,7 @@ MonoBehaviour:
     arrowLength: 0
   targetingType: 4
   range: 1.5
+  manaCost: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -2540,8 +2547,10 @@ MonoBehaviour:
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
     excludes: 000203
+    invertResult: 0
   selfValidator:
     excludes: 08090a0b0c0d0e01
+    invertResult: 0
   cooldownTime: 0
 --- !u!1 &8190210893458611066
 GameObject:
@@ -2595,6 +2604,7 @@ MonoBehaviour:
     arrowLength: 4
   targetingType: 3
   range: 0
+  manaCost: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -2605,9 +2615,11 @@ MonoBehaviour:
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
     excludes: 000203
+    invertResult: 0
   selfValidator:
     excludes: 08090a0b0c0d0e1101
-  cooldownTime: 4
+    invertResult: 0
+  cooldownTime: 2
 --- !u!1 &8196880484764835945
 GameObject:
   m_ObjectHideFlags: 0

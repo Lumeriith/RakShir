@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Linq;
 public class UnitControlManager : MonoBehaviour
 {
+    public LivingThing selectedUnit;
+
+    [Header("General Key Configurations")]
     public KeyCode castConfirmKey = KeyCode.Mouse0;
     public KeyCode actionKey = KeyCode.Mouse1;
 
@@ -13,6 +16,7 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode reservationModifier = KeyCode.LeftShift;
     public KeyCode selfCastModifier = KeyCode.LeftAlt;
 
+    [Header("Skill Key Configurations")]
     public KeyCode WeaponSkillKey = KeyCode.Q;
     public AbilityCastMethod WeaponSkillCastMethod = AbilityCastMethod.OnRelease;
     public KeyCode ArmorSkillKey = KeyCode.W;
@@ -24,7 +28,7 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode RingSkillKey = KeyCode.Space;
     public AbilityCastMethod RingSkillCastMethod = AbilityCastMethod.OnRelease;
 
-    public LivingThing selectedUnit;
+    
 
     private InputState inputState = InputState.None;
 
@@ -145,11 +149,15 @@ public class UnitControlManager : MonoBehaviour
 
     void Update()
     {
+        if (selectedUnit == null) return;
+
         bool isReserveKeyPressed = Input.GetKey(reservationModifier);
         
-        CheckForStop();
-        CheckForNewCast();
+        
         CheckForAction();
+        CheckForAttack();
+        CheckForNewCast();
+
 
         switch (inputState)
         {
@@ -162,6 +170,12 @@ public class UnitControlManager : MonoBehaviour
                     if(target != null)
                     {
                         selectedUnit.control.CommandChase(target, isReserveKeyPressed);
+                        inputState = InputState.None;
+                    }
+                    else
+                    {
+                        selectedUnit.control.CommandAttackMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
+                        inputState = InputState.None;
                     }
                 }
                 break;
@@ -179,16 +193,24 @@ public class UnitControlManager : MonoBehaviour
                 if (Input.GetKeyDown(castConfirmKey))
                 {
                     bool commandSuccess = CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
-                    if (commandSuccess) inputState = InputState.None;
+                    if (commandSuccess)
+                    {
+                        inputState = InputState.None;
+                        pendingTrigger = null;
+                    }
                 }
                 break;
             case InputState.PendingOnReleaseCast:
-                if (Input.GetKeyUp(pendingTriggerActivationKey))
+                if (Input.GetKeyUp(pendingTriggerActivationKey) || Input.GetKeyDown(castConfirmKey))
                 {
                     CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                    pendingTrigger = null;
                 }
                 break;
         }
+
+        CheckForStop();
+
         SetAppropriateCursor();
         DisplayAppropriateIndicator();
     }
@@ -196,9 +218,18 @@ public class UnitControlManager : MonoBehaviour
 
     private void CheckForStop()
     {
-        if (Input.GetKeyDown(stopKey))
+        if (Input.GetKey(stopKey))
         {
             selectedUnit.control.CommandStop();
+        }
+    }
+
+    private void CheckForAttack()
+    {
+        if (Input.GetKeyDown(attackKey))
+        {
+            pendingTrigger = null;
+            inputState = InputState.Attack;
         }
     }
 
@@ -225,12 +256,25 @@ public class UnitControlManager : MonoBehaviour
             CastButtonPressed(selectedUnit.control.skillSet[5], RingSkillCastMethod, RingSkillKey);
         }
     }
+    
+    private void IndicateCooldown(AbilityTrigger trigger)
+    {
+
+    }
 
     private void CastButtonPressed(AbilityTrigger trigger, AbilityCastMethod method, KeyCode button)
     {
+        if (!trigger.isCooledDown)
+        {
+            IndicateCooldown(trigger);
+            return;
+        }
+        if (!trigger.selfValidator.Evaluate(selectedUnit)) return;
+
         if (trigger.targetingType == AbilityTrigger.TargetingType.None)
         {
-            selectedUnit.control.CommandAbility(trigger, new CastInfo(), Input.GetKey(reservationModifier));
+            selectedUnit.control.CommandAbility(trigger, new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
+            return;
         }
         switch (method)
         {
@@ -251,7 +295,53 @@ public class UnitControlManager : MonoBehaviour
 
     private void CheckForAction()
     {
+        if (Input.GetKeyDown(actionKey))
+        {
+            if(selectedUnit.control.skillSet[0] == null)
+            {
+                if (Input.GetKey(reservationModifier))
+                {
+                    pendingTrigger = null;
+                    inputState = InputState.None;
+                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), true);
+                }
+                else
+                {
+                    pendingTrigger = null;
+                    inputState = InputState.ContinousMove;
+                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), false);
+                }
+            }
+            else
+            {
+                LivingThing target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                if (target != null)
+                {
+                    pendingTrigger = null;
+                    inputState = InputState.None;
+                    selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
+                }
+                else
+                {
+                    if (Input.GetKey(reservationModifier))
+                    {
+                        pendingTrigger = null;
+                        inputState = InputState.None;
+                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), true);
+                    }
+                    else
+                    {
+                        pendingTrigger = null;
+                        inputState = InputState.ContinousMove;
+                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), false);
+                    }
+                }
+            }
 
+
+
+
+        }
     }
 
     private void DisplayAppropriateIndicator()
@@ -261,6 +351,15 @@ public class UnitControlManager : MonoBehaviour
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
+        }
+        else if(inputState == InputState.Attack)
+        {
+            rangeIndicator.transform.position = selectedUnit.transform.position;
+            rangeIndicator.gameObject.SetActive(true);
+            arrowHead.gameObject.SetActive(false);
+            arrowBase.gameObject.SetActive(false);
+            rangeIndicator.transform.localScale = new Vector3(selectedUnit.control.skillSet[0].indicator.range * 2, selectedUnit.control.skillSet[0].indicator.range * 2, 4);
+
         }
         else if(pendingTrigger.indicator.type == IndicatorType.Range)
         {

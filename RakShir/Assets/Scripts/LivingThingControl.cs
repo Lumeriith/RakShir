@@ -69,6 +69,7 @@ public class Channel
     }
 }
 
+[System.Serializable]
 public class Command
 {
     public CommandType type;
@@ -115,8 +116,13 @@ public class Command
     private bool ProcessMove(Vector3 destination)
     {
         if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
-        self.control.agent.destination = destination;
-        if (self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
+        if (self.control.IsMoveProhibitedByChannel()) return false;
+        self.control.agentDestination = destination;
+        if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+        {
+            self.LookAt(self.control.agent.path.corners[1]);
+        }
+        if (Vector3.Distance(destination, self.transform.position) < 0.5f && self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
         return false;
     }
 
@@ -127,7 +133,8 @@ public class Command
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
         if (!self.control.skillSet[0].isCooledDown) return true;
-        
+        if (self.control.IsAttackProhibitedByChannel()) return true;
+        self.LookAt(target.transform.position);
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
         self.control.skillSet[0].Cast(info);
         return true;
@@ -147,7 +154,12 @@ public class Command
             List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, self.control.attackMoveTargetCheckRange, self.control.skillSet[0].targetValidator);
             if(targets.Count == 0)
             {
-                self.control.agent.destination = destination;
+                if (self.control.IsMoveProhibitedByChannel()) return false;
+                self.control.agentDestination = destination;
+                if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                {
+                    self.LookAt(self.control.agent.path.corners[1]);
+                }
                 return false;
             }
             else
@@ -166,14 +178,20 @@ public class Command
     {
         if (SelfValidator.CancelsChaseCommand.Evaluate(self)) return true;
         if (target == null || target.IsDead()) return true;
+        
         if (Vector3.Distance(self.transform.position, target.transform.position) <= self.control.skillSet[0].range)
         {
-            self.control.agent.destination = self.transform.position;
+            self.control.agentDestination = self.transform.position;
             ProcessAttack(target);
         }
         else
         {
-            self.control.agent.destination = target.transform.position;
+            if (self.control.IsMoveProhibitedByChannel()) return false;
+            self.control.agentDestination = target.transform.position;
+            if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+            {
+                self.LookAt(self.control.agent.path.corners[1]);
+            }
         }
 
         return false;
@@ -197,40 +215,52 @@ public class Command
 
     private bool ProcessAbility(AbilityTrigger trigger, CastInfo info)
     {
+        if (self.control.IsAbilityProhibitedByChannel()) return false;
         if (!trigger.isCooledDown) return true;
         if (!trigger.selfValidator.Evaluate(self)) return true;
 
         switch (trigger.targetingType)
         {
             case AbilityTrigger.TargetingType.None:
-                self.control.agent.destination = self.transform.position;
+                self.control.agentDestination = self.transform.position;
                 trigger.Cast(info);
                 return true;
             case AbilityTrigger.TargetingType.Target:
                 if (!trigger.targetValidator.Evaluate(self, info.target)) return true;
                 if (Vector3.Distance(self.transform.position, info.target.transform.position) > trigger.range)
                 {
-                    self.control.agent.destination = info.target.transform.position;
+                    self.control.agentDestination = info.target.transform.position;
+                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                    {
+                        self.LookAt(self.control.agent.path.corners[1]);
+                    }
                     return false;
                 }
                 else
                 {
-                    self.control.agent.destination = self.transform.position;
+                    self.control.agentDestination = self.transform.position;
+                    self.LookAt(info.target.transform.position);
                     trigger.Cast(info);
                     return true;
                 }
             case AbilityTrigger.TargetingType.Direction:
+                self.LookAt(self.transform.position + info.directionVector);
                 trigger.Cast(info);
                 return true;
             case AbilityTrigger.TargetingType.PointStrict:
                 if (Vector3.Distance(self.transform.position, info.point) > trigger.range)
                 {
-                    self.control.agent.destination = info.point;
+                    self.control.agentDestination = info.point;
+                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                    {
+                        self.LookAt(self.control.agent.path.corners[1]);
+                    }
                     return false;
                 }
                 else
                 {
-                    self.control.agent.destination = self.transform.position;
+                    self.control.agentDestination = self.transform.position;
+                    self.LookAt(info.point);
                     trigger.Cast(info);
                     return true;
                 }
@@ -239,6 +269,7 @@ public class Command
                 {
                     info.point = self.transform.position + (info.point - self.transform.position).normalized * trigger.range;
                 }
+                self.LookAt(info.point);
                 trigger.Cast(info);
                 return true;
         }
@@ -266,11 +297,12 @@ public class LivingThingControl : MonoBehaviourPun
 
     private LivingThing livingThing;
 
-    private List<Command> reservedCommands = new List<Command>();
+    public List<Command> reservedCommands = new List<Command>();
     private Command currentCommand { get { return reservedCommands.Count == 0 ? null : reservedCommands[0]; } }
     private List<Channel> ongoingChannels = new List<Channel>();
     private Quaternion desiredRotation = Quaternion.identity;
 
+    public Vector3 agentDestination;
 
     #region Commands
     public void CommandStop()
@@ -341,11 +373,15 @@ public class LivingThingControl : MonoBehaviourPun
         livingThing = GetComponent<LivingThing>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
+        agentDestination = transform.position;
     }
 
     public void LookAt(Vector3 location, bool immediately = false)
     {
-        desiredRotation = Quaternion.LookRotation(location - transform.position, transform.up);
+        Vector3 euler = Quaternion.LookRotation(location - transform.position, transform.up).eulerAngles;
+        euler.x = 0;
+        euler.z = 0;
+        desiredRotation = Quaternion.Euler(euler);
         if (immediately)
         {
             transform.rotation = desiredRotation;
@@ -361,23 +397,97 @@ public class LivingThingControl : MonoBehaviourPun
         ongoingChannels.Add(channel);
     }
     
+    public bool IsMoveProhibitedByChannel()
+    {
+        bool result = false;
+        for(int i = 0; i < ongoingChannels.Count; i++)
+        {
+            if (ongoingChannels[i].HasEnded()) continue;
+            if (!ongoingChannels[i].canMove)
+            {
+                if (ongoingChannels[i].canBeCanceledByCaster)
+                {
+                    ongoingChannels[i].Cancel();
+                }
+                else
+                {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    public bool IsAttackProhibitedByChannel()
+    {
+        bool result = false;
+        for (int i = 0; i < ongoingChannels.Count; i++)
+        {
+            if (ongoingChannels[i].HasEnded()) continue;
+            if (!ongoingChannels[i].canAttack)
+            {
+                if (ongoingChannels[i].canBeCanceledByCaster)
+                {
+                    ongoingChannels[i].Cancel();
+                }
+                else
+                {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    public bool IsAbilityProhibitedByChannel()
+    {
+        bool result = false;
+        for (int i = 0; i < ongoingChannels.Count; i++)
+        {
+            if (ongoingChannels[i].HasEnded()) continue;
+            if (!ongoingChannels[i].canUseAbility)
+            {
+                if (ongoingChannels[i].canBeCanceledByCaster)
+                {
+                    ongoingChannels[i].Cancel();
+                }
+                else
+                {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
 
     private void Update()
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
+        if (livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Airborne) ||
+            livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Dash) ||
+            livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Stasis))
+        {
+            agent.enabled = false;
+        }
+        else
+        {
+            agent.enabled = true;
+        }
 
         List<Channel> channelsToRemove = new List<Channel>();
 
 
-        foreach(Channel channel in ongoingChannels)
+        for(int i = 0;i < ongoingChannels.Count; i++)
         {
-            if (channel.HasEnded())
+            if (ongoingChannels[i].HasEnded())
             {
-                channelsToRemove.Add(channel);
+                channelsToRemove.Add(ongoingChannels[i]);
             }
             else
             {
-                channel.Tick();
+                ongoingChannels[i].Tick();
             }
         }
 
@@ -385,15 +495,48 @@ public class LivingThingControl : MonoBehaviourPun
         {
             ongoingChannels.Remove(channel);
         }
-        
 
-        if(currentCommand != null)
+
+        if (currentCommand != null)
         {
             bool isCommandFinished = currentCommand.Process();
             if (isCommandFinished) reservedCommands.RemoveAt(0);
         }
+        else
+        {
+            agentDestination = transform.position;
+        }
+
+        if (agent.enabled) agent.destination = agentDestination;
+
+        WalkCheck();
     }
 
+    private bool wasWalking = false;
+    private void WalkCheck()
+    {
+        if(!wasWalking && agent.enabled && agent.desiredVelocity.magnitude > float.Epsilon && Vector3.Distance(agent.destination, transform.position) >= .25f)
+        {
+            photonView.RPC("RpcStartWalking", RpcTarget.All, agent.destination);
+            wasWalking = true;
+        } else if (wasWalking && (!agent.enabled || agent.desiredVelocity.magnitude < float.Epsilon || Vector3.Distance(agent.destination, transform.position) < .25f))
+        {
+            photonView.RPC("RpcStopWalking", RpcTarget.All);
+            wasWalking = false;
+        }
+    }
+
+    [PunRPC]
+    private void RpcStartWalking(Vector3 destination)
+    {
+        livingThing.OnStartWalking.Invoke(new InfoStartWalking() { livingThing = this.livingThing, destination = destination });
+    }
+
+    [PunRPC]
+    private void RpcStopWalking()
+    {
+        livingThing.OnStopWalking.Invoke(new InfoStopWalking() { livingThing = livingThing });
+    }
 
 
 }

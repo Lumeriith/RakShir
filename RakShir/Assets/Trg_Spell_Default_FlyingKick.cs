@@ -8,7 +8,7 @@ public class Trg_Spell_Default_FlyingKick : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        Channel channel = new Channel(selfValidator, 0.2f, false, false, true, wqrqwrtrue, 0.2f, ChannelSuccess, null, CommandLockType.DisallowAll);
+        Channel channel = new Channel(selfValidator, 0.2f, false, false, true, false, ChannelSuccess, null);
         info.owner.control.StartChanneling(channel);
         StartCooldown();
     }

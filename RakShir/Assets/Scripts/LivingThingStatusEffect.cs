@@ -11,12 +11,21 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public float totalHasteAmount { get; private set; }
     public float totalSlowAmount { get; private set; }
 
-
+    private Transform model;
+    public float modelOffsetSpeed = 5f;
+    public float modelOffsetMultiplier = 2f;
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
+        model = transform.Find("Model");
 
+    }
 
+    private void Update()
+    {
+        Vector3 offset = model.transform.localPosition;
+        offset.y = Mathf.MoveTowards(offset.y, modelOffset * modelOffsetMultiplier, modelOffsetSpeed * Time.deltaTime);
+        model.transform.localPosition = offset;
     }
 
     public void ApplyCoreStatusEffect(CoreStatusEffect ce)
@@ -77,21 +86,25 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     }
 
 
+    private bool wasStunned = false;
+    private float modelOffset = 0;
     private void FixedUpdate()
     {
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
         bool tickedAirborne = false;
+        float remainingAirboneDuration = 0;
         List<CoreStatusEffect> removeList = new List<CoreStatusEffect>();
         totalHasteAmount = 0;
         totalSlowAmount = 0;
         totalSpeedAmount = 0;
 
-        foreach(CoreStatusEffect ce in coreStatusEffects)
+        foreach (CoreStatusEffect ce in coreStatusEffects)
         {
             if (ce.isAboutToBeDestroyed) continue;
             if (!canTick && ce.type != CoreStatusEffectType.Stasis) continue;
-            if(ce.type == CoreStatusEffectType.Airborne)
+            if (ce.type == CoreStatusEffectType.Airborne)
             {
+                remainingAirboneDuration += ce.duration;
                 if (!tickedAirborne)
                 {
                     ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
@@ -102,34 +115,54 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             {
                 ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
             }
-            
-            if(ce.type == CoreStatusEffectType.Haste && ce.parameter != null)
+
+            if (ce.type == CoreStatusEffectType.Haste && ce.parameter != null)
             {
                 totalHasteAmount += (float)ce.parameter;
             }
-            if(ce.type == CoreStatusEffectType.Slow && ce.parameter != null)
+            if (ce.type == CoreStatusEffectType.Slow && ce.parameter != null)
             {
                 totalSlowAmount += (float)ce.parameter;
             }
-            if(ce.type == CoreStatusEffectType.Speed && ce.parameter != null)
+            if (ce.type == CoreStatusEffectType.Speed && ce.parameter != null)
             {
                 totalSpeedAmount += (float)ce.parameter;
             }
 
             if (photonView.IsMine)
             {
-                if(ce.duration <= 0 || (!SelfValidator.CanHaveHarmfulCoreStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))
+                if (ce.duration <= 0 || (!SelfValidator.CanHaveHarmfulCoreStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))
                 {
                     removeList.Add(ce);
                 }
             }
 
         }
-        foreach(CoreStatusEffect ce in removeList)
+        foreach (CoreStatusEffect ce in removeList)
         {
             RemoveCoreStatusEffect(ce);
         }
+
+        if (photonView.IsMine)
+        {
+            bool isAffectedByStun = IsAffectedBy(CoreStatusEffectType.Stun);
+            if (!wasStunned && isAffectedByStun)
+            {
+                wasStunned = true;
+                photonView.RPC("RpcStartStunned", RpcTarget.All);
+            }
+            else if (wasStunned && !isAffectedByStun)
+            {
+                wasStunned = false;
+                photonView.RPC("RpcStopStunned", RpcTarget.All);
+            }
+
+        }
+
+        modelOffset = remainingAirboneDuration;
     }
+
+
 
 
     [PunRPC]
@@ -205,5 +238,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             }
         }
 
+    }
+
+    [PunRPC]
+    private void RpcStartStunned()
+    {
+        livingThing.OnStartStunned.Invoke();
+    }
+
+    [PunRPC]
+    private void RpcStopStunned()
+    {
+        livingThing.OnStopStunned.Invoke();
     }
 }

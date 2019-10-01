@@ -8,7 +8,7 @@ public class trg_BasicAttack_Default_Punch : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        Channel channel = new Channel(selfValidator, 2f / 5f, false, false, false, true, ChannelSuccess, ResetCooldown);
+        Channel channel = new Channel(selfValidator, 0.23f, false, false, false, true, ChannelSuccess, ResetCooldown);
         owner.control.StartChanneling(channel, true);
         StartCooldown(true);
     }

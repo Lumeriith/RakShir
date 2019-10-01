@@ -9585,6 +9585,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9065641943c77d44e9f8ac655c207066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  channelValidator:
+    excludes: 08090a0b0c0d0e11
+    invertResult: 0
   duration: 0.3
   distance: 3.5
   airborneDuration: 0.1
@@ -9600,6 +9603,7 @@ MonoBehaviour:
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
     excludes: 000203
+    invertResult: 0
 --- !u!198 &3015510785587523878
 ParticleSystem:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class PlayerAnimation : MonoBehaviourPun
     {
         livingThing.OnStartWalking += StartWalkingAnimation;
         livingThing.OnStopWalking += StopWalkingAnimation;
+        livingThing.OnStartStunned += StartStunnedAnimation;
+        livingThing.OnStopStunned += StopStunnedAnimation;
     }
 
     private void StartWalkingAnimation(InfoStartWalking info)
@@ -28,6 +30,14 @@ public class PlayerAnimation : MonoBehaviourPun
         animator.SetBool("IsWalking", false);
     }
 
+    private void StartStunnedAnimation()
+    {
+        animator.SetBool("IsStunned", true);
+    }
 
+    private void StopStunnedAnimation()
+    {
+        animator.SetBool("IsStunned", false);
+    }
 
 }

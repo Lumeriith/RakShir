@@ -8,7 +8,7 @@ public class trg_Spell_Default_FrontKick : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        Channel channel = new Channel(selfValidator, false, 0.2f, ChannelSuccess, null, CommandLockType.DisallowAll);
+        Channel channel = new Channel(selfValidator, 0.2f, false, false, false, false, ChannelSuccess, null);
         owner.control.StartChanneling(channel);
         StartCooldown();
     }

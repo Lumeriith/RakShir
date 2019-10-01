@@ -26,6 +26,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public TargetingType targetingType;
     [ShowIf("ShouldRangeFieldShow")]
     public float range;
+    public float manaCost;
     [ShowIf("ShouldTargetValidatorFieldShow")]
     public TargetValidator targetValidator;
     public SelfValidator selfValidator;
@@ -77,7 +78,7 @@ public abstract class AbilityTrigger : MonoBehaviour
             if (owner.control.skillSet[0] != null && owner.control.skillSet[0] == this)
             {
                 float duration = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f) + 0.05f;
-                owner.PlayCustomAnimation(castAnimation, duration);
+                owner.PlayCustomAnimation(castAnimation, duration * animationDuration);
             }
             else
             {
@@ -116,6 +117,12 @@ public abstract class AbilityTrigger : MonoBehaviour
         }
     }
 
+    public void RefundMana()
+    {
+        owner.stat.currentMana += manaCost;
+        owner.stat.ValidateMana();
+        owner.stat.SyncChangingStats();
+    }
 
     public void SetCooldown(float time)
     {
