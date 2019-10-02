@@ -10,6 +10,7 @@ using System.Linq;
 public enum Team { None, Red, Blue, Creep }
 public enum LivingThingType { Monster, Player, Summon }
 
+public enum DamageType { Physical, Spell, Pure }
 public enum Relation { Own, Enemy, Ally }
 #endregion Enums
 
@@ -24,6 +25,14 @@ public struct InfoDeath
 {
     public LivingThing victim;
     public LivingThing killer;
+}
+
+public struct InfoDamage
+{
+    public LivingThing to;
+    public LivingThing from;
+    public float damage;
+    public DamageType type;
 }
 
 public struct InfoMagicDamage
@@ -90,6 +99,8 @@ public class LivingThing : MonoBehaviourPun
     private AnimationClip[] defaultClips;
 
     #region Action Declarations
+    public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
+    public System.Action<InfoDamage> OnTakeDamage = (InfoDamage _) => { };
 
     public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
     public System.Action<InfoMagicDamage> OnTakeMagicDamage = (InfoMagicDamage _) => { };
@@ -190,7 +201,8 @@ public class LivingThing : MonoBehaviourPun
         defaultClips = animator.runtimeAnimatorController.animationClips;
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
-        
+
+
     }
 
     private void Start()
@@ -483,6 +495,14 @@ public class LivingThing : MonoBehaviourPun
         info.finalDamage = finalAmount;
         OnTakeMagicDamage.Invoke(info);
         info.from.OnDealMagicDamage.Invoke(info);
+
+        InfoDamage info2;
+        info2.damage = amount;
+        info2.from = from;
+        info2.to = this;
+        info2.type = DamageType.Spell;
+        OnTakeDamage.Invoke(info2);
+        from.OnDealDamage.Invoke(info2);
     }
 
     [PunRPC]
@@ -531,19 +551,36 @@ public class LivingThing : MonoBehaviourPun
             info.to = this;
             OnTakeBasicAttackHit.Invoke(info);
             from.OnDoBasicAttackHit.Invoke(info);
+
+            InfoDamage info2;
+            info2.damage = finalAmount;
+            info2.from = from;
+            info2.to = this;
+            info2.type = DamageType.Physical;
+            OnTakeDamage.Invoke(info2);
+            from.OnDealDamage.Invoke(info2);
         }
     }
 
     [PunRPC]
     protected void RpcApplyPureDamage(float amount, int from_id)
     {
+        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
         stat.currentHealth -= Mathf.Max(0, amount);
         stat.ValidateHealth();
-        lastAttacker = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        lastAttacker = from;
         if (photonView.IsMine)
         {
             stat.SyncChangingStats();
         }
+
+        InfoDamage info2;
+        info2.damage = amount;
+        info2.from = from;
+        info2.to = this;
+        info2.type = DamageType.Pure;
+        OnTakeDamage.Invoke(info2);
+        from.OnDealDamage.Invoke(info2);
     }
 
     [PunRPC]

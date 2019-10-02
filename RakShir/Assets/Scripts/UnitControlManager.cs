@@ -28,11 +28,20 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode RingSkillKey = KeyCode.Space;
     public AbilityCastMethod RingSkillCastMethod = AbilityCastMethod.OnRelease;
 
-    
+    [Header("Item Key Configurations")]
+    public KeyCode Item1Key = KeyCode.Alpha1;
+    public KeyCode Item2Key = KeyCode.Alpha2;
+    public KeyCode Item3Key = KeyCode.Alpha3;
+    public KeyCode Item4Key = KeyCode.Alpha4;
+    public KeyCode Item5Key = KeyCode.Alpha5;
+    public KeyCode Item6Key = KeyCode.Alpha6;
+
+    public AbilityCastMethod ItemUseMethod = AbilityCastMethod.OnRelease;
 
     private InputState inputState = InputState.None;
 
     private AbilityTrigger pendingTrigger;
+    private Consumable pendingConsumable;
     private KeyCode pendingTriggerActivationKey;
 
     private Camera mainCamera;
@@ -57,6 +66,21 @@ public class UnitControlManager : MonoBehaviour
         }
     }
 
+    private Activatable GetFirstActivatable()
+    {
+        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("Activatable"));
+        IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
+        foreach (RaycastHit hit in hits)
+        {
+            Activatable act = hit.collider.GetComponent<Activatable>();
+            if (act == null) continue;
+            return act;
+        }
+        return null;
+    }
+
+
     private LivingThing GetFirstValidTarget(TargetValidator tv)
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -65,13 +89,16 @@ public class UnitControlManager : MonoBehaviour
         foreach(RaycastHit hit in hits)
         {
             LivingThing lt = hit.collider.GetComponent<LivingThing>();
-            if(tv.Evaluate(selectedUnit, hit.collider.GetComponent<LivingThing>()))
+            if (lt == null) continue;
+            if(tv.Evaluate(selectedUnit, lt))
             {
                 return lt;
             }
         }
         return null;
     }
+
+
 
     Vector3 GetCurrentCursorPositionInWorldSpace()
     {
@@ -135,6 +162,54 @@ public class UnitControlManager : MonoBehaviour
         }
         return false;
     }
+    private bool CommandConsumableOnContext(Consumable consumable, bool isReservation)
+    {
+        if (consumable == null) return false;
+        CastInfo info = new CastInfo
+        {
+            owner = selectedUnit,
+            point = Vector3.zero,
+            directionVector = Vector3.zero,
+            target = null
+        };
+
+        switch (consumable.targetingType)
+        {
+            case AbilityTrigger.TargetingType.Direction:
+                info.directionVector = GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position;
+                info.directionVector.y = 0;
+                info.directionVector.Normalize();
+
+                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
+                return true;
+            case AbilityTrigger.TargetingType.None:
+                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
+                return true;
+            case AbilityTrigger.TargetingType.PointNonStrict:
+                info.point = GetCurrentCursorPositionInWorldSpace();
+                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
+                return true;
+            case AbilityTrigger.TargetingType.PointStrict:
+                info.point = GetCurrentCursorPositionInWorldSpace();
+                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
+                return true;
+            case AbilityTrigger.TargetingType.Target:
+                LivingThing result = GetFirstValidTarget(consumable.targetValidator);
+                if (result != null)
+                {
+                    info.target = result;
+                    selectedUnit.control.CommandConsumable(consumable, info, isReservation);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+        }
+        return false;
+    }
+
+
 
     private void Awake()
     {
@@ -157,7 +232,7 @@ public class UnitControlManager : MonoBehaviour
         CheckForAction();
         CheckForAttack();
         CheckForNewCast();
-
+        CheckForItem();
 
         switch (inputState)
         {
@@ -166,7 +241,7 @@ public class UnitControlManager : MonoBehaviour
             case InputState.Attack:
                 if (Input.GetKeyDown(castConfirmKey))
                 {
-                    LivingThing target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                    LivingThing target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
                     if(target != null)
                     {
                         selectedUnit.control.CommandChase(target, isReserveKeyPressed);
@@ -192,7 +267,8 @@ public class UnitControlManager : MonoBehaviour
             case InputState.PendingNormalCast:
                 if (Input.GetKeyDown(castConfirmKey))
                 {
-                    bool commandSuccess = CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+
+                    bool commandSuccess = pendingTrigger != null ? CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed) : CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
                     if (commandSuccess)
                     {
                         inputState = InputState.None;
@@ -203,7 +279,14 @@ public class UnitControlManager : MonoBehaviour
             case InputState.PendingOnReleaseCast:
                 if (Input.GetKeyUp(pendingTriggerActivationKey) || Input.GetKeyDown(castConfirmKey))
                 {
-                    CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                    if (pendingTrigger != null)
+                    {
+                        CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                    }
+                    else
+                    {
+                        CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
+                    }
                     pendingTrigger = null;
                 }
                 break;
@@ -256,14 +339,78 @@ public class UnitControlManager : MonoBehaviour
             CastButtonPressed(selectedUnit.control.skillSet[5], RingSkillCastMethod, RingSkillKey);
         }
     }
-    
+
+    private void CheckForItem()
+    {
+        if (Input.GetKeyDown(Item1Key))
+        {
+            ItemButtonPressed(1, ItemUseMethod, Item1Key);
+        }
+        if (Input.GetKeyDown(Item2Key))
+        {
+            ItemButtonPressed(2, ItemUseMethod, Item2Key);
+        }
+        if (Input.GetKeyDown(Item3Key))
+        {
+            ItemButtonPressed(3, ItemUseMethod, Item3Key);
+        }
+        if (Input.GetKeyDown(Item4Key))
+        {
+            ItemButtonPressed(4, ItemUseMethod, Item4Key);
+        }
+        if (Input.GetKeyDown(Item5Key))
+        {
+            ItemButtonPressed(5, ItemUseMethod, Item5Key);
+        }
+        if (Input.GetKeyDown(Item6Key))
+        {
+            ItemButtonPressed(6, ItemUseMethod, Item6Key);
+        }
+    }
+
+
+
     private void IndicateCooldown(AbilityTrigger trigger)
     {
 
     }
 
+    private void ItemButtonPressed(int itemIndex, AbilityCastMethod method, KeyCode button)
+    {
+        PlayerItemBelt belt = selectedUnit.GetComponent<PlayerItemBelt>();
+
+        if (belt == null) return;
+        if (belt.consumables[itemIndex - 1] == null) return;
+        if (!belt.consumables[itemIndex - 1].selfValidator.Evaluate(selectedUnit)) return;
+
+        if (belt.consumables[itemIndex - 1].targetingType == AbilityTrigger.TargetingType.None)
+        {
+            selectedUnit.control.CommandConsumable(belt.consumables[itemIndex - 1], new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
+            return;
+        }
+        switch (method)
+        {
+            case AbilityCastMethod.Normal:
+                inputState = InputState.PendingNormalCast;
+                pendingTrigger = null;
+                pendingConsumable = belt.consumables[itemIndex - 1];
+                break;
+            case AbilityCastMethod.OnRelease:
+                inputState = InputState.PendingOnReleaseCast;
+                pendingTrigger = null;
+                pendingConsumable = belt.consumables[itemIndex - 1];
+                pendingTriggerActivationKey = button;
+                break;
+            case AbilityCastMethod.Quick:
+                CommandConsumableOnContext(belt.consumables[itemIndex - 1], Input.GetKey(reservationModifier));
+                break;
+        }
+    }
+
+
     private void CastButtonPressed(AbilityTrigger trigger, AbilityCastMethod method, KeyCode button)
     {
+        if (trigger == null) return;
         if (!trigger.isCooledDown)
         {
             IndicateCooldown(trigger);
@@ -293,13 +440,21 @@ public class UnitControlManager : MonoBehaviour
         }
     }
 
+
+
     private void CheckForAction()
     {
         if (Input.GetKeyDown(actionKey))
         {
             if(selectedUnit.control.skillSet[0] == null)
             {
-                if (Input.GetKey(reservationModifier))
+                Activatable act = GetFirstActivatable();
+                if (act != null)
+                {
+                    pendingTrigger = null;
+                    inputState = InputState.None;
+                    selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
+                } else if (Input.GetKey(reservationModifier))
                 {
                     pendingTrigger = null;
                     inputState = InputState.None;
@@ -315,11 +470,19 @@ public class UnitControlManager : MonoBehaviour
             else
             {
                 LivingThing target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                Activatable act = GetFirstActivatable();
+
                 if (target != null)
                 {
                     pendingTrigger = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
+                }
+                else if (act != null)
+                {
+                    pendingTrigger = null;
+                    inputState = InputState.None;
+                    selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
                 }
                 else
                 {

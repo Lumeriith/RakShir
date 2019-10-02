@@ -144,7 +144,6 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
             SyncBaseStats();
             SyncSecondaryStats();
             SyncTemporaryAttributes();
-            print("Sync yeah");
         }
     }
 

@@ -7,7 +7,7 @@ using Photon.Pun;
 using UnityEngine.Events;
 
 
-public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability }
+public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable }
 
 
 
@@ -108,6 +108,100 @@ public class Command
                 return ProcessAutoChase((LivingThing)parameters[0]);
             case CommandType.Ability:
                 return ProcessAbility((AbilityTrigger)parameters[0], (CastInfo)parameters[1]);
+            case CommandType.Activate:
+                return ProcessActivate((Activatable)parameters[0]);
+            case CommandType.Consumable:
+                return ProcessConsumable((Consumable)parameters[0], (CastInfo)parameters[1]);
+        }
+        return false;
+    }
+
+    private bool ProcessConsumable(Consumable consumable, CastInfo info)
+    {
+        if (self.control.IsAbilityProhibitedByChannel()) return false;
+        if (!consumable.selfValidator.Evaluate(self)) return true;
+        PlayerItemBelt belt = self.GetComponent<PlayerItemBelt>();
+
+        switch (consumable.targetingType)
+        {
+            case AbilityTrigger.TargetingType.None:
+                self.control.agentDestination = self.transform.position;
+                belt.UseConsumable(consumable, info);
+                return true;
+            case AbilityTrigger.TargetingType.Target:
+                if (!consumable.targetValidator.Evaluate(self, info.target)) return true;
+                if (Vector3.Distance(self.transform.position, info.target.transform.position) > consumable.range)
+                {
+                    self.control.agentDestination = info.target.transform.position;
+                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                    {
+                        self.LookAt(self.control.agent.path.corners[1]);
+                    }
+                    return false;
+                }
+                else
+                {
+                    self.control.agentDestination = self.transform.position;
+                    self.LookAt(info.target.transform.position);
+                    belt.UseConsumable(consumable, info);
+                    return true;
+                }
+            case AbilityTrigger.TargetingType.Direction:
+                self.LookAt(self.transform.position + info.directionVector);
+                belt.UseConsumable(consumable, info);
+                return true;
+            case AbilityTrigger.TargetingType.PointStrict:
+                if (Vector3.Distance(self.transform.position, info.point) > consumable.range)
+                {
+                    self.control.agentDestination = info.point;
+                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                    {
+                        self.LookAt(self.control.agent.path.corners[1]);
+                    }
+                    return false;
+                }
+                else
+                {
+                    self.control.agentDestination = self.transform.position;
+                    self.LookAt(info.point);
+                    belt.UseConsumable(consumable, info);
+                    return true;
+                }
+            case AbilityTrigger.TargetingType.PointNonStrict:
+                if (Vector3.Distance(self.transform.position, info.point) > consumable.range)
+                {
+                    info.point = self.transform.position + (info.point - self.transform.position).normalized * consumable.range;
+                }
+                self.LookAt(info.point);
+                belt.UseConsumable(consumable, info);
+                return true;
+        }
+
+        return false;
+    }
+
+
+    private bool ProcessActivate(Activatable target)
+    {
+        if (!target.channel.channelValidator.Evaluate(self)) return true;
+        if (target == null) return true;
+
+        if (Vector3.Distance(self.transform.position, target.transform.position) <= target.activationRange)
+        {
+            self.control.agentDestination = self.transform.position;
+            self.LookAt(target.transform.position);
+            target.StartActivate(self);
+            return true;
+        }
+        else
+        {
+            if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
+            if (self.control.IsMoveProhibitedByChannel()) return false;
+            self.control.agentDestination = target.transform.position;
+            if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+            {
+                self.LookAt(self.control.agent.path.corners[1]);
+            }
         }
 
         return false;
@@ -325,6 +419,13 @@ public class LivingThingControl : MonoBehaviourPun
         }
     }
 
+    public void CommandActivate(Activatable target, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Activate, target);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
     public void CommandMove(Vector3 destination, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.Move, destination);
@@ -366,6 +467,15 @@ public class LivingThingControl : MonoBehaviourPun
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
+
+    public void CommandConsumable(Consumable consumable, CastInfo info, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Consumable, consumable, info);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
+
 
     #endregion Commands
     private void Awake()
