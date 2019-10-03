@@ -38,6 +38,8 @@ public class UnitControlManager : MonoBehaviour
 
     public AbilityCastMethod ItemUseMethod = AbilityCastMethod.OnRelease;
 
+
+
     private InputState inputState = InputState.None;
 
     private AbilityTrigger pendingTrigger;
@@ -49,9 +51,18 @@ public class UnitControlManager : MonoBehaviour
     private DecalSystem.Decal arrowHead;
     private DecalSystem.Decal arrowBase;
 
+    [Header("Outline Settings")]
+    public TargetValidator canDrawOutline;
+    public Color selfOutlineColor;
+    public Color allyOutlineColor;
+    public Color enemyOutlineColor;
+
+
 
     public enum AbilityCastMethod { Normal, Quick, OnRelease }
     private enum InputState { None, ContinousMove, Attack, PendingOnReleaseCast, PendingNormalCast }
+
+
 
     private static UnitControlManager _instance;
     public static UnitControlManager instance
@@ -89,7 +100,7 @@ public class UnitControlManager : MonoBehaviour
         foreach(RaycastHit hit in hits)
         {
             LivingThing lt = hit.collider.GetComponent<LivingThing>();
-            if (lt == null) continue;
+            if (lt == null || lt.IsDead()) continue;
             if(tv.Evaluate(selectedUnit, lt))
             {
                 return lt;
@@ -219,7 +230,50 @@ public class UnitControlManager : MonoBehaviour
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
     }
 
+    private Outline previousOutline;
+    private void DrawAppropriateOutline()
+    {
+        LivingThing target = GetFirstValidTarget(canDrawOutline);
+        
+        if(target != null)
+        {
+            if (previousOutline != null) previousOutline.enabled = false;
+            previousOutline = target.outline;
 
+
+
+            target.outline.enabled = true;
+            switch (selectedUnit.GetRelationTo(target))
+            {
+                case Relation.Own:
+                    target.outline.OutlineColor = selfOutlineColor;
+                    break;
+                case Relation.Ally:
+                    target.outline.OutlineColor = allyOutlineColor;
+                    break;
+                case Relation.Enemy:
+                    target.outline.OutlineColor = enemyOutlineColor;
+                    break;
+            }
+            target.outline.OutlineMode = Outline.Mode.OutlineVisible;
+            target.outline.OutlineWidth = 1.5f;
+
+
+
+        }
+        else
+        {
+            if(previousOutline != null)
+            {
+                previousOutline.enabled = false;
+                previousOutline = null;
+            }
+        }
+
+        
+
+
+    }
     
 
     void Update()
@@ -227,7 +281,8 @@ public class UnitControlManager : MonoBehaviour
         if (selectedUnit == null) return;
 
         bool isReserveKeyPressed = Input.GetKey(reservationModifier);
-        
+
+        DrawAppropriateOutline();
         
         CheckForAction();
         CheckForAttack();

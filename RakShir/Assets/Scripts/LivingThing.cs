@@ -12,6 +12,9 @@ public enum LivingThingType { Monster, Player, Summon }
 
 public enum DamageType { Physical, Spell, Pure }
 public enum Relation { Own, Enemy, Ally }
+
+
+
 #endregion Enums
 
 #region Action Info Structs
@@ -156,8 +159,11 @@ public class LivingThing : MonoBehaviourPun
     public LivingThing summoner = null;
 
     [Header("Location References")]
-    public Transform rightHand;
     public Transform head;
+    public Transform leftHand;
+    public Transform rightHand;
+    public Transform leftFoot;
+    public Transform rightFoot;
     public Transform top;
     public Transform bottom;
 
@@ -167,6 +173,9 @@ public class LivingThing : MonoBehaviourPun
     public LivingThingStat stat;
     [HideInInspector]
     public LivingThingStatusEffect statusEffect;
+
+    public Outline outline;
+
     public float currentHealth
     {
         get
@@ -209,8 +218,10 @@ public class LivingThing : MonoBehaviourPun
     {
         if (prototypeHealthbarToInstantiate != null)
         {
-            Instantiate(prototypeHealthbarToInstantiate, Transform.FindObjectOfType<Canvas>().transform, false).GetComponent<PlayerHealthbarPrototype>().targetPlayer = this;
+            Instantiate(prototypeHealthbarToInstantiate, FindObjectOfType<Canvas>().transform, false).GetComponent<PlayerHealthbarPrototype>().targetPlayer = this;
         }
+        outline = transform.Find("Model").GetComponentInChildren<Outline>();
+        outline.enabled = false;
     }
 
     private void Update()
@@ -264,7 +275,7 @@ public class LivingThing : MonoBehaviourPun
         foreach(Collider collider in colliders)
         {
             LivingThing lv = collider.GetComponent<LivingThing>();
-            if(lv != null && targetValidator.Evaluate(this, lv))
+            if(lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);
             }
@@ -280,7 +291,7 @@ public class LivingThing : MonoBehaviourPun
         foreach (RaycastHit hit in hits)
         {
             LivingThing lv = hit.collider.GetComponent<LivingThing>();
-            if (lv != null && targetValidator.Evaluate(this, lv))
+            if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);
             }
@@ -288,6 +299,32 @@ public class LivingThing : MonoBehaviourPun
         return result;
     }
 
+    public void ChangeWalkAnimation(string animationName)
+    {
+        for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
+        {
+            if (CustomAnimationBox.instance.animations[i].name == animationName)
+            {
+                photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, i);
+
+                return;
+            }
+        }
+        Debug.LogError("Custom Walk animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+    }
+    public void ChangeStandAnimation(string animationName)
+    {
+        for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
+        {
+            if (CustomAnimationBox.instance.animations[i].name == animationName)
+            {
+                photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, i);
+
+                return;
+            }
+        }
+        Debug.LogError("Custom Stand animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+    }
 
 
     public LivingThing GetLastAttacker()

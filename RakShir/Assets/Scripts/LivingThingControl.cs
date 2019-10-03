@@ -597,7 +597,16 @@ public class LivingThingControl : MonoBehaviourPun
             }
             else
             {
-                ongoingChannels[i].Tick();
+                if (ongoingChannels[i].channelValidator.Evaluate(livingThing))
+                {
+                    ongoingChannels[i].Tick();
+                }
+                else
+                {
+                    ongoingChannels[i].Cancel();
+                    channelsToRemove.Add(ongoingChannels[i]);
+                }
+                
             }
         }
 

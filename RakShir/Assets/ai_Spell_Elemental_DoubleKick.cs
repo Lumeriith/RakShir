@@ -67,7 +67,7 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
         float dashDuration;
         float dashDistance = Vector3.Distance(info.owner.transform.position, targetPosition);
         dashDuration = dashDistance / dashSpeed;
-        Channel channel = new Channel(channelValidator, dashDuration + delayBeforeFirstKick + delayBeforeSecondKick + delayAfterSecondKick, false, false, true, false, CancelDashKick, null);
+        Channel channel = new Channel(channelValidator, dashDuration + delayBeforeFirstKick + delayBeforeSecondKick + delayAfterSecondKick, false, false, false, false, null, CancelDashKick);
         info.owner.control.StartChanneling(channel);
         info.owner.DashThroughForDuration(targetPosition, dashDuration);
         info.owner.LookAt(target.transform.position, true);

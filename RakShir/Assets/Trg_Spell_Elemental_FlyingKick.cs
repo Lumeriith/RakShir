@@ -15,7 +15,7 @@ public class Trg_Spell_Elemental_FlyingKick : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Elemental_FlyingKick", transform.position, info.directionQuaternion, info);
+        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Elemental_FlyingKick", owner.transform.position, info.directionQuaternion, info);
     }
 
 }

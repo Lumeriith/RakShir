@@ -13,7 +13,6 @@ public abstract class Consumable : Activatable
 
     [Header("Consumable Settings")]
     public bool useOnPickup = false;
-    public GameObject worldModel;
     public AnimationClip useAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
@@ -61,10 +60,8 @@ public abstract class Consumable : Activatable
         if (belt.AddConsumable(this))
         {
             transform.SetParent(activator.transform);
-            if(worldModel != null)
-            {
-                worldModel.SetActive(false);
-            }
+            transform.position = activator.transform.position;
+            gameObject.SetActive(false);
         }
     }
 

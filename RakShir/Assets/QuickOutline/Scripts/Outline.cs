@@ -109,8 +109,10 @@ public class Outline : MonoBehaviour {
       materials.Add(outlineFillMaterial);
 
       renderer.materials = materials.ToArray();
+
     }
-  }
+        UpdateMaterialProperties();
+    }
 
   void OnValidate() {
 

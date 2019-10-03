@@ -46,6 +46,8 @@ public abstract class AbilityTrigger : MonoBehaviour
             if(_owner == null)
             {
                 _owner = transform.parent.GetComponent<LivingThing>();
+                if(_owner == null && transform.parent.parent != null) _owner = transform.parent.parent.GetComponent<LivingThing>();
+
             }
             return _owner;
         }

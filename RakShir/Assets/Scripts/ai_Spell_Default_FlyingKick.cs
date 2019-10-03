@@ -14,6 +14,8 @@ public class ai_Spell_Default_FlyingKick : AbilityInstance
     public float bonusDamage;
     public TargetValidator targetValidator;
 
+    public SelfValidator channelValidator;
+
     private ParticleSystem fly;
     private ParticleSystem hit;
 
@@ -32,7 +34,16 @@ public class ai_Spell_Default_FlyingKick : AbilityInstance
         Vector3 targetPosition = info.owner.transform.position + info.directionVector * distance;
         float dashDuration = Vector3.Distance(targetPosition, info.owner.transform.position) / speed;
         info.owner.DashThroughForDuration(targetPosition, dashDuration);
+        Channel channel = new Channel(channelValidator, dashDuration, false, false, true, false, null, Stopped);
+        info.owner.control.StartChanneling(channel);
         StartCoroutine(CoroutineEndAfterFullDistance(dashDuration));
+    }
+
+    private void Stopped()
+    {
+        if (!isAlive) return;
+        DetachChildParticleSystemsAndAutoDelete();
+        DestroySelf();
     }
 
     protected override void AliveUpdate()
