@@ -24,7 +24,7 @@ MonoBehaviour:
     Protocol: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  PunLogging: 1
+  PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
@@ -34,91 +34,50 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - RpcApplyDamage
-  - RpcApplyRawDamage
-  - RpcApplyRawDamage
-  - RpcSyncPrimaryStats
-  - RpcSyncBaseStats
-  - RpcSyncSecondaryStats
-  - RpcSyncTemporaryAttributes
-  - RpcSyncChangingStats
-  - RpcDie
-  - RpcDie
-  - RpcInvokeOnDealDamage
-  - RpcInvokeOnDealDamage
-  - RemoveCoreStatusEffect
-  - RpcApplyCoreStatusEffect
-  - RpcRemoveCoreStatusEffect
-  - RpcAddDurationToCoreStatusEffect
-  - RpcSetDurationOfCoreStatusEffect
-  - RpcCleanseCoreStatusEffect
-  - RpcLerp
-  - RpcDetachChildParticleSystemsAndAutoDelete
-  - RpcDetachChildParticleSystemsAndAutoDelete
-  - RpcDetachChildParticleSystemsAndAutoDelete
-  - Landed
-  - DetachChildParticleSystemsAndAutoDelete
-  - DetachChildParticleSystemsAndAutoDelete
-  - RpcDestroySelf
-  - RpcDestroySelf
-  - RpcExplode
-  - Explode
+  - CreateFlash
+  - CreateHitEffect
   - ExplodeEffect
-  - RpcApplyHeal
-  - RpcApplyHeal
+  - Landed
+  - RpcAddDurationToCoreStatusEffect
+  - RpcAirborne
   - RpcApplyBasicAttackDamage
-  - RpcApplyBasicAttackDamage
+  - RpcApplyCoreStatusEffect
+  - RpcApplyHeal
   - RpcApplyMagicDamage
-  - RpcApplyMagicDamage
+  - RpcApplyManaHeal
   - RpcApplyPureDamage
-  - RpcApplyPureDamage
-  - RpcChannelBasicAttack
-  - RpcChannelBasicAttack
-  - RpcChannelBasicAttackCanceled
-  - RpcChannelBasicAttackCanceled
-  - RpcChannelBasicAttackSuccess
-  - RpcChannelBasicAttackSuccess
-  - RpcDeath
-  - RpcDeath
-  - RpcStartWalking
-  - RpcStartWalking
-  - RpcStopWalking
-  - RpcStopWalking
-  - RpcCast
-  - RpcPlayCustomAnimation
+  - RpcCancelAirborne
+  - RpcCancelDash
   - RpcChangeStandAnimation
   - RpcChangeWalkAnimation
-  - RpcFizzleOut
-  - CreateFlash
-  - RpcLookAt
-  - RpcLookAt
-  - CreateHitEffect
-  - RpcCancelLerp
-  - RpcCancelDash
-  - RpcAirborne
-  - RpcCancelAirborne
-  - RpcDash
-  - CoroutineEndAfterFullDistance
-  - Hit
-  - RpcHit
-  - RpcStartStunned
-  - RpcStopStunned
-  - RpcApplyManaHeal
-  - RpcApplyManaHeal
-  - RpcSpendMana
-  - RpcSpendMana
+  - RpcChannelBasicAttack
+  - RpcChannelBasicAttackCanceled
+  - RpcChannelBasicAttackSuccess
   - RpcChannelCancel
   - RpcChannelStart
   - RpcChannelSuccess
-  - RpcOnEquip
-  - RpcOnUnequip
+  - RpcCleanseCoreStatusEffect
+  - RpcDash
+  - RpcDeath
+  - RpcDestroySelf
+  - RpcDetachChildParticleSystemsAndAutoDelete
   - RpcEquip
-  - RpcEquip
-  - RpcEquip
-  - RpcEquip
-  - RpcUnequip
-  - RpcUnequip
-  - RpcUnequip
+  - RpcExplode
+  - RpcFizzleOut
+  - RpcHit
+  - RpcLookAt
+  - RpcPlayCustomAnimation
+  - RpcRemoveCoreStatusEffect
+  - RpcSetDurationOfCoreStatusEffect
+  - RpcSpendMana
+  - RpcStartStunned
+  - RpcStartWalking
+  - RpcStopStunned
+  - RpcStopWalking
+  - RpcSyncBaseStats
+  - RpcSyncChangingStats
+  - RpcSyncSecondaryStats
+  - RpcSyncTemporaryAttributes
   - RpcUnequip
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0

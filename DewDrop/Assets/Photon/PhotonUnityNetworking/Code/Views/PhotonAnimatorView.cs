@@ -25,6 +25,7 @@ namespace Photon.Pun
     /// Triggers are raised true during one frame only.
     /// </remarks>
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(PhotonView))]
     [AddComponentMenu("Photon Networking/Photon Animator View")]
     public class PhotonAnimatorView : MonoBehaviour, IPunObservable
     {
@@ -106,7 +107,7 @@ namespace Photon.Pun
         private Vector3 m_ReceiverPosition;
         private float m_LastDeserializeTime;
         private bool m_WasSynchronizeTypeChanged = true;
-        public PhotonView m_PhotonView;
+        private PhotonView m_PhotonView;
 
         /// <summary>
         /// Cached raised triggers that are set to be synchronized in discrete mode. since a Trigger only stay up for less than a frame,
@@ -122,7 +123,6 @@ namespace Photon.Pun
         private void Awake()
         {
             this.m_PhotonView = GetComponent<PhotonView>();
-            if (this.m_PhotonView == null) m_PhotonView = GetComponentInParent<PhotonView>();
             this.m_Animator = GetComponent<Animator>();
         }
 
