@@ -574,10 +574,12 @@ public class LivingThingControl : MonoBehaviourPun
 
     private void Update()
     {
+        if (!photonView.IsMine) return;
+
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
-        if (livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Airborne) ||
-            livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Dash) ||
-            livingThing.statusEffect.IsAffectedBy(CoreStatusEffectType.Stasis))
+        if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
+            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
+            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis))
         {
             agent.enabled = false;
         }

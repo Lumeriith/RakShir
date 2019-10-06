@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class StatusEffectParticleEffectAutoDestroy : MonoBehaviour
 {
-    public CoreStatusEffect core;
+    public StatusEffect core;
     private ParticleSystem ps;
 
 

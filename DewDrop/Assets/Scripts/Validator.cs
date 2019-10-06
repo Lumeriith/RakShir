@@ -17,7 +17,7 @@ public class TargetValidator : System.ICloneable
     public bool canTargetEnemySummon = true;
     public bool canTargetEnemyMonster = true;
 
-    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stasis, CoreStatusEffectType.Invulnerable, CoreStatusEffectType.Untargetable };
+    public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stasis, StatusEffectType.Invulnerable, StatusEffectType.Untargetable };
 
     public bool invertResult = false;
 
@@ -32,7 +32,7 @@ public class TargetValidator : System.ICloneable
         tv.canTargetEnemyPlayer = canTargetEnemyPlayer;
         tv.canTargetEnemySummon = canTargetEnemySummon;
         tv.canTargetEnemyMonster = canTargetEnemyMonster;
-        tv.excludes = new List<CoreStatusEffectType>(excludes);
+        tv.excludes = new List<StatusEffectType>(excludes);
         return tv;
     }
 
@@ -48,10 +48,10 @@ public class TargetValidator : System.ICloneable
         canTargetEnemySummon = true,
         canTargetEnemyMonster = true,
 
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stasis,
-          CoreStatusEffectType.Invulnerable,
-          CoreStatusEffectType.Untargetable }
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Stasis,
+          StatusEffectType.Invulnerable,
+          StatusEffectType.Untargetable }
     };
 
     public static TargetValidator BeneficialSpellDefault = new TargetValidator
@@ -65,9 +65,9 @@ public class TargetValidator : System.ICloneable
         canTargetEnemySummon = false,
         canTargetEnemyMonster = false,
 
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stasis,
-          CoreStatusEffectType.Untargetable }
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Stasis,
+          StatusEffectType.Untargetable }
     };
 
 
@@ -96,7 +96,7 @@ public class TargetValidator : System.ICloneable
 
         if (!typeAndTeamCheck) return invertResult ? true : false;
 
-        foreach(CoreStatusEffectType type in excludes)
+        foreach(StatusEffectType type in excludes)
         {
             if (target.statusEffect.IsAffectedBy(type)) return invertResult ? true : false;
         }
@@ -111,40 +111,40 @@ public class TargetValidator : System.ICloneable
 public class SelfValidator : System.ICloneable
 {
 
-    public List<CoreStatusEffectType> excludes = new List<CoreStatusEffectType>() { CoreStatusEffectType.Stun, CoreStatusEffectType.Airborne, CoreStatusEffectType.Sleep, CoreStatusEffectType.Polymorph, CoreStatusEffectType.MindControl, CoreStatusEffectType.Charm, CoreStatusEffectType.Fear, CoreStatusEffectType.Silence };
+    public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stun, StatusEffectType.Airborne, StatusEffectType.Sleep, StatusEffectType.Polymorph, StatusEffectType.MindControl, StatusEffectType.Charm, StatusEffectType.Fear, StatusEffectType.Silence };
 
     public bool invertResult = false;
 
     public static SelfValidator CanTick = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stasis }
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Stasis }
     };
 
 
     public static SelfValidator CancelsMoveCommand = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>() {
-            CoreStatusEffectType.Stun,
-            CoreStatusEffectType.Airborne,
-            CoreStatusEffectType.Sleep,
-            CoreStatusEffectType.Root,
-            CoreStatusEffectType.MindControl,
-            CoreStatusEffectType.Charm,
-            CoreStatusEffectType.Fear,
-            CoreStatusEffectType.Dash },
+        excludes = new List<StatusEffectType>() {
+            StatusEffectType.Stun,
+            StatusEffectType.Airborne,
+            StatusEffectType.Sleep,
+            StatusEffectType.Root,
+            StatusEffectType.MindControl,
+            StatusEffectType.Charm,
+            StatusEffectType.Fear,
+            StatusEffectType.Dash },
         invertResult = true
     };
     public static SelfValidator CancelsChaseCommand = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>() {
-            CoreStatusEffectType.Stun,
-            CoreStatusEffectType.Airborne,
-            CoreStatusEffectType.Sleep,
-            CoreStatusEffectType.MindControl,
-            CoreStatusEffectType.Charm,
-            CoreStatusEffectType.Fear,
-            CoreStatusEffectType.MindControl },
+        excludes = new List<StatusEffectType>() {
+            StatusEffectType.Stun,
+            StatusEffectType.Airborne,
+            StatusEffectType.Sleep,
+            StatusEffectType.MindControl,
+            StatusEffectType.Charm,
+            StatusEffectType.Fear,
+            StatusEffectType.MindControl },
         invertResult = true
     };
 
@@ -154,17 +154,17 @@ public class SelfValidator : System.ICloneable
 
     public static SelfValidator CanBeDamaged = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Stasis,
-          CoreStatusEffectType.Invulnerable,
-          CoreStatusEffectType.Protected }
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Stasis,
+          StatusEffectType.Invulnerable,
+          StatusEffectType.Protected }
     };
 
-    public static SelfValidator CanHaveHarmfulCoreStatusEffects = new SelfValidator
+    public static SelfValidator CanHaveHarmfulStatusEffects = new SelfValidator
     {
-        excludes = new List<CoreStatusEffectType>()
-        { CoreStatusEffectType.Invulnerable,
-          CoreStatusEffectType.Unstoppable }
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Invulnerable,
+          StatusEffectType.Unstoppable }
     };
 
 
@@ -173,7 +173,7 @@ public class SelfValidator : System.ICloneable
     public object Clone()
     {
         SelfValidator sv = new SelfValidator();
-        sv.excludes = new List<CoreStatusEffectType>(excludes);
+        sv.excludes = new List<StatusEffectType>(excludes);
         return sv;
     }
 
@@ -182,7 +182,7 @@ public class SelfValidator : System.ICloneable
     {
         if (self == null) return invertResult ? true : false;
 
-        foreach (CoreStatusEffectType type in excludes)
+        foreach (StatusEffectType type in excludes)
         {
             if (self.statusEffect.IsAffectedBy(type)) return invertResult ? true : false;
         }

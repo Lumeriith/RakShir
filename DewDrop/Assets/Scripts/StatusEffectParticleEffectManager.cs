@@ -19,9 +19,9 @@ public class StatusEffectParticleEffectManager : MonoBehaviour
         }
     }
 
-    public void CreateParticleEffect(CoreStatusEffect ce)
+    public void CreateParticleEffect(StatusEffect ce)
     {
-        Transform target = transform.Find(System.Enum.GetName(typeof(CoreStatusEffectType), ce.type)); 
+        Transform target = transform.Find(System.Enum.GetName(typeof(StatusEffectType), ce.type)); 
 
         if(target != null)
         {

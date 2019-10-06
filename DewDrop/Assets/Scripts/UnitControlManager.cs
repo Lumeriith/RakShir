@@ -241,25 +241,24 @@ public class UnitControlManager : MonoBehaviour
             previousOutline = target.outline;
 
 
-
-            target.outline.enabled = true;
-            switch (selectedUnit.GetRelationTo(target))
+            if(target.outline != null)
             {
-                case Relation.Own:
-                    target.outline.OutlineColor = selfOutlineColor;
-                    break;
-                case Relation.Ally:
-                    target.outline.OutlineColor = allyOutlineColor;
-                    break;
-                case Relation.Enemy:
-                    target.outline.OutlineColor = enemyOutlineColor;
-                    break;
+                target.outline.enabled = true;
+                switch (selectedUnit.GetRelationTo(target))
+                {
+                    case Relation.Own:
+                        target.outline.OutlineColor = selfOutlineColor;
+                        break;
+                    case Relation.Ally:
+                        target.outline.OutlineColor = allyOutlineColor;
+                        break;
+                    case Relation.Enemy:
+                        target.outline.OutlineColor = enemyOutlineColor;
+                        break;
+                }
+                target.outline.OutlineMode = Outline.Mode.OutlineVisible;
+                target.outline.OutlineWidth = 1.5f;
             }
-            target.outline.OutlineMode = Outline.Mode.OutlineVisible;
-            target.outline.OutlineWidth = 1.5f;
-
-
-
         }
         else
         {

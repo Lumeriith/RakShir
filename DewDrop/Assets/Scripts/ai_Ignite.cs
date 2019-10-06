@@ -12,7 +12,7 @@ public class ai_Ignite : AbilityInstance
     public float explosionRadius;
     public float damage;
     public TargetValidator targetValidator;
-    public CoreStatusEffectType ccType;
+    public StatusEffectType ccType;
     public float ccDuration;
 
     private float elapsedTimeAfterLatched = 0;
@@ -70,9 +70,9 @@ public class ai_Ignite : AbilityInstance
                         if (lv == null) continue;
                         if (targetValidator.Evaluate(info.owner, lv))
                         {
-                            CoreStatusEffect cc = new CoreStatusEffect(info.owner, ccType, ccDuration);
+                            StatusEffect cc = new StatusEffect(info.owner, ccType, ccDuration);
 
-                            lv.statusEffect.ApplyCoreStatusEffect(cc);
+                            lv.statusEffect.ApplyStatusEffect(cc);
                             info.owner.DoMagicDamage(damage, lv);
 
                         }

@@ -13,8 +13,8 @@ public class ai_BasicAttack_Elemental_Punch : AbilityInstance
         if (!photonView.IsMine) return;
         info = castInfo;
 
-        CoreStatusEffect slow = new CoreStatusEffect(info.owner, CoreStatusEffectType.Slow, slowDuration, slowAmount);
-        castInfo.target.statusEffect.ApplyCoreStatusEffect(slow);
+        StatusEffect slow = new StatusEffect(info.owner, StatusEffectType.Slow, slowDuration, slowAmount);
+        castInfo.target.statusEffect.ApplyStatusEffect(slow);
 
         info.owner.DoBasicAttackImmediately(info.target);
         DetachChildParticleSystemsAndAutoDelete();

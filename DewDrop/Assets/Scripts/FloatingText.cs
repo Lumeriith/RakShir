@@ -36,7 +36,7 @@ public class FloatingText : MonoBehaviour
 
     void Start()
     {
-        uiElement.SetParent(FindObjectOfType<Canvas>().transform); // Fix
+        uiElement.SetParent(transform.Find("/Floating Text Canvas")); // Fix
         StartCoroutine("CoroutineDisappear");
     }
 

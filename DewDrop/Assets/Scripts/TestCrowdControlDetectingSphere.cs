@@ -7,7 +7,7 @@ public class TestCrowdControlDetectingSphere : MonoBehaviour
     private new Renderer renderer;
     private LivingThing livingThing;
 
-    public CoreStatusEffectType detect;
+    public StatusEffectType detect;
     private void Awake()
     {
         renderer = GetComponent<Renderer>();

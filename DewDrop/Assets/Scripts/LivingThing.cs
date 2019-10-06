@@ -95,7 +95,6 @@ public struct InfoStopWalking
 
 public class LivingThing : MonoBehaviourPun
 {
-    public GameObject prototypeHealthbarToInstantiate;
     private LivingThing lastAttacker;
     private Animator animator;
     private AnimatorOverrideController aoc;
@@ -157,7 +156,8 @@ public class LivingThing : MonoBehaviourPun
 
     [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
-
+    [Header("Infobar Settings")]
+    public GameObject infobar;
     [Header("Location References")]
     public Transform head;
     public Transform leftHand;
@@ -211,15 +211,16 @@ public class LivingThing : MonoBehaviourPun
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
 
+        if(infobar != null)
+        {
+            Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(this);
+        }
+
 
     }
 
     private void Start()
     {
-        if (prototypeHealthbarToInstantiate != null)
-        {
-            Instantiate(prototypeHealthbarToInstantiate, FindObjectOfType<Canvas>().transform, false).GetComponent<PlayerHealthbarPrototype>().targetPlayer = this;
-        }
         outline = transform.Find("Model").GetComponentInChildren<Outline>();
         outline.enabled = false;
     }
@@ -370,8 +371,8 @@ public class LivingThing : MonoBehaviourPun
         {
             destination = location;
         }
-        CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, duration);
-        statusEffect.ApplyCoreStatusEffect(dash);
+        StatusEffect dash = new StatusEffect(this, StatusEffectType.Dash, duration);
+        statusEffect.ApplyStatusEffect(dash);
         photonView.RPC("RpcDash", RpcTarget.All, destination, duration);
     }
 
@@ -392,8 +393,8 @@ public class LivingThing : MonoBehaviourPun
 
         float time = Vector3.Distance(transform.position, destination) / (speed/100); // Fix this.
 
-        CoreStatusEffect dash = new CoreStatusEffect(this, CoreStatusEffectType.Dash, time);
-        statusEffect.ApplyCoreStatusEffect(dash);
+        StatusEffect dash = new StatusEffect(this, StatusEffectType.Dash, time);
+        statusEffect.ApplyStatusEffect(dash);
         photonView.RPC("RpcDash", RpcTarget.All, destination, time);
     }
 
@@ -411,20 +412,20 @@ public class LivingThing : MonoBehaviourPun
         {
             destination = landLocation;
         }
-        CoreStatusEffect airborne = new CoreStatusEffect(this, CoreStatusEffectType.Airborne, duration);
-        statusEffect.ApplyCoreStatusEffect(airborne);
+        StatusEffect airborne = new StatusEffect(this, StatusEffectType.Airborne, duration);
+        statusEffect.ApplyStatusEffect(airborne);
         photonView.RPC("RpcAirborne", RpcTarget.All, destination, duration);
     }
 
     public void CancelAirborne()
     {
-        statusEffect.CleanseCoreStatusEffect(CoreStatusEffectType.Airborne);
+        statusEffect.CleanseStatusEffect(StatusEffectType.Airborne);
         photonView.RPC("RpcCancelAirborne", RpcTarget.All);
     }
 
     public void CancelDash()
     {
-        statusEffect.CleanseCoreStatusEffect(CoreStatusEffectType.Dash);
+        statusEffect.CleanseStatusEffect(StatusEffectType.Dash);
         photonView.RPC("RpcCancelDash", RpcTarget.All);
     }
 
@@ -434,27 +435,27 @@ public class LivingThing : MonoBehaviourPun
     }
     public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
     public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
     public void DoBasicAttackImmediately(LivingThing to)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.AllViaServer, photonView.ViewID);
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID);
     }
 
     public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.AllViaServer, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
     public void DoPureDamage(float amount, LivingThing to)
     {
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.AllViaServer, amount, photonView.ViewID);
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID);
     }
 
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
@@ -490,9 +491,24 @@ public class LivingThing : MonoBehaviourPun
         photonView.RPC("RpcDeath", RpcTarget.AllViaServer);
     }
 
+    public void Revive()
+    {
+        photonView.RPC("RpcRevive", RpcTarget.AllViaServer);
+    }
+
     #endregion Functions For Everyone
 
     #region RPCs
+
+    [PunRPC]
+    protected void RpcRevive()
+    {
+        stat.isDead = false;
+        if(stat.currentHealth == 0)
+        {
+            stat.currentHealth = 1;
+        }
+    }
 
     [PunRPC]
     protected void RpcSpendMana(float amount)
@@ -555,7 +571,7 @@ public class LivingThing : MonoBehaviourPun
         
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
 
-        if (from.statusEffect.IsAffectedBy(CoreStatusEffectType.Blind))
+        if (from.statusEffect.IsAffectedBy(StatusEffectType.Blind))
         {
             InfoMiss info;
             info.from = from;
@@ -653,12 +669,17 @@ public class LivingThing : MonoBehaviourPun
         InfoDeath info;
         LivingThing killer = GetLastAttacker();
 
+        if (killer == null) killer = this;
+
         info.killer = killer;
         info.victim = this;
         
         stat.isDead = true;
 
+        stat.currentHealth = 0;
+
         OnDeath.Invoke(info);
+        
         killer.OnKill.Invoke(info);
     }
 

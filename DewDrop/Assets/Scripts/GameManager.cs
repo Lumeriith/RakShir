@@ -9,11 +9,10 @@ public class GameManager : MonoBehaviour
     public Vector2 normalCursorHotspot;
     public Texture2D attackCursor;
     public Vector2 attackCursorHotspot;
-
+    
     public enum CursorShapeType { None, Normal, Attack, AbilityInstance }
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
-
 
     public LivingThing localPlayer
     {

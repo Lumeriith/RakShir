@@ -17,6 +17,11 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     {
         object[] initData = info.photonView.InstantiationData;
         CastInfo castInfo;
+        if(initData == null)
+        {
+            print("AbilityInstance must be instantiated by AbilityInstanceManager!");
+            return;
+        }
         if ((int)initData[0] != -1)
         {
             castInfo.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();

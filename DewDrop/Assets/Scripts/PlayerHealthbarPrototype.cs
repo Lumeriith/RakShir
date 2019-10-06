@@ -17,7 +17,7 @@ public class PlayerHealthbarPrototype : MonoBehaviour
     public Vector3 UIOffset;
 
     [ReorderableList]
-    public List<CoreStatusEffectType> displayCCOrder;
+    public List<StatusEffectType> displayCCOrder;
     public List<string> displayCCText;
     private void Awake()
     {
@@ -55,7 +55,7 @@ public class PlayerHealthbarPrototype : MonoBehaviour
 
         string extraText = "";
 
-        foreach(CoreStatusEffectType type in System.Enum.GetValues(typeof(CoreStatusEffectType)))
+        foreach(StatusEffectType type in System.Enum.GetValues(typeof(StatusEffectType)))
         {
             if (targetPlayer.statusEffect.IsAffectedBy(type))
             {

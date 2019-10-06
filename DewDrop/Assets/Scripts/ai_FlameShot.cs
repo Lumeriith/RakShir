@@ -60,7 +60,7 @@ public class ai_FlameShot : AbilityInstance
         if(targetValidator.Evaluate(info.owner, target))
         {
             
-            if (target.statusEffect.IsAffectedBy(CoreStatusEffectType.Slow))
+            if (target.statusEffect.IsAffectedBy(StatusEffectType.Slow))
             {
                 info.owner.DoMagicDamage(damage * 1.5f, target);
             }
@@ -69,8 +69,8 @@ public class ai_FlameShot : AbilityInstance
                 info.owner.DoMagicDamage(damage, target);
             }
 
-            CoreStatusEffect slow = new CoreStatusEffect(info.owner, CoreStatusEffectType.Slow, slowDuration, slowAmount);
-            target.statusEffect.ApplyCoreStatusEffect(slow);
+            StatusEffect slow = new StatusEffect(info.owner, StatusEffectType.Slow, slowDuration, slowAmount);
+            target.statusEffect.ApplyStatusEffect(slow);
             photonView.RPC("RpcExplode", RpcTarget.All);
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();

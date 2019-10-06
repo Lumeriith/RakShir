@@ -157,6 +157,7 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     public void ValidateHealth()
     {
         currentHealth = Mathf.Clamp(currentHealth, 0, finalMaximumHealth);
+        if (isDead) currentHealth = 0f;
     }
 
     public void ValidateMana()
