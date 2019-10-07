@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable }
 
-
+public enum AIMode { None, AutoAttackInRange, AutoChaseToAttack }
 
 
 
@@ -382,23 +382,39 @@ public class LivingThingControl : MonoBehaviourPun
 
     public AbilityTrigger[] skillSet = new AbilityTrigger[6];
 
-    public float attackMoveTargetChecksForSecond = 4f;
-    public float attackMoveTargetCheckRange = 4f;
 
+    [Header("AI Settings")]
+    public AIMode mode = AIMode.None;
+
+    public float aiCheckInterval = 0.5f;
     public float autoChaseRange = 4f;
     public float autoChaseOutOfRangeCancelTime = 2f;
+    [Header("AttackMove Settings")]
+    public float attackMoveTargetChecksForSecond = 4f;
+    public float attackMoveTargetCheckRange = 4f;
+    [Header("Misc. Settings")]
     public float angularSpeed = 600f;
+
+    [HideInInspector]
+    public List<Command> reservedCommands = new List<Command>();
+    private float lastAICheckTime = 0f;
 
     private LivingThing livingThing;
 
-    public List<Command> reservedCommands = new List<Command>();
+    
+
+
+
     private Command currentCommand { get { return reservedCommands.Count == 0 ? null : reservedCommands[0]; } }
     private List<Channel> ongoingChannels = new List<Channel>();
     private Quaternion desiredRotation = Quaternion.identity;
 
+
+
+    [HideInInspector]
     public Vector3 agentDestination;
 
-    #region Commands
+    #region Commands For Local
     public void CommandStop()
     {
         List<Channel> removalFlaggedChannels = new List<Channel>();
@@ -477,14 +493,10 @@ public class LivingThingControl : MonoBehaviourPun
 
 
 
-    #endregion Commands
-    private void Awake()
-    {
-        livingThing = GetComponent<LivingThing>();
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agentDestination = transform.position;
-    }
+    #endregion Commands For Local
+
+
+    #region Functions For Local
 
     public void LookAt(Vector3 location, bool immediately = false)
     {
@@ -571,7 +583,14 @@ public class LivingThingControl : MonoBehaviourPun
         return result;
     }
 
-
+    #endregion Functions For Local
+    private void Awake()
+    {
+        livingThing = GetComponent<LivingThing>();
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agentDestination = transform.position;
+    }
     private void Update()
     {
         if (!photonView.IsMine) return;
@@ -618,6 +637,45 @@ public class LivingThingControl : MonoBehaviourPun
         }
 
 
+        if(currentCommand == null)
+        {
+            if (Time.time - lastAICheckTime >= aiCheckInterval)
+            {
+                lastAICheckTime = Time.time;
+                switch (mode)
+                {
+                    case AIMode.None:
+                        break;
+                    case AIMode.AutoAttackInRange:
+                        if (skillSet[0] == null) break;
+                        if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
+                        List<LivingThing> aaTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
+                        for(int i = 0; i < aaTargets.Count; i++)
+                        {
+                            if (!aaTargets[i].IsDead())
+                            {
+                                CommandAutoChase(aaTargets[i]);
+                                break;
+                            }
+                        }
+                        break;
+                    case AIMode.AutoChaseToAttack:
+                        if (skillSet[0] == null) break;
+                        if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
+                        List<LivingThing> acTargets = livingThing.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
+                        for (int i = 0; i < acTargets.Count; i++)
+                        {
+                            if (!acTargets[i].IsDead())
+                            {
+                                CommandAutoChase(acTargets[i]);
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
         if (currentCommand != null)
         {
             bool isCommandFinished = currentCommand.Process();
@@ -629,6 +687,8 @@ public class LivingThingControl : MonoBehaviourPun
         }
 
         if (agent.enabled) agent.destination = agentDestination;
+
+
 
         WalkCheck();
     }

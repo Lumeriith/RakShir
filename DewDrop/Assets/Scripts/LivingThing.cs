@@ -93,6 +93,15 @@ public struct InfoStopWalking
 }
 #endregion Action Info Structs
 
+[RequireComponent(typeof(LivingThingControl))]
+[RequireComponent(typeof(LivingThingStat))]
+[RequireComponent(typeof(LivingThingStatusEffect))]
+[RequireComponent(typeof(LivingThingBase))]
+[RequireComponent(typeof(PhotonView))]
+[RequireComponent(typeof(PhotonTransformViewClassic))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class LivingThing : MonoBehaviourPun
 {
     private LivingThing lastAttacker;
@@ -173,7 +182,7 @@ public class LivingThing : MonoBehaviourPun
     public LivingThingStat stat;
     [HideInInspector]
     public LivingThingStatusEffect statusEffect;
-
+    [HideInInspector]
     public Outline outline;
 
     public float currentHealth
@@ -196,6 +205,10 @@ public class LivingThing : MonoBehaviourPun
     #region Unity
     private void Awake()
     {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+
         control = GetComponent<LivingThingControl>();
         stat = GetComponent<LivingThingStat>();
         statusEffect = GetComponent<LivingThingStatusEffect>();
@@ -216,25 +229,24 @@ public class LivingThing : MonoBehaviourPun
             Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(this);
         }
 
-
+        outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<Outline>();
+        outline.enabled = false;
     }
 
     private void Start()
     {
-        outline = transform.Find("Model").GetComponentInChildren<Outline>();
-        outline.enabled = false;
+
     }
 
     private void Update()
     {
+        if (!photonView.IsMine) return;
 
-        if (photonView.IsMine)
+        if (currentHealth <= 0 && !stat.isDead)
         {
-            if (currentHealth <= 0 && !stat.isDead)
-            {
-                Kill();
-            }
+            Kill();
         }
+
     }
 
     #endregion Unity
@@ -266,6 +278,11 @@ public class LivingThing : MonoBehaviourPun
     public bool IsDead()
     {
         return stat.isDead;
+    }
+
+    public bool IsAlive()
+    {
+        return !stat.isDead;
     }
 
     public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
@@ -360,6 +377,7 @@ public class LivingThing : MonoBehaviourPun
     public void DashThroughForDuration(Vector3 location, float duration)
     {
         CancelDash();
+        CancelAirborne();
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
 
@@ -379,6 +397,7 @@ public class LivingThing : MonoBehaviourPun
     public void DashThroughWithSpeed(Vector3 location, float speed)
     {
         CancelDash();
+        CancelAirborne();
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
         
@@ -391,7 +410,7 @@ public class LivingThing : MonoBehaviourPun
             destination = location;
         }
 
-        float time = Vector3.Distance(transform.position, destination) / (speed/100); // Fix this.
+        float time = Vector3.Distance(transform.position, destination) / (speed); // Fix this.
 
         StatusEffect dash = new StatusEffect(this, StatusEffectType.Dash, time);
         statusEffect.ApplyStatusEffect(dash);
@@ -400,6 +419,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void AirborneForDuration(Vector3 landLocation, float duration)
     {
+        CancelDash();
         CancelAirborne();
         NavMeshPath path = new NavMeshPath();
         Vector3 destination;
@@ -488,12 +508,12 @@ public class LivingThing : MonoBehaviourPun
 
     public void Kill()
     {
-        photonView.RPC("RpcDeath", RpcTarget.AllViaServer);
+        photonView.RPC("RpcDeath", RpcTarget.All);
     }
 
     public void Revive()
     {
-        photonView.RPC("RpcRevive", RpcTarget.AllViaServer);
+        photonView.RPC("RpcRevive", RpcTarget.All);
     }
 
     #endregion Functions For Everyone
@@ -820,6 +840,8 @@ public class LivingThing : MonoBehaviourPun
 
     #endregion RPCs
 
+
+    #region Coroutines
     IEnumerator CoroutineAirborne(Vector3 destination, float time)
     {
         float startTime = Time.time;
@@ -848,4 +870,6 @@ public class LivingThing : MonoBehaviourPun
         transform.position = destination;
         lastDashCoroutine = null;
     }
+
+    #endregion Coroutines
 }

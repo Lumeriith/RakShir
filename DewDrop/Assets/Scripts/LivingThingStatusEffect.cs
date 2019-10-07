@@ -17,8 +17,8 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public float totalDamageOverTimeAmount { get; private set; }
 
     private Transform model;
-    public float modelOffsetSpeed = 5f;
-    public float modelOffsetMultiplier = 2f;
+    public float modelOffsetSpeed = 3f;
+    public float modelOffsetMultiplier = 2.5f;
 
     private float lastOverTimeEffectTickTime = 0f;
     private void Awake()

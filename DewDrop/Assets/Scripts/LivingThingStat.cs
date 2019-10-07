@@ -13,23 +13,23 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     private LivingThing livingThing;
 
     [Header("Changing Stats")]
-    public float currentHealth;
+    public float currentHealth = 1000;
     public float currentMana;
     public bool isDead;
 
     [Header("Base Stats")]
-    public float baseMaximumHealth;
+    public float baseMaximumHealth = 1000;
     public float baseHealthRegenerationPerSecond;
 
     public float baseMaximumMana;
     public float baseManaRegenerationPerSecond;
 
-    public float baseMovementSpeed;
+    public float baseMovementSpeed = 300;
 
-    public float baseAttackDamage;
-    public float baseAttacksPerSecond;
+    public float baseAttackDamage = 20;
+    public float baseAttacksPerSecond = 1;
 
-    public float baseSpellPower;
+    public float baseSpellPower = 100;
 
     public float baseCooldownReduction;
 
