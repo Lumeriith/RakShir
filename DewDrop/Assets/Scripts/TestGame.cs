@@ -13,7 +13,7 @@ public class TestGame : MonoBehaviourPunCallbacks
     private void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.GameVersion = "4";
+        PhotonNetwork.GameVersion = "5";
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -39,7 +39,7 @@ public class TestGame : MonoBehaviourPunCallbacks
         }
 
         Vector3 spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position;
-        GameManager.instance.localPlayer = PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity).GetComponent<LivingThing>();
+        GameManager.instance.localPlayer = PhotonNetwork.Instantiate("ReptilePlayer", spawnPoint, Quaternion.identity).GetComponent<LivingThing>();
 
         PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", GameManager.instance.localPlayer.transform.position + Vector3.up * 3 + Random.onUnitSphere * 2f, Quaternion.identity);
         PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", GameManager.instance.localPlayer.transform.position + Vector3.up * 3 + Random.onUnitSphere * 2f, Quaternion.identity);

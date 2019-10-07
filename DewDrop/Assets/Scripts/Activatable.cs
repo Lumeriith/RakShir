@@ -6,7 +6,7 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public abstract class Activatable : MonoBehaviourPun
 {
-    public float activationRange = 1f;
+    public float activationRange = 2f;
     public Channel channel;
     public bool isInterruptedByDamage = true;
 
@@ -25,6 +25,7 @@ public abstract class Activatable : MonoBehaviourPun
             Debug.LogError("StartActivate() can be only called with local LivingThing!");
             return;
         }
+
         photonView.RPC("RpcChannelStart", RpcTarget.All, activator.photonView.ViewID);
 
         Channel newChannel = new Channel(channel.channelValidator, channel.duration, channel.canMove, channel.canAttack, channel.canUseAbility, channel.canBeCanceledByCaster, 

@@ -287,12 +287,12 @@ public class LivingThing : MonoBehaviourPun
 
     public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
     {
-        Collider[] colliders = Physics.OverlapSphere(center, 4f, LayerMask.GetMask("LivingThing"));
+        Collider[] colliders = Physics.OverlapSphere(center, range, LayerMask.GetMask("LivingThing"));
         colliders = colliders.OrderBy(collider => Vector3.Distance(center, collider.transform.position)).ToArray();
         List<LivingThing> result = new List<LivingThing>();
-        foreach(Collider collider in colliders)
+        for(int i =0;i<colliders.Length;i++)
         {
-            LivingThing lv = collider.GetComponent<LivingThing>();
+            LivingThing lv = colliders[i].GetComponent<LivingThing>();
             if(lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);
@@ -306,9 +306,9 @@ public class LivingThing : MonoBehaviourPun
         RaycastHit[] hits = Physics.SphereCastAll(origin, width / 2f, directionVector, distance, LayerMask.GetMask("LivingThing"));
         hits = hits.OrderBy(hit => Vector3.Distance(origin, hit.collider.transform.position)).ToArray();
         List<LivingThing> result = new List<LivingThing>();
-        foreach (RaycastHit hit in hits)
+        for (int i = 0;  i<hits.Length;i++)
         {
-            LivingThing lv = hit.collider.GetComponent<LivingThing>();
+            LivingThing lv = hits[i].collider.GetComponent<LivingThing>();
             if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);

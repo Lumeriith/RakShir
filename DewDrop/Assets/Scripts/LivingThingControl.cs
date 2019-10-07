@@ -228,6 +228,7 @@ public class Command
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
         if (!self.control.skillSet[0].isCooledDown) return true;
         if (self.control.IsAttackProhibitedByChannel()) return true;
+        if (target.IsDead()) return true;
         self.LookAt(target.transform.position);
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
         self.control.skillSet[0].Cast(info);
@@ -242,26 +243,30 @@ public class Command
             return ProcessMove(destination);
         }
 
-        if(lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / lastAttackMoveCheckTime)
+        if(lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / self.control.attackMoveTargetChecksForSecond)
         {
             lastAttackMoveCheckTime = Time.time;
-            List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, self.control.attackMoveTargetCheckRange, self.control.skillSet[0].targetValidator);
+            Debug.Log(self.control.skillSet[0].range);
+            List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, self.control.skillSet[0].range, self.control.skillSet[0].targetValidator);
             if(targets.Count == 0)
             {
                 if (self.control.IsMoveProhibitedByChannel()) return false;
                 self.control.agentDestination = destination;
-                if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
-                {
-                    self.LookAt(self.control.agent.path.corners[1]);
-                }
                 return false;
             }
             else
             {
+
+                Debug.Log(Vector3.Distance(self.transform.position, targets[0].transform.position));
                 type = CommandType.Chase;
                 parameters[0] = targets[0];
                 return false;
             }
+        }
+
+        if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+        {
+            self.LookAt(self.control.agent.path.corners[1]);
         }
 
         if (self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
@@ -391,7 +396,6 @@ public class LivingThingControl : MonoBehaviourPun
     public float autoChaseOutOfRangeCancelTime = 2f;
     [Header("AttackMove Settings")]
     public float attackMoveTargetChecksForSecond = 4f;
-    public float attackMoveTargetCheckRange = 4f;
     [Header("Misc. Settings")]
     public float angularSpeed = 600f;
 
@@ -652,9 +656,9 @@ public class LivingThingControl : MonoBehaviourPun
                         List<LivingThing> aaTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
                         for(int i = 0; i < aaTargets.Count; i++)
                         {
-                            if (!aaTargets[i].IsDead())
+                            if (!aaTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, aaTargets[i]))
                             {
-                                CommandAutoChase(aaTargets[i]);
+                                CommandAttack(aaTargets[i]);
                                 break;
                             }
                         }
@@ -665,7 +669,7 @@ public class LivingThingControl : MonoBehaviourPun
                         List<LivingThing> acTargets = livingThing.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
                         for (int i = 0; i < acTargets.Count; i++)
                         {
-                            if (!acTargets[i].IsDead())
+                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, acTargets[i]))
                             {
                                 CommandAutoChase(acTargets[i]);
                                 break;
