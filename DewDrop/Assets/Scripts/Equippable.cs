@@ -61,8 +61,9 @@ public abstract class Equippable : Activatable
             
             if (skillSetReplacements[i] != null)
             {
-                
+                float remainingCooldownTime = owner.control.skillSet[i] == null ? 0 : owner.control.skillSet[i].remainingCooldownTime;
                 owner.control.skillSet[i] = skillSetReplacements[i];
+                owner.control.skillSet[i].StartCooldown(remainingCooldownTime, true);
             }
         }
         UpdateAttachments(owner);

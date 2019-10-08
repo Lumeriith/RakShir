@@ -18,7 +18,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
-
+    public Sprite abilityIcon;
     public AnimationClip castAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
@@ -110,7 +110,7 @@ public abstract class AbilityTrigger : MonoBehaviour
         if (isBasicAttack)
         {
             cooldownStartTime = Time.time - cooldownTime + (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
-        
+
         }
         else
         {
@@ -118,6 +118,15 @@ public abstract class AbilityTrigger : MonoBehaviour
             ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
         }
     }
+
+    public void StartCooldown(float time, bool ignoreCooldownReduction = false)
+    {
+
+        cooldownStartTime = Time.time + time - cooldownTime;
+        if(!ignoreCooldownReduction) ApplyCooldownReduction(time * owner.stat.finalCooldownReduction / 100f);
+    }
+
+
 
     public void RefundMana()
     {

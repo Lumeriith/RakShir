@@ -19,6 +19,14 @@ public class StatusEffectParticleEffectManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        foreach(Transform t in transform)
+        {
+            t.Find("Placeholder").gameObject.SetActive(false);
+        }
+    }
+
     public void CreateParticleEffect(StatusEffect ce)
     {
         Transform target = transform.Find(System.Enum.GetName(typeof(StatusEffectType), ce.type)); 
@@ -26,7 +34,6 @@ public class StatusEffectParticleEffectManager : MonoBehaviour
         if(target != null)
         {
             GameObject effect = Instantiate(target.gameObject, ce.owner.transform.position, ce.owner.transform.rotation, ce.owner.transform);
-            effect.transform.Find("Placeholder").gameObject.SetActive(false);
             effect.transform.localScale = new Vector3(1f, (ce.owner.top.transform.position.y - ce.owner.bottom.transform.position.y)/2, 1f);
             effect.AddComponent<StatusEffectParticleEffectAutoDestroy>().core = ce;
         }

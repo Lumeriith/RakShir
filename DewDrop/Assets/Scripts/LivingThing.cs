@@ -167,13 +167,20 @@ public class LivingThing : MonoBehaviourPun
     public LivingThing summoner = null;
     [Header("Infobar Settings")]
     public GameObject infobar;
-    [Header("Location References")]
+
+    [HideInInspector]
     public Transform head;
+    [HideInInspector]
     public Transform leftHand;
+    [HideInInspector]
     public Transform rightHand;
+    [HideInInspector]
     public Transform leftFoot;
+    [HideInInspector]
     public Transform rightFoot;
+    [HideInInspector]
     public Transform top;
+    [HideInInspector]
     public Transform bottom;
 
     [HideInInspector]
@@ -215,7 +222,8 @@ public class LivingThing : MonoBehaviourPun
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
 
         animator = transform.Find("Model").GetComponent<Animator>();
-        
+        animator.applyRootMotion = false;
+
         if (photonView.IsMine)
         {
             GetComponent<NavMeshAgent>().avoidancePriority++;
@@ -231,11 +239,8 @@ public class LivingThing : MonoBehaviourPun
 
         outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<MeshOutline>();
         outline.enabled = false;
-    }
 
-    private void Start()
-    {
-
+        AssignMissingTransforms();
     }
 
     private void Update()
@@ -251,11 +256,28 @@ public class LivingThing : MonoBehaviourPun
 
     #endregion Unity
 
+    #region Private Functions
 
+    void AssignMissingTransforms()
+    {
+        head = transform.FindDeepChild("Bip001-Head");
+        leftHand = transform.FindDeepChild("Bip001-L-Hand");
+        rightHand =  transform.FindDeepChild("Bip001-R-Hand");
+        leftFoot = transform.FindDeepChild("Bip001-L-Foot");
+        rightFoot = transform.FindDeepChild("Bip001-R-Foot");
+        top = transform.FindDeepChild("FXDummy_Head");
+        bottom = transform;
+    }
+
+    #endregion
 
     #region Functions For Everyone
 
-
+    public void ActivateImmediately(Activatable activatable)
+    {
+        activatable.photonView.RPC("RpcChannelStart", RpcTarget.All, this.photonView.ViewID);
+        activatable.photonView.RPC("RpcChannelSuccess", RpcTarget.All, this.photonView.ViewID);
+    }
 
     public bool HasMana(float amount)
     {

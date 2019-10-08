@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+
+public enum PlayerType { Elemental, Reptile }
+
 public class GameManager : MonoBehaviour
 {
     public Texture2D normalCursor;
@@ -23,23 +26,6 @@ public class GameManager : MonoBehaviour
         set
         {
             _localPlayer = value;
-            _localPlayer.OnDoBasicAttackHit = (InfoBasicAttackHit info) =>
-            {
-                Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-                GameObject floatingText = Instantiate(physicalDamageFloatingText.gameObject, worldPos, Quaternion.identity);
-                floatingText.SetActive(true);
-                floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.damage).ToString();
-                
-            };
-
-            _localPlayer.OnDealMagicDamage = (InfoMagicDamage info) =>
-            {
-                Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-                GameObject floatingText = Instantiate(magicDamageFloatingText.gameObject, worldPos, Quaternion.identity);
-                floatingText.SetActive(true);
-                floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.finalDamage).ToString();
-                
-            };
         }
     }
 
@@ -62,6 +48,60 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RegisterFloatingTextEvents(LivingThing player)
+    {
+        player.OnDoBasicAttackHit = (InfoBasicAttackHit info) =>
+        {
+            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+            GameObject floatingText = Instantiate(physicalDamageFloatingText.gameObject, worldPos, Quaternion.identity);
+            floatingText.SetActive(true);
+            floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.damage).ToString();
+
+        };
+
+        player.OnDealMagicDamage = (InfoMagicDamage info) =>
+        {
+            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+            GameObject floatingText = Instantiate(magicDamageFloatingText.gameObject, worldPos, Quaternion.identity);
+            floatingText.SetActive(true);
+            floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.finalDamage).ToString();
+
+        };
+    }
+
+    public void SpawnLocalPlayer(PlayerType type, Vector3 location)
+    {
+        LivingThing localPlayer;
+        List<Activatable> startItems = new List<Activatable>();
+        if(type == PlayerType.Elemental)
+        {
+            localPlayer = PhotonNetwork.Instantiate("player_Elemental", location, Quaternion.identity).GetComponent<LivingThing>();
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
+
+        }
+        else
+        {
+            localPlayer = PhotonNetwork.Instantiate("player_Reptile", location, Quaternion.identity).GetComponent<LivingThing>();
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
+        }
+        
+        this.localPlayer = localPlayer;
+        foreach(Activatable item in startItems)
+        {
+            localPlayer.ActivateImmediately(item);
+        }
+
+        UnitControlManager.instance.selectedUnit = localPlayer;
+        RegisterFloatingTextEvents(localPlayer);
+    }
+
+
+
+
     private void Awake()
     {
         magicDamageFloatingText.gameObject.SetActive(false);
@@ -75,7 +115,6 @@ public class GameManager : MonoBehaviour
             SetAppropriateCursor();
             lastCursorShape = cursorShape;
         }
-
     }
 
     private void SetAppropriateCursor()
