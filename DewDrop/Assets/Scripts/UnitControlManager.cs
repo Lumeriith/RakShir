@@ -230,7 +230,7 @@ public class UnitControlManager : MonoBehaviour
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
     }
 
-    private Outline previousOutline;
+    private MeshOutline previousOutline;
     private void DrawAppropriateOutline()
     {
         LivingThing target = GetFirstValidTarget(canDrawOutline);
@@ -256,7 +256,7 @@ public class UnitControlManager : MonoBehaviour
                         target.outline.OutlineColor = enemyOutlineColor;
                         break;
                 }
-                target.outline.OutlineMode = Outline.Mode.OutlineVisible;
+                target.outline.OutlineMode = MeshOutline.Mode.OutlineVisible;
                 target.outline.OutlineWidth = 1.5f;
             }
         }

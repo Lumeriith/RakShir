@@ -183,7 +183,7 @@ public class LivingThing : MonoBehaviourPun
     [HideInInspector]
     public LivingThingStatusEffect statusEffect;
     [HideInInspector]
-    public Outline outline;
+    public MeshOutline outline;
 
     public float currentHealth
     {
@@ -229,7 +229,7 @@ public class LivingThing : MonoBehaviourPun
             Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(this);
         }
 
-        outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<Outline>();
+        outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<MeshOutline>();
         outline.enabled = false;
     }
 
