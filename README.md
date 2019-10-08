@@ -1,6 +1,25 @@
 # DewDrop
 Rogue-like + MOBA Twist
 
+# Description Syntax
+<details>
+<summary><b>스킬, 장비, 아이템 등의 설명을 위한 특수 문법</b></summary>
+
+스킬, 장비, 아이템 등의 설명을 인스펙터 상에서 지정해주기 위해 특수 문법을 사용할 수 있다. 아래 문법을 사용함하여 어떠한 `AbilityInstance`의 필드 변수 값을 가져와 설명을 기재하는 데에 사용할 수 있다. 글씨 굵기, 색 등의 스타일링은 [유니티의 기본 StyledText 문법](https://docs.unity3d.com/Manual/StyledText.html)을 따른다.
+
+## [MAGIC ai_name field_name]
+> `Resources` 폴더 속 `abilityinstance_name` 프리팹의 `AbilityInstance` 컴포넌트에 붙어있는 필드 변수 `field_name`의 값을 가져와 마법 피해로 표시한다. 플레이어의 주문력이 고려된 값으로 표시된다.
+
+## [MAGIC_IGNORE ai_name field_name]
+> `Resources` 폴더 속 `abilityinstance_name` 프리팹의 `AbilityInstance` 컴포넌트에 붙어있는 필드 변수 `field_name`의 값을 가져와 마법 피해로 표시한다. 플레이어의 주문력이 무시되어 기재된 값이 그대로 표시된다.
+
+
+
+
+
+
+
+</details>
 
 # Enumerations
 <details>
