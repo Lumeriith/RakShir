@@ -69,6 +69,9 @@ Rogue-like + MOBA Twist
 아래 기술된 모든 메쏘드 펑션들은 네트워크화 되어 다른 플레이어들의 게임에도 반영된다.
 메쏘드를 실행한 클라이언트에게는 결과가 즉시 적용되지만 다른 플레이어에게 이 결과가 나타나는 데에는 네트워크의 지연율 만큼의 시간이 걸림을 유념해야한다.
 
+### `void ActivateImmediately(Activatable activatable)`
+>발동 가능 물체 `activatable`를 즉시 발동시킨다. 이를 통해 코드 상에서 아이템 등을 줍게 만들 수 있다.
+
 ### `bool HasMana(float amount)`
 >개체에 `amount` 만큼의 마나가 있는지를 알려준다. 마나가 있으면 `true`, 아니면 `false`를 반환한다.
 
