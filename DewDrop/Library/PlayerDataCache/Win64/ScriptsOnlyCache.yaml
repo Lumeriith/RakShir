@@ -1,5 +1,9 @@
 ScriptsOnlyBuild:
   usedScripts:
+    Assembly-CSharp-Editor.dll:
+    - Doozy.Editor.Nody.Settings.NodyWindowSettings
+    - Doozy.Editor.Nody.Windows.NodyWindow
+    - Doozy.Editor.Settings.DoozyWindowSettings
     Assembly-CSharp-firstpass.dll:
     - IngameDebugConsole.DebugLogItem
     - IngameDebugConsole.DebugLogManager
@@ -7,48 +11,99 @@ ScriptsOnlyBuild:
     - IngameDebugConsole.DebugLogRecycledListView
     - IngameDebugConsole.DebugsOnScrollListener
     Assembly-CSharp.dll:
+    - AvatarManager
     - CustomAnimationBox
     - DebugCommands
     - DecalSystem.Decal
+    - Doozy.Engine.Coroutiner
+    - Doozy.Engine.GameEventListener
+    - Doozy.Engine.Nody.GraphController
+    - Doozy.Engine.Nody.Models.Graph
+    - Doozy.Engine.Nody.Nodes.StartNode
+    - Doozy.Engine.Nody.NodySettings
+    - Doozy.Engine.Progress.ProgressTargetAnimator
+    - Doozy.Engine.Progress.Progressor
+    - Doozy.Engine.Settings.DoozySettings
+    - Doozy.Engine.Soundy.SoundDatabase
+    - Doozy.Engine.Soundy.SoundGroupData
+    - Doozy.Engine.Soundy.SoundyDatabase
+    - Doozy.Engine.Soundy.SoundySettings
+    - Doozy.Engine.Touchy.TouchySettings
+    - Doozy.Engine.UI.Animation.UIAnimationData
+    - Doozy.Engine.UI.Animation.UIAnimationDatabase
+    - Doozy.Engine.UI.Animation.UIAnimations
+    - Doozy.Engine.UI.Base.ListOfNames
+    - Doozy.Engine.UI.Base.NamesDatabase
+    - Doozy.Engine.UI.Nodes.ApplicationQuitNode
+    - Doozy.Engine.UI.Nodes.GameEventNode
+    - Doozy.Engine.UI.Nodes.UINode
+    - Doozy.Engine.UI.Settings.UIButtonSettings
+    - Doozy.Engine.UI.Settings.UICanvasSettings
+    - Doozy.Engine.UI.Settings.UIDrawerSettings
+    - Doozy.Engine.UI.Settings.UIPopupSettings
+    - Doozy.Engine.UI.Settings.UIToggleSettings
+    - Doozy.Engine.UI.Settings.UIViewSettings
+    - Doozy.Engine.UI.UIButton
+    - Doozy.Engine.UI.UICanvas
+    - Doozy.Engine.UI.UIPopup
+    - Doozy.Engine.UI.UIPopupDatabase
+    - Doozy.Engine.UI.UIPopupLink
+    - Doozy.Engine.UI.UIView
+    - Doozy.Engine.Utils.UILanguagePack
+    - DynamicBone
     - FloatingText
     - GameManager
+    - HuntressInfinityGlaiveRotator
     - LivingThing
     - LivingThingBase
     - LivingThingControl
     - LivingThingStat
     - LivingThingStatusEffect
+    - LobbyManager
+    - MainMenuLogic
     - MonsterInfobar
     - NetworkingManager
     - PlayerAnimation
+    - PlayerInfoHUD
     - PlayerInfobar
     - PlayerItemBelt
     - PlayerViewCamera
+    - SkillDetailBox
+    - SkillIcon
     - StatusEffectParticleEffectManager
-    - TestGame
+    - TestGameLogic
     - TestSansBehaviour
     - Trg_Spell_Elemental_FlyingKick
     - UnitControlManager
     - ai_BasicAttack_Elemental_Punch
+    - ai_BasicAttack_Huntress_InfinityGlaive
     - ai_BasicAttack_SmallFireball
     - ai_FlameShot
     - ai_Ignite
-    - ai_Spell_Default_FlyingKick
     - ai_Spell_Elemental_DoubleKick
+    - ai_Spell_Elemental_FlyingKick
     - ai_Spell_Elemental_FrontKick
+    - ai_Spell_Huntress_VenomKnives
     - ai_Spell_Test_EzrealQ
     - ai_Vault
+    - equip_Armor_ElementalIntegrity
+    - equip_Boots_ElementalDetermination
     - equip_Weapon_ElementalJustice
+    - equip_Weapon_Huntress_InfinityGlaive
     - trg_BasicAttack_Elemental_Punch
+    - trg_BasicAttack_Huntress_InfinityGlaive
     - trg_Spell_Elemental_DoubleKick
     - trg_Spell_Elemental_FrontKick
-    - trg_Spell_Test_EzrealQ
+    - trg_Spell_Huntress_VenomKnives
     Cinemachine.dll:
     - Cinemachine.CinemachineBrain
+    - Cinemachine.CinemachineComposer
     - Cinemachine.CinemachineFramingTransposer
     - Cinemachine.CinemachinePipeline
+    - Cinemachine.CinemachineTransposer
     - Cinemachine.CinemachineVirtualCamera
-    PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PunSceneSettings
+    DOTween.dll:
+    - DG.Tweening.Core.DOTweenSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonTransformViewClassic
     - Photon.Pun.PhotonView
@@ -75,6 +130,12 @@ ScriptsOnlyBuild:
     - UnityEngine.Rendering.PostProcessing.PostProcessVolume
     - UnityEngine.Rendering.PostProcessing.ScreenSpaceReflections
     - UnityEngine.Rendering.PostProcessing.Vignette
+    Unity.TextMeshPro.dll:
+    - TMPro.TMP_FontAsset
+    - TMPro.TMP_Settings
+    - TMPro.TMP_SpriteAsset
+    - TMPro.TMP_StyleSheet
+    - TMPro.TextMeshProUGUI
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
@@ -97,7 +158,9 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.Mask
     - UnityEngine.UI.Outline
+    - UnityEngine.UI.RawImage
     - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
@@ -107,7 +170,58 @@ ScriptsOnlyBuild:
     - UnityEngine.Networking.NetworkCallbacks
     - UnityEngine.Networking.NetworkIdentity
   sceneClasses:
-    Assets/TestMap.unity:
+    Assets/Scenes/Lobby.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9936}
+    - Class: 114
+      Script: {instanceID: 10506}
+    - Class: 114
+      Script: {instanceID: 10510}
+    - Class: 114
+      Script: {instanceID: 11556}
+    - Class: 114
+      Script: {instanceID: 12572}
+    - Class: 114
+      Script: {instanceID: 12710}
+    - Class: 114
+      Script: {instanceID: 13160}
+    - Class: 114
+      Script: {instanceID: 13664}
+    - Class: 114
+      Script: {instanceID: 13806}
+    - Class: 114
+      Script: {instanceID: 14766}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    - Class: 225
+      Script: {instanceID: 0}
+    Assets/Scenes/Main Menu.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -126,6 +240,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
+    - Class: 49
+      Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
     - Class: 64
@@ -137,6 +253,307 @@ ScriptsOnlyBuild:
     - Class: 74
       Script: {instanceID: 0}
     - Class: 81
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
+    - Class: 90
+      Script: {instanceID: 0}
+    - Class: 91
+      Script: {instanceID: 0}
+    - Class: 95
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 109
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9898}
+    - Class: 114
+      Script: {instanceID: 9936}
+    - Class: 114
+      Script: {instanceID: 9982}
+    - Class: 114
+      Script: {instanceID: 9984}
+    - Class: 114
+      Script: {instanceID: 10038}
+    - Class: 114
+      Script: {instanceID: 10080}
+    - Class: 114
+      Script: {instanceID: 10094}
+    - Class: 114
+      Script: {instanceID: 10144}
+    - Class: 114
+      Script: {instanceID: 10220}
+    - Class: 114
+      Script: {instanceID: 10252}
+    - Class: 114
+      Script: {instanceID: 10270}
+    - Class: 114
+      Script: {instanceID: 10276}
+    - Class: 114
+      Script: {instanceID: 10322}
+    - Class: 114
+      Script: {instanceID: 10364}
+    - Class: 114
+      Script: {instanceID: 10376}
+    - Class: 114
+      Script: {instanceID: 10380}
+    - Class: 114
+      Script: {instanceID: 10412}
+    - Class: 114
+      Script: {instanceID: 10416}
+    - Class: 114
+      Script: {instanceID: 10434}
+    - Class: 114
+      Script: {instanceID: 10478}
+    - Class: 114
+      Script: {instanceID: 10494}
+    - Class: 114
+      Script: {instanceID: 10506}
+    - Class: 114
+      Script: {instanceID: 10510}
+    - Class: 114
+      Script: {instanceID: 10600}
+    - Class: 114
+      Script: {instanceID: 10636}
+    - Class: 114
+      Script: {instanceID: 10790}
+    - Class: 114
+      Script: {instanceID: 10814}
+    - Class: 114
+      Script: {instanceID: 10856}
+    - Class: 114
+      Script: {instanceID: 10952}
+    - Class: 114
+      Script: {instanceID: 11042}
+    - Class: 114
+      Script: {instanceID: 11174}
+    - Class: 114
+      Script: {instanceID: 11256}
+    - Class: 114
+      Script: {instanceID: 11352}
+    - Class: 114
+      Script: {instanceID: 11428}
+    - Class: 114
+      Script: {instanceID: 11528}
+    - Class: 114
+      Script: {instanceID: 11556}
+    - Class: 114
+      Script: {instanceID: 11632}
+    - Class: 114
+      Script: {instanceID: 11688}
+    - Class: 114
+      Script: {instanceID: 11722}
+    - Class: 114
+      Script: {instanceID: 11898}
+    - Class: 114
+      Script: {instanceID: 11958}
+    - Class: 114
+      Script: {instanceID: 12064}
+    - Class: 114
+      Script: {instanceID: 12104}
+    - Class: 114
+      Script: {instanceID: 12150}
+    - Class: 114
+      Script: {instanceID: 12152}
+    - Class: 114
+      Script: {instanceID: 12256}
+    - Class: 114
+      Script: {instanceID: 12290}
+    - Class: 114
+      Script: {instanceID: 12340}
+    - Class: 114
+      Script: {instanceID: 12358}
+    - Class: 114
+      Script: {instanceID: 12380}
+    - Class: 114
+      Script: {instanceID: 12388}
+    - Class: 114
+      Script: {instanceID: 12464}
+    - Class: 114
+      Script: {instanceID: 12468}
+    - Class: 114
+      Script: {instanceID: 12492}
+    - Class: 114
+      Script: {instanceID: 12538}
+    - Class: 114
+      Script: {instanceID: 12540}
+    - Class: 114
+      Script: {instanceID: 12572}
+    - Class: 114
+      Script: {instanceID: 12584}
+    - Class: 114
+      Script: {instanceID: 12598}
+    - Class: 114
+      Script: {instanceID: 12612}
+    - Class: 114
+      Script: {instanceID: 12696}
+    - Class: 114
+      Script: {instanceID: 12712}
+    - Class: 114
+      Script: {instanceID: 12722}
+    - Class: 114
+      Script: {instanceID: 12750}
+    - Class: 114
+      Script: {instanceID: 12888}
+    - Class: 114
+      Script: {instanceID: 13068}
+    - Class: 114
+      Script: {instanceID: 13098}
+    - Class: 114
+      Script: {instanceID: 13160}
+    - Class: 114
+      Script: {instanceID: 13164}
+    - Class: 114
+      Script: {instanceID: 13174}
+    - Class: 114
+      Script: {instanceID: 13190}
+    - Class: 114
+      Script: {instanceID: 13200}
+    - Class: 114
+      Script: {instanceID: 13314}
+    - Class: 114
+      Script: {instanceID: 13348}
+    - Class: 114
+      Script: {instanceID: 13370}
+    - Class: 114
+      Script: {instanceID: 13410}
+    - Class: 114
+      Script: {instanceID: 13472}
+    - Class: 114
+      Script: {instanceID: 13624}
+    - Class: 114
+      Script: {instanceID: 13664}
+    - Class: 114
+      Script: {instanceID: 13698}
+    - Class: 114
+      Script: {instanceID: 13806}
+    - Class: 114
+      Script: {instanceID: 13962}
+    - Class: 114
+      Script: {instanceID: 13996}
+    - Class: 114
+      Script: {instanceID: 14062}
+    - Class: 114
+      Script: {instanceID: 14074}
+    - Class: 114
+      Script: {instanceID: 14080}
+    - Class: 114
+      Script: {instanceID: 14124}
+    - Class: 114
+      Script: {instanceID: 14134}
+    - Class: 114
+      Script: {instanceID: 14174}
+    - Class: 114
+      Script: {instanceID: 14200}
+    - Class: 114
+      Script: {instanceID: 14208}
+    - Class: 114
+      Script: {instanceID: 14236}
+    - Class: 114
+      Script: {instanceID: 14276}
+    - Class: 114
+      Script: {instanceID: 14286}
+    - Class: 114
+      Script: {instanceID: 14300}
+    - Class: 114
+      Script: {instanceID: 14388}
+    - Class: 114
+      Script: {instanceID: 14410}
+    - Class: 114
+      Script: {instanceID: 14454}
+    - Class: 114
+      Script: {instanceID: 14528}
+    - Class: 114
+      Script: {instanceID: 14542}
+    - Class: 114
+      Script: {instanceID: 14578}
+    - Class: 114
+      Script: {instanceID: 14586}
+    - Class: 114
+      Script: {instanceID: 14606}
+    - Class: 114
+      Script: {instanceID: 14660}
+    - Class: 114
+      Script: {instanceID: 14700}
+    - Class: 114
+      Script: {instanceID: 14766}
+    - Class: 114
+      Script: {instanceID: 14928}
+    - Class: 114
+      Script: {instanceID: 14956}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 135
+      Script: {instanceID: 0}
+    - Class: 136
+      Script: {instanceID: 0}
+    - Class: 137
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 195
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    - Class: 225
+      Script: {instanceID: 0}
+    - Class: 238
+      Script: {instanceID: 0}
+    - Class: 241
+      Script: {instanceID: 0}
+    - Class: 243
+      Script: {instanceID: 0}
+    - Class: 245
+      Script: {instanceID: 0}
+    Assets/Scenes/Test Game.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 72
+      Script: {instanceID: 0}
+    - Class: 74
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 84
+      Script: {instanceID: 0}
+    - Class: 89
       Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
@@ -151,176 +568,136 @@ ScriptsOnlyBuild:
     - Class: 111
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9858}
+      Script: {instanceID: 9898}
     - Class: 114
-      Script: {instanceID: 9888}
+      Script: {instanceID: 9936}
     - Class: 114
-      Script: {instanceID: 9924}
+      Script: {instanceID: 9982}
     - Class: 114
-      Script: {instanceID: 9964}
+      Script: {instanceID: 9984}
     - Class: 114
-      Script: {instanceID: 10088}
+      Script: {instanceID: 10220}
     - Class: 114
-      Script: {instanceID: 10130}
+      Script: {instanceID: 10412}
     - Class: 114
-      Script: {instanceID: 10136}
+      Script: {instanceID: 10420}
     - Class: 114
-      Script: {instanceID: 10198}
+      Script: {instanceID: 10506}
     - Class: 114
-      Script: {instanceID: 10210}
+      Script: {instanceID: 10510}
     - Class: 114
-      Script: {instanceID: 10214}
+      Script: {instanceID: 10600}
     - Class: 114
-      Script: {instanceID: 10240}
+      Script: {instanceID: 10790}
     - Class: 114
-      Script: {instanceID: 10244}
+      Script: {instanceID: 10814}
     - Class: 114
-      Script: {instanceID: 10256}
+      Script: {instanceID: 10856}
     - Class: 114
-      Script: {instanceID: 10298}
+      Script: {instanceID: 11042}
     - Class: 114
-      Script: {instanceID: 10316}
+      Script: {instanceID: 11174}
     - Class: 114
-      Script: {instanceID: 10554}
+      Script: {instanceID: 11230}
     - Class: 114
-      Script: {instanceID: 10606}
+      Script: {instanceID: 11280}
     - Class: 114
-      Script: {instanceID: 10676}
+      Script: {instanceID: 11342}
     - Class: 114
-      Script: {instanceID: 10742}
+      Script: {instanceID: 11352}
     - Class: 114
-      Script: {instanceID: 10890}
+      Script: {instanceID: 11556}
     - Class: 114
-      Script: {instanceID: 10986}
+      Script: {instanceID: 11654}
     - Class: 114
-      Script: {instanceID: 11038}
+      Script: {instanceID: 11656}
     - Class: 114
-      Script: {instanceID: 11136}
+      Script: {instanceID: 11770}
     - Class: 114
-      Script: {instanceID: 11220}
+      Script: {instanceID: 11916}
     - Class: 114
-      Script: {instanceID: 11310}
+      Script: {instanceID: 11962}
     - Class: 114
-      Script: {instanceID: 11434}
+      Script: {instanceID: 12046}
     - Class: 114
-      Script: {instanceID: 11472}
+      Script: {instanceID: 12274}
     - Class: 114
-      Script: {instanceID: 11538}
+      Script: {instanceID: 12290}
     - Class: 114
-      Script: {instanceID: 11610}
+      Script: {instanceID: 12320}
     - Class: 114
-      Script: {instanceID: 11690}
+      Script: {instanceID: 12380}
     - Class: 114
-      Script: {instanceID: 11704}
+      Script: {instanceID: 12464}
     - Class: 114
-      Script: {instanceID: 11716}
-    - Class: 114
-      Script: {instanceID: 11742}
-    - Class: 114
-      Script: {instanceID: 11760}
-    - Class: 114
-      Script: {instanceID: 11772}
-    - Class: 114
-      Script: {instanceID: 11790}
-    - Class: 114
-      Script: {instanceID: 11868}
-    - Class: 114
-      Script: {instanceID: 11944}
-    - Class: 114
-      Script: {instanceID: 11954}
-    - Class: 114
-      Script: {instanceID: 11968}
-    - Class: 114
-      Script: {instanceID: 12036}
-    - Class: 114
-      Script: {instanceID: 12050}
-    - Class: 114
-      Script: {instanceID: 12072}
-    - Class: 114
-      Script: {instanceID: 12084}
-    - Class: 114
-      Script: {instanceID: 12270}
-    - Class: 114
-      Script: {instanceID: 12278}
-    - Class: 114
-      Script: {instanceID: 12348}
-    - Class: 114
-      Script: {instanceID: 12402}
-    - Class: 114
-      Script: {instanceID: 12538}
+      Script: {instanceID: 12572}
     - Class: 114
       Script: {instanceID: 12612}
     - Class: 114
-      Script: {instanceID: 12620}
+      Script: {instanceID: 12654}
     - Class: 114
-      Script: {instanceID: 12658}
-    - Class: 114
-      Script: {instanceID: 12678}
-    - Class: 114
-      Script: {instanceID: 12784}
-    - Class: 114
-      Script: {instanceID: 12846}
-    - Class: 114
-      Script: {instanceID: 12934}
+      Script: {instanceID: 12762}
     - Class: 114
       Script: {instanceID: 12994}
     - Class: 114
-      Script: {instanceID: 13048}
+      Script: {instanceID: 13002}
     - Class: 114
-      Script: {instanceID: 13132}
+      Script: {instanceID: 13092}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 13154}
     - Class: 114
-      Script: {instanceID: 13232}
+      Script: {instanceID: 13160}
     - Class: 114
-      Script: {instanceID: 13294}
+      Script: {instanceID: 13314}
     - Class: 114
-      Script: {instanceID: 13310}
+      Script: {instanceID: 13422}
     - Class: 114
-      Script: {instanceID: 13328}
+      Script: {instanceID: 13494}
     - Class: 114
-      Script: {instanceID: 13398}
+      Script: {instanceID: 13630}
     - Class: 114
-      Script: {instanceID: 13438}
+      Script: {instanceID: 13664}
     - Class: 114
-      Script: {instanceID: 13506}
+      Script: {instanceID: 13806}
     - Class: 114
-      Script: {instanceID: 13520}
+      Script: {instanceID: 13890}
     - Class: 114
-      Script: {instanceID: 13532}
+      Script: {instanceID: 14124}
     - Class: 114
-      Script: {instanceID: 13548}
+      Script: {instanceID: 14244}
     - Class: 114
-      Script: {instanceID: 13594}
+      Script: {instanceID: 14286}
     - Class: 114
-      Script: {instanceID: 13622}
+      Script: {instanceID: 14320}
     - Class: 114
-      Script: {instanceID: 13674}
+      Script: {instanceID: 14454}
     - Class: 114
-      Script: {instanceID: 13768}
+      Script: {instanceID: 14528}
     - Class: 114
-      Script: {instanceID: 13792}
+      Script: {instanceID: 14542}
     - Class: 114
-      Script: {instanceID: 110806}
+      Script: {instanceID: 14562}
     - Class: 114
-      Script: {instanceID: 112258}
+      Script: {instanceID: 14606}
     - Class: 114
-      Script: {instanceID: 175402}
+      Script: {instanceID: 14656}
     - Class: 114
-      Script: {instanceID: 178012}
+      Script: {instanceID: 14700}
+    - Class: 114
+      Script: {instanceID: 14766}
+    - Class: 114
+      Script: {instanceID: 14900}
+    - Class: 114
+      Script: {instanceID: 200782}
+    - Class: 114
+      Script: {instanceID: 377934}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
       Script: {instanceID: 0}
-    - Class: 135
-      Script: {instanceID: 0}
-    - Class: 136
-      Script: {instanceID: 0}
     - Class: 137
       Script: {instanceID: 0}
     - Class: 157
-      Script: {instanceID: 0}
-    - Class: 195
       Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
@@ -361,6 +738,12 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
+      Hash: c4d06f7141c81e5114a5c1c92b6cb894
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Models
+    className: Node
+  - hash:
+      serializedVersion: 2
       Hash: ab039a385ef4459756519a3fe91dccc6
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
@@ -371,6 +754,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineStateDrivenCamera
+  - hash:
+      serializedVersion: 2
+      Hash: 3c230a6491b2157fe193724b0d30c5f3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DynamicBone
   - hash:
       serializedVersion: 2
       Hash: 726fcf7961cbb4108aa5be5e55b8c8bf
@@ -391,6 +780,12 @@ ScriptsOnlyBuild:
     className: TMP_SelectionCaret
   - hash:
       serializedVersion: 2
+      Hash: fd8ea043aa2b66fdd21904b2b937a479
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: UIButtonAutomatedTextValue
+  - hash:
+      serializedVersion: 2
       Hash: 87ff43d2baf3385cba327d8f803a4ebb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -403,10 +798,52 @@ ScriptsOnlyBuild:
     className: TMP_Dropdown
   - hash:
       serializedVersion: 2
+      Hash: 195554c2b0a48dd06c0375f2cc14471f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: ExampleProgressTargetAudioMixer
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Integrations.Playmaker
+    className: PlaymakerEventDispatcher
+  - hash:
+      serializedVersion: 2
+      Hash: 4ededd67e218814aedcbffde9f06cf1a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Settings
+    className: DoozySettings
+  - hash:
+      serializedVersion: 2
+      Hash: 881194c1bfb5b661e028963b25af6f8e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HuntressInfinityGlaiveRotator
+  - hash:
+      serializedVersion: 2
+      Hash: d8480e85f0b78469a4ed2e78b29f4fa2
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.SceneManagement
+    className: SceneLoader
+  - hash:
+      serializedVersion: 2
       Hash: ee1dba1a186ac062d564e9eb73a1c56f
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
     className: GraphicToggleIsOnTransition
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIPopupManager
+  - hash:
+      serializedVersion: 2
+      Hash: a22a79fe27a4db36fd398d8bbfea4b8a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ai_BasicAttack_Huntress_InfinityGlaive
   - hash:
       serializedVersion: 2
       Hash: 3ba023cd67d72cace33969ab863e0fd4
@@ -425,6 +862,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineFollowZoom
+  - hash:
+      serializedVersion: 2
+      Hash: 6a409d7f800638743169af1c5a8c8c9e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIButtonListener
   - hash:
       serializedVersion: 2
       Hash: d227987243593b32ae57394d06018643
@@ -457,7 +900,13 @@ ScriptsOnlyBuild:
     className: MotionBlur
   - hash:
       serializedVersion: 2
-      Hash: 2579ddf89504e0a97faddb7257a487b9
+      Hash: 1d15a4c58b0a7370ae09b19036a9ba4c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Animation
+    className: UIAnimations
+  - hash:
+      serializedVersion: 2
+      Hash: 9ee4dfafcfe02bf57658f3be7f9d31fc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -467,6 +916,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.XR.LegacyInputHelpers.dll
     namespaceName: UnityEngine.XR.LegacyInputHelpers
     className: ArmModel
+  - hash:
+      serializedVersion: 2
+      Hash: ac24b2648552eee64b91af065f0f820c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundySettings
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -481,6 +936,12 @@ ScriptsOnlyBuild:
     className: PhotonAnimatorView
   - hash:
       serializedVersion: 2
+      Hash: adc7ebd112835966c3f4df9b79f077d6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: SkeletonEditor
+    className: PlayerController
+  - hash:
+      serializedVersion: 2
       Hash: c264f96916b2622cf88b5e50a54d300d
     assemblyName: NaughtyAttributes.Test.dll
     namespaceName: 
@@ -493,7 +954,7 @@ ScriptsOnlyBuild:
     className: TextToggleIsOnTransition
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_BasicAttack_Elemental_Punch
@@ -535,6 +996,12 @@ ScriptsOnlyBuild:
     className: Text
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TestSansBehaviour
+  - hash:
+      serializedVersion: 2
       Hash: 499fd23433e68e265d153aa6b95d0047
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -559,10 +1026,22 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
+      Hash: a93617a51dcbbcf2870f6385590c226f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: Progressor
+  - hash:
+      serializedVersion: 2
       Hash: c80bc562de10fdbf8b2e9bcb89d80421
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineCollisionImpulseSource
+  - hash:
+      serializedVersion: 2
+      Hash: f5266a5adcb8c50025b10c670fa5c92a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIView
   - hash:
       serializedVersion: 2
       Hash: 8e0313c6f5e2ce35991fec2d64f8eaab
@@ -607,10 +1086,28 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
+      Hash: a0c8ebf11978d247aa1eab8d2659a2d4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine
+    className: GameEventListener
+  - hash:
+      serializedVersion: 2
+      Hash: e6e8eb7576996efd6f1ee56f31ca7ade
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UIDrawerSettings
+  - hash:
+      serializedVersion: 2
       Hash: 7ab0e790220bdca831fdd886b339039d
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GridLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 5b2a4204263cf91ee4a9c9fa933c2c58
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Input
+    className: KeyToGameEvent
   - hash:
       serializedVersion: 2
       Hash: 6dd3dc11942e98c0a809c81f95fc960c
@@ -623,6 +1120,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: ScreenSpaceReflections
+  - hash:
+      serializedVersion: 2
+      Hash: 4cdcd8ce71a6659d46efdb51e7c6d076
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: E11PopupScriptOne
   - hash:
       serializedVersion: 2
       Hash: b5eb08b578a2f2d80bb106cbe65ab501
@@ -655,6 +1158,12 @@ ScriptsOnlyBuild:
     className: PostProcessProfile
   - hash:
       serializedVersion: 2
+      Hash: 316725cbd01c92513cce9cf236f380fc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Models
+    className: Graph
+  - hash:
+      serializedVersion: 2
       Hash: 0dbc3be398b4869a5c8d0d8481ee402c
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -679,6 +1188,12 @@ ScriptsOnlyBuild:
     className: Vignette
   - hash:
       serializedVersion: 2
+      Hash: bfd090288e2db0f06185d6536f23c71f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: TimeScaleNode
+  - hash:
+      serializedVersion: 2
       Hash: 11df54cb47bd74c537f3c732a94ea97d
     assemblyName: PhotonUnityNetworking.dll
     namespaceName: Photon.Pun
@@ -689,6 +1204,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.ProBuilder.dll
     namespaceName: UnityEngine.ProBuilder
     className: ProBuilderMesh
+  - hash:
+      serializedVersion: 2
+      Hash: da14c05d71f0da0054d5a39955ae9218
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Nodes
+    className: SubGraphNode
   - hash:
       serializedVersion: 2
       Hash: bd3cf68c8964d3c66d1c43f4f98508c9
@@ -703,10 +1224,22 @@ ScriptsOnlyBuild:
     className: NetworkProximityChecker
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundyPooler
+  - hash:
+      serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: AspectRatioFitter
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Touchy
+    className: TouchDetector
   - hash:
       serializedVersion: 2
       Hash: 01af2a1ccde6f5a3777877fce1d85576
@@ -719,6 +1252,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RectMask2D
+  - hash:
+      serializedVersion: 2
+      Hash: b45cd859b72f00579760e8f000b7a8e6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.SceneManagement
+    className: SceneDirector
   - hash:
       serializedVersion: 2
       Hash: 3a0d25fece6e274e7498ea3aa615f793
@@ -751,10 +1290,22 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: 3d9a2a71202cd162ecd1c49f012241e7
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIButton
+  - hash:
+      serializedVersion: 2
       Hash: fb70f07c52fc0817edd54327b41ca12c
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineFreeLook
+  - hash:
+      serializedVersion: 2
+      Hash: 1283539fac16179e3e70c0832e77742e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Nodes
+    className: ExitNode
   - hash:
       serializedVersion: 2
       Hash: 777f81204a982f98e9bd210168e79526
@@ -767,6 +1318,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.ProBuilder.dll
     namespaceName: UnityEngine.ProBuilder
     className: BezierShape
+  - hash:
+      serializedVersion: 2
+      Hash: 2535168d4111c89c25c9e5df7d237600
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetText
+  - hash:
+      serializedVersion: 2
+      Hash: 1617f63f40e4cfa654388e0d91e132ea
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UIPopupSettings
   - hash:
       serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
@@ -787,6 +1350,24 @@ ScriptsOnlyBuild:
     className: NewBehaviourScript
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundyManager
+  - hash:
+      serializedVersion: 2
+      Hash: eb39c6680ca6a4bb2625749f89799162
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIToggle
+  - hash:
+      serializedVersion: 2
+      Hash: 3555eaadc32ba5e36186f7fcf162e2f6
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SkillIcon
+  - hash:
+      serializedVersion: 2
       Hash: d251bf88db6c95a6b1aa0b69298da9ef
     assemblyName: UnityEngine.SpatialTracking.dll
     namespaceName: UnityEngine.SpatialTracking
@@ -803,6 +1384,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AbilityInstanceManager
+  - hash:
+      serializedVersion: 2
+      Hash: e29dc6e16288125d4ed363e0cad86897
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: BackButtonNode
   - hash:
       serializedVersion: 2
       Hash: 27b67ec2ed7c59cd87e5f69553a94866
@@ -835,7 +1422,7 @@ ScriptsOnlyBuild:
     className: CullArea
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Trg_Spell_Elemental_FlyingKick
@@ -869,6 +1456,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Analytics.Tracker.dll
     namespaceName: UnityEngine.Analytics
     className: AnalyticsTracker
+  - hash:
+      serializedVersion: 2
+      Hash: 48e7b286157118d9659dd0bcf5e4c0c1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Base
+    className: NamesDatabase
   - hash:
       serializedVersion: 2
       Hash: 7e6ed836cbaa230e56d6a2bbae1b9bb5
@@ -907,6 +1500,12 @@ ScriptsOnlyBuild:
     className: ReorderableLists
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine
+    className: Coroutiner
+  - hash:
+      serializedVersion: 2
       Hash: 1cdde0c3d8008dfe81d27e4c955d4fe7
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
@@ -943,10 +1542,28 @@ ScriptsOnlyBuild:
     className: RotateGameObject
   - hash:
       serializedVersion: 2
+      Hash: ce11ea1f2e0fa5c0dde8c309002e8479
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIPopupDatabase
+  - hash:
+      serializedVersion: 2
       Hash: 8dc90e648ac06f43bdd31ac9fa8f4579
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Selectable
+  - hash:
+      serializedVersion: 2
+      Hash: 3f8490fa931c608e489c5cdac07b266f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: WaitNode
+  - hash:
+      serializedVersion: 2
+      Hash: 0bf58f4232972480f3e66188ce53d36e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ai_Spell_Test_EzrealQ
   - hash:
       serializedVersion: 2
       Hash: ae14274b35e7e8c1197022fb9d266f23
@@ -959,6 +1576,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachinePOV
+  - hash:
+      serializedVersion: 2
+      Hash: b513130c9334a17678c64caa3b633b4c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: UnloadSceneNode
   - hash:
       serializedVersion: 2
       Hash: 265cf27ba050d55ff33a8acab4ded6c0
@@ -979,6 +1602,12 @@ ScriptsOnlyBuild:
     className: NetworkTransformVisualizer
   - hash:
       serializedVersion: 2
+      Hash: 1e11aa27a6e812df11ae8d908a0dfc24
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetAudioMixer
+  - hash:
+      serializedVersion: 2
       Hash: dabbd576077f97fbd6636ac795c497ab
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -991,10 +1620,28 @@ ScriptsOnlyBuild:
     className: StatusEffectParticleEffectManager
   - hash:
       serializedVersion: 2
+      Hash: 0f093f68ae46449dfd5d07fda7cf56fe
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ai_Spell_Huntress_VenomKnives
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DebugCommands
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Utils
+    className: DoozyPath
+  - hash:
+      serializedVersion: 2
+      Hash: 28efe8b56738f2a99f16b517f1669e33
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DynamicBoneCollider
   - hash:
       serializedVersion: 2
       Hash: c264f96916b2622cf88b5e50a54d300d
@@ -1015,6 +1662,12 @@ ScriptsOnlyBuild:
     className: CinemachineOrbitalTransposer
   - hash:
       serializedVersion: 2
+      Hash: 004c08043a58a7eea00923be42d08ebc
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIDrawerArrowAnimator
+  - hash:
+      serializedVersion: 2
       Hash: 57d2b3ca58a430f7cf319bb757c1f0f5
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
@@ -1027,6 +1680,12 @@ ScriptsOnlyBuild:
     className: ScrollRect
   - hash:
       serializedVersion: 2
+      Hash: f7fddb89ccc6de709bd65b996e8cbf7f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Animation
+    className: UIAnimationData
+  - hash:
+      serializedVersion: 2
       Hash: 7ca765ad7969aae95e8011264b9c4046
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
@@ -1037,6 +1696,24 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ParticleSystemAutoDestroy
+  - hash:
+      serializedVersion: 2
+      Hash: c4d06f7141c81e5114a5c1c92b6cb894
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: ApplicationQuitNode
+  - hash:
+      serializedVersion: 2
+      Hash: 9dac07391de41cfe62679ab7cfb4ed85
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIDrawer
+  - hash:
+      serializedVersion: 2
+      Hash: 6fb402875e8be17971c4e99a766c42f7
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Orientation
+    className: OrientationDetector
   - hash:
       serializedVersion: 2
       Hash: e9389e944eb81a3a9df56fcdb09ce6a9
@@ -1055,6 +1732,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.ProBuilder.dll
     namespaceName: UnityEngine.ProBuilder
     className: ColliderBehaviour
+  - hash:
+      serializedVersion: 2
+      Hash: af5627345cf1970e27bfd9a7fb498b45
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Input
+    className: KeyToAction
   - hash:
       serializedVersion: 2
       Hash: 5d4788a29148ccd04296a6738e2012a3
@@ -1159,7 +1842,7 @@ ScriptsOnlyBuild:
     className: PhotonTransformView
   - hash:
       serializedVersion: 2
-      Hash: 2395ba2390d6436f453c5cae3b116ca8
+      Hash: e8c46fcafc9473d5a5ac2e1f9a640d80
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LivingThingControl
@@ -1171,10 +1854,28 @@ ScriptsOnlyBuild:
     className: CinemachinePipeline
   - hash:
       serializedVersion: 2
+      Hash: 704dcd31abc789439bc3f3cd10b58c2b
+    assemblyName: DOTween.dll
+    namespaceName: DG.Tweening.Core
+    className: DOTweenComponent
+  - hash:
+      serializedVersion: 2
+      Hash: 9a65634b0f2713c6c2d2dd4d09159a88
+    assemblyName: DOTween.dll
+    namespaceName: DG.Tweening.Core
+    className: DOTweenSettings
+  - hash:
+      serializedVersion: 2
       Hash: a53651ee3996fbba20dfe0fce02f0b23
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: AutoExposure
+  - hash:
+      serializedVersion: 2
+      Hash: a7879b2482b664da0feca522227757fb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: E11PopupScriptThree
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1183,10 +1884,34 @@ ScriptsOnlyBuild:
     className: RemoteTestResultSender
   - hash:
       serializedVersion: 2
+      Hash: 15fed5cf26dd184ba830fcd9b873bd9d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIDrawerListener
+  - hash:
+      serializedVersion: 2
       Hash: 4fdfe530ffd5f502ce72adb104fc64e2
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
     className: OnClickDestroy
+  - hash:
+      serializedVersion: 2
+      Hash: 1283539fac16179e3e70c0832e77742e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Nodes
+    className: StartNode
+  - hash:
+      serializedVersion: 2
+      Hash: d5e68cf575436610637b84e945549def
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTarget
   - hash:
       serializedVersion: 2
       Hash: 694d20920c0e41f567e119f7159a3644
@@ -1195,10 +1920,28 @@ ScriptsOnlyBuild:
     className: CinemachinePath
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_FlameShot
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Utils
+    className: LanguagePack
+  - hash:
+      serializedVersion: 2
+      Hash: 961ad5bdeb8370430561d1d105e57e87
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIPopupLink
+  - hash:
+      serializedVersion: 2
+      Hash: b9567902f8e3a4a8e3ebfbcfdc430b33
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Animation
+    className: UIAnimationDatabase
   - hash:
       serializedVersion: 2
       Hash: 50c443b12ccc0b475183318b5088bcc5
@@ -1213,13 +1956,19 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
+      Hash: 2107ba5751259d2765462f06cbf41371
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UICanvas
+  - hash:
+      serializedVersion: 2
       Hash: 114ddb0937fb6d89c47bb1e207e2c4c2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ai_Ignite
   - hash:
       serializedVersion: 2
-      Hash: 2579ddf89504e0a97faddb7257a487b9
+      Hash: 9ee4dfafcfe02bf57658f3be7f9d31fc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LivingThing
@@ -1249,10 +1998,28 @@ ScriptsOnlyBuild:
     className: CinemachineTargetGroup
   - hash:
       serializedVersion: 2
+      Hash: c4d06f7141c81e5114a5c1c92b6cb894
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: ActivateLoadedScenesNode
+  - hash:
+      serializedVersion: 2
       Hash: 1b03e080dd32774ae781e6ab01e11943
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LivingThingStatusEffect
+  - hash:
+      serializedVersion: 2
+      Hash: 6bd001302bf60337c4dba400438cb365
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LobbyManager
+  - hash:
+      serializedVersion: 2
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: trg_Spell_Huntress_VenomKnives
   - hash:
       serializedVersion: 2
       Hash: 5af5a38642aaa0bd29718de32dc06f1f
@@ -1285,10 +2052,22 @@ ScriptsOnlyBuild:
     className: TextButtonTransition
   - hash:
       serializedVersion: 2
+      Hash: 3ff7162c4f60aff70ea81999c707a877
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Layouts
+    className: RadialLayout
+  - hash:
+      serializedVersion: 2
       Hash: 5ad4aa237d47ac2bab17bacb672edf7a
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: bbd8635ab96b071a3fc66943a872a3a4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DynamicBoneColliderBase
   - hash:
       serializedVersion: 2
       Hash: 7c792393fb82488bd20139dcc5ba26d8
@@ -1309,10 +2088,22 @@ ScriptsOnlyBuild:
     className: CinemachineImpulseListener
   - hash:
       serializedVersion: 2
+      Hash: 1283539fac16179e3e70c0832e77742e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Nodes
+    className: EnterNode
+  - hash:
+      serializedVersion: 2
       Hash: d6a8e9bec3160a152b9b2710593d3caa
     assemblyName: Unity.ProBuilder.dll
     namespaceName: UnityEngine.ProBuilder
     className: ColorPalette
+  - hash:
+      serializedVersion: 2
+      Hash: df2297df44ab7385b5b83d7afd66483d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Touchy
+    className: GestureListener
   - hash:
       serializedVersion: 2
       Hash: dcea6d27936fecf4d28c752509c0ef34
@@ -1351,10 +2142,22 @@ ScriptsOnlyBuild:
     className: PointedAtGameObjectInfo
   - hash:
       serializedVersion: 2
+      Hash: c1da47489a01b8d168c5e96ef2251cf9
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundDatabase
+  - hash:
+      serializedVersion: 2
       Hash: 783f593b9380cf72d0f7ebfd4a0d4bcd
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: InputField
+  - hash:
+      serializedVersion: 2
+      Hash: 45f9387638e0ddebbd2fcc6da812f557
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Touchy
+    className: TouchySettings
   - hash:
       serializedVersion: 2
       Hash: c9a8b80298a116835b51ba1cf9284367
@@ -1387,6 +2190,18 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
+      Hash: a77a6b59fc1ef13d1af8692c0c19290b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UICanvasSettings
+  - hash:
+      serializedVersion: 2
+      Hash: b5ab642aae745563519c07fced7e64d7
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody
+    className: NodySettings
+  - hash:
+      serializedVersion: 2
       Hash: c4117cf32d2e7797e9e05272a419cd6e
     assemblyName: Cinemachine.dll
     namespaceName: 
@@ -1411,6 +2226,12 @@ ScriptsOnlyBuild:
     className: ActivationPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: 486ce52ccf2e4e0744583a345f2e5f7b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UIButtonSettings
+  - hash:
+      serializedVersion: 2
       Hash: 18c222bef9ae745ce69ddde9b74337ca
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
@@ -1429,6 +2250,12 @@ ScriptsOnlyBuild:
     className: NetworkMigrationManager
   - hash:
       serializedVersion: 2
+      Hash: c4d06f7141c81e5114a5c1c92b6cb894
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: RandomNode
+  - hash:
+      serializedVersion: 2
       Hash: df76de5fb2b27007d514fdb38b91cf89
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
@@ -1441,13 +2268,13 @@ ScriptsOnlyBuild:
     className: InfoBoxes
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_Vault
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_Ignite
@@ -1457,6 +2284,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpawnEffect
+  - hash:
+      serializedVersion: 2
+      Hash: dabbd576077f97fbd6636ac795c497ab
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: equip_Weapon_Huntress_InfinityGlaive
   - hash:
       serializedVersion: 2
       Hash: c1933cc0a2f4ff6eb13333347497beb3
@@ -1469,6 +2302,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
     className: PunTurnManager
+  - hash:
+      serializedVersion: 2
+      Hash: 4b9562d3b46c728f6128376bd506d479
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIPopup
   - hash:
       serializedVersion: 2
       Hash: 301f4da7cc3b301c161d089f9d22efed
@@ -1519,7 +2358,7 @@ ScriptsOnlyBuild:
     className: CinemachineBlenderSettings
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_BasicAttack_SmallFireball
@@ -1537,10 +2376,22 @@ ScriptsOnlyBuild:
     className: NetworkBehaviour
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: ExampleShowPopup
+  - hash:
+      serializedVersion: 2
       Hash: ff7f58b226cfe4de0dc241bd88d5a904
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Outline
+    className: MeshOutline
+  - hash:
+      serializedVersion: 2
+      Hash: c8fe7e466f79d7d996678fdcd8e865d8
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UIToggleSettings
   - hash:
       serializedVersion: 2
       Hash: 9b070fd11003a7ac517c876788f0fb2a
@@ -1567,10 +2418,22 @@ ScriptsOnlyBuild:
     className: PlayerItemBelt
   - hash:
       serializedVersion: 2
+      Hash: 25de9a355a02358f42956639cea7595d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI
+    className: UIViewListener
+  - hash:
+      serializedVersion: 2
       Hash: 5f1752ed2092162f016c19510c28a8b9
     assemblyName: Unity.Analytics.DataPrivacy.dll
     namespaceName: UnityEngine.Analytics
     className: DataPrivacyButton
+  - hash:
+      serializedVersion: 2
+      Hash: 2acfd6a4079fb2ab3b393d232a0923d3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Input
+    className: BackButton
   - hash:
       serializedVersion: 2
       Hash: f336e086360abe49a3323e5f1583c35a
@@ -1591,6 +2454,12 @@ ScriptsOnlyBuild:
     className: EventSystemSpawner
   - hash:
       serializedVersion: 2
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: trg_Spell_Test_EzrealQ
+  - hash:
+      serializedVersion: 2
       Hash: ae83e830e7a90c0aff918c4c2e520825
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -1609,10 +2478,10 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: ec9cfd716e8b048ce509c8dd26bd2705
+      Hash: 8aa2369baa76bf90cdfae02e53d08a62
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TestGame
+    className: TestGameLogic
   - hash:
       serializedVersion: 2
       Hash: 6ff1c52123c50b3d73f35cd0e2e65dfd
@@ -1627,16 +2496,46 @@ ScriptsOnlyBuild:
     className: CinemachineHardLookAt
   - hash:
       serializedVersion: 2
+      Hash: c91f167855df48e73b2d722074e6224d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetImage
+  - hash:
+      serializedVersion: 2
+      Hash: b8fce2b1f8d867362ac87b2a7ff9b014
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: PortalNode
+  - hash:
+      serializedVersion: 2
       Hash: 4f74378b4832f6e02893d662fe9fc9cb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ai_Spell_Elemental_DoubleKick
   - hash:
       serializedVersion: 2
+      Hash: d57b63aa7c6252485a6d16b6683f8034
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterInfobar
+  - hash:
+      serializedVersion: 2
+      Hash: 1bde4438b9dc184303634a5777fc036e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: E12PopupManagerScript
+  - hash:
+      serializedVersion: 2
       Hash: c5fd97cc10b89deaf7c60af66a6b0d5a
     assemblyName: PhotonRealtime.dll
     namespaceName: Photon.Realtime
     className: SupportLogger
+  - hash:
+      serializedVersion: 2
+      Hash: 50502e1095f9e1ea7bccce1cafa26e69
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundGroupData
   - hash:
       serializedVersion: 2
       Hash: 3f600ad0f750f59238a91f7513b927c1
@@ -1663,6 +2562,18 @@ ScriptsOnlyBuild:
     className: OnPointerOverTooltip
   - hash:
       serializedVersion: 2
+      Hash: 7751bd3193994439eeb92c1c893ed331
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: GameEventNode
+  - hash:
+      serializedVersion: 2
+      Hash: 79f89d1ff859881dab236dc26cd4cb73
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Utils
+    className: UILanguagePack
+  - hash:
+      serializedVersion: 2
       Hash: 1dcb82730d983b77cec736c6ef19f814
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
@@ -1675,16 +2586,28 @@ ScriptsOnlyBuild:
     className: SwingArmModel
   - hash:
       serializedVersion: 2
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: trg_BasicAttack_Huntress_InfinityGlaive
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: MarkerTrack
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_Spell_Elemental_FrontKick
+  - hash:
+      serializedVersion: 2
+      Hash: 1561b9b9e317aa0cd0269e41a361310c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Settings
+    className: UIViewSettings
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1699,13 +2622,25 @@ ScriptsOnlyBuild:
     className: TMP_StyleSheet
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerInfoHUD
+  - hash:
+      serializedVersion: 2
       Hash: 4dc2cebad2892b10625fa99155cbc1d7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ai_Spell_Default_FlyingKick
+    className: ai_Spell_Elemental_FlyingKick
   - hash:
       serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
+      Hash: 7b83fb600b2f1bdc1cbefa7be51302c0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody
+    className: GraphController
+  - hash:
+      serializedVersion: 2
+      Hash: cd860c0fa2eb57fcc4f810eb27d83a56
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: trg_Spell_Elemental_DoubleKick
@@ -1729,10 +2664,22 @@ ScriptsOnlyBuild:
     className: MoveByKeys
   - hash:
       serializedVersion: 2
+      Hash: 7eb4f88c4cecd919d35b29d61805705b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: UIDrawerNode
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: PhotonUnityNetworking.Utilities.dll
     namespaceName: Photon.Pun.UtilityScripts
     className: OnEscapeQuit
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MainMenuLogic
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1765,6 +2712,12 @@ ScriptsOnlyBuild:
     className: TMP_ColorGradient
   - hash:
       serializedVersion: 2
+      Hash: f0fa87a0357f9cb61ebbda947d77835b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: UINode
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
@@ -1775,6 +2728,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: AmbientOcclusion
+  - hash:
+      serializedVersion: 2
+      Hash: 9b217f9f369fcb0702b731ba905faf3a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetAction
   - hash:
       serializedVersion: 2
       Hash: ee013f0cfa6a77a64018a988ad82cbf0
@@ -1793,6 +2752,24 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.dll
     namespaceName: Photon.Pun
     className: PhotonView
+  - hash:
+      serializedVersion: 2
+      Hash: 8bb3e9451e21e853c896742750b3c931
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DynamicBoneDemo1
+  - hash:
+      serializedVersion: 2
+      Hash: d5b95ab81ae5dcc63acefaedc9872693
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundyDatabase
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine
+    className: GameEventManager
   - hash:
       serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
@@ -1831,10 +2808,28 @@ ScriptsOnlyBuild:
     className: PlayerNumbering
   - hash:
       serializedVersion: 2
+      Hash: 14c4a27d71e8353712010704b332b0bf
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressTargetTextMeshPro
+  - hash:
+      serializedVersion: 2
+      Hash: 09a62226fbb2daf9a71275693093ac4e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Nody.Nodes
+    className: SwitchBackNode
+  - hash:
+      serializedVersion: 2
       Hash: ffdbd5802c2482a072a88f428ad3ca9d
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineBrain
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Soundy
+    className: SoundyController
   - hash:
       serializedVersion: 2
       Hash: 20eeaeae829475b5e354d1f626c51a2b
@@ -1859,6 +2854,12 @@ ScriptsOnlyBuild:
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
     className: CinemachineHardLockToTarget
+  - hash:
+      serializedVersion: 2
+      Hash: 7b7594defcc4a999c6b4ff0038c8d360
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Examples
+    className: E11PopupScriptTwo
   - hash:
       serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b
@@ -1897,6 +2898,24 @@ ScriptsOnlyBuild:
     className: Slider
   - hash:
       serializedVersion: 2
+      Hash: 1edab86fc84b0cdc5d1d2e9e459640c3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: SoundNode
+  - hash:
+      serializedVersion: 2
+      Hash: 20384a41cc26b77ba5cb2d0b6d2ce973
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Nodes
+    className: LoadSceneNode
+  - hash:
+      serializedVersion: 2
+      Hash: 60af225976688b974dd3a7776654363f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.Progress
+    className: ProgressorGroup
+  - hash:
+      serializedVersion: 2
       Hash: f5ec935e139c92762087e55a0fbd4020
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -1927,10 +2946,22 @@ ScriptsOnlyBuild:
     className: ai_BasicAttack_Elemental_Punch
   - hash:
       serializedVersion: 2
+      Hash: bbd8635ab96b071a3fc66943a872a3a4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DynamicBonePlaneCollider
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: f97251aaf71f6c2b5cabb35e5213a1a2
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Doozy.Engine.UI.Base
+    className: ListOfNames
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1939,35 +2970,19 @@ ScriptsOnlyBuild:
     className: Buttons
   - hash:
       serializedVersion: 2
-      Hash: adc7ebd112835966c3f4df9b79f077d6
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: SkeletonEditor
-    className: PlayerController
-  - hash:
-      serializedVersion: 2
-      Hash: d57b63aa7c6252485a6d16b6683f8034
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: MonsterInfobar
+    className: SkillDetailBox
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TestSansBehaviour
-  - hash:
-      serializedVersion: 2
-      Hash: f12c4abd941a9dac5a8c5cffa8078872
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: trg_Spell_Test_EzrealQ
-  - hash:
-      serializedVersion: 2
-      Hash: 0bf58f4232972480f3e66188ce53d36e
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ai_Spell_Test_EzrealQ
+    className: AvatarManager
   platform: 19
   scenePathNames:
-  - Assets/TestMap.unity
+  - Assets/Scenes/Main Menu.unity
+  - Assets/Scenes/Lobby.unity
+  - Assets/Scenes/Test Game.unity
   playerPath: C:/Users/lumer/Desktop/Build/RakShir.exe

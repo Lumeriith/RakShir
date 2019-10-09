@@ -27,6 +27,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.GameVersion = gameVersion;
         if (gameType == GameType.OnlineTestGame)
         {
+            PhotonNetwork.Disconnect();
             PhotonNetwork.ConnectUsingSettings();
             statusText.text = "Connecting to Master Server";
         }

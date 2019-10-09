@@ -246,7 +246,6 @@ public class Command
         if(lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / self.control.attackMoveTargetChecksForSecond)
         {
             lastAttackMoveCheckTime = Time.time;
-            Debug.Log(self.control.skillSet[0].range);
             List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, self.control.skillSet[0].range, self.control.skillSet[0].targetValidator);
             if(targets.Count == 0)
             {
@@ -256,8 +255,6 @@ public class Command
             }
             else
             {
-
-                Debug.Log(Vector3.Distance(self.transform.position, targets[0].transform.position));
                 type = CommandType.Chase;
                 parameters[0] = targets[0];
                 return false;
@@ -386,7 +383,7 @@ public class LivingThingControl : MonoBehaviourPun
     public NavMeshAgent agent { get; private set; }
 
     public AbilityTrigger[] skillSet = new AbilityTrigger[6];
-
+    public float[] cooldownTime = new float[6];
 
     [Header("AI Settings")]
     public AIMode mode = AIMode.None;
@@ -598,6 +595,11 @@ public class LivingThingControl : MonoBehaviourPun
     private void Update()
     {
         if (!photonView.IsMine) return;
+
+        for(int i = 0; i < cooldownTime.Length; i++)
+        {
+            cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime);
+        }
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
         if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||

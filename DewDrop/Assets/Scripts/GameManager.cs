@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
-
+            AvatarManager.instance.SetAvatar(PlayerType.Elemental);
         }
         else
         {
@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
             startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
+            AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
         
         this.localPlayer = localPlayer;

@@ -18,7 +18,12 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
+    [Header("UI Settings")]
     public Sprite abilityIcon;
+    public string abilityName;
+    [ResizableTextArea]
+    public string abilityDescription;
+    [Header("Visual Settings")]
     public AnimationClip castAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
@@ -35,24 +40,11 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public float cooldownTime;
 
-    
+    [HideInInspector]
+    public int skillIndex;
 
-
-
-    public LivingThing owner
-    {
-        get
-        {
-            if(_owner == null)
-            {
-                _owner = transform.parent.GetComponent<LivingThing>();
-                if(_owner == null && transform.parent.parent != null) _owner = transform.parent.parent.GetComponent<LivingThing>();
-
-            }
-            return _owner;
-        }
-    }
-    private LivingThing _owner;
+    [HideInInspector]
+    public LivingThing owner;
     public bool isCooledDown
     {
         get
@@ -66,12 +58,9 @@ public abstract class AbilityTrigger : MonoBehaviour
     {
         get
         {
-            return Mathf.Max(cooldownTime - (Time.time - cooldownStartTime), 0);
+            return owner.control.cooldownTime[skillIndex];
         }
     }
-
-
-    private float cooldownStartTime = -10000;
 
     public void Cast(CastInfo info)
     {
@@ -94,6 +83,9 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public abstract void OnCast(CastInfo info);
 
+    public virtual void OnEquip() { }
+    public virtual void OnUnequip() { }
+
 
     protected bool ShouldTargetValidatorFieldShow()
     {
@@ -109,12 +101,13 @@ public abstract class AbilityTrigger : MonoBehaviour
     {
         if (isBasicAttack)
         {
-            cooldownStartTime = Time.time - cooldownTime + (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
+
+            owner.control.cooldownTime[skillIndex] = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
 
         }
         else
         {
-            cooldownStartTime = Time.time;
+            owner.control.cooldownTime[skillIndex] = cooldownTime;
             ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
         }
     }
@@ -122,8 +115,8 @@ public abstract class AbilityTrigger : MonoBehaviour
     public void StartCooldown(float time, bool ignoreCooldownReduction = false)
     {
 
-        cooldownStartTime = Time.time + time - cooldownTime;
-        if(!ignoreCooldownReduction) ApplyCooldownReduction(time * owner.stat.finalCooldownReduction / 100f);
+        owner.control.cooldownTime[skillIndex] = time;
+        if (!ignoreCooldownReduction) ApplyCooldownReduction(time * owner.stat.finalCooldownReduction / 100f);
     }
 
 
@@ -135,19 +128,14 @@ public abstract class AbilityTrigger : MonoBehaviour
         owner.stat.SyncChangingStats();
     }
 
-    public void SetCooldown(float time)
-    {
-        cooldownStartTime = time + Time.time - cooldownTime;
-    }
-
     public void ResetCooldown()
     {
-        cooldownStartTime = Time.time - cooldownTime;
+        owner.control.cooldownTime[skillIndex] = 0f;
     }
 
     public void ApplyCooldownReduction(float time)
     {
-        cooldownStartTime -= time;
+        owner.control.cooldownTime[skillIndex] = Mathf.MoveTowards(owner.control.cooldownTime[skillIndex], 0, time);
     }
 
 

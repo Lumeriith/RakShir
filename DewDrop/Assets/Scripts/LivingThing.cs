@@ -260,12 +260,12 @@ public class LivingThing : MonoBehaviourPun
 
     void AssignMissingTransforms()
     {
-        head = transform.FindDeepChild("Bip001-Head");
-        leftHand = transform.FindDeepChild("Bip001-L-Hand");
-        rightHand =  transform.FindDeepChild("Bip001-R-Hand");
-        leftFoot = transform.FindDeepChild("Bip001-L-Foot");
-        rightFoot = transform.FindDeepChild("Bip001-R-Foot");
-        top = transform.FindDeepChild("FXDummy_Head");
+        head = transform.FindDeepChild("Bip001-Head") ?? transform.FindDeepChild("Bip01 Head");
+        leftHand = transform.FindDeepChild("Bip001-L-Hand") ?? transform.FindDeepChild("Bip01 L Hand");
+        rightHand =  transform.FindDeepChild("Bip001-R-Hand") ?? transform.FindDeepChild("Bip01 R Hand");
+        leftFoot = transform.FindDeepChild("Bip001-L-Foot") ?? transform.FindDeepChild("Bip01 L Foot");
+        rightFoot = transform.FindDeepChild("Bip001-R-Foot") ?? transform.FindDeepChild("Bip01 R Foot");
+        top = transform.FindDeepChild("FXDummy_Head") ?? transform.FindDeepChild("Bip01 Head");
         bottom = transform;
     }
 

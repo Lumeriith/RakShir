@@ -27,4 +27,17 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
         GameManager.instance.SpawnLocalPlayer(PlayerType.Elemental, reptileSpawnPoint.position);
     }
 
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("Disconnected from server. Returning to Main Menu...");
+        StartCoroutine(CoroutineMainMenu());
+        
+    }
+
+    IEnumerator CoroutineMainMenu()
+    {
+        yield return new WaitForSeconds(1f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+    }
 }

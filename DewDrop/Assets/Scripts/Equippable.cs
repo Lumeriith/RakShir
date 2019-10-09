@@ -61,9 +61,10 @@ public abstract class Equippable : Activatable
             
             if (skillSetReplacements[i] != null)
             {
-                float remainingCooldownTime = owner.control.skillSet[i] == null ? 0 : owner.control.skillSet[i].remainingCooldownTime;
                 owner.control.skillSet[i] = skillSetReplacements[i];
-                owner.control.skillSet[i].StartCooldown(remainingCooldownTime, true);
+                owner.control.skillSet[i].skillIndex = i;
+                owner.control.skillSet[i].owner = owner;
+                if (owner.photonView.IsMine) owner.control.skillSet[i].OnEquip();
             }
         }
         UpdateAttachments(owner);
@@ -78,7 +79,11 @@ public abstract class Equippable : Activatable
         {
             if (skillSetReplacements[i] != null)
             {
+                if (owner.photonView.IsMine) owner.control.skillSet[i].OnUnequip();
+                owner.control.skillSet[i].skillIndex = -1;
+                owner.control.skillSet[i].owner = null;
                 owner.control.skillSet[i] = null;
+                
             }
         }
         DetachAttachments();
