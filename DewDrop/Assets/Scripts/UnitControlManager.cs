@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Doozy.Engine.Nody;
+using Doozy.Engine.Nody.Nodes;
 public class UnitControlManager : MonoBehaviour
 {
     public LivingThing selectedUnit;
@@ -50,6 +52,8 @@ public class UnitControlManager : MonoBehaviour
     private DecalSystem.Decal rangeIndicator;
     private DecalSystem.Decal arrowHead;
     private DecalSystem.Decal arrowBase;
+
+    private GraphController nodyGraphController;
 
     [Header("Outline Settings")]
     public TargetValidator canDrawOutline;
@@ -228,20 +232,21 @@ public class UnitControlManager : MonoBehaviour
         rangeIndicator = transform.Find("Range Indicator").GetComponent<DecalSystem.Decal>();
         arrowHead = transform.Find("ArrowHead").GetComponent<DecalSystem.Decal>();
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
+        nodyGraphController = FindObjectOfType<GraphController>();
     }
 
     private MeshOutline previousOutline;
     private void DrawAppropriateOutline()
     {
         LivingThing target = GetFirstValidTarget(canDrawOutline);
-        
-        if(target != null)
+
+        if (target != null)
         {
             if (previousOutline != null) previousOutline.enabled = false;
             previousOutline = target.outline;
 
 
-            if(target.outline != null)
+            if (target.outline != null)
             {
                 target.outline.enabled = true;
                 switch (selectedUnit.GetRelationTo(target))
@@ -262,94 +267,127 @@ public class UnitControlManager : MonoBehaviour
         }
         else
         {
-            if(previousOutline != null)
+            if (previousOutline != null)
             {
                 previousOutline.enabled = false;
                 previousOutline = null;
             }
         }
 
-        
+
 
 
     }
-    
+    private void DisableOutline()
+    {
+
+        if (previousOutline != null)
+        {
+            previousOutline.enabled = false;
+            previousOutline = null;
+        }
+
+
+
+    }
+
 
     void Update()
     {
         if (selectedUnit == null) return;
 
-        bool isReserveKeyPressed = Input.GetKey(reservationModifier);
 
-        DrawAppropriateOutline();
+
+        print(nodyGraphController.Graph.ActiveNode.Name == "Ingame Subgraph");
+        bool shouldTakeInputs = false;
+
+        if (nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
+            shouldTakeInputs = true;
         
-        CheckForAction();
-        CheckForAttack();
-        CheckForNewCast();
-        CheckForItem();
 
-        switch (inputState)
+        if (!shouldTakeInputs)
         {
-            case InputState.None:
-                break;
-            case InputState.Attack:
-                if (Input.GetKeyDown(castConfirmKey))
-                {
-                    LivingThing target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
-                    if(target != null)
+            inputState = InputState.None;
+            pendingTrigger = null;
+            pendingConsumable = null;
+            DisableOutline();
+        }
+        else
+        {
+            bool isReserveKeyPressed = Input.GetKey(reservationModifier);
+            DrawAppropriateOutline();
+
+
+            CheckForAction();
+            CheckForAttack();
+            CheckForNewCast();
+            CheckForItem();
+
+            switch (inputState)
+            {
+                case InputState.None:
+                    break;
+                case InputState.Attack:
+                    if (Input.GetKeyDown(castConfirmKey))
                     {
-                        selectedUnit.control.CommandChase(target, isReserveKeyPressed);
+                        LivingThing target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
+                        if (target != null)
+                        {
+                            selectedUnit.control.CommandChase(target, isReserveKeyPressed);
+                            inputState = InputState.None;
+                        }
+                        else
+                        {
+                            selectedUnit.control.CommandAttackMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
+                            inputState = InputState.None;
+                        }
+                    }
+                    break;
+                case InputState.ContinousMove:
+                    if (Input.GetKeyUp(actionKey))
+                    {
                         inputState = InputState.None;
                     }
                     else
                     {
-                        selectedUnit.control.CommandAttackMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
-                        inputState = InputState.None;
+                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
                     }
-                }
-                break;
-            case InputState.ContinousMove:
-                if (Input.GetKeyUp(actionKey))
-                {
-                    inputState = InputState.None;
-                }
-                else
-                {
-                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
-                }
-                break;
-            case InputState.PendingNormalCast:
-                if (Input.GetKeyDown(castConfirmKey))
-                {
-
-                    bool commandSuccess = pendingTrigger != null ? CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed) : CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
-                    if (commandSuccess)
+                    break;
+                case InputState.PendingNormalCast:
+                    if (Input.GetKeyDown(castConfirmKey))
                     {
-                        inputState = InputState.None;
+
+                        bool commandSuccess = pendingTrigger != null ? CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed) : CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
+                        if (commandSuccess)
+                        {
+                            inputState = InputState.None;
+                            pendingTrigger = null;
+                        }
+                    }
+                    break;
+                case InputState.PendingOnReleaseCast:
+                    if (Input.GetKeyUp(pendingTriggerActivationKey) || Input.GetKeyDown(castConfirmKey))
+                    {
+                        if (pendingTrigger != null)
+                        {
+                            CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
+                        }
+                        else
+                        {
+                            CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
+                        }
                         pendingTrigger = null;
                     }
-                }
-                break;
-            case InputState.PendingOnReleaseCast:
-                if (Input.GetKeyUp(pendingTriggerActivationKey) || Input.GetKeyDown(castConfirmKey))
-                {
-                    if (pendingTrigger != null)
-                    {
-                        CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
-                    }
-                    else
-                    {
-                        CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
-                    }
-                    pendingTrigger = null;
-                }
-                break;
+                    break;
+            }
+
+            CheckForStop();
+
+            SetAppropriateCursor();
+            DisplayAppropriateIndicator();
         }
 
-        CheckForStop();
 
-        SetAppropriateCursor();
-        DisplayAppropriateIndicator();
     }
 
 

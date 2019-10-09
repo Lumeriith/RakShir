@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using NaughtyAttributes;
 
 
 public enum EquipmentType { Helmet, Armor, Boots, Weapon, Ring }
@@ -20,7 +20,12 @@ public struct Attachment
 
 public abstract class Equippable : Activatable
 {
-    [Header("Equippable Settings")]
+    [Header("Metadata Settings")]
+    public Sprite equippableIcon;
+    public string equippableName;
+    [ResizableTextArea]
+    public string equippableDescription;
+    [Header("General Settings")]
     public EquipmentType type;
     public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[6];
     public List<Attachment> attachments = new List<Attachment>();

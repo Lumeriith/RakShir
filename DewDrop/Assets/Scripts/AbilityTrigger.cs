@@ -18,7 +18,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
-    [Header("UI Settings")]
+    [Header("Metadata Settings")]
     public Sprite abilityIcon;
     public string abilityName;
     [ResizableTextArea]

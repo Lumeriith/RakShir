@@ -186,7 +186,7 @@ public class Command
         if (!target.channel.channelValidator.Evaluate(self)) return true;
         if (target == null) return true;
 
-        if (Vector3.Distance(self.transform.position, target.transform.position) <= target.activationRange)
+        if (Vector3.Distance(self.transform.position, target.transform.position) <= Activatable.activationRange)
         {
             self.control.agentDestination = self.transform.position;
             self.LookAt(target.transform.position);
