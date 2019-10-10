@@ -6,14 +6,20 @@ using UnityEngine.UI;
 public class EquippableSocket : MonoBehaviour
 {
 
-    public int equippableIndex;
+    public EquipmentType equipmentType;
 
 
     private Image icon;
+    private Image socket;
+
+    public Color[] socketColorByTier = new Color[4];
+    public Color emptySocketColor;
+
 
     private void Awake()
     {
         icon = transform.Find("Icon").GetComponent<Image>();
+        socket = transform.Find("Socket").GetComponent<Image>();
     }
 
     private void Update()
@@ -30,20 +36,22 @@ public class EquippableSocket : MonoBehaviour
             ResetSocket();
             return;
         }
-        if (belt.equipped[equippableIndex] == null)
+        if (belt.equipped[(int)equipmentType] == null)
         {
             ResetSocket();
             return;
         }
+
         icon.enabled = true;
-        icon.sprite = belt.equipped[equippableIndex].equippableIcon ?? null; 
-        
+        icon.sprite = belt.equipped[(int)equipmentType].equippableIcon ?? null;
+        socket.color = socketColorByTier[(int)belt.equipped[(int)equipmentType].tier];
     }
 
 
     private void ResetSocket()
     {
         icon.enabled = false;
+        socket.color = emptySocketColor;
     }
 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using NaughtyAttributes;
 
-
+public enum ItemTier { Common, Rare, Epic, Legendary }
 public enum EquipmentType { Helmet, Armor, Boots, Weapon, Ring }
 public enum BodyPart { Head, LeftHand, RightHand, LeftFoot, RightFoot }
 
@@ -23,6 +23,7 @@ public abstract class Equippable : Activatable
     [Header("Metadata Settings")]
     public Sprite equippableIcon;
     public string equippableName;
+    public ItemTier tier;
     [ResizableTextArea]
     public string equippableDescription;
     [Header("General Settings")]
