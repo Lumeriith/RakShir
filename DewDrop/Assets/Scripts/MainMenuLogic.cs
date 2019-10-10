@@ -6,7 +6,10 @@ using Photon.Pun;
 using Photon.Realtime;
 public class MainMenuLogic : MonoBehaviour
 {
-
+    private void Start()
+    {
+        EnterOnlineTestGame();
+    }
 
     public void EnterOnlineTestGame()
     {

@@ -9,7 +9,7 @@ public class EquippableSocket : MonoBehaviour
     public EquipmentType equipmentType;
 
 
-    private Image icon;
+    private Image sprite;
     private Image socket;
 
     public Color[] socketColorByTier = new Color[4];
@@ -18,7 +18,7 @@ public class EquippableSocket : MonoBehaviour
 
     private void Awake()
     {
-        icon = transform.Find("Icon").GetComponent<Image>();
+        sprite = transform.Find("Icon/Sprite").GetComponent<Image>();
         socket = transform.Find("Socket").GetComponent<Image>();
     }
 
@@ -42,15 +42,15 @@ public class EquippableSocket : MonoBehaviour
             return;
         }
 
-        icon.enabled = true;
-        icon.sprite = belt.equipped[(int)equipmentType].equippableIcon ?? null;
+        sprite.enabled = true;
+        sprite.sprite = belt.equipped[(int)equipmentType].equippableIcon ?? null;
         socket.color = socketColorByTier[(int)belt.equipped[(int)equipmentType].tier];
     }
 
 
     private void ResetSocket()
     {
-        icon.enabled = false;
+        sprite.enabled = false;
         socket.color = emptySocketColor;
     }
 
