@@ -81,18 +81,26 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     }
 
 
-    public void DetachChildParticleSystemsAndAutoDelete()
+    public void DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior behaviour = ParticleSystemStopBehavior.StopEmitting)
     {
-        photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.AllViaServer);
+        if (behaviour == ParticleSystemStopBehavior.StopEmitting)
+        {
+            photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, false);
+        }
+        else
+        {
+            photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, true);
+        }
+
     }
 
     [PunRPC]
-    protected void RpcDetachChildParticleSystemsAndAutoDelete()
+    protected void RpcDetachChildParticleSystemsAndAutoDelete(bool clear)
     {
         ParticleSystem[] psList = GetComponentsInChildren<ParticleSystem>();
         foreach (ParticleSystem ps in psList)
         {
-            if (ps.transform.parent == null) continue;
+            ps.Stop(false, clear ? ParticleSystemStopBehavior.StopEmittingAndClear : ParticleSystemStopBehavior.StopEmitting);
             ps.gameObject.AddComponent<ParticleSystemAutoDestroy>();
             ps.transform.parent = null;
         }
