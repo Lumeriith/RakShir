@@ -298,7 +298,6 @@ public class UnitControlManager : MonoBehaviour
 
 
 
-        print(nodyGraphController.Graph.ActiveNode.Name == "Ingame Subgraph");
         bool shouldTakeInputs = false;
 
         if (nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")

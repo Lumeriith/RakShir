@@ -18,6 +18,11 @@ public abstract class Activatable : MonoBehaviourPun
 
     private List<KeyValuePair<LivingThing, Channel>> dict = new List<KeyValuePair<LivingThing, Channel>>();
 
+    private void Awake()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Activatable");
+    }
+
     public void StartActivate(LivingThing activator)
     {
         if (!activator.photonView.IsMine)

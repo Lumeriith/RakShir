@@ -76,17 +76,11 @@ public class GameManager : MonoBehaviour
         if(type == PlayerType.Elemental)
         {
             localPlayer = PhotonNetwork.Instantiate("player_Elemental", location, Quaternion.identity).GetComponent<LivingThing>();
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
             AvatarManager.instance.SetAvatar(PlayerType.Elemental);
         }
         else
         {
             localPlayer = PhotonNetwork.Instantiate("player_Reptile", location, Quaternion.identity).GetComponent<LivingThing>();
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("Equipments/equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
         

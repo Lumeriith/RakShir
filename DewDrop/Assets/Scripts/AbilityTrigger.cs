@@ -103,7 +103,6 @@ public abstract class AbilityTrigger : MonoBehaviour
         {
 
             owner.control.cooldownTime[skillIndex] = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f);
-
         }
         else
         {

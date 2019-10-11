@@ -257,9 +257,4 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
         bonusAgility = stats[11];
         bonusIntelligence = stats[12];
     }
-
-
-
-
-
 }

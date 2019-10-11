@@ -18,5 +18,4 @@ public class trg_BasicAttack_Huntress_InfinityGlaive : AbilityTrigger
     {
         AbilityInstanceManager.CreateAbilityInstance("ai_BasicAttack_Huntress_InfinityGlaive", info.owner.rightHand.position, Quaternion.identity, info);
     }
-
 }
