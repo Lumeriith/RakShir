@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ai_Spell_Windfury_WindExplosion : AbilityInstance
 {
@@ -28,6 +29,8 @@ public class ai_Spell_Windfury_WindExplosion : AbilityInstance
 
     protected override void AliveUpdate()
     {
+        if(!photonView.IsMine) { return; }
+
         timer += Time.deltaTime;
         foreach (LivingThing target in targets)
         {
