@@ -9617,6 +9617,7 @@ Transform:
   m_Children:
   - {fileID: 3992360991329334689}
   - {fileID: 3992360991259727037}
+  - {fileID: 7201545870418331847}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9670,7 +9671,7 @@ MonoBehaviour:
   type: 3
   skillSetReplacements:
   - {fileID: 3992360991329334688}
-  - {fileID: 0}
+  - {fileID: 4286646245168548020}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -14575,3 +14576,76 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5212781535274066653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7201545870418331847}
+  - component: {fileID: 4286646245168548020}
+  m_Layer: 0
+  m_Name: trg_Spell_Windfury_WindExplosion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7201545870418331847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212781535274066653}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3992360991449187017}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4286646245168548020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212781535274066653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be71d6d680ab2d84b95a29181202580f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: c637aca0197fafe4481cbab63968da80, type: 3}
+  abilityName: 
+  abilityDescription: 
+  castAnimation: {fileID: 0}
+  animationDuration: 0
+  indicator:
+    type: 1
+    range: 5
+    arrowWidth: 0
+    arrowLength: 0
+  targetingType: 0
+  range: 0
+  manaCost: 30
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  cooldownTime: 5
+  skillIndex: 0
+  owner: {fileID: 0}

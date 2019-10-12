@@ -8,50 +8,42 @@ public class ai_BasicAttack_Windfury_StormforgedFan : AbilityInstance
     private CastInfo info;
     private ParticleSystem start;
     private ParticleSystem hit;
-    private ParticleSystem land;
     private List<LivingThing> targets = new List<LivingThing>();
-    private Vector3 targetPosition = Vector3.zero;
+    private float timer;
 
-    public float scaleMagnificationValue = 3f;
-    public float distance = 3f;
-    public float ejectionForce = 10f;
+    public TargetValidator tv;
+    public float duration = 0.4f;
 
     private void Awake()
     {
         start = transform.Find("Start").GetComponent<ParticleSystem>();
         hit = transform.Find("Hit").GetComponent<ParticleSystem>();
-        land = transform.Find("Land").GetComponent<ParticleSystem>();
     }
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         this.info = castInfo;
-        transform.Rotate(info.directionVector.x, transform.rotation.y, info.directionVector.z);
-        targetPosition = transform.position + (info.target.transform.position + info.target.GetCenterOffset() - transform.position).normalized * distance;
-
+        transform.LookAt(info.target.transform.position + info.target.GetCenterOffset());
         start.Play();
     }
 
     protected override void AliveUpdate()
     {
-        float scaleDeltaX = transform.localScale.x * (1 + scaleMagnificationValue * Time.deltaTime);
-        transform.localScale = new Vector3(scaleDeltaX, transform.localScale.y, transform.localScale.z);
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, ejectionForce * Time.deltaTime);
-
+        timer += Time.deltaTime;
         if (!photonView.IsMine) { return; }
 
-        if (Vector3.Distance(transform.position, targetPosition) <= float.Epsilon)
+        if (timer >= duration)
         {
             if (targets.Count != 0)
             {
                 foreach(LivingThing target in targets)
                 {
+                    if (!tv.Evaluate(info.owner, target)) { return; }
                     GameObject hitEffect = Instantiate(hit.gameObject, target.transform.position + target.GetCenterOffset(), Quaternion.identity);
                     hitEffect.GetComponent<ParticleSystem>().Play();
                     hitEffect.AddComponent<ParticleSystemAutoDestroy>();
                     info.owner.DoBasicAttackImmediately(target);
                 }
-                land.Play();
                 DetachChildParticleSystemsAndAutoDelete();
                 DestroySelf();
             }
