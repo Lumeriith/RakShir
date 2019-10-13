@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
-public abstract class Consumable : Activatable
+using Photon.Pun;
+public abstract class Consumable : Item
 {
-    [Header("Description Settings")]
-    public Sprite sprite;
-    public string consumableName;
-    [Multiline]
-    public string description;
-
-
     [Header("Consumable Settings")]
     public bool useOnPickup = false;
     public AnimationClip useAnimation;
@@ -25,8 +19,6 @@ public abstract class Consumable : Activatable
     public TargetValidator targetValidator;
     public SelfValidator selfValidator;
 
-    [HideInInspector]
-    public LivingThing owner = null;
 
     protected bool ShouldTargetValidatorFieldShow()
     {
@@ -49,30 +41,14 @@ public abstract class Consumable : Activatable
         return isUsed;
     }
 
-    public abstract bool OnUse(CastInfo info);
-
-    protected override void OnChannelSuccess(LivingThing activator)
+    public void DestroySelf()
     {
-        PlayerItemBelt belt = activator.GetComponent<PlayerItemBelt>();
+        PlayerItemBelt belt = owner.GetComponent<PlayerItemBelt>();
         if (belt == null) return;
-        if (owner != null) return;
-        owner = activator;
-        if (belt.AddConsumable(this))
-        {
-            transform.SetParent(activator.transform);
-            transform.position = activator.transform.position;
-            gameObject.SetActive(false);
-        }
+        Disown();
+        PhotonNetwork.Destroy(gameObject);
     }
 
-    protected override void OnChannelCancel(LivingThing activator)
-    {
-        
-    }
-
-    protected override void OnChannelStart(LivingThing activator)
-    {
-
-    }
+    public abstract bool OnUse(CastInfo info);
 
 }

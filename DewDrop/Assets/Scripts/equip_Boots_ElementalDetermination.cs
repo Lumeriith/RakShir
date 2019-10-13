@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class equip_Boots_ElementalDetermination : Equippable
+public class equip_Boots_ElementalDetermination : Equipment
 {
     public override void OnEquip(LivingThing owner)
     {

@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -298,8 +298,8 @@ MonoBehaviour:
         SoundName: No Sound
         AudioClip: {fileID: 0}
         OutputAudioMixerGroup: {fileID: 0}
-    PresetCategory: Scale
-    PresetName: ClickInFast
+    PresetCategory: DewDrop
+    PresetName: ItemHover
     PunchAnimation:
       AnimationType: 4
       Move:
@@ -352,7 +352,7 @@ MonoBehaviour:
         Enabled: 1
         From: {x: 0, y: 0, z: 0}
         To: {x: 0, y: 0, z: 0}
-        By: {x: -0.1, y: -0.1, z: 0}
+        By: {x: -0.05, y: -0.05, z: 0}
         UseCustomFromAndTo: 0
         Vibrato: 0
         Elasticity: 1

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class equip_Weapon_Huntress_InfinityGlaive : Equippable
+public class equip_Weapon_Huntress_InfinityGlaive : Equipment
 {
     public override void OnEquip(LivingThing owner)
     {

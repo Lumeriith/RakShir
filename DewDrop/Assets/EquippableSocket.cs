@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class EquippableSocket : MonoBehaviour
+using UnityEngine.EventSystems;
+public class EquippableSocket : MonoBehaviour, IPointerClickHandler
 {
 
     public EquipmentType equipmentType;
@@ -15,6 +15,16 @@ public class EquippableSocket : MonoBehaviour
     public Color[] socketColorByTier = new Color[4];
     public Color emptySocketColor;
 
+    public void OnPointerClick(PointerEventData data)
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        if (target == null || !target.photonView.IsMine) return;
+        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        if (belt == null) return;
+        if (belt.equipped[(int)equipmentType] == null) return;
+        belt.UnequipEquipment((int)equipmentType);
+    }
+
 
     private void Awake()
     {
@@ -24,7 +34,7 @@ public class EquippableSocket : MonoBehaviour
 
     private void Update()
     {
-        LivingThing target = UnitControlManager.instance.selectedUnit;
+        LivingThing target = GameManager.instance.localPlayer;
         if (target == null || !target.photonView.IsMine)
         {
             ResetSocket();
@@ -43,8 +53,8 @@ public class EquippableSocket : MonoBehaviour
         }
 
         sprite.enabled = true;
-        sprite.sprite = belt.equipped[(int)equipmentType].equippableIcon ?? null;
-        socket.color = socketColorByTier[(int)belt.equipped[(int)equipmentType].tier];
+        sprite.sprite = belt.equipped[(int)equipmentType].itemIcon ?? null;
+        socket.color = socketColorByTier[(int)belt.equipped[(int)equipmentType].itemTier];
     }
 
 

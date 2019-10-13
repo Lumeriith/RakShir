@@ -18,23 +18,13 @@ public struct Attachment
 }
 
 
-public abstract class Equippable : Activatable
+public abstract class Equipment : Item
 {
-    [Header("Metadata Settings")]
-    public Sprite equippableIcon;
-    public string equippableName;
-    public ItemTier tier;
-    [ResizableTextArea]
-    public string equippableDescription;
-    [Header("General Settings")]
+    [Header("Equipment Settings")]
     public EquipmentType type;
     public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[6];
     public List<Attachment> attachments = new List<Attachment>();
 
-    public bool debug_UpdateAttachmentsEveryFrame = false;
-
-    [HideInInspector]
-    public LivingThing owner = null;
     private void Awake()
     {
         foreach (Attachment attachment in attachments)
@@ -47,21 +37,20 @@ public abstract class Equippable : Activatable
 
     public void Equip()
     {
-        photonView.RPC("RpcEquip", RpcTarget.All, owner.photonView.ViewID);
+        photonView.RPC("RpcEquip", RpcTarget.All);
     }
 
     public void Unequip()
     {
-        photonView.RPC("RpcUnequip", RpcTarget.All, owner.photonView.ViewID);
+        photonView.RPC("RpcUnequip", RpcTarget.All);
     }
 
     public abstract void OnEquip(LivingThing owner);
     public abstract void OnUnequip(LivingThing owner);
 
     [PunRPC]
-    protected void RpcEquip(int owner_id)
+    protected void RpcEquip()
     {
-        LivingThing owner = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
         for (int i = 0; i < skillSetReplacements.Length; i++)
         {
             
@@ -78,9 +67,8 @@ public abstract class Equippable : Activatable
     }
 
     [PunRPC]
-    protected void RpcUnequip(int owner_id)
+    protected void RpcUnequip()
     {
-        LivingThing owner = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
         for (int i = 0; i < skillSetReplacements.Length; i++)
         {
             if (skillSetReplacements[i] != null)
@@ -136,43 +124,7 @@ public abstract class Equippable : Activatable
         }
     }
 
-    private void Update()
-    {
-        if (debug_UpdateAttachmentsEveryFrame)
-        {
-            LivingThing owner = GetComponentInParent<LivingThing>();
-            if (owner == null) return;
-            UpdateAttachments(owner);
-        }
-    }
 
 
 
-
-
-
-
-    protected override void OnChannelCancel(LivingThing activator)
-    {
-
-    }
-
-    protected override void OnChannelStart(LivingThing activator)
-    {
-
-    }
-
-    protected override void OnChannelSuccess(LivingThing activator)
-    {
-        PlayerItemBelt belt = activator.GetComponent<PlayerItemBelt>();
-        if (belt == null) return;
-        if (owner != null) return;
-        owner = activator;
-        if (belt.AddEquippable(this))
-        {
-            transform.SetParent(activator.transform);
-            transform.position = activator.transform.position;
-            gameObject.SetActive(false);
-        }
-    }
 }

@@ -1,21 +1,76 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
+using Photon.Pun;
 
-public abstract class Item : MonoBehaviour
+public abstract class Item : Activatable
 {
-    [Header("Item Type")]
-    public string itemType;
+    [Header("Metadata Settings")]
+    public Sprite itemIcon;
+    public string itemName;
+    public ItemTier itemTier;
+    [ResizableTextArea]
+    public string itemDescription;
 
-    /// <summary>
-    /// 아이템이 장착됐을 때 효과
-    /// 스탯의 증가, 플레이어 외형의 변경
-    /// </summary>
-    public abstract void SetItem();
+    [HideInInspector]
+    public LivingThing owner = null;
 
-    /// <summary>
-    /// 아이템이 해제됐을 때 효과
-    /// 스탯의 복구, 플레이어 외형 복구
-    /// </summary>
-    public abstract void PopItem();
+
+
+    public void TransferOwnership(LivingThing owner)
+    {
+        photonView.RPC("RpcTransferOwnership", RpcTarget.All, owner.photonView.ViewID);
+    }
+
+    public void Disown()
+    {
+        if (owner == null) return;
+        photonView.RPC("RpcDisown", RpcTarget.All);
+    }
+
+    protected override void OnChannelCancel(LivingThing activator)
+    {
+
+    }
+
+    protected override void OnChannelStart(LivingThing activator)
+    {
+
+    }
+
+    protected override void OnChannelSuccess(LivingThing activator)
+    {
+        if (activator.photonView.IsMine)
+        {
+            activator.GetComponent<PlayerItemBelt>().Pickup(this);
+        }
+    }
+
+
+    [PunRPC]
+    protected void RpcTransferOwnership(int owner_id)
+    {
+        LivingThing livingThing = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
+
+        if (owner != null)
+        {
+            RpcDisown();
+        }
+
+        owner = livingThing;
+        transform.SetParent(owner.transform);
+        transform.position = owner.transform.position;
+        gameObject.SetActive(false);
+    }
+
+
+    [PunRPC]
+    protected void RpcDisown()
+    {
+        if (owner == null) return;
+        owner = null;
+        transform.SetParent(null);
+        gameObject.SetActive(true);
+    }
 }

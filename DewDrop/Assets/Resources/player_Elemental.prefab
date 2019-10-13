@@ -34468,19 +34468,19 @@ MonoBehaviour:
   currentMana: 100
   isDead: 0
   baseMaximumHealth: 1000
-  baseHealthRegenerationPerSecond: 0
+  baseHealthRegenerationPerSecond: 5
   baseMaximumMana: 100
   baseManaRegenerationPerSecond: 7
   baseMovementSpeed: 300
-  baseAttackDamage: 30
-  baseAttacksPerSecond: 1.3
+  baseAttackDamage: 0
+  baseAttacksPerSecond: 0
   baseSpellPower: 100
   baseCooldownReduction: 0
   baseDodgeChance: 0
   strength: 0
   agility: 0
   intelligence: 0
-  showTemporaryAttributes: 1
+  showTemporaryAttributes: 0
   bonusMaximumHealth: 0
   bonusHealthRegenerationPerSecond: 0
   bonusMaximumMana: 0
@@ -34665,14 +34665,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072484fbc6d523145a859de85283a166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consumables:
+  consumableBelt:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  equippables:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -34682,6 +34677,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  inventory: []
+  inventoryCapacity: 6
 --- !u!1 &5597723862374793682
 GameObject:
   m_ObjectHideFlags: 0

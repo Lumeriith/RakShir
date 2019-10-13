@@ -1,83 +1,109 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 public class PlayerItemBelt : MonoBehaviour
 {
-    public Consumable[] consumables = new Consumable[6];
-    public Equippable[] equippables = new Equippable[3];
+    private LivingThing livingThing;
 
-    public Equippable[] equipped = new Equippable[5];
+    public Consumable[] consumableBelt = new Consumable[5];
+    public Equipment[] equipped = new Equipment[5];
+
+    public List<Item> inventory = new List<Item>();
+    public int inventoryCapacity = 6;
+
+
+    private void Awake()
+    {
+        livingThing = GetComponent<LivingThing>();
+    }
+
+    public bool Pickup(Item item)
+    {
+        if (inventory.Count >= inventoryCapacity) return false;
+        inventory.Add(item);
+        item.TransferOwnership(livingThing);
+        return true;
+    }
+
 
     public void UseConsumable(Consumable consumable, CastInfo info)
     {
-        for (int i = 0; i < consumables.Length; i++)
+        for (int i = 0; i < consumableBelt.Length; i++)
         {
-            if (consumables[i] == consumable)
+            if (consumableBelt[i] == consumable)
             {
-                bool isUsed = consumable.OnUse(info);
-                if (isUsed)
-                {
-                    PhotonNetwork.Destroy(consumable.photonView);
-                    consumables[i] = null;
-                }
+                consumable.OnUse(info);
                 break;
             }
         }
-
     }
 
-    public bool AddConsumable(Consumable consumable)
+    public void MoveConsumableFromBeltToInventory(int from)
     {
-        for (int i = 0; i < consumables.Length; i++)
-        {
-            if (consumables[i] == null)
-            {
-                consumables[i] = consumable;
-                return true;
-            }
-        }
-
-        return false;
+        Consumable target = consumableBelt[from] as Consumable;
+        if (target == null) return;
+        if (inventory.Count >= inventoryCapacity) return;
+        inventory.Add(consumableBelt[from]);
+        consumableBelt[from] = null;
     }
-    public bool AddEquippable(Equippable equippable)
+
+    public bool MoveConsumableFromInventoryToBelt(int from, int to = -1)
     {
-        for (int i = 0; i < equippables.Length; i++)
+        Consumable target = inventory[from] as Consumable;
+        if (target == null) return false;
+        if (to == -1)
         {
-            if (equippables[i] == null)
+            for (int i = 0; i < consumableBelt.Length; i++)
             {
-                equippables[i] = equippable;
-                if(equipped[(int)equippable.type] == null)
+                if (consumableBelt[i] == null)
                 {
-                    UseEquippable(equippable);
+                    consumableBelt[i] = target;
+                    inventory.RemoveAt(from);
+                    return true;
                 }
-                return true;
             }
+            return false;
         }
-
-        return false;
-    }
-
-    public void UseEquippable(Equippable equippable)
-    {
-        for (int i = 0; i < equippables.Length; i++)
+        else
         {
-            if(equipped[(int)equippable.type] == null)
+            inventory.RemoveAt(from);
+            if (consumableBelt[to] != null)
             {
-                equipped[(int)equippable.type] = equippable;
-                equippables[i] = null;
-                equippable.Equip();
+                inventory.Add(consumableBelt[to]);
             }
-            else
-            {
-                equipped[(int)equippable.type].Unequip();
-                equippables[i] = equipped[(int)equippable.type];
-                equipped[(int)equippable.type] = equippable;
-                equippable.Equip();
-            }
+            consumableBelt[to] = target;
+            return true;
+        }
+    }
+    public bool EquipEquipmentFromInventory(int from)
+    {
+        Equipment target = inventory[from] as Equipment;
+        if (target == null) return false;
+
+        inventory.RemoveAt(from);
+
+        if(equipped[(int)target.type] != null)
+        {
+            equipped[(int)target.type].Unequip();
         }
 
+        equipped[(int)target.type] = target;
+        equipped[(int)target.type].Equip();
+        return true;
     }
+    
+    public void UnequipEquipment(int index)
+    {
+        Equipment target = inventory[index] as Equipment;
+        if (target == null) return;
+        if (inventory.Count >= inventoryCapacity) return;
+        if (equipped[index] == null) return;
+        inventory.Add(target);
+        target.Unequip();
+        equipped[index] = null;
+        
+    }
+
 
 
 

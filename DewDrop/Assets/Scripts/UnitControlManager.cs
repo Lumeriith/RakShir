@@ -469,12 +469,12 @@ public class UnitControlManager : MonoBehaviour
         PlayerItemBelt belt = selectedUnit.GetComponent<PlayerItemBelt>();
 
         if (belt == null) return;
-        if (belt.consumables[itemIndex - 1] == null) return;
-        if (!belt.consumables[itemIndex - 1].selfValidator.Evaluate(selectedUnit)) return;
+        if (belt.consumableBelt[itemIndex - 1] == null) return;
+        if (!belt.consumableBelt[itemIndex - 1].selfValidator.Evaluate(selectedUnit)) return;
 
-        if (belt.consumables[itemIndex - 1].targetingType == AbilityTrigger.TargetingType.None)
+        if (belt.consumableBelt[itemIndex - 1].targetingType == AbilityTrigger.TargetingType.None)
         {
-            selectedUnit.control.CommandConsumable(belt.consumables[itemIndex - 1], new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
+            selectedUnit.control.CommandConsumable(belt.consumableBelt[itemIndex - 1], new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
             return;
         }
         switch (method)
@@ -482,16 +482,16 @@ public class UnitControlManager : MonoBehaviour
             case AbilityCastMethod.Normal:
                 inputState = InputState.PendingNormalCast;
                 pendingTrigger = null;
-                pendingConsumable = belt.consumables[itemIndex - 1];
+                pendingConsumable = belt.consumableBelt[itemIndex - 1];
                 break;
             case AbilityCastMethod.OnRelease:
                 inputState = InputState.PendingOnReleaseCast;
                 pendingTrigger = null;
-                pendingConsumable = belt.consumables[itemIndex - 1];
+                pendingConsumable = belt.consumableBelt[itemIndex - 1];
                 pendingTriggerActivationKey = button;
                 break;
             case AbilityCastMethod.Quick:
-                CommandConsumableOnContext(belt.consumables[itemIndex - 1], Input.GetKey(reservationModifier));
+                CommandConsumableOnContext(belt.consumableBelt[itemIndex - 1], Input.GetKey(reservationModifier));
                 break;
         }
     }

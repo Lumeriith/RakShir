@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class ConsumableSocket : MonoBehaviour
+using UnityEngine.EventSystems;
+public class ConsumableSocket : MonoBehaviour, IPointerClickHandler
 {
 
     public int consumableIndex;
@@ -14,6 +15,15 @@ public class ConsumableSocket : MonoBehaviour
     public Color socketColor;
     public Color emptySocketColor;
 
+    public void OnPointerClick(PointerEventData data)
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        if (target == null || !target.photonView.IsMine) return;
+        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        if (belt == null) return;
+        if (belt.consumableBelt[consumableIndex] == null) return;
+        belt.MoveConsumableFromBeltToInventory(consumableIndex);
+    }
 
     private void Awake()
     {
@@ -35,14 +45,14 @@ public class ConsumableSocket : MonoBehaviour
             ResetSocket();
             return;
         }
-        if (belt.consumables[consumableIndex] == null)
+        if (belt.consumableBelt[consumableIndex] == null)
         {
             ResetSocket();
             return;
         }
 
         icon.enabled = true;
-        icon.sprite = belt.consumables[consumableIndex].sprite ?? null;
+        icon.sprite = belt.consumableBelt[consumableIndex].itemIcon ?? null;
         socket.color = socketColor;
     }
 
