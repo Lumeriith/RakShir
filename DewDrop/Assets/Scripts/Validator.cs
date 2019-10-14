@@ -17,6 +17,8 @@ public class TargetValidator : System.ICloneable
     public bool canTargetEnemySummon = true;
     public bool canTargetEnemyMonster = true;
 
+    public bool evaluatesFalseIfDead = true;
+
     public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stasis, StatusEffectType.Invulnerable, StatusEffectType.Untargetable };
 
     public bool invertResult = false;
@@ -73,7 +75,7 @@ public class TargetValidator : System.ICloneable
 
     public bool Evaluate(LivingThing self, LivingThing target)
     {
-        if (target == null || self == null) return invertResult ? true : false;
+        if (target == null || self == null || (evaluatesFalseIfDead && target.IsDead())) return invertResult ? true : false;
 
         bool isSelf = target == self;
         bool isAlly = !isSelf && self.team == target.team && self.team != Team.None;
@@ -110,7 +112,7 @@ public class TargetValidator : System.ICloneable
 [System.Serializable]
 public class SelfValidator : System.ICloneable
 {
-
+    public bool evaluatesFalseIfDead = true;
     public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stun, StatusEffectType.Airborne, StatusEffectType.Sleep, StatusEffectType.Polymorph, StatusEffectType.MindControl, StatusEffectType.Charm, StatusEffectType.Fear, StatusEffectType.Silence };
 
     public bool invertResult = false;
@@ -180,7 +182,7 @@ public class SelfValidator : System.ICloneable
 
     public bool Evaluate(LivingThing self)
     {
-        if (self == null) return invertResult ? true : false;
+        if (self == null || (evaluatesFalseIfDead && self.IsDead())) return invertResult ? true : false;
 
         foreach (StatusEffectType type in excludes)
         {
