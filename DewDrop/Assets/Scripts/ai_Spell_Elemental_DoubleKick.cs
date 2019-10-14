@@ -6,7 +6,6 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 {
     public SelfValidator channelValidator;
 
-    public float range;
     public float marginToTarget;
     public float dashSpeed;
 
@@ -18,11 +17,8 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
     public float delayAfterSecondKick;
 
 
-    public TargetValidator targetValidator;
-
     private GameObject hitEffect;
 
-    private CastInfo info;
     private LivingThing target;
 
     private void Awake()
@@ -34,7 +30,6 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info = castInfo;
 
         target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<LivingThing>();
 

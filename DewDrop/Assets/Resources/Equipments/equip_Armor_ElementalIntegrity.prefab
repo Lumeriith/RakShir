@@ -14576,4 +14576,15 @@ MonoBehaviour:
     invertResult: 0
   cooldownTime: 8
   skillIndex: 0
-  owner: {fileID: 0}
+  kickRange: 4.5
+  kickTargetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    excludes: 000203
+    invertResult: 0

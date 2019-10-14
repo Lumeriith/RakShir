@@ -109,6 +109,7 @@ public class PlayerItemBelt : MonoBehaviour
         if(equipped[(int)target.type] != null)
         {
             equipped[(int)target.type].Unequip();
+            inventory.Add(equipped[(int)target.type]);
         }
 
         equipped[(int)target.type] = target;

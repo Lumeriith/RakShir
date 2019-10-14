@@ -13,6 +13,8 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     protected bool isDestroyed { get; private set; } = false;
 
     protected bool isAlive { get { return isCreated && !isDestroyed; } }
+    public CastInfo info;
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
@@ -49,6 +51,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         }
 
         isCreated = true;
+        this.info = castInfo;
         OnCreate(castInfo, data);
 
     }

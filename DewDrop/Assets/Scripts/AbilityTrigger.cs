@@ -44,7 +44,23 @@ public abstract class AbilityTrigger : MonoBehaviour
     public int skillIndex;
 
     [HideInInspector]
-    public LivingThing owner;
+    public LivingThing owner
+    {
+        get
+        {
+            if (_owner == null) _owner = GetComponentInParent<LivingThing>();
+            return _owner;
+        }
+        set
+        {
+            _owner = value;
+        }
+    }
+    private LivingThing _owner;
+
+    [HideInInspector]
+    public CastInfo info;
+
     public bool isCooledDown
     {
         get
@@ -77,6 +93,7 @@ public abstract class AbilityTrigger : MonoBehaviour
             }
 
         }
+        this.info = info;
         OnCast(info);
 
     }

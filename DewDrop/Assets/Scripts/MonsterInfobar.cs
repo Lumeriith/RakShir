@@ -17,6 +17,7 @@ public class MonsterInfobar : MonoBehaviour, IInfobar
     private Image image_health_HoT;
     private Image image_health_DoT;
 
+    private CanvasGroup canvasGroup;
 
     public void SetTarget(LivingThing target)
     {
@@ -29,12 +30,25 @@ public class MonsterInfobar : MonoBehaviour, IInfobar
         image_health_delta = transform.Find("Health/Delta").GetComponent<Image>();
         image_health_HoT = transform.Find("Health/HoT").GetComponent<Image>();
         image_health_DoT = transform.Find("Health/DoT").GetComponent<Image>();
-
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (target.IsDead())
+        {
+            canvasGroup.alpha = 0f;
+        }
+        else
+        {
+            canvasGroup.alpha = 1f;
+        }
 
         image_health_fill.fillAmount = target.currentHealth / target.maximumHealth;
 

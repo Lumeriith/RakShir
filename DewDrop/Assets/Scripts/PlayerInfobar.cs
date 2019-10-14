@@ -19,7 +19,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
     private Image image_health_HoT;
     private Image image_health_DoT;
 
-
+    private CanvasGroup canvasGroup;
     public void SetTarget(LivingThing target)
     {
         this.target = target;
@@ -33,12 +33,25 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
         image_mana_fill = transform.Find("Mana/Fill").GetComponent<Image>();
         image_health_HoT = transform.Find("Health/HoT").GetComponent<Image>();
         image_health_DoT = transform.Find("Health/DoT").GetComponent<Image>();
+        canvasGroup = GetComponent<CanvasGroup>();
 
     }
 
     void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        if (target.IsDead())
+        {
+            canvasGroup.alpha = 0;
+        }
+        else
+        {
+            canvasGroup.alpha = 1;
+        }
 
         text_name.text = target.name;
 
@@ -61,5 +74,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
         }
 
         transform.position = Camera.main.WorldToScreenPoint(target.transform.position + worldOffset) + UIOffset;
+
+
     }
 }

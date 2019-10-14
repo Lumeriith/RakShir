@@ -272,21 +272,28 @@ public class Command
 
     private bool ProcessChase(LivingThing target)
     {
+
         if (SelfValidator.CancelsChaseCommand.Evaluate(self)) return true;
         if (target == null || target.IsDead()) return true;
-        
         if (Vector3.Distance(self.transform.position, target.transform.position) <= self.control.skillSet[0].range)
         {
+
             self.control.agentDestination = self.transform.position;
             ProcessAttack(target);
         }
         else
         {
+
             if (self.control.IsMoveProhibitedByChannel()) return false;
+
             self.control.agentDestination = target.transform.position;
             if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
             {
                 self.LookAt(self.control.agent.path.corners[1]);
+            }
+            else
+            {
+                self.LookAt(target.transform.position);
             }
         }
 
@@ -295,6 +302,7 @@ public class Command
 
     private bool ProcessAutoChase(LivingThing target)
     {
+
         if(Vector3.Distance(self.transform.position,target.transform.position) > self.control.autoChaseRange)
         {
             autoChaseOutOfRangeTime += Time.deltaTime;
@@ -314,7 +322,7 @@ public class Command
         if (self.control.IsAbilityProhibitedByChannel()) return false;
         if (!trigger.isCooledDown) return true;
         if (!trigger.selfValidator.Evaluate(self)) return true;
-
+        if (!self.HasMana(trigger.manaCost)) return true;
         switch (trigger.targetingType)
         {
             case AbilityTrigger.TargetingType.None:
@@ -400,6 +408,7 @@ public class LivingThingControl : MonoBehaviourPun
     public List<Command> reservedCommands = new List<Command>();
     private float lastAICheckTime = 0f;
 
+    private Animator animator;
     private LivingThing livingThing;
 
     
@@ -589,6 +598,7 @@ public class LivingThingControl : MonoBehaviourPun
     {
         livingThing = GetComponent<LivingThing>();
         agent = GetComponent<NavMeshAgent>();
+        animator = transform.Find("Model").GetComponent<Animator>();
         agent.updateRotation = false;
         agentDestination = transform.position;
     }
@@ -600,7 +610,6 @@ public class LivingThingControl : MonoBehaviourPun
         {
             cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
         }
-
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
         if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
             livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
@@ -716,12 +725,14 @@ public class LivingThingControl : MonoBehaviourPun
     [PunRPC]
     private void RpcStartWalking(Vector3 destination)
     {
+        animator.SetBool("IsWalking", true);
         livingThing.OnStartWalking.Invoke(new InfoStartWalking() { livingThing = this.livingThing, destination = destination });
     }
 
     [PunRPC]
     private void RpcStopWalking()
     {
+        animator.SetBool("IsWalking", false);
         livingThing.OnStopWalking.Invoke(new InfoStopWalking() { livingThing = livingThing });
     }
 

@@ -116,9 +116,6 @@ public class LivingThing : MonoBehaviourPun
     public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
     public System.Action<InfoMagicDamage> OnTakeMagicDamage = (InfoMagicDamage _) => { };
 
-    public System.Action<InfoChannel> OnChannelBasicAttack = (InfoChannel _) => { };
-    public System.Action<InfoChannel> OnChannelBasicAttackCanceled = (InfoChannel _) => { };
-    public System.Action<InfoChannel> OnChannelBasicAttackSuccess = (InfoChannel _) => { };
 
 
 
@@ -267,6 +264,14 @@ public class LivingThing : MonoBehaviourPun
         rightFoot = transform.FindDeepChild("Bip001-R-Foot") ?? transform.FindDeepChild("Bip01 R Foot");
         top = transform.FindDeepChild("FXDummy_Head") ?? transform.FindDeepChild("Bip01 Head");
         bottom = transform;
+
+        if (head == null) head = transform;
+        if (leftHand == null) leftHand = transform;
+        if (rightHand == null) rightHand = transform;
+        if (leftFoot == null) leftFoot = transform;
+        if (rightFoot == null) rightFoot = transform;
+        if (top == null) top = transform;
+
     }
 
     #endregion
@@ -473,7 +478,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void LookAt(Vector3 lookPosition, bool immediately = false)
     {
-        photonView.RPC("RpcLookAt",photonView.Owner, lookPosition, immediately);
+        photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
     public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
@@ -550,6 +555,9 @@ public class LivingThing : MonoBehaviourPun
         {
             stat.currentHealth = 1;
         }
+        control.enabled = true;
+        control.agent.enabled = true;
+        animator.SetBool("IsDead", false);
     }
 
     [PunRPC]
@@ -678,32 +686,7 @@ public class LivingThing : MonoBehaviourPun
         from.OnDealDamage.Invoke(info2);
     }
 
-    [PunRPC]
-    protected void RpcChannelBasicAttack(float remainingTime)
-    {
-        InfoChannel info;
-        info.remainingTime = remainingTime;
-        info.livingThing = this;
-        OnChannelBasicAttack.Invoke(info);
-    }
 
-    [PunRPC]
-    protected void RpcChannelBasicAttackCanceled(float remainingTime)
-    {
-        InfoChannel info;
-        info.remainingTime = remainingTime;
-        info.livingThing = this;
-        OnChannelBasicAttackCanceled.Invoke(info);
-    }
-
-    [PunRPC]
-    protected void RpcChannelBasicAttackSuccess()
-    {
-        InfoChannel info;
-        info.remainingTime = 0;
-        info.livingThing = this;
-        OnChannelBasicAttackSuccess.Invoke(info);
-    }
 
     [PunRPC]
     protected void RpcDeath()
@@ -719,10 +702,12 @@ public class LivingThing : MonoBehaviourPun
         stat.isDead = true;
 
         stat.currentHealth = 0;
-
+        control.enabled = false;
+        control.agent.enabled = false;
         OnDeath.Invoke(info);
         
         killer.OnKill.Invoke(info);
+        animator.SetBool("IsDead", true);
     }
 
 

@@ -506,6 +506,7 @@ public class UnitControlManager : MonoBehaviour
             return;
         }
         if (!trigger.selfValidator.Evaluate(selectedUnit)) return;
+        if (!selectedUnit.HasMana(trigger.manaCost)) return;
 
         if (trigger.targetingType == AbilityTrigger.TargetingType.None)
         {

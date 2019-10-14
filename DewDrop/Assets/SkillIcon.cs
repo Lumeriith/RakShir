@@ -12,7 +12,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private Image image_disabled;
     private Image image_highlighted;
     private TextMeshProUGUI tmpu_cooldown;
-
+    private TextMeshProUGUI tmpu_manaCost;
     private SkillDetailBox detailBox;
 
     public void OnPointerEnter(PointerEventData data)
@@ -33,6 +33,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         tmpu_cooldown = transform.Find("Mask/Cooldown Text").GetComponent<TextMeshProUGUI>();
         detailBox = transform.Find("Detail Box").GetComponent<SkillDetailBox>();
         detailBox.gameObject.SetActive(false);
+        tmpu_manaCost = transform.Find("Mana Cost Text").GetComponent<TextMeshProUGUI>();
     }
     private void Update()
     {
@@ -44,6 +45,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_disabled.enabled = true;
             image_highlighted.enabled = false;
             tmpu_cooldown.text = "";
+            tmpu_manaCost.text = "";
             return;
         }
 
@@ -52,12 +54,14 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_icon.sprite = null;
             image_disabled.enabled = true;
             image_highlighted.enabled = false;
+            tmpu_manaCost.text = "";
         }
         else
         {
             image_icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
-            image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown;
+            image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
             image_highlighted.enabled = false;
+            tmpu_manaCost.text = ((int)target.control.skillSet[skillIndex].manaCost).ToString();
         }
 
         if(target.control.cooldownTime[skillIndex] == 0f)
