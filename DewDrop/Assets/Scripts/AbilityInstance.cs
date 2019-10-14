@@ -85,7 +85,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     }
 
 
-    public void DetachChildParticleSystemsAndAutoDelete(DetachBehaviour behaviour = DetachBehaviour.StopEmitting)
+    public void DetachChildParticleSystemsAndAutoDelete(DetachBehaviour behaviour = DetachBehaviour.DontStop)
     {
         photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, (int)behaviour);
     }

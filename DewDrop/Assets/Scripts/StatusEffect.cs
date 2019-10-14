@@ -36,13 +36,12 @@ public class StatusEffect
     public float duration;
     public float originalDuration;
     public object parameter;
-    public bool isAboutToBeDestroyed;
 
     public bool isAlive
     {
         get
         {
-            return !isAboutToBeDestroyed && !(duration <= 0) && owner.statusEffect.RetrieveStatusEffect(uid) != null;
+            return (duration > 0) && owner.statusEffect.GetStatusEffectByUID(uid) != null;
         }
     }
 
@@ -53,7 +52,6 @@ public class StatusEffect
         this.duration = duration;
         this.parameter = parameter;
         this.originalDuration = duration;
-        this.isAboutToBeDestroyed = false;
     }
 
     public void Remove()
@@ -69,6 +67,11 @@ public class StatusEffect
     public void SetDuration(float duration)
     {
         owner.statusEffect.SetDurationOfStatusEffect(this, duration);
+    }
+
+    public void ResetDuration()
+    {
+        owner.statusEffect.SetDurationOfStatusEffect(this, originalDuration);
     }
 
 
@@ -136,7 +139,7 @@ public class StatusEffect
     }
     public static StatusEffect DamageOverTime(LivingThing caster, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.Silence, duration, amount);
+        return new StatusEffect(caster, StatusEffectType.DamageOverTime, duration, amount);
     }
     public static StatusEffect Custom(LivingThing caster, string name, float duration)
     {

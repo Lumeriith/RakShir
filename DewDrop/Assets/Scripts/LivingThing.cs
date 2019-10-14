@@ -635,7 +635,7 @@ public class LivingThing : MonoBehaviourPun
             info.to = this;
             OnMiss.Invoke(info);
         }
-        else if (Random.value < stat.baseDodgeChance / 100)
+        else if (Random.value < stat.finalDodgeChance / 100f)
         {
             InfoMiss info;
             info.from = from;
