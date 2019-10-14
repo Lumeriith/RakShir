@@ -29,7 +29,8 @@ public class LivingThingBase : MonoBehaviour
     {
         if (GameManager.instance.localPlayer == null) return;
         Relation relation = GameManager.instance.localPlayer.GetRelationTo(livingThing);
-        if (!isBaseSet || previousRelation != relation) UpdateBase(relation);
+        decal.gameObject.SetActive(livingThing.IsAlive());
+        if (livingThing.IsAlive() && (!isBaseSet || previousRelation != relation)) UpdateBase(relation);
     }
 
     private void UpdateBase(Relation relation)

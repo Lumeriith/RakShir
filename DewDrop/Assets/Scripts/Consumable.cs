@@ -45,7 +45,6 @@ public abstract class Consumable : Item
     {
         PlayerItemBelt belt = owner.GetComponent<PlayerItemBelt>();
         if (belt == null) return;
-        Disown();
         PhotonNetwork.Destroy(gameObject);
     }
 

@@ -9604,9 +9604,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   channelValidator:
+    evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f10
     invertResult: 0
-  range: 4.5
   marginToTarget: 1.5
   dashSpeed: 16
   bonusDamage: 45
@@ -9614,17 +9614,6 @@ MonoBehaviour:
   delayBeforeFirstKick: 0.15
   delayBeforeSecondKick: 0.3
   delayAfterSecondKick: 0
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    excludes: 000203
-    invertResult: 0
 --- !u!1 &6043623042022059610
 GameObject:
   m_ObjectHideFlags: 0

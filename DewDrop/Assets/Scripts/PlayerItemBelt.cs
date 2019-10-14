@@ -37,6 +37,20 @@ public class PlayerItemBelt : MonoBehaviour
             return true;
         }
 
+        if(consumable != null)
+        {
+            for(int i = 0; i < consumableBelt.Length; i++)
+            {
+                if(consumableBelt[i] == null)
+                {
+                    inventory.Add(item);
+                    item.TransferOwnership(livingThing);
+                    MoveConsumableFromInventoryToBelt(inventory.Count - 1,i);
+                    return true;
+                }
+            }
+        }
+
         if (inventory.Count < inventoryCapacity)
         {
             inventory.Add(item);

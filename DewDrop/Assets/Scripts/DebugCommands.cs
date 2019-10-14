@@ -85,9 +85,13 @@ public class DebugCommands : MonoBehaviour
 
 
     [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
-    public static void Spawn(string name)
+    public static void Spawn(string name, int amount=1)
     {
-        PhotonNetwork.Instantiate(name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+        for(int i = 0; i < amount; i++)
+        {
+            PhotonNetwork.Instantiate(name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+        }
+
     }
 
 

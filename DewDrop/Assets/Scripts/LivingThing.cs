@@ -400,6 +400,12 @@ public class LivingThing : MonoBehaviourPun
         return Vector3.Lerp(bottom, top, Random.value);
     }
 
+    public void Teleport(Vector3 location)
+    {
+        CancelDash();
+        CancelAirborne();
+        photonView.RPC("RpcTeleport", RpcTarget.All, location);
+    }
 
     public void DashThroughForDuration(Vector3 location, float duration)
     {
@@ -825,6 +831,14 @@ public class LivingThing : MonoBehaviourPun
         animator.runtimeAnimatorController = aoc;
         animator.SetTrigger("PlayCustomAnimation");
         animator.SetFloat("CustomAnimationSpeed", duration == -1 ? 1f : newClip.length / duration);
+    }
+
+    [PunRPC]
+    private void RpcTeleport(Vector3 location)
+    {
+        if (photonView.IsMine) control.agent.enabled = false;
+        transform.position = location;
+        if (photonView.IsMine) control.agent.enabled = true;
     }
 
     [PunRPC]

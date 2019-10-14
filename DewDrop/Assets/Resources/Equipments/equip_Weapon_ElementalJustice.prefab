@@ -4806,11 +4806,11 @@ MonoBehaviour:
   animationDuration: 0.6
   indicator:
     type: 1
-    range: 1.5
+    range: 2
     arrowWidth: 0
     arrowLength: 0
   targetingType: 4
-  range: 1.5
+  range: 2
   manaCost: 0
   targetValidator:
     canTargetSelf: 0
@@ -4821,9 +4821,11 @@ MonoBehaviour:
     canTargetEnemyPlayer: 1
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
     excludes: 000203
     invertResult: 0
   selfValidator:
+    evaluatesFalseIfDead: 1
     excludes: 0f090a0b0c0d0e
     invertResult: 0
   cooldownTime: 0
@@ -9741,9 +9743,11 @@ MonoBehaviour:
     canTargetEnemyPlayer: 1
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
     excludes: 000203
     invertResult: 0
   selfValidator:
+    evaluatesFalseIfDead: 1
     excludes: 12090a0b0c0d0e1001
     invertResult: 0
   cooldownTime: 3.5
@@ -14575,6 +14579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   channel:
     channelValidator:
+      evaluatesFalseIfDead: 1
       excludes: 12090a0b0c0d0e0f
       invertResult: 0
     duration: 0

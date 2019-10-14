@@ -622,6 +622,8 @@ public class LivingThingControl : MonoBehaviourPun
             agent.enabled = true;
         }
 
+        agent.speed = livingThing.stat.finalMovementSpeed / 100f * (100f + livingThing.statusEffect.totalSpeedAmount) / 100f * (100f - livingThing.statusEffect.totalSlowAmount) / 100f;
+
         List<Channel> channelsToRemove = new List<Channel>();
 
 

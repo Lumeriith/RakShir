@@ -9582,6 +9582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   channel:
     channelValidator:
+      evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
     duration: 0
@@ -14569,9 +14570,11 @@ MonoBehaviour:
     canTargetEnemyPlayer: 1
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
     excludes: 000203
     invertResult: 0
   selfValidator:
+    evaluatesFalseIfDead: 1
     excludes: 10090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 8
@@ -14586,5 +14589,6 @@ MonoBehaviour:
     canTargetEnemyPlayer: 1
     canTargetEnemySummon: 1
     canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
     excludes: 000203
     invertResult: 0
