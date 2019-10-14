@@ -2,35 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator : MonoBehaviour
+namespace Juhwan
 {
-    public float rotateSpeed = 30f;
-    public enum RotateDirection { X, Y, Z };
-    public RotateDirection rotateDirection;
-
-    private void Start()
+    public class Rotator : MonoBehaviour
     {
-        StartCoroutine("Rotate");
-    }
+        public float rotateSpeed = 30f;
+        public enum RotateDirection { X, Y, Z };
+        public RotateDirection rotateDirection;
 
-    private IEnumerator Rotate()
-    {
-        while (true)
+        private void Start()
         {
-            switch (rotateDirection)
-            {
-                case RotateDirection.X:
-                    transform.Rotate(Vector3.right, rotateSpeed * Time.deltaTime);
-                    break;
-                case RotateDirection.Y:
-                    transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
-                    break;
-                case RotateDirection.Z:
-                    transform.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime);
-                    break;
-            }
+            StartCoroutine("Rotate");
+        }
 
-            yield return null;
+        private IEnumerator Rotate()
+        {
+            while (true)
+            {
+                switch (rotateDirection)
+                {
+                    case RotateDirection.X:
+                        transform.Rotate(Vector3.right, rotateSpeed * Time.deltaTime);
+                        break;
+                    case RotateDirection.Y:
+                        transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
+                        break;
+                    case RotateDirection.Z:
+                        transform.Rotate(Vector3.forward, rotateSpeed * Time.deltaTime);
+                        break;
+                }
+
+                yield return null;
+            }
         }
     }
+
 }
