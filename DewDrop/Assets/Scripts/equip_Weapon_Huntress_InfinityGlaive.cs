@@ -24,7 +24,7 @@ public class equip_Weapon_Huntress_InfinityGlaive : Equipment
         owner.stat.baseDodgeChance -= 5f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Huntress - Stand");
+            owner.ChangeStandAnimation("Stand");
             owner.ChangeWalkAnimation("Walk");
         }
     }
