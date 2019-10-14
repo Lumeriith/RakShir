@@ -598,7 +598,7 @@ public class LivingThingControl : MonoBehaviourPun
 
         for(int i = 0; i < cooldownTime.Length; i++)
         {
-            cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime);
+            cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
         }
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);

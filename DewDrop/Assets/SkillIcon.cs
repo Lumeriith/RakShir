@@ -60,7 +60,22 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_highlighted.enabled = false;
         }
 
-        tmpu_cooldown.text = target.control.cooldownTime[skillIndex] == 0f ? "" : target.control.cooldownTime[skillIndex].ToString("F1");
+        if(target.control.cooldownTime[skillIndex] == 0f)
+        {
+            tmpu_cooldown.text = "";
+        }
+        else
+        {
+            if(target.control.cooldownTime[skillIndex] > 1)
+            {
+                tmpu_cooldown.text = ((int)target.control.cooldownTime[skillIndex] + 1).ToString();
+            }
+            else
+            {
+                tmpu_cooldown.text = target.control.cooldownTime[skillIndex].ToString("F1");
+            }
+            
+        }
 
 
     }

@@ -108,15 +108,13 @@ public abstract class AbilityTrigger : MonoBehaviour
         else
         {
             owner.control.cooldownTime[skillIndex] = cooldownTime;
-            ApplyCooldownReduction(cooldownTime * owner.stat.finalCooldownReduction / 100f);
         }
     }
 
-    public void StartCooldown(float time, bool ignoreCooldownReduction = false)
+    public void StartCooldown(float time)
     {
 
         owner.control.cooldownTime[skillIndex] = time;
-        if (!ignoreCooldownReduction) ApplyCooldownReduction(time * owner.stat.finalCooldownReduction / 100f);
     }
 
 
