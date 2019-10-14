@@ -35,30 +35,11 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
     {
         if (!photonView.IsMine) return;
         info = castInfo;
-        Collider[] colliders = Physics.OverlapSphere(info.owner.transform.position, range, LayerMask.GetMask("LivingThing"));
-        float closestDistance = float.PositiveInfinity;
-        LivingThing closestLivingThing = null;
 
-        foreach(Collider collider in colliders)
-        {
-            LivingThing temp = collider.GetComponent<LivingThing>();
-            float distance = Vector3.Distance(collider.transform.position, info.owner.transform.position);
-            if(temp != null && targetValidator.Evaluate(info.owner, temp) && distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestLivingThing = temp;
-            }
-        }
+        target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<LivingThing>();
 
-        if(closestLivingThing == null)
-        {
-            NoTarget();
-        }
-        else
-        {
-            target = closestLivingThing;
-            StartCoroutine("CoroutineDashKick");
-        }
+        StartCoroutine("CoroutineDashKick");
+ 
     }
 
     private IEnumerator CoroutineDashKick()

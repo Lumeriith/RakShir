@@ -121,6 +121,11 @@ public abstract class AbilityTrigger : MonoBehaviour
 
 
 
+    public bool SpendMana()
+    {
+        return owner.SpendMana(manaCost);
+    }
+
     public void RefundMana()
     {
         owner.stat.currentMana += manaCost;

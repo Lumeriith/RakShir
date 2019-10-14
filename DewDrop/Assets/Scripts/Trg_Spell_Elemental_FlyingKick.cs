@@ -11,6 +11,7 @@ public class Trg_Spell_Elemental_FlyingKick : AbilityTrigger
         Channel channel = new Channel(selfValidator, 0.1f, false, false, false, false, ChannelSuccess, null);
         info.owner.control.StartChanneling(channel);
         StartCooldown();
+        SpendMana();
     }
 
     private void ChannelSuccess()

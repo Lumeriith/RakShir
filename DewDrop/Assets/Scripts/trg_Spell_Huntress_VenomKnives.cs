@@ -11,6 +11,7 @@ public class trg_Spell_Huntress_VenomKnives : AbilityTrigger
         Channel channel = new Channel(selfValidator, 0.15f, false, false, false, false, ChannelSuccess, null);
         info.owner.control.StartChanneling(channel);
         StartCooldown();
+        SpendMana();
     }
 
 

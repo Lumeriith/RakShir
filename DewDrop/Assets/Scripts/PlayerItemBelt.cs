@@ -94,7 +94,7 @@ public class PlayerItemBelt : MonoBehaviour
     
     public void UnequipEquipment(int index)
     {
-        Equipment target = inventory[index] as Equipment;
+        Equipment target = equipped[index] as Equipment;
         if (target == null) return;
         if (inventory.Count >= inventoryCapacity) return;
         if (equipped[index] == null) return;

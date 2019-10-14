@@ -11,6 +11,7 @@ public class trg_Spell_Elemental_FrontKick : AbilityTrigger
         Channel channel = new Channel(selfValidator, 0.2f, false, false, false, false, ChannelSuccess, null);
         owner.control.StartChanneling(channel);
         StartCooldown();
+        SpendMana();
     }
 
     private void ChannelSuccess()
