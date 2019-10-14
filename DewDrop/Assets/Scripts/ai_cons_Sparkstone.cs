@@ -34,9 +34,8 @@ public class ai_cons_Sparkstone : AbilityInstance
         spark.transform.position = info.point + info.owner.GetCenterOffset();
         spark.Play();
         pre.Stop();
-        yield return new WaitForEndOfFrame();
         if (photonView.IsMine) info.owner.Teleport(info.point);
-        DetachChildParticleSystemsAndAutoDelete();
+        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
         DestroySelf();
     }
 }

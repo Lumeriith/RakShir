@@ -207,6 +207,7 @@ public class LivingThing : MonoBehaviourPun
     #endregion References For Everyone
 
     #region Unity
+
     private void Awake()
     {
         Rigidbody rigidbody = GetComponent<Rigidbody>();

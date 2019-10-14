@@ -15,7 +15,6 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
     private List<LivingThing> hitEnemies = new List<LivingThing>();
 
     private LivingThing currentTarget;
-    private CastInfo info;
 
     private ParticleSystem fly;
     private ParticleSystem land;
@@ -28,7 +27,6 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
-        info = castInfo;
         currentTarget = info.target;
         fly.Play();
     }

@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 
 
+public enum DetachBehaviour { DontStop, StopEmitting, StopEmittingAndClear }
+
 
 
 [RequireComponent(typeof(PhotonView))]
@@ -53,7 +55,6 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         isCreated = true;
         this.info = castInfo;
         OnCreate(castInfo, data);
-
     }
 
     protected abstract void OnCreate(CastInfo castInfo, object[] data);
@@ -84,26 +85,18 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     }
 
 
-    public void DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior behaviour = ParticleSystemStopBehavior.StopEmitting)
+    public void DetachChildParticleSystemsAndAutoDelete(DetachBehaviour behaviour = DetachBehaviour.StopEmitting)
     {
-        if (behaviour == ParticleSystemStopBehavior.StopEmitting)
-        {
-            photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, false);
-        }
-        else
-        {
-            photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, true);
-        }
-
+        photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, (int)behaviour);
     }
 
     [PunRPC]
-    protected void RpcDetachChildParticleSystemsAndAutoDelete(bool clear)
+    protected void RpcDetachChildParticleSystemsAndAutoDelete(int clear)
     {
         ParticleSystem[] psList = GetComponentsInChildren<ParticleSystem>();
         foreach (ParticleSystem ps in psList)
         {
-            ps.Stop(false, clear ? ParticleSystemStopBehavior.StopEmittingAndClear : ParticleSystemStopBehavior.StopEmitting);
+            if(clear != 0) ps.Stop(false, clear == 2 ? ParticleSystemStopBehavior.StopEmittingAndClear : ParticleSystemStopBehavior.StopEmitting);
             ps.gameObject.AddComponent<ParticleSystemAutoDestroy>();
             ps.transform.parent = null;
         }
