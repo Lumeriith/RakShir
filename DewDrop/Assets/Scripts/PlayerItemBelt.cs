@@ -19,10 +19,34 @@ public class PlayerItemBelt : MonoBehaviour
 
     public bool Pickup(Item item)
     {
-        if (inventory.Count >= inventoryCapacity) return false;
-        inventory.Add(item);
-        item.TransferOwnership(livingThing);
-        return true;
+        Equipment equipment = item as Equipment;
+        if (equipment != null && equipped[(int)equipment.type] == null)
+        {
+            inventory.Add(item);
+            item.TransferOwnership(livingThing);
+            EquipEquipmentFromInventory(inventory.Count - 1);
+            return true;
+        }
+
+        Consumable consumable = item as Consumable;
+        if(consumable != null && consumable.useOnPickup)
+        {
+            inventory.Add(item);
+            item.TransferOwnership(livingThing);
+            UseConsumable(consumable, new CastInfo());
+            return true;
+        }
+
+        if (inventory.Count < inventoryCapacity)
+        {
+            inventory.Add(item);
+            item.TransferOwnership(livingThing);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
