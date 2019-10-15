@@ -6,7 +6,7 @@ using Photon.Pun;
 using System.Linq;
 public class DebugCommands : MonoBehaviour
 {
-
+    public static Object[] resources;
     private static LivingThing GetFirstValidTarget()
     {
         Ray cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -61,37 +61,64 @@ public class DebugCommands : MonoBehaviour
         target.Kill();
     }
 
-    [ConsoleMethod("dot", "Poison a living thing at cursor position for a certain amount for a duration")]
-    public static void DoT(float amount, float duration)
-    {
-        LivingThing target = GetFirstValidTarget();
-        if (target == null) target = GameManager.instance.localPlayer;
-
-        StatusEffect dot = new StatusEffect(target, StatusEffectType.DamageOverTime, duration, amount);
-        target.statusEffect.ApplyStatusEffect(dot);
-    }
-
-    [ConsoleMethod("hot", "Heal a living thing at cursor position for a certain amount for a duration")]
-    public static void HoT(float amount, float duration)
-    {
-        LivingThing target = GetFirstValidTarget();
-        if (target == null) target = GameManager.instance.localPlayer;
-
-        StatusEffect hot = new StatusEffect(target, StatusEffectType.HealOverTime, duration, amount);
-        target.statusEffect.ApplyStatusEffect(hot);
-    }
 
 
 
 
     [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
-    public static void Spawn(string name, int amount=1)
+    public static void Spawn(string name, int amount = 1)
     {
-        for(int i = 0; i < amount; i++)
+        GameObject target = null;
+        if (resources == null) resources = Resources.LoadAll("");
+        foreach (object obj in resources)
         {
-            PhotonNetwork.Instantiate(name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+            GameObject gobj = obj as GameObject;
+            if (gobj.name.StartsWith("ai_")) continue;
+            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                target = gobj;
+                break;
+            }
         }
 
+        if (target == null)
+        {
+            print("Cannot find a prefab with a name containing `" + name + "`.");
+        }
+        else
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+            }
+        }
+    }
+    [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
+    public static void Spawn(string name)
+    {
+        GameObject target = null;
+        if (resources == null) resources = Resources.LoadAll("");
+        foreach (object obj in resources)
+        {
+            GameObject gobj = obj as GameObject;
+            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
+            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                target = gobj;
+                break;
+            }
+        }
+
+        if (target == null)
+        {
+            print("Cannot find a prefab with a name containing `" + name + "`.");
+        }
+        else
+        {
+
+            PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+
+        }
     }
 
 

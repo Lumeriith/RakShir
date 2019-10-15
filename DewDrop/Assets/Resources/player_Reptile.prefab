@@ -131,8 +131,8 @@ MonoBehaviour:
   isDead: 0
   baseMaximumHealth: 1000
   baseHealthRegenerationPerSecond: 5
-  baseMaximumMana: 100
-  baseManaRegenerationPerSecond: 3.5
+  baseMaximumMana: 300
+  baseManaRegenerationPerSecond: 5.5
   baseMovementSpeed: 300
   baseAttackDamage: 0
   baseAttacksPerSecond: 0
@@ -788,6 +788,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 46b823bc69158c64f88a7ea66b0cd256,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 46b823bc69158c64f88a7ea66b0cd256,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4961324629445295650, guid: 46b823bc69158c64f88a7ea66b0cd256,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -827,16 +837,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 46b823bc69158c64f88a7ea66b0cd256,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
-    - target: {fileID: -6057140222963153312, guid: 46b823bc69158c64f88a7ea66b0cd256,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3155797159684275112, guid: 46b823bc69158c64f88a7ea66b0cd256,
         type: 3}

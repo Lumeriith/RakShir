@@ -7,6 +7,16 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
 {
     private LivingThing target;
 
+    private new Renderer renderer
+    {
+        get
+        {
+            if (_renderer == null) _renderer = target.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
+            return _renderer;
+        }
+    }
+    private Renderer _renderer;
+
     public Vector3 worldOffset;
     public Vector3 UIOffset;
 
@@ -73,8 +83,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
             image_health_HoT.fillAmount = image_health_fill.fillAmount + (target.statusEffect.totalHealOverTimeAmount - target.statusEffect.totalDamageOverTimeAmount) / target.maximumHealth;
         }
 
-        transform.position = Camera.main.WorldToScreenPoint(target.transform.position + worldOffset) + UIOffset;
-
+        transform.position = Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset;
 
     }
 }

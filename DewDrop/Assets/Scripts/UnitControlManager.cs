@@ -62,6 +62,15 @@ public class UnitControlManager : MonoBehaviour
     public Color enemyOutlineColor;
 
 
+    private CanvasGroup debugLogWindow;
+
+    public GameObject commandMarkerAttackMove;
+    public GameObject commandMarkerAttack;
+    public GameObject commandMarkerMove;
+    public GameObject commandMarkerInterest;
+
+
+
 
     public enum AbilityCastMethod { Normal, Quick, OnRelease }
     private enum InputState { None, ContinousMove, Attack, PendingOnReleaseCast, PendingNormalCast }
@@ -233,6 +242,9 @@ public class UnitControlManager : MonoBehaviour
         arrowHead = transform.Find("ArrowHead").GetComponent<DecalSystem.Decal>();
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
         nodyGraphController = FindObjectOfType<GraphController>();
+
+        DebugCommands dbg = FindObjectOfType<DebugCommands>();
+        if (dbg != null) debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
     }
 
     private MeshOutline previousOutline;
@@ -298,9 +310,11 @@ public class UnitControlManager : MonoBehaviour
 
         bool shouldTakeInputs = false;
 
-        if (nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
+        if (debugLogWindow.alpha == 0 && nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
             shouldTakeInputs = true;
         
+
+
 
         if (!shouldTakeInputs)
         {
@@ -315,10 +329,7 @@ public class UnitControlManager : MonoBehaviour
             DrawAppropriateOutline();
 
 
-            CheckForAction();
-            CheckForAttack();
-            CheckForNewCast();
-            CheckForItem();
+
 
             switch (inputState)
             {
@@ -331,11 +342,14 @@ public class UnitControlManager : MonoBehaviour
                         if (target != null)
                         {
                             selectedUnit.control.CommandChase(target, isReserveKeyPressed);
+                            Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
                             inputState = InputState.None;
                         }
                         else
                         {
-                            selectedUnit.control.CommandAttackMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
+                            Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+                            selectedUnit.control.CommandAttackMove(pos, isReserveKeyPressed);
+                            Instantiate(commandMarkerAttackMove, pos, Quaternion.identity);
                             inputState = InputState.None;
                         }
                     }
@@ -377,7 +391,10 @@ public class UnitControlManager : MonoBehaviour
                     }
                     break;
             }
-
+            CheckForAction();
+            CheckForAttack();
+            CheckForNewCast();
+            CheckForItem();
             CheckForStop();
 
             SetAppropriateCursor();
@@ -544,17 +561,22 @@ public class UnitControlManager : MonoBehaviour
                     pendingTrigger = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
+                    Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
                 } else if (Input.GetKey(reservationModifier))
                 {
                     pendingTrigger = null;
                     inputState = InputState.None;
-                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), true);
+                    Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+                    selectedUnit.control.CommandMove(pos, true);
+                    Instantiate(commandMarkerMove, pos, Quaternion.identity);
                 }
                 else
                 {
                     pendingTrigger = null;
                     inputState = InputState.ContinousMove;
-                    selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), false);
+                    Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+                    selectedUnit.control.CommandMove(pos, false);
+                    Instantiate(commandMarkerMove, pos, Quaternion.identity);
                 }
             }
             else
@@ -567,12 +589,14 @@ public class UnitControlManager : MonoBehaviour
                     pendingTrigger = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
+                    Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
                 }
                 else if (act != null)
                 {
                     pendingTrigger = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
+                    Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
                 }
                 else
                 {
@@ -580,13 +604,17 @@ public class UnitControlManager : MonoBehaviour
                     {
                         pendingTrigger = null;
                         inputState = InputState.None;
-                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), true);
+                        Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+                        selectedUnit.control.CommandMove(pos, true);
+                        Instantiate(commandMarkerMove, pos, Quaternion.identity);
                     }
                     else
                     {
                         pendingTrigger = null;
                         inputState = InputState.ContinousMove;
-                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), false);
+                        Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+                        selectedUnit.control.CommandMove(pos, false);
+                        Instantiate(commandMarkerMove, pos, Quaternion.identity);
                     }
                 }
             }

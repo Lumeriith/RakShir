@@ -36,7 +36,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public TargetValidator targetValidator;
     public SelfValidator selfValidator;
 
-    
+    private float specialFillAmount = 0;
 
     public float cooldownTime;
 
@@ -134,6 +134,14 @@ public abstract class AbilityTrigger : MonoBehaviour
         owner.control.cooldownTime[skillIndex] = time;
     }
 
+    public void SetSpecialFillAmount(float amount)
+    {
+        specialFillAmount = Mathf.Clamp(amount, 0f, 1f);
+    }
+    public float GetSpecialFillAmount()
+    {
+        return specialFillAmount;
+    }
 
 
     public bool SpendMana()

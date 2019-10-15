@@ -21,6 +21,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public float modelOffsetMultiplier = 2.5f;
 
     private float lastOverTimeEffectTickTime = 0f;
+
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
@@ -36,10 +37,36 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         model.transform.localPosition = offset;
     }
 
+    public List<StatusEffect> GetStatusEffectsByType(StatusEffectType type)
+    {
+        List<StatusEffect> result = new List<StatusEffect>();
+        foreach (StatusEffect ce in statusEffects)
+        {
+            if (ce.type == type)
+            {
+                result.Add(ce);
+            }
+        }
+        return result;
+    }
+
+    public List<StatusEffect> GetCustomStatusEffectsByName(string name)
+    {
+        List<StatusEffect> result = new List<StatusEffect>();
+        foreach (StatusEffect ce in statusEffects)
+        {
+            if (ce.type == StatusEffectType.Custom && (string)ce.parameter == name)
+            {
+                result.Add(ce);
+            }
+        }
+        return result;
+    }
+
     public void ApplyStatusEffect(StatusEffect ce)
     {
         int uid = Random.Range(int.MinValue, int.MaxValue);
-        while(RetrieveStatusEffect(uid) != null) // Just in case the uid generation threads the needle:
+        while(GetStatusEffectByUID(uid) != null) // Just in case the uid generation threads the needle:
         {
             uid = Random.Range(int.MinValue, int.MaxValue); // Reroll.
         }
@@ -58,8 +85,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
     public void RemoveStatusEffect(StatusEffect ce)
     {
-        if (ce.isAboutToBeDestroyed) return;
-        ce.isAboutToBeDestroyed = true;
         photonView.RPC("RpcRemoveStatusEffect", RpcTarget.All, ce.uid);
     }
 
@@ -83,7 +108,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         return false;
     }
 
-    public StatusEffect RetrieveStatusEffect(int uid)
+    public StatusEffect GetStatusEffectByUID(int uid)
     {
         foreach(StatusEffect ce in statusEffects)
         {
@@ -119,7 +144,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         foreach (StatusEffect ce in statusEffects)
         {
-            if (ce.isAboutToBeDestroyed) continue;
             if (!canTick && ce.type != StatusEffectType.Stasis) continue;
             if (ce.type == StatusEffectType.Airborne)
             {
@@ -243,8 +267,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         statusEffects.Add(ce);
 
         StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
-        print("Apply");
-
     }
 
     [PunRPC]
@@ -255,7 +277,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             if (statusEffects[i].uid == uid)
             {
                 statusEffects[i].duration = 0;
-                statusEffects[i].isAboutToBeDestroyed = true;
                 statusEffects.RemoveAt(i);
                 break;
             }
@@ -297,7 +318,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             if (statusEffects[i].type == (StatusEffectType)type)
             {
                 statusEffects[i].duration = 0;
-                statusEffects[i].isAboutToBeDestroyed = true;
                 statusEffects.RemoveAt(i);
                 RpcCleanseStatusEffect(type);
                 break;
