@@ -6,7 +6,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 {
     private const float overTimeEffectTickInterval = 0.5f;
 
-    List<StatusEffect> statusEffects = new List<StatusEffect>();
+    public List<StatusEffect> statusEffects = new List<StatusEffect>();
     private LivingThing livingThing;
 
     public float totalSpeedAmount { get; private set; }
@@ -15,6 +15,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
     public float totalHealOverTimeAmount { get; private set; }
     public float totalDamageOverTimeAmount { get; private set; }
+    public float totalShieldAmount { get; private set; }
 
     private Transform model;
     public float modelOffsetSpeed = 3f;
@@ -98,6 +99,10 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         photonView.RPC("RpcSetDurationOfStatusEffect", RpcTarget.All, ce.uid, duration);
     }
 
+    public void SetParameterOfStatusEffect(StatusEffect ce, object parameter)
+    {
+        photonView.RPC("RpcSetParameterOfStatusEffect", RpcTarget.All, ce.uid, parameter);
+    }
 
     public bool IsAffectedBy(StatusEffectType type) // TODO: Cache this!
     {
@@ -129,11 +134,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         List<StatusEffect> removeList = new List<StatusEffect>();
 
-        totalHasteAmount = 0;
-        totalSlowAmount = 0;
-        totalSpeedAmount = 0;
-        totalHealOverTimeAmount = 0;
-        totalDamageOverTimeAmount = 0;
+
 
         if (Time.time - lastOverTimeEffectTickTime > overTimeEffectTickInterval)
         {
@@ -158,30 +159,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             {
                 ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
             }
-
-            if (ce.type == StatusEffectType.Haste && ce.parameter != null)
-            {
-                totalHasteAmount += (float)ce.parameter;
-            }
-            if (ce.type == StatusEffectType.Slow && ce.parameter != null)
-            {
-                totalSlowAmount += (float)ce.parameter;
-            }
-            if (ce.type == StatusEffectType.Speed && ce.parameter != null)
-            {
-                totalSpeedAmount += (float)ce.parameter;
-            }
-
-            if (ce.type == StatusEffectType.HealOverTime)
-            {
-                totalHealOverTimeAmount += (float)ce.parameter;
-            }
-
-            if (ce.type == StatusEffectType.DamageOverTime)
-            {
-                totalDamageOverTimeAmount += (float)ce.parameter;
-            }
-
 
             if (doOverTimeEffectTicks)
             {
@@ -228,6 +205,46 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             }
 
         }
+
+        totalHasteAmount = 0;
+        totalSlowAmount = 0;
+        totalSpeedAmount = 0;
+        totalHealOverTimeAmount = 0;
+        totalDamageOverTimeAmount = 0;
+        totalShieldAmount = 0;
+
+        foreach (StatusEffect ce in statusEffects)
+        {
+            if (ce.type == StatusEffectType.Haste && ce.parameter != null)
+            {
+                totalHasteAmount += (float)ce.parameter;
+            }
+            if (ce.type == StatusEffectType.Slow && ce.parameter != null)
+            {
+                totalSlowAmount += (float)ce.parameter;
+            }
+            if (ce.type == StatusEffectType.Speed && ce.parameter != null)
+            {
+                totalSpeedAmount += (float)ce.parameter;
+            }
+
+            if (ce.type == StatusEffectType.HealOverTime)
+            {
+                totalHealOverTimeAmount += (float)ce.parameter;
+            }
+
+            if (ce.type == StatusEffectType.DamageOverTime)
+            {
+                totalDamageOverTimeAmount += (float)ce.parameter;
+            }
+
+            if (ce.type == StatusEffectType.Shield)
+            {
+                totalShieldAmount += (float)ce.parameter;
+            }
+        }
+
+
         foreach (StatusEffect ce in removeList)
         {
             RemoveStatusEffect(ce);
@@ -252,7 +269,33 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         modelOffset = remainingAirboneDuration;
     }
 
+    public void ApplyShieldDamage(float amount)
+    {
+        photonView.RPC("RpcApplyShieldDamage", RpcTarget.All, amount);
+    }
 
+    [PunRPC]
+    public void RpcApplyShieldDamage(float amount)
+    {
+        float remainingAmount = amount;
+        foreach(StatusEffect ce in statusEffects)
+        {
+            if(ce.type == StatusEffectType.Shield)
+            {
+                if((float)ce.parameter >= remainingAmount)
+                {
+                    ce.parameter = (float)ce.parameter - remainingAmount;
+                    break;
+                }
+                else
+                {
+                    remainingAmount -= (float)ce.parameter;
+                    ce.parameter = 0f;
+                    ce.duration = 0f;
+                }
+            }
+        }
+    }
 
 
     [PunRPC]
@@ -309,6 +352,20 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             }
         }
     }
+
+    [PunRPC]
+    public void RpcSetParameterOfStatusEffect(int uid, object parameter)
+    {
+        foreach (StatusEffect ce in statusEffects)
+        {
+            if (ce.uid == uid)
+            {
+                ce.parameter = parameter;
+                break;
+            }
+        }
+    }
+
 
     [PunRPC]
     public void RpcCleanseStatusEffect(byte type)

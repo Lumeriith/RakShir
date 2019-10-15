@@ -73,7 +73,7 @@ public class DebugCommands : MonoBehaviour
         foreach (object obj in resources)
         {
             GameObject gobj = obj as GameObject;
-            if (gobj.name.StartsWith("ai_")) continue;
+            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
             if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 target = gobj;
@@ -93,33 +93,32 @@ public class DebugCommands : MonoBehaviour
             }
         }
     }
-    [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
-    public static void Spawn(string name)
+
+    [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]
+    public static void Hot(float amount, float duration)
     {
-        GameObject target = null;
-        if (resources == null) resources = Resources.LoadAll("");
-        foreach (object obj in resources)
-        {
-            GameObject gobj = obj as GameObject;
-            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
-            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                target = gobj;
-                break;
-            }
-        }
-
-        if (target == null)
-        {
-            print("Cannot find a prefab with a name containing `" + name + "`.");
-        }
-        else
-        {
-
-            PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
-
-        }
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(target, duration, amount));
     }
+
+    [ConsoleMethod("dot", "Damage LivingThing at cursor location over time for given amount and duration.")]
+    public static void Dot(float amount, float duration)
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(target, duration, amount));
+    }
+
+    [ConsoleMethod("shield", "Sield LivingThing at cursor location for given amount and duration.")]
+    public static void Shield(float amount, float duration)
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.statusEffect.ApplyStatusEffect(StatusEffect.Shield(target, duration, amount));
+    }
+
+
 
 
 

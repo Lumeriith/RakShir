@@ -499,7 +499,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void DoBasicAttackImmediately(LivingThing to)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID);
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value);
     }
 
     public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower = false)
@@ -589,10 +589,19 @@ public class LivingThing : MonoBehaviourPun
         from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 
+        if(statusEffect.totalShieldAmount > finalAmount)
+        {
+            if(photonView.IsMine) statusEffect.ApplyShieldDamage(finalAmount);
+        }
+        else
+        {
+            stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.totalShieldAmount);
+            if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.totalShieldAmount);
+            stat.ValidateHealth();
+        }
 
-        stat.currentHealth -= Mathf.Max(0, finalAmount);
-        stat.ValidateHealth();
         lastAttacker = from;
+
         if (photonView.IsMine)
         {
             stat.SyncChangingStats();
@@ -622,7 +631,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcApplyBasicAttackDamage(int from_id)
+    protected void RpcApplyBasicAttackDamage(int from_id, float random)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         
@@ -635,7 +644,7 @@ public class LivingThing : MonoBehaviourPun
             info.to = this;
             OnMiss.Invoke(info);
         }
-        else if (Random.value < stat.finalDodgeChance / 100f)
+        else if (random < stat.finalDodgeChance / 100f)
         {
             InfoMiss info;
             info.from = from;
@@ -647,9 +656,20 @@ public class LivingThing : MonoBehaviourPun
         {
             float finalAmount;
             finalAmount = from.stat.finalAttackDamage;
-            stat.currentHealth -= Mathf.Max(0, finalAmount);
-            stat.ValidateHealth();
+
+            if (statusEffect.totalShieldAmount > finalAmount)
+            {
+                if (photonView.IsMine) statusEffect.ApplyShieldDamage(finalAmount);
+            }
+            else
+            {
+                stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.totalShieldAmount);
+                if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.totalShieldAmount);
+                stat.ValidateHealth();
+            }
+
             lastAttacker = from;
+
             if (photonView.IsMine)
             {
                 stat.SyncChangingStats(); // Is this redundant? check when you're not sleep deprived.

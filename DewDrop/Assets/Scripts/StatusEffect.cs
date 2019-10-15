@@ -23,8 +23,12 @@ public enum StatusEffectType : byte
     DamageOverTime,
 
     // Custom
-    Custom
+    Custom,
+
+    Shield
 }
+
+[System.Serializable]
 public class StatusEffect
 {
     #region Instance Members
@@ -69,6 +73,11 @@ public class StatusEffect
         owner.statusEffect.SetDurationOfStatusEffect(this, duration);
     }
 
+    public void SetParameter(object parameter)
+    {
+        owner.statusEffect.SetParameterOfStatusEffect(this, parameter);
+    }
+
     public void ResetDuration()
     {
         owner.statusEffect.SetDurationOfStatusEffect(this, originalDuration);
@@ -77,18 +86,29 @@ public class StatusEffect
 
     public bool IsHarmful()
     {
-        return type >= StatusEffectType.Stun && type <= StatusEffectType.DamageOverTime;
+        return harmfulEffectTypes.Contains(type);
     }
 
-    public bool IsBeneficial()
-    {
-        return type >= StatusEffectType.Invulnerable && type <= StatusEffectType.HealOverTime;
-    }
 
     #endregion Instance Members
 
     #region Static Members
 
+    private static List<StatusEffectType> harmfulEffectTypes = new List<StatusEffectType>
+    {
+        StatusEffectType.Stun,
+        StatusEffectType.Airborne,
+        StatusEffectType.Sleep,
+        StatusEffectType.Polymorph,
+        StatusEffectType.MindControl,
+        StatusEffectType.Charm,
+        StatusEffectType.Fear,
+        StatusEffectType.Root,
+        StatusEffectType.Slow,
+        StatusEffectType.Silence,
+        StatusEffectType.Blind,
+        StatusEffectType.DamageOverTime
+    };
     public static StatusEffect Stasis(LivingThing caster, float duration)
     {
         return new StatusEffect(caster, StatusEffectType.Stasis, duration);
@@ -144,6 +164,11 @@ public class StatusEffect
     public static StatusEffect Custom(LivingThing caster, string name, float duration)
     {
         return new StatusEffect(caster, StatusEffectType.Custom, duration, name);
+    }
+
+    public static StatusEffect Shield(LivingThing caster, float duration, float amount)
+    {
+        return new StatusEffect(caster, StatusEffectType.Shield, duration, amount);
     }
 
     #endregion Static Members
