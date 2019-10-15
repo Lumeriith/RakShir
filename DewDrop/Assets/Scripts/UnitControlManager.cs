@@ -627,13 +627,7 @@ public class UnitControlManager : MonoBehaviour
 
     private void DisplayAppropriateIndicator()
     {
-        if ((inputState == InputState.PendingNormalCast || inputState == InputState.PendingOnReleaseCast) && (pendingTrigger == null || pendingTrigger.indicator.type == IndicatorType.None))
-        {
-            rangeIndicator.gameObject.SetActive(false);
-            arrowHead.gameObject.SetActive(false);
-            arrowBase.gameObject.SetActive(false);
-        }
-        else if(inputState == InputState.Attack)
+        if(inputState == InputState.Attack)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
@@ -642,14 +636,14 @@ public class UnitControlManager : MonoBehaviour
             rangeIndicator.transform.localScale = new Vector3(selectedUnit.control.skillSet[0].indicator.range * 2, selectedUnit.control.skillSet[0].indicator.range * 2, 4);
 
         }
-        else if(pendingTrigger.indicator.type == IndicatorType.Range)
+        else if(pendingTrigger != null && pendingTrigger.indicator.type == IndicatorType.Range)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
             rangeIndicator.transform.localScale = new Vector3(pendingTrigger.indicator.range * 2, pendingTrigger.indicator.range * 2, 4);
-        } else if (pendingTrigger.indicator.type == IndicatorType.Arrow)
+        } else if (pendingTrigger != null && pendingTrigger.indicator.type == IndicatorType.Arrow)
         {
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(true);
@@ -676,10 +670,12 @@ public class UnitControlManager : MonoBehaviour
             arrowHead.transform.localScale = headScale;
             arrowHead.transform.rotation = Quaternion.Euler(rotation);
             arrowHead.transform.position = arrowBase.transform.position + (cursorPos - selectedUnit.transform.position).normalized * (baseScale.y / 2 + headScale.y / 2);
-            
-
-            
-
+        }
+        else
+        {
+            rangeIndicator.gameObject.SetActive(false);
+            arrowHead.gameObject.SetActive(false);
+            arrowBase.gameObject.SetActive(false);
         }
 
 
