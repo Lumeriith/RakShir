@@ -599,7 +599,7 @@ public class UnitControlManager : MonoBehaviour
 
     private void DisplayAppropriateIndicator()
     {
-        if (pendingTrigger == null || pendingTrigger.indicator.type == IndicatorType.None)
+        if ((inputState == InputState.PendingNormalCast || inputState == InputState.PendingOnReleaseCast) && (pendingTrigger == null || pendingTrigger.indicator.type == IndicatorType.None))
         {
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(false);
