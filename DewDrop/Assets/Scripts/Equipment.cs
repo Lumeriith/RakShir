@@ -59,6 +59,7 @@ public abstract class Equipment : Item
                 owner.control.skillSet[i] = skillSetReplacements[i];
                 owner.control.skillSet[i].skillIndex = i;
                 owner.control.skillSet[i].owner = owner;
+                skillSetReplacements[i].transform.parent = owner.transform;
                 if (owner.photonView.IsMine) owner.control.skillSet[i].OnEquip();
             }
         }
@@ -77,7 +78,8 @@ public abstract class Equipment : Item
                 owner.control.skillSet[i].skillIndex = -1;
                 owner.control.skillSet[i].owner = null;
                 owner.control.skillSet[i] = null;
-                
+                skillSetReplacements[i].transform.parent = transform;
+
             }
         }
         DetachAttachments();

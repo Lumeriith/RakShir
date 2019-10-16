@@ -62,7 +62,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             image_icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
-            image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
+            image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].IsReady() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
             image_highlighted.enabled = false;
             tmpu_manaCost.text = ((int)target.control.skillSet[skillIndex].manaCost).ToString();
             image_specialFill.fillAmount = target.control.skillSet[skillIndex].GetSpecialFillAmount();

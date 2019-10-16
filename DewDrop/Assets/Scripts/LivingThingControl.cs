@@ -227,6 +227,7 @@ public class Command
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
         if (!self.control.skillSet[0].isCooledDown) return true;
+        if (!self.control.skillSet[0].IsReady()) return true;
         if (self.control.IsAttackProhibitedByChannel()) return true;
         if (target.IsDead()) return true;
         self.LookAt(target.transform.position);
@@ -323,6 +324,7 @@ public class Command
         if (!trigger.isCooledDown) return true;
         if (!trigger.selfValidator.Evaluate(self)) return true;
         if (!self.HasMana(trigger.manaCost)) return true;
+        if (!trigger.IsReady()) return true;
         switch (trigger.targetingType)
         {
             case AbilityTrigger.TargetingType.None:

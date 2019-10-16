@@ -61,12 +61,33 @@ public class DebugCommands : MonoBehaviour
         target.Kill();
     }
 
+    [ConsoleMethod("spawnall", "Spawn all Networked GameObjects with matching names at cursor position.")]
+    public static void SpawnAll(string name)
+    {
+        List<GameObject> targets = new List<GameObject>();
+        if (resources == null) resources = Resources.LoadAll("");
+        foreach (object obj in resources)
+        {
+            GameObject gobj = obj as GameObject;
+            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
+            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                targets.Add(gobj);
+            }
+        }
+
+        foreach(GameObject target in targets)
+        {
+            PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere, Quaternion.identity);
+        }
+
+
+    }
 
 
 
-
-    [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
-    public static void Spawn(string name, int amount = 1)
+    [ConsoleMethod("spawnmultiple", "Spawn a specified number of Networked GameObject at cursor position.")]
+    public static void SpawnMultiple(string name, int amount = 1)
     {
         GameObject target = null;
         if (resources == null) resources = Resources.LoadAll("");
@@ -89,10 +110,17 @@ public class DebugCommands : MonoBehaviour
         {
             for (int i = 0; i < amount; i++)
             {
-                PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace(), Quaternion.identity);
+                PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere, Quaternion.identity);
             }
         }
     }
+    [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
+    public static void Spawn(string name)
+    {
+        SpawnMultiple(name, 1);
+    }
+
+
 
     [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]
     public static void Hot(float amount, float duration)

@@ -524,7 +524,7 @@ public class UnitControlManager : MonoBehaviour
         }
         if (!trigger.selfValidator.Evaluate(selectedUnit)) return;
         if (!selectedUnit.HasMana(trigger.manaCost)) return;
-
+        if (!trigger.IsReady()) return;
         if (trigger.targetingType == AbilityTrigger.TargetingType.None)
         {
             selectedUnit.control.CommandAbility(trigger, new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));

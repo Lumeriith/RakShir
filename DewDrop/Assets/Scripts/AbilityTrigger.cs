@@ -103,7 +103,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public virtual void OnEquip() { }
     public virtual void OnUnequip() { }
 
-
+    public virtual bool IsReady() { return true; }
     protected bool ShouldTargetValidatorFieldShow()
     {
         return targetingType == TargetingType.Target;
