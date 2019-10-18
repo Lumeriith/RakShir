@@ -9,6 +9,7 @@ public class ai_Spell_Windfury_TailWind : AbilityInstance
     private ParticleSystem start;
 
     public float duration = 3f;
+    public float bonusMovementSpeedPer = 0.8f;
 
     private void Awake()
     {
@@ -18,8 +19,11 @@ public class ai_Spell_Windfury_TailWind : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         this.info = castInfo;
+        info.owner.stat.bonusMovementSpeed += info.owner.stat.baseMovementSpeed * bonusMovementSpeedPer;
         StatusEffect untargetable = new StatusEffect(info.owner, StatusEffectType.Untargetable, duration);
         info.owner.statusEffect.ApplyStatusEffect(untargetable);
+        StatusEffect speed = new StatusEffect(info.owner, StatusEffectType.Speed, duration);
+        info.owner.statusEffect.ApplyStatusEffect(speed);
         start.Play();
     }
 
@@ -32,10 +36,12 @@ public class ai_Spell_Windfury_TailWind : AbilityInstance
         if (duration > 0)
         {
             transform.position = info.owner.transform.position;
+
         }
         else
         {
-            DetachChildParticleSystemsAndAutoDelete();
+            info.owner.stat.bonusMovementSpeed -= info.owner.stat.baseMovementSpeed * bonusMovementSpeedPer;
+            DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior.StopEmittingAndClear);
             DestroySelf();
         }
     }

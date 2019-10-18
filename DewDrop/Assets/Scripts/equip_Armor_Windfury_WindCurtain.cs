@@ -11,13 +11,11 @@ public class equip_Armor_Windfury_WindCurtain : Equippable
     {
         owner.stat.bonusCooldownReduction += this.bonusCooldownReduction;
         owner.stat.bonusAgility += this.bonusAgility;
-        // animation on
     }
 
     public override void OnUnequip(LivingThing owner)
     {
         owner.stat.bonusCooldownReduction -= this.bonusCooldownReduction;
         owner.stat.bonusAgility -= this.bonusAgility;
-        // animation off
     }
 }

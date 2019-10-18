@@ -8,10 +8,10 @@ public class ai_Spell_Windfury_WindBarrier : AbilityInstance
     private CastInfo info;
 
     private ParticleSystem barrierParticle;
-    private LivingThingStat ownerStat;
 
     public float duration = 3f;
-    public float damageAbsorptionAmount = 100f;
+    public float basicDamageAbsorptionAmount = 100f;
+    public float bonusAbsorptionAmountPerMovementSpeed = 0.2f;
 
     private float timer;
 
@@ -23,7 +23,6 @@ public class ai_Spell_Windfury_WindBarrier : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         this.info = castInfo;
-        ownerStat = castInfo.owner.GetComponent<LivingThingStat>();
         // Add barrier
         barrierParticle.Play();
         timer = 0f;
