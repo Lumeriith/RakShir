@@ -705,8 +705,14 @@ public class LivingThingControl : MonoBehaviourPun
             agentDestination = transform.position;
         }
 
-        if (agent.enabled) agent.destination = agentDestination;
+        if (agent.enabled && agent.isOnNavMesh) agent.destination = agentDestination;
 
+        if(agent.enabled && !agent.isOnNavMesh)
+        {
+            transform.Translate(0, -.5f, 0);
+            agent.enabled = false;
+            agent.enabled = true;
+        }
 
 
         WalkCheck();
@@ -715,11 +721,11 @@ public class LivingThingControl : MonoBehaviourPun
     private bool wasWalking = false;
     private void WalkCheck()
     {
-        if(!wasWalking && agent.enabled && agent.desiredVelocity.magnitude > float.Epsilon && Vector3.Distance(agent.destination, transform.position) >= .25f)
+        if(!wasWalking && agent.enabled && agent.desiredVelocity.magnitude > float.Epsilon)
         {
             photonView.RPC("RpcStartWalking", RpcTarget.All, agent.destination);
             wasWalking = true;
-        } else if (wasWalking && (!agent.enabled || agent.desiredVelocity.magnitude < float.Epsilon || Vector3.Distance(agent.destination, transform.position) < .25f))
+        } else if (wasWalking && (!agent.enabled || agent.desiredVelocity.magnitude < float.Epsilon))
         {
             photonView.RPC("RpcStopWalking", RpcTarget.All);
             wasWalking = false;

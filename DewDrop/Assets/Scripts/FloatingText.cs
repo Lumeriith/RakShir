@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class FloatingText : MonoBehaviour
 {
-    public float duration = 2;
-    private Vector3 velocity;
-    public Vector3 initialVelocity;
+    public AnimationCurve sizeCurve;
+    public Gradient colourCurve;
+    public float duration = 1f;
+    [HideInInspector]
+    public Vector3 worldPosition;
     public Vector3 gravity;
-    public float randomnessMagnitude;
-    private Transform uiElement;
-    private CanvasGroup group;
-    private Text uiText;
+    public Vector3 initialVelocity;
+    private Vector3 velocity;
     public string text
     {
         get
@@ -23,36 +23,55 @@ public class FloatingText : MonoBehaviour
             uiText.text = value;
         }
     }
-    void Awake()
+
+    private float creationTime;
+    private Text uiText;
+    private Outline outline;
+    private Shadow shadow;
+    private Camera main;
+    private float elapsedTime
     {
-        group = transform.Find("UI Element").GetComponent<CanvasGroup>();
-        uiText = transform.Find("UI Element/Text").GetComponent<Text>();
-        uiElement = transform.Find("UI Element").transform;
-        
-    }
-
-  
-
-
-    void Start()
-    {
-        uiElement.SetParent(transform.Find("/Floating Text Canvas")); // Fix
-        StartCoroutine("CoroutineDisappear");
-    }
-
-    IEnumerator CoroutineDisappear()
-    {
-        velocity = initialVelocity + Vector3.one * ((Random.value-1) * randomnessMagnitude);
-        for (float t=0;t<duration;t += Time.deltaTime)
+        get
         {
-            velocity += gravity * Time.deltaTime;
-            transform.position += velocity * Time.deltaTime;
-            group.alpha = (1f - t / duration) * 3;
-            uiElement.position = Camera.main.WorldToScreenPoint(transform.position);
-            yield return null;
+            return Time.time - creationTime;
+        }
+    }
+
+    private void Awake()
+    {
+        creationTime = Time.time;
+        uiText = GetComponentInChildren<Text>();
+        outline = GetComponentInChildren<Outline>();
+        shadow = GetComponentInChildren<Shadow>();
+        velocity = initialVelocity;
+        main = Camera.main;
+    }
+
+    private void Update()
+    {
+        if(elapsedTime > 1)
+        {
+            Destroy(gameObject);
+            return;
         }
 
-        Destroy(gameObject);
-        Destroy(uiElement.gameObject);
+        worldPosition += velocity * Time.deltaTime;
+        velocity += gravity * Time.deltaTime;
+
+        transform.position = main.WorldToScreenPoint(worldPosition);
+
+        transform.localScale = Vector3.one * sizeCurve.Evaluate(elapsedTime / duration);
+        
+        Color color = colourCurve.Evaluate(elapsedTime / duration);
+        uiText.color = color;
+        color.a = 1f;
+        color.r /= 4f;
+        color.g /= 4f;
+        color.b /= 4f;
+        outline.effectColor = color;
+        shadow.effectColor = color;
     }
+
+
+
 }

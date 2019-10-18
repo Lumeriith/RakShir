@@ -69,10 +69,13 @@ public class DebugCommands : MonoBehaviour
         foreach (object obj in resources)
         {
             GameObject gobj = obj as GameObject;
-            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
             if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                targets.Add(gobj);
+                if(gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_"))
+                {
+                    targets.Add(gobj);
+                }
+
             }
         }
 
@@ -94,10 +97,12 @@ public class DebugCommands : MonoBehaviour
         foreach (object obj in resources)
         {
             GameObject gobj = obj as GameObject;
-            if (gobj != null && gobj.name.StartsWith("ai_")) continue;
             if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                target = gobj;
+                if (gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_"))
+                {
+                    target = gobj;
+                }
                 break;
             }
         }

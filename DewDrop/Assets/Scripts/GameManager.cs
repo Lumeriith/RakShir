@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     }
 
     private LivingThing _localPlayer;
-
+    private Transform floatingTextCanvas;
 
     public FloatingText magicDamageFloatingText;
     public FloatingText physicalDamageFloatingText;
@@ -53,18 +53,21 @@ public class GameManager : MonoBehaviour
         player.OnDoBasicAttackHit = (InfoBasicAttackHit info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-            GameObject floatingText = Instantiate(physicalDamageFloatingText.gameObject, worldPos, Quaternion.identity);
-            floatingText.SetActive(true);
-            floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.damage).ToString();
 
+            FloatingText floatingText = Instantiate(physicalDamageFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
+
+            floatingText.text = Mathf.Ceil(info.damage).ToString();
+            floatingText.worldPosition = worldPos;
         };
 
         player.OnDealMagicDamage = (InfoMagicDamage info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-            GameObject floatingText = Instantiate(magicDamageFloatingText.gameObject, worldPos, Quaternion.identity);
-            floatingText.SetActive(true);
-            floatingText.GetComponent<FloatingText>().text = Mathf.Ceil(info.finalDamage).ToString();
+
+            FloatingText floatingText = Instantiate(magicDamageFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
+
+            floatingText.text = Mathf.Ceil(info.finalDamage).ToString();
+            floatingText.worldPosition = worldPos;
 
         };
     }
@@ -105,8 +108,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        magicDamageFloatingText.gameObject.SetActive(false);
-        physicalDamageFloatingText.gameObject.SetActive(false);
+        floatingTextCanvas = transform.Find("/Common Game Logics/Floating Text Canvas");
      }
 
     private void Update()

@@ -243,7 +243,7 @@ public class UnitControlManager : MonoBehaviour
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
         nodyGraphController = FindObjectOfType<GraphController>();
 
-        DebugCommands dbg = FindObjectOfType<DebugCommands>();
+        IngameDebugConsole.DebugLogManager dbg = FindObjectOfType<IngameDebugConsole.DebugLogManager>();
         if (dbg != null) debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
     }
 

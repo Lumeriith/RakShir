@@ -99,6 +99,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f175a82920100c342a3dbe6d3cd95687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  channel:
+    channelValidator:
+      evaluatesFalseIfDead: 1
+      excludes: 090a0b0c0d0e0f12
+      invertResult: 0
+    duration: 0
+    canMove: 0
+    canAttack: 0
+    canUseAbility: 0
+    canBeCanceledByCaster: 0
+  isInterruptedByDamage: 1
+  itemIcon: {fileID: 21300000, guid: 3dfb84e8858084747b9cace83e11720a, type: 3}
+  itemName: "\uC5EC\uC0AC\uB0E5\uAFBC\uC758 \uD22C\uAD6C"
+  itemTier: 2
+  itemDescription: "\uD68C\uD53C +50\n\uCD5C\uB300 \uCCB4\uB825 +50\t"
+  owner: {fileID: 0}
+  type: 0
+  skillSetReplacements:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  attachments: []
+  cooldownReductionAmount: 1.25
 --- !u!1 &4879735079213553809
 GameObject:
   m_ObjectHideFlags: 0
