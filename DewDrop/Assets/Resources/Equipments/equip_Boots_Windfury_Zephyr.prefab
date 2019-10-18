@@ -9521,7 +9521,7 @@ GameObject:
   - component: {fileID: 1353348571293676598}
   - component: {fileID: 7862421634238033578}
   - component: {fileID: 1547791091375800593}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: equip_Boots_Windfury_Zephyr
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9591,7 +9591,7 @@ MonoBehaviour:
   equippableIcon: {fileID: 21300000, guid: d1120f4d8d5ba2243be2513d9ad98c5c, type: 3}
   equippableName: 
   equippableDescription: 
-  type: 0
+  type: 2
   skillSetReplacements:
   - {fileID: 0}
   - {fileID: 0}
@@ -9662,7 +9662,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4400443628244711798}
   - component: {fileID: 4400443628244711049}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: trg_Spell_Windfury_HurricaneDash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9695,7 +9695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399bd5ee8b910fb4f8795edd8f2beee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: 3aab47f4b9636a44fb2c52776c33e659, type: 3}
   abilityName: 
   abilityDescription: 
   castAnimation: {fileID: 7400000, guid: 5f3439c0b7578e641a9ade09c336b975, type: 2}
@@ -9707,7 +9707,7 @@ MonoBehaviour:
     arrowLength: 0
   targetingType: 3
   range: 0
-  manaCost: 0
+  manaCost: 10
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -9722,7 +9722,7 @@ MonoBehaviour:
   selfValidator:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 0
+  cooldownTime: 3
   skillIndex: 0
   owner: {fileID: 0}
   bonusDistancePerMovementSpeed: 0.02

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
 {
@@ -11,6 +12,7 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
     private float dashDistance;
     private float airborneDuration;
 
+    public SelfValidator sv;
     public float duration = 0.5f;
     public float damagePerMovementSpeed = 0.3f;
     public float airborneDurationPerMovementSpeed = 0.002f;
@@ -26,16 +28,22 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
         this.info = castInfo;
         dashDistance = (float)data[0];
         targetPosition = transform.position + info.directionVector * dashDistance;
-        print(info.directionVector);
-        print(targetPosition);
-
         airborneDuration = airborneDurationPerMovementSpeed * info.owner.stat.finalMovementSpeed;
+
+        if (photonView.IsMine)
+        {
+            Channel channel = new Channel(sv, duration, false, false, false, false, null, null);
+            info.owner.control.StartChanneling(channel);
+        }
+
         info.owner.DashThroughForDuration(targetPosition, duration);
         fly.Play();
     }
 
     protected override void AliveUpdate()
     {
+        if (!photonView.IsMine) return;
+
         duration -= Time.deltaTime;
         if (duration > 0)
         {

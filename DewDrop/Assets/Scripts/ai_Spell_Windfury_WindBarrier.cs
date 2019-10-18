@@ -31,16 +31,14 @@ public class ai_Spell_Windfury_WindBarrier : AbilityInstance
 
     protected override void AliveUpdate()
     {
+        if (!photonView.IsMine) return;
         timer += Time.deltaTime;
         barrierParticle.transform.position = info.owner.transform.position;
 
         if (timer >= duration)
         {
-            if (photonView.IsMine)
-            {
-                DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior.StopEmittingAndClear);
-                DestroySelf();
-            }
+            DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior.StopEmittingAndClear);
+            DestroySelf();
         }
     }
 }
