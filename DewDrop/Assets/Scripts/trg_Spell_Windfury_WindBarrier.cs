@@ -16,6 +16,6 @@ public class trg_Spell_Windfury_WindBarrier : AbilityTrigger
 
     private void Success()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Windfury_WindBarrier", owner.transform.position + owner.GetCenterOffset(), Quaternion.identity, info);
+        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Windfury_WindBarrier", owner.transform.position, Quaternion.identity, info);
     }
 }

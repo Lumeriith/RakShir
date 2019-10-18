@@ -9,7 +9,7 @@ public class trg_Spell_Windfury_WindExplosion : AbilityTrigger
     public override void OnCast(CastInfo info)
     {
         this.info = info;
-        Channel channel = new Channel(selfValidator, 0.2f, false, false, false, false, Success, null);
+        Channel channel = new Channel(selfValidator, 0.5f, false, false, false, false, Success, null);
         info.owner.control.StartChanneling(channel);
         StartCooldown();
     }

@@ -39,9 +39,7 @@ public class ai_BasicAttack_Windfury_StormforgedFan : AbilityInstance
                 foreach(LivingThing target in targets)
                 {
                     if (!tv.Evaluate(info.owner, target)) { return; }
-                    GameObject hitEffect = Instantiate(hit.gameObject, target.transform.position + target.GetCenterOffset(), Quaternion.identity);
-                    hitEffect.GetComponent<ParticleSystem>().Play();
-                    hitEffect.AddComponent<ParticleSystemAutoDestroy>();
+                    Instantiate(hit, target.transform.position + target.GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
                     info.owner.DoBasicAttackImmediately(target);
                 }
                 DetachChildParticleSystemsAndAutoDelete();

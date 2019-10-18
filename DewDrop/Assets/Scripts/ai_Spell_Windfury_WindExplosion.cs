@@ -6,25 +6,29 @@ using Photon.Pun;
 public class ai_Spell_Windfury_WindExplosion : AbilityInstance
 {
     private CastInfo info;
-    private ParticleSystem start;
+    private ParticleSystem Explosion;
     private List<LivingThing> targets = new List<LivingThing>();
     private bool done;
     private float timer;
 
+    public TargetValidator tv;
     public float pushDistance;
     public float airborneDuration;
     public float damage;
-    public float particleDuration;
+    public float range = 3f;
+    public float duration = 0.2f;
 
     private void Awake()
     {
-        start = transform.Find("Start").GetComponent<ParticleSystem>();
+        Explosion = transform.Find("Explosion").GetComponent<ParticleSystem>();
     }
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         this.info = castInfo;
-        start.Play();
+        Explosion.Play();
+
+        targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, range, tv);
     }
 
     protected override void AliveUpdate()
@@ -39,7 +43,7 @@ public class ai_Spell_Windfury_WindExplosion : AbilityInstance
             info.owner.DoMagicDamage(damage, target);
             
         }
-        if (timer >= particleDuration)
+        if (timer >= duration)
         {
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();

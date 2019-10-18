@@ -7,12 +7,13 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
     private CastInfo info;
     private ParticleSystem fly;
     private ParticleSystem hit;
+    private Vector3 targetPosition = Vector3.zero;
+    private float dashDistance;
+    private float airborneDuration;
 
-    public float duration = 0.8f;
-    public float dashDistance = 5f;
-    public float bonusDashDistancePerMovementSpeed = 0.1f;
-    public float damagePerMovementSpeed;
-    public float airborneDuration = 0.1f;
+    public float duration = 0.5f;
+    public float damagePerMovementSpeed = 0.3f;
+    public float airborneDurationPerMovementSpeed = 0.002f;
 
     private void Awake()
     {
@@ -23,20 +24,26 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         this.info = castInfo;
+        dashDistance = (float)data[0];
+        targetPosition = transform.position + info.directionVector * dashDistance;
+        print(info.directionVector);
+        print(targetPosition);
+
+        airborneDuration = airborneDurationPerMovementSpeed * info.owner.stat.finalMovementSpeed;
+        info.owner.DashThroughForDuration(targetPosition, duration);
         fly.Play();
     }
 
     protected override void AliveUpdate()
     {
         duration -= Time.deltaTime;
-
-        if (duration >= 0)
+        if (duration > 0)
         {
-            dashDistance = info.owner.stat.finalMovementSpeed * bonusDashDistancePerMovementSpeed;
-            info.owner.DashThroughForDuration(info.directionVector * dashDistance, duration);
+            transform.position = info.owner.GetCenterOffset() + info.owner.transform.position;
         }
         else
         {
+            info.owner.CancelDash();
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();
         }
@@ -46,10 +53,8 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
     {
         LivingThing target = other.GetComponent<LivingThing>();
         if (target == null || target == info.owner) { return; }
-        info.owner.CancelDash();
         info.owner.DoMagicDamage(info.owner.stat.finalMovementSpeed * (damagePerMovementSpeed / 100), target);
         target.AirborneForDuration(target.transform.position, airborneDuration);
-        DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Instantiate(hit, target.transform.position, Quaternion.Euler((target.transform.position + target.GetCenterOffset()) - (info.owner.transform.position + info.owner.GetCenterOffset())), transform).GetComponent<ParticleSystem>().Play();
     }
 }

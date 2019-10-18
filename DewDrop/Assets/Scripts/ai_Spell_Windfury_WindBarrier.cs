@@ -32,7 +32,7 @@ public class ai_Spell_Windfury_WindBarrier : AbilityInstance
     protected override void AliveUpdate()
     {
         timer += Time.deltaTime;
-        barrierParticle.transform.position = info.owner.GetCenterOffset() + info.owner.transform.position;
+        barrierParticle.transform.position = info.owner.transform.position;
 
         if (timer >= duration)
         {

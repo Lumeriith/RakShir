@@ -44,9 +44,7 @@ public class ai_Spell_Windfury_EmeraldStorm : AbilityInstance
                 foreach (LivingThing target in targets)
                 {
                     info.owner.DoMagicDamage(damageWhenCreate, target);
-                    GameObject hitEffect = Instantiate(hit.gameObject, target.transform.position + target.GetCenterOffset(), Quaternion.identity);
-                    hitEffect.GetComponent<ParticleSystem>().Play();
-                    hitEffect.AddComponent<ParticleSystemAutoDestroy>();
+                    Instantiate(hit, target.transform.position + target.GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
                 }
                 StartCoroutine("DoTickDamage");
                 isSpawned = true;
