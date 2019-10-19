@@ -35,7 +35,7 @@ public class ai_Spell_Windfury_EmeraldStorm : AbilityInstance
     {
         if (!photonView.IsMine) { return; }
         timer += Time.deltaTime;
-        transform.position = info.owner.transform.position;
+        photonView.RPC("RpcSyncParticle", RpcTarget.All);
         
         if (timer <= duration)
         {
@@ -99,5 +99,11 @@ public class ai_Spell_Windfury_EmeraldStorm : AbilityInstance
             }
             yield return new WaitForSeconds(tickInterval);
         }
+    }
+
+    [PunRPC]
+    private void RpcSyncParticle()
+    {
+        transform.position = info.owner.transform.position;
     }
 }

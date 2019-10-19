@@ -47,7 +47,7 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
         duration -= Time.deltaTime;
         if (duration > 0)
         {
-            transform.position = info.owner.GetCenterOffset() + info.owner.transform.position;
+            photonView.RPC("RpcSyncParticle", RpcTarget.All);
         }
         else
         {
@@ -64,5 +64,11 @@ public class ai_Spell_Windfury_HurricaneDash : AbilityInstance
         info.owner.DoMagicDamage(info.owner.stat.finalMovementSpeed * (damagePerMovementSpeed / 100), target);
         target.AirborneForDuration(target.transform.position, airborneDuration);
         Instantiate(hit, target.transform.position, Quaternion.Euler((target.transform.position + target.GetCenterOffset()) - (info.owner.transform.position + info.owner.GetCenterOffset())), transform).GetComponent<ParticleSystem>().Play();
+    }
+
+    [PunRPC]
+    private void RpcSyncParticle()
+    {
+        transform.position = info.owner.GetCenterOffset() + info.owner.transform.position;
     }
 }

@@ -35,8 +35,7 @@ public class ai_Spell_Windfury_TailWind : AbilityInstance
 
         if (duration > 0)
         {
-            transform.position = info.owner.transform.position;
-
+            photonView.RPC("RpcSyncParticle", RpcTarget.All);
         }
         else
         {
@@ -44,5 +43,11 @@ public class ai_Spell_Windfury_TailWind : AbilityInstance
             DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior.StopEmittingAndClear);
             DestroySelf();
         }
+    }
+
+    [PunRPC]
+    private void RpcSyncParticle()
+    {
+        transform.position = info.owner.transform.position;
     }
 }

@@ -32,12 +32,18 @@ public class ai_Spell_Windfury_WindBarrier : AbilityInstance
     {
         if (!photonView.IsMine) return;
         timer += Time.deltaTime;
-        barrierParticle.transform.position = info.owner.transform.position;
+        photonView.RPC("RpcSyncParticle", RpcTarget.All);
 
         if (timer >= duration)
         {
             DetachChildParticleSystemsAndAutoDelete(ParticleSystemStopBehavior.StopEmittingAndClear);
             DestroySelf();
         }
+    }
+
+    [PunRPC]
+    private void RpcSyncParticle()
+    {
+        barrierParticle.transform.position = info.owner.transform.position;
     }
 }
