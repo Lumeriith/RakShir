@@ -603,7 +603,10 @@ public class LivingThingControl : MonoBehaviourPun
         animator = transform.Find("Model").GetComponent<Animator>();
         agent.updateRotation = false;
         agentDestination = transform.position;
+        if (agent.enabled && !agent.isOnNavMesh) FixPosition();
     }
+
+
     private void Update()
     {
         if (!photonView.IsMine) return;
@@ -707,15 +710,23 @@ public class LivingThingControl : MonoBehaviourPun
 
         if (agent.enabled && agent.isOnNavMesh) agent.destination = agentDestination;
 
-        if(agent.enabled && !agent.isOnNavMesh)
-        {
-            transform.Translate(0, -.5f, 0);
-            agent.enabled = false;
-            agent.enabled = true;
-        }
+        if(agent.enabled && !agent.isOnNavMesh) FixPosition();
+ 
 
 
         WalkCheck();
+    }
+
+    private void FixPosition()
+    {
+        RaycastHit info;
+        if (Physics.Raycast(transform.position, Vector3.down, out info, LayerMask.GetMask("Ground")))
+        {
+            agent.enabled = false;
+            transform.position = info.point;
+            agent.enabled = true;
+
+        }
     }
 
     private bool wasWalking = false;

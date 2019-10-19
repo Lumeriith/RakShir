@@ -9,15 +9,21 @@ public class Spawner : MonoBehaviour
     public GameObject livingThingPrefab;
 
 
-
+    [HideInInspector]
     public List<LivingThing> spawnedLivingThings;
+
+    private void Awake()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer != null) renderer.enabled = false;
+    }
 
     public bool IsCleared()
     {
         if (spawnedLivingThings.Count == 0) return false;
         for (int i = 0; i < spawnedLivingThings.Count; i++)
         {
-            if (spawnedLivingThings[i].IsAlive()) return false;
+            if (spawnedLivingThings[i] == null || spawnedLivingThings[i].IsAlive()) return false;
         }
         return true;
     }

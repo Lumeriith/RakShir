@@ -26,7 +26,7 @@ public class Portal : Activatable
         {
             Room nextRoom = room.nextRooms[Random.Range(0, room.nextRooms.Count)];
             activator.Teleport(nextRoom.entryPoint.position);
-            nextRoom.ActivateSpawners();
+            nextRoom.ActivateRoom(activator);
         }
     }
 
