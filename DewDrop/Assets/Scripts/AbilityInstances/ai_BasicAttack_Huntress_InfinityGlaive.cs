@@ -50,7 +50,6 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
                 
                 for(int i=0;i<possibleTargets.Count;i++)
                 {
-                    print(possibleTargets[i].name);
                     if (!hitEnemies.Contains(possibleTargets[i]))
                     {
                         hitEnemies.Add(possibleTargets[i]);
