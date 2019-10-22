@@ -10,11 +10,11 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private Image image_icon;
     private Image image_disabled;
-    private Image image_highlighted;
     private TextMeshProUGUI tmpu_cooldown;
-    private TextMeshProUGUI tmpu_manaCost;
     private SkillDetailBox detailBox;
+    private Image image_cooldownFill;
     private Image image_specialFill;
+    private Image image_specialIndicator;
 
     public void OnPointerEnter(PointerEventData data)
     {
@@ -30,12 +30,12 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         image_icon = transform.Find("Mask/Icon Image").GetComponent<Image>();
         image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
-        image_highlighted = transform.Find("Mask/Highlighted Image").GetComponent<Image>();
         image_specialFill = transform.Find("Mask/Special Fill Image").GetComponent<Image>();
         tmpu_cooldown = transform.Find("Mask/Cooldown Text").GetComponent<TextMeshProUGUI>();
         detailBox = transform.Find("Detail Box").GetComponent<SkillDetailBox>();
         detailBox.gameObject.SetActive(false);
-        tmpu_manaCost = transform.Find("Mana Cost Text").GetComponent<TextMeshProUGUI>();
+        image_cooldownFill = transform.Find("Mask/Cooldown Fill Image").GetComponent<Image>();
+        image_specialIndicator = transform.Find("Special Indicator").GetComponent<Image>();
     }
     private void Update()
     {
@@ -45,9 +45,8 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             image_icon.sprite = null;
             image_disabled.enabled = true;
-            image_highlighted.enabled = false;
             tmpu_cooldown.text = "";
-            tmpu_manaCost.text = "";
+            image_cooldownFill.fillAmount = 0f;
             return;
         }
 
@@ -55,17 +54,17 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             image_icon.sprite = null;
             image_disabled.enabled = true;
-            image_highlighted.enabled = false;
-            tmpu_manaCost.text = "";
             image_specialFill.fillAmount = 0f;
+            image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
+            image_cooldownFill.fillAmount = 0f;
         }
         else
         {
             image_icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
             image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].IsReady() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
-            image_highlighted.enabled = false;
-            tmpu_manaCost.text = ((int)target.control.skillSet[skillIndex].manaCost).ToString();
             image_specialFill.fillAmount = target.control.skillSet[skillIndex].GetSpecialFillAmount();
+            image_cooldownFill.fillAmount = target.control.cooldownTime[skillIndex] / target.control.skillSet[skillIndex].cooldownTime;
+            image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
         }
 
         if(target.control.cooldownTime[skillIndex] == 0f)
