@@ -77,10 +77,11 @@ public class TargetValidator : System.ICloneable
     {
         if (target == null || self == null || (evaluatesFalseIfDead && target.IsDead())) return invertResult ? true : false;
 
+        Relation relation = self.GetRelationTo(target);
         bool isSelf = target == self;
-        bool isAlly = !isSelf && self.team == target.team && self.team != Team.None;
-        bool isOwn = target.type == LivingThingType.Summon ? target.summoner == self : false;
-        bool isEnemy = !isSelf && !isOwn && !isAlly && ((self.team == Team.None && target.team == Team.None) || (self.team != target.team));
+        bool isAlly = relation == Relation.Ally;
+        bool isOwn = relation == Relation.Own;
+        bool isEnemy = relation == Relation.Enemy;
         bool isMonster = target.type == LivingThingType.Monster;
         bool isPlayer = target.type == LivingThingType.Player;
         bool isSummon = target.type == LivingThingType.Summon;

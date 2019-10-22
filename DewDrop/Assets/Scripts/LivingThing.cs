@@ -287,12 +287,12 @@ public class LivingThing : MonoBehaviourPun
 
     public bool HasMana(float amount)
     {
-        return stat.currentMana > amount;
+        return stat.currentMana >= amount;
     }
 
     public bool SpendMana(float amount)
     {
-        if(stat.currentMana > amount)
+        if(stat.currentMana >= amount)
         {
             photonView.RPC("RpcSpendMana", RpcTarget.All, amount);
             return true;

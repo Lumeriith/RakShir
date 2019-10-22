@@ -212,11 +212,11 @@ public class Command
         if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
         if (self.control.IsMoveProhibitedByChannel()) return false;
         self.control.agentDestination = destination;
+        if (Vector3.Distance(destination, self.transform.position) < 0.5f && self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
         if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
         {
             self.LookAt(self.control.agent.path.corners[1]);
         }
-        if (Vector3.Distance(destination, self.transform.position) < 0.5f && self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
         return false;
     }
 
@@ -398,9 +398,11 @@ public class LivingThingControl : MonoBehaviourPun
     [Header("AI Settings")]
     public AIMode mode = AIMode.None;
 
-    public float aiCheckInterval = 0.5f;
+    public float aiInterval = 0.5f;
     public float autoChaseRange = 4f;
     public float autoChaseOutOfRangeCancelTime = 2f;
+    public bool autocastSpells = false;
+    public float spellCastChance = 0.5f;
     [Header("AttackMove Settings")]
     public float attackMoveTargetChecksForSecond = 4f;
     [Header("Misc. Settings")]
@@ -662,11 +664,56 @@ public class LivingThingControl : MonoBehaviourPun
         }
 
 
-        if(currentCommand == null)
-        {
-            if (Time.time - lastAICheckTime >= aiCheckInterval)
+        if (Time.time - lastAICheckTime >= aiInterval)
+        { 
+            if (autocastSpells && (currentCommand == null || currentCommand.type != CommandType.Ability) && Random.value < spellCastChance)
             {
-                lastAICheckTime = Time.time;
+                for(int i = 1; i < skillSet.Length; i++)
+                {
+                    if (cooldownTime[i] > 0) continue;
+                    if (skillSet[i] == null) continue;
+                    if (!skillSet[i].selfValidator.Evaluate(livingThing)) continue;
+                    if (!livingThing.HasMana(skillSet[i].manaCost)) continue;
+                    if (!skillSet[i].IsReady()) continue;
+                    if (IsAbilityProhibitedByChannel()) continue;
+                    if (skillSet[i].targetingType == AbilityTrigger.TargetingType.Target)
+                    {
+                        List<LivingThing> targets = livingThing.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
+                        if(targets.Count != 0)
+                        {
+                            CommandAbility(skillSet[i], new CastInfo { target = targets[0], owner = livingThing, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
+                            break;
+                        }
+                    }
+                    else if (skillSet[i].targetingType == AbilityTrigger.TargetingType.None)
+                    {
+                        CommandAbility(skillSet[i], new CastInfo { owner = livingThing });
+                        break;
+                    }
+                }
+            }
+        }
+
+
+
+        if (currentCommand != null)
+        {
+            bool isCommandFinished = currentCommand.Process();
+            if (isCommandFinished) reservedCommands.RemoveAt(0);
+        }
+        else
+        {
+            agentDestination = transform.position;
+        }
+
+        if (Time.time - lastAICheckTime >= aiInterval)
+        {
+            lastAICheckTime = Time.time;
+
+
+            if (currentCommand == null)
+            {
+
                 switch (mode)
                 {
                     case AIMode.None:
@@ -675,7 +722,7 @@ public class LivingThingControl : MonoBehaviourPun
                         if (skillSet[0] == null) break;
                         if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
                         List<LivingThing> aaTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
-                        for(int i = 0; i < aaTargets.Count; i++)
+                        for (int i = 0; i < aaTargets.Count; i++)
                         {
                             if (!aaTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, aaTargets[i]))
                             {
@@ -698,18 +745,15 @@ public class LivingThingControl : MonoBehaviourPun
                         }
                         break;
                 }
+
+
             }
+
+
+
         }
 
-        if (currentCommand != null)
-        {
-            bool isCommandFinished = currentCommand.Process();
-            if (isCommandFinished) reservedCommands.RemoveAt(0);
-        }
-        else
-        {
-            agentDestination = transform.position;
-        }
+
 
         if (agent.enabled && agent.isOnNavMesh) agent.destination = agentDestination;
 
