@@ -611,10 +611,13 @@ public class LivingThingControl : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        for(int i = 0; i < cooldownTime.Length; i++)
+
+        cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime);
+        for(int i = 1; i < cooldownTime.Length; i++)
         {
             cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
         }
+
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
         if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
             livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||

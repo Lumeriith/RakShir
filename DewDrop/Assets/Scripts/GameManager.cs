@@ -87,9 +87,9 @@ public class GameManager : MonoBehaviour
         else
         {
             localPlayer = PhotonNetwork.Instantiate("player_Reptile", location, Quaternion.identity).GetComponent<LivingThing>();
-            startItems.Add(PhotonNetwork.Instantiate("equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("equip_Armor_ReptileSkin", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("equip_Boots_ReptileFeet", location, Quaternion.identity).GetComponent<Activatable>());
+            startItems.Add(PhotonNetwork.Instantiate("equip_Weapon_ReptileClaw", location, Quaternion.identity).GetComponent<Activatable>());
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
         

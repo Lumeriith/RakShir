@@ -10,8 +10,17 @@ public class equip_Weapon_ElementalJustice : Equipment
         owner.stat.baseAttacksPerSecond = 1.3f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Elemental - Stand");
-            owner.ChangeWalkAnimation("Walk");
+            if (name.Contains("Reptile"))
+            {
+                owner.ChangeStandAnimation("Reptile - Stand");
+                owner.ChangeWalkAnimation("Reptile - Walk");
+            }
+            else
+            {
+                owner.ChangeStandAnimation("Elemental - Stand");
+                owner.ChangeWalkAnimation("Walk");
+            }
+
         }
     }
 
