@@ -96,9 +96,11 @@ MonoBehaviour:
   - 0
   - 0
   mode: 2
-  aiCheckInterval: 1
+  aiInterval: 0.5
   autoChaseRange: 10
   autoChaseOutOfRangeCancelTime: 2
+  autocastSpells: 0
+  spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
   reservedCommands: []
@@ -339,7 +341,8 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   abilityName: 
   abilityDescription: 
-  castAnimation: {fileID: 7400000, guid: 42f14193e28f26842874b18008e8227c, type: 2}
+  castAnimation:
+  - {fileID: 7400000, guid: 42f14193e28f26842874b18008e8227c, type: 2}
   animationDuration: 1
   indicator:
     type: 0
@@ -366,7 +369,6 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 0
-  skillIndex: 0
 --- !u!1 &3152528119157318131
 GameObject:
   m_ObjectHideFlags: 0

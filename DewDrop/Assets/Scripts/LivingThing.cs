@@ -508,6 +508,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
+        if (animation == null) return;
         for(int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
         {
             if(CustomAnimationBox.instance.animations[i] == animation)

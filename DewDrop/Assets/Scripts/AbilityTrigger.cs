@@ -24,7 +24,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     [ResizableTextArea]
     public string abilityDescription;
     [Header("Visual Settings")]
-    public AnimationClip castAnimation;
+    public AnimationClip[] castAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
     [Header("Trigger Settings")]
@@ -102,11 +102,11 @@ public abstract class AbilityTrigger : MonoBehaviour
             if (owner.control.skillSet[0] != null && owner.control.skillSet[0] == this)
             {
                 float duration = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f) + 0.05f;
-                owner.PlayCustomAnimation(castAnimation, duration * animationDuration);
+                owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], duration * animationDuration);
             }
             else
             {
-                owner.PlayCustomAnimation(castAnimation, animationDuration);
+                owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration);
             }
 
         }
