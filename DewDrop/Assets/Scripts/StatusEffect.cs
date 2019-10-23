@@ -137,9 +137,9 @@ public class StatusEffect
     {
         return new StatusEffect(caster, StatusEffectType.Haste, duration, amount);
     }
-    public static StatusEffect HealOverTime(LivingThing caster, float duration, float amount)
+    public static StatusEffect HealOverTime(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.HealOverTime, duration, amount);
+        return new StatusEffect(caster, StatusEffectType.HealOverTime, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
     }
     public static StatusEffect Stun(LivingThing caster, float duration)
     {
@@ -157,18 +157,18 @@ public class StatusEffect
     {
         return new StatusEffect(caster, StatusEffectType.Silence, duration);
     }
-    public static StatusEffect DamageOverTime(LivingThing caster, float duration, float amount)
+    public static StatusEffect DamageOverTime(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.DamageOverTime, duration, amount);
+        return new StatusEffect(caster, StatusEffectType.DamageOverTime, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
     }
     public static StatusEffect Custom(LivingThing caster, string name, float duration)
     {
         return new StatusEffect(caster, StatusEffectType.Custom, duration, name);
     }
 
-    public static StatusEffect Shield(LivingThing caster, float duration, float amount)
+    public static StatusEffect Shield(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.Shield, duration, amount);
+        return new StatusEffect(caster, StatusEffectType.Shield, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
     }
 
     #endregion Static Members

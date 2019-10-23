@@ -168,7 +168,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                     {
                         if (photonView.IsMine)
                         {
-                            ce.caster.DoHeal((float)ce.parameter, livingThing);
+                            ce.caster.DoHeal((float)ce.parameter, livingThing, true);
                             removeList.Add(ce);
                         }
                     }
@@ -183,13 +183,13 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                 {
                     if (ce.duration == 0)
                     {
-                        if (photonView.IsMine) ce.caster.DoMagicDamage((float)ce.parameter, livingThing);
+                        if (photonView.IsMine) ce.caster.DoMagicDamage((float)ce.parameter, livingThing, true);
                         removeList.Add(ce);
                     }
                     else
                     {
                         float amount = Mathf.Min((float)ce.parameter, (float)ce.parameter / ce.duration * overTimeEffectTickInterval);
-                        if (photonView.IsMine) ce.caster.DoMagicDamage(amount, livingThing);
+                        if (photonView.IsMine) ce.caster.DoMagicDamage(amount, livingThing, true);
                         ce.parameter = (float)ce.parameter - amount;
                     }
                 }
