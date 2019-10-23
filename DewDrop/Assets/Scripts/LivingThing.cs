@@ -165,19 +165,13 @@ public class LivingThing : MonoBehaviourPun
     [Header("Infobar Settings")]
     public GameObject infobar;
 
-    [HideInInspector]
+    [Header("Optional Explicit Transforms")]
     public Transform head;
-    [HideInInspector]
     public Transform leftHand;
-    [HideInInspector]
     public Transform rightHand;
-    [HideInInspector]
     public Transform leftFoot;
-    [HideInInspector]
     public Transform rightFoot;
-    [HideInInspector]
     public Transform top;
-    [HideInInspector]
     public Transform bottom;
 
     [HideInInspector]
@@ -258,13 +252,13 @@ public class LivingThing : MonoBehaviourPun
 
     void AssignMissingTransforms()
     {
-        head = transform.FindDeepChild("Bip001-Head") ?? transform.FindDeepChild("Bip01 Head");
-        leftHand = transform.FindDeepChild("Bip001-L-Hand") ?? transform.FindDeepChild("Bip01 L Hand");
-        rightHand =  transform.FindDeepChild("Bip001-R-Hand") ?? transform.FindDeepChild("Bip01 R Hand");
-        leftFoot = transform.FindDeepChild("Bip001-L-Foot") ?? transform.FindDeepChild("Bip01 L Foot");
-        rightFoot = transform.FindDeepChild("Bip001-R-Foot") ?? transform.FindDeepChild("Bip01 R Foot");
-        top = transform.FindDeepChild("FXDummy_Head") ?? transform.FindDeepChild("Bip01 Head");
-        bottom = transform;
+        if(head == null) head = transform.FindDeepChild("Bip001-Head") ?? transform.FindDeepChild("Bip01 Head");
+        if(leftHand == null) leftHand = transform.FindDeepChild("Bip001-L-Hand") ?? transform.FindDeepChild("Bip01 L Hand");
+        if(rightHand == null) rightHand =  transform.FindDeepChild("Bip001-R-Hand") ?? transform.FindDeepChild("Bip01 R Hand");
+        if(leftFoot == null) leftFoot = transform.FindDeepChild("Bip001-L-Foot") ?? transform.FindDeepChild("Bip01 L Foot");
+        if(rightFoot == null) rightFoot = transform.FindDeepChild("Bip001-R-Foot") ?? transform.FindDeepChild("Bip01 R Foot");
+        if(top == null) top = transform.FindDeepChild("FXDummy_Head") ?? transform.FindDeepChild("Bip01 Head");
+        if(bottom == null) bottom = transform;
 
         if (head == null) head = transform;
         if (leftHand == null) leftHand = transform;

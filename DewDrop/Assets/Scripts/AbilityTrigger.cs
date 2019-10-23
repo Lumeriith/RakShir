@@ -40,8 +40,25 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public float cooldownTime;
 
-    [HideInInspector]
-    public int skillIndex;
+    public int skillIndex
+    {
+        get
+        {
+            if(_skillIndex == -1)
+            {
+                for(int i = 0; i < owner.control.skillSet.Length; i++)
+                {
+                    if (owner.control.skillSet[i] == this) _skillIndex = i;
+                }
+            }
+            return _skillIndex;
+        }
+        set
+        {
+            _skillIndex = value;
+        }
+    }
+    private int _skillIndex = -1;
 
     [HideInInspector]
     public LivingThing owner

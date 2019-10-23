@@ -7,8 +7,7 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
     public float distance;
     public float speed;
     public float damage;
-    public float airborneDuration;
-    public float airborneDistance;
+
 
     public TargetValidator targetValidator;
 
@@ -39,7 +38,5 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
         info.owner.DoMagicDamage(damage, lv);
-        Vector3 landPos = lv.transform.position + (lv.transform.position - transform.position).normalized * airborneDistance;
-        lv.AirborneForDuration(landPos, airborneDuration);
     }
 }

@@ -198,7 +198,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                if ((ce.duration <= 0 && ce.type != StatusEffectType.HealOverTime && ce.type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && ce.IsHarmful()))
+                if ((ce.duration <= 0 && ce.type != StatusEffectType.HealOverTime && ce.type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && ce.IsHarmful()) || livingThing.IsDead())
                 {
                     removeList.Add(ce);
                 }

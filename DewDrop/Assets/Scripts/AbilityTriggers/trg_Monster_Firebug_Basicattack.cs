@@ -6,7 +6,7 @@ public class trg_Monster_Firebug_Basicattack : AbilityTrigger
 {
     public override void OnCast(CastInfo info)
     {
-        Channel channel = new Channel(selfValidator, 0.5f, false, false, false, false, ChannelSuccess, null);
+        Channel channel = new Channel(selfValidator, 0.5f, false, true, false, true, ChannelSuccess, null);
         info.owner.control.StartChanneling(channel, true);
         StartCooldown(true);
     }
