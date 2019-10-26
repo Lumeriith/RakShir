@@ -14,7 +14,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public byte maxPlayersForOnlineTestGame = 10;
     public string gameVersion = "8";
 
-
     private void Start()
     {
         if (!properlyConfiguredGame)
