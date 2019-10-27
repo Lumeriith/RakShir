@@ -267,7 +267,10 @@ public class LivingThing : MonoBehaviourPun
         };
     }
 
-
+    private void Start()
+    {
+        GameManager.instance.OnLivingThingInstantiate.Invoke(this);
+    }
 
     private void Update()
     {

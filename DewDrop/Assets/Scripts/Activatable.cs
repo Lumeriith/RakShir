@@ -18,6 +18,11 @@ public abstract class Activatable : MonoBehaviourPun
 
     private List<KeyValuePair<LivingThing, Channel>> dict = new List<KeyValuePair<LivingThing, Channel>>();
 
+    private void Start()
+    {
+        GameManager.instance.OnActivatableInstantiate.Invoke(this);
+    }
+
     public void StartActivate(LivingThing activator)
     {
         if (!activator.photonView.IsMine)

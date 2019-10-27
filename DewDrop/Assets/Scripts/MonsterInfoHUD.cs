@@ -56,7 +56,7 @@ public class MonsterInfoHUD : MonoBehaviour
 
     private void SetTarget(InfoDamage info)
     {
-        target = info.to;
+        if(info.to != info.from) target = info.to;
     }
 
 }
