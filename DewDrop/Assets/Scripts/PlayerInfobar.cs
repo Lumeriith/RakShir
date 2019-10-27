@@ -59,7 +59,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
             canvasGroup.alpha = 1;
         }
 
-        text_name.text = target.name;
+        text_name.text = target.readableName;
         image_mana_fill.fillAmount = target.stat.currentMana / target.stat.finalMaximumMana;
 
         universalHealthbar.SetTarget(target);

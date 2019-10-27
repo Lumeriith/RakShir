@@ -47,7 +47,7 @@ public class MonsterInfoHUD : MonoBehaviour
         {
             group.alpha = 1f;
             uhb.SetTarget(target);
-            text_name.text = target.name;
+            text_name.text = target.readableName;
             tmpu_health.text = string.Format("{0}/{1}", (int)target.currentHealth, (int)target.maximumHealth);
             rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Clamp(target.maximumHealth, minimumWidth, maximumWidth));
         }

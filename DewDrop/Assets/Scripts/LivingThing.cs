@@ -109,6 +109,16 @@ public class LivingThing : MonoBehaviourPun
     private AnimatorOverrideController aoc;
     private AnimationClip[] defaultClips;
 
+    private List<Color> flashColors = new List<Color>();
+    private List<float> flashDurations = new List<float>();
+
+
+    private List<Material> materials = new List<Material>();
+    private List<Color> defaultEmissionColors = new List<Color>();
+    private List<Texture> defaultEmissionMaps = new List<Texture>();
+    private List<bool> defaultKeywordEnabled = new List<bool>();
+
+
     #region Action Declarations
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
     public System.Action<InfoDamage> OnTakeDamage = (InfoDamage _) => { };
@@ -157,6 +167,8 @@ public class LivingThing : MonoBehaviourPun
     #endregion NaughtyAttributes
 
     #region References For Everyone
+    public string readableName;
+
     public Team team = Team.None;
     public LivingThingType type = LivingThingType.Monster;
 
@@ -224,7 +236,7 @@ public class LivingThing : MonoBehaviourPun
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
 
-        if(infobar != null)
+        if (infobar != null)
         {
             Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(this);
         }
@@ -233,7 +245,29 @@ public class LivingThing : MonoBehaviourPun
         outline.enabled = false;
 
         AssignMissingTransforms();
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            materials.Add(renderers[i].material);
+            defaultEmissionColors.Add(materials[i].GetColor("_EmissionColor"));
+            defaultEmissionMaps.Add(materials[i].GetTexture("_EmissionMap"));
+            defaultKeywordEnabled.Add(materials[i].IsKeywordEnabled("_EMISSION"));
+        }
+
+        OnTakeDamage += (InfoDamage _) => {
+            if (GameManager.instance.localPlayer == null || GameManager.instance.localPlayer != this)
+            {
+                RpcFlashForDuration(Color.white, 0.3f, 0.10f);
+                RpcFlashForDuration(Color.white, 0.3f, 0.08f);
+                RpcFlashForDuration(Color.white, 0.3f, 0.06f);
+                RpcFlashForDuration(Color.white, 0.3f, 0.04f);
+                RpcFlashForDuration(Color.white, 0.3f, 0.02f);
+            }
+        };
     }
+
+
 
     private void Update()
     {
@@ -244,7 +278,51 @@ public class LivingThing : MonoBehaviourPun
             Kill();
         }
 
+        if (flashColors.Count == 0)
+        {
+            for (int i = 0; i < materials.Count; i++)
+            {
+                materials[i].SetColor("_EmissionColor", defaultEmissionColors[i]);
+                materials[i].SetTexture("_EmissionMap", defaultEmissionMaps[i]);
+                if (defaultKeywordEnabled[i])
+                {
+                    materials[i].EnableKeyword("_EMISSION");
+                }
+                else
+                {
+                    materials[i].DisableKeyword("_EMISSION");
+                }
+            }
+        }
+        else
+        {
+            Color color = Color.clear;
+            for(int i = 0; i < flashColors.Count; i++)
+            {
+                color += flashColors[i];
+            }
+
+            for (int i = 0; i < materials.Count; i++)
+            {
+                materials[i].SetColor("_EmissionColor", color);
+                materials[i].SetTexture("_EmissionMap", null);
+                materials[i].EnableKeyword("_EMISSION");
+            }
+        }
+
+        for (int i = flashColors.Count - 1; i >= 0; i--)
+        {
+            flashDurations[i] -= Time.deltaTime;
+            if (flashDurations[i] <= 0)
+            {
+                flashColors.RemoveAt(i);
+                flashDurations.RemoveAt(i);
+            }
+        }
     }
+
+
+
 
     #endregion Unity
 
@@ -545,9 +623,21 @@ public class LivingThing : MonoBehaviourPun
         photonView.RPC("RpcRevive", RpcTarget.All);
     }
 
+    public void FlashForDuration(Color color, float multiplier, float duration)
+    {
+        photonView.RPC("RpcFlashForDuration", RpcTarget.All, color, multiplier, duration);
+    }
+
     #endregion Functions For Everyone
 
     #region RPCs
+
+    [PunRPC]
+    protected void RpcFlashForDuration(Color color, float multiplier, float duration)
+    {
+        flashColors.Add(color * multiplier);
+        flashDurations.Add(duration);
+    }
 
     [PunRPC]
     protected void RpcRevive()

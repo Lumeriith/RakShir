@@ -10,6 +10,8 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
     public Vector3 worldOffset;
     public Vector3 UIOffset;
 
+    public bool useGrid;
+
     private Image image_health;
     private Image image_health_fill;
     private Image image_health_delta;
@@ -22,6 +24,8 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
     private CanvasGroup canvasGroup;
 
     private Image image_line;
+
+    private Transform transform_grid;
 
     private List<Image> lines = new List<Image>();
 
@@ -44,6 +48,7 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
         image_health_DoT = transform.Find("Main/Fill/DoT").GetComponent<Image>();
         image_line = transform.Find("Grid/Line").GetComponent<Image>();
         image_line.enabled = false;
+        transform_grid = transform.Find("Grid");
         canvasGroup = GetComponent<CanvasGroup>();
 
     }
@@ -60,6 +65,10 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
         float maxAmount = target.maximumHealth + target.statusEffect.totalShieldAmount;
         float width = image_health.rectTransform.rect.width;
         int lineCount = (int)(maxAmount / 100f);
+
+        transform_grid.gameObject.SetActive(useGrid);
+        if (!useGrid) return;
+
         while(lines.Count > lineCount)
         {
             Destroy(lines[lines.Count - 1].gameObject);
