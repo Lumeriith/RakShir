@@ -127,6 +127,11 @@ public class LivingThing : MonoBehaviourPun
     private List<Color> flashColors = new List<Color>();
     private List<float> flashDurations = new List<float>();
 
+    private Transform model;
+    private Vector3 defaultScale;
+
+    private List<float> scaleMultipliers = new List<float>();
+    private List<float> scaleDurations = new List<float>();
 
     private List<Material> materials = new List<Material>();
     private List<Color> defaultEmissionColors = new List<Color>();
@@ -192,8 +197,6 @@ public class LivingThing : MonoBehaviourPun
     public float droppedGold = 10f;
     [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
-    [Header("Infobar Settings")]
-    public GameObject infobar;
 
     [Header("Optional Explicit Transforms")]
     public Transform head;
@@ -237,6 +240,9 @@ public class LivingThing : MonoBehaviourPun
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
+        model = transform.Find("Model");
+        defaultScale = model.localScale;
+        model.localScale = Vector3.zero;
 
         control = GetComponent<LivingThingControl>();
         stat = GetComponent<LivingThingStat>();
@@ -254,10 +260,7 @@ public class LivingThing : MonoBehaviourPun
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
 
-        if (infobar != null)
-        {
-            Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(this);
-        }
+
 
         outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<MeshOutline>();
         outline.enabled = false;
@@ -276,11 +279,11 @@ public class LivingThing : MonoBehaviourPun
         OnTakeDamage += (InfoDamage _) => {
             if (GameManager.instance.localPlayer == null || GameManager.instance.localPlayer != this)
             {
-                RpcFlashForDuration(Color.white, 0.3f, 0.10f);
-                RpcFlashForDuration(Color.white, 0.3f, 0.08f);
-                RpcFlashForDuration(Color.white, 0.3f, 0.06f);
-                RpcFlashForDuration(Color.white, 0.3f, 0.04f);
-                RpcFlashForDuration(Color.white, 0.3f, 0.02f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.10f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.08f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.06f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.04f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.02f);
             }
         };
     }
@@ -298,6 +301,21 @@ public class LivingThing : MonoBehaviourPun
         {
             Kill();
         }
+
+        if(scaleMultipliers.Count == 0)
+        {
+            model.localScale = defaultScale;
+        }
+        else
+        {
+            Vector3 scale = defaultScale;
+            for(int i = 0; i < scaleMultipliers.Count; i++)
+            {
+                scale *= scaleMultipliers[i];
+            }
+            model.localScale = scale;
+        }
+
 
         if (flashColors.Count == 0)
         {
@@ -330,6 +348,17 @@ public class LivingThing : MonoBehaviourPun
                 materials[i].EnableKeyword("_EMISSION");
             }
         }
+
+        for(int i = scaleMultipliers.Count - 1; i >= 0; i--)
+        {
+            scaleDurations[i] -= Time.deltaTime;
+            if(scaleDurations[i] <= 0)
+            {
+                scaleDurations.RemoveAt(i);
+                scaleMultipliers.RemoveAt(i);
+            }
+        }
+
 
         for (int i = flashColors.Count - 1; i >= 0; i--)
         {
@@ -669,8 +698,15 @@ public class LivingThing : MonoBehaviourPun
 
     public void FlashForDuration(Color color, float multiplier, float duration)
     {
-        photonView.RPC("RpcFlashForDuration", RpcTarget.All, color, multiplier, duration);
+        photonView.RPC("RpcFlashForDuration", RpcTarget.All, color.r, color.g, color.b, color.a, multiplier, duration);
     }
+
+    public void ScaleForDuration(float multiplier, float duration)
+    {
+        photonView.RPC("RpcScaleForDuration", RpcTarget.All, multiplier, duration);
+    }
+
+
 
     public void GiveGold(float amount, LivingThing to)
     {
@@ -688,11 +724,21 @@ public class LivingThing : MonoBehaviourPun
     #region RPCs
 
     [PunRPC]
-    protected void RpcFlashForDuration(Color color, float multiplier, float duration)
+    public void RpcFlashForDuration(float r, float g, float b, float a, float multiplier, float duration)
     {
+        Color color = new Color(r, g, b, a);
         flashColors.Add(color * multiplier);
         flashDurations.Add(duration);
     }
+
+    [PunRPC]
+    public void RpcScaleForDuration(float multiplier, float duration)
+    {
+        scaleMultipliers.Add(multiplier);
+        scaleDurations.Add(duration);
+    }
+
+
 
     [PunRPC]
     protected void RpcRevive()

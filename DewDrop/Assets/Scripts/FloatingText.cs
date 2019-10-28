@@ -46,6 +46,10 @@ public class FloatingText : MonoBehaviour
         velocity = initialVelocity;
         main = Camera.main;
     }
+    private void Start()
+    {
+        Update();
+    }
 
     private void Update()
     {
