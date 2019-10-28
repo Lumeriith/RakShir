@@ -49,7 +49,7 @@ public class FloatingText : MonoBehaviour
 
     private void Update()
     {
-        if(elapsedTime > 1)
+        if(elapsedTime > duration)
         {
             Destroy(gameObject);
             return;

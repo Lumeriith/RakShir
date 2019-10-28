@@ -91,6 +91,21 @@ public struct InfoStopWalking
 {
     public LivingThing livingThing;
 }
+
+public struct InfoGold
+{
+    public LivingThing from;
+    public LivingThing to;
+    public float amount;
+}
+
+public struct InfoSpendGold
+{
+    public LivingThing livingThing;
+    public float amount;
+}
+
+
 #endregion Action Info Structs
 
 [RequireComponent(typeof(LivingThingControl))]
@@ -126,8 +141,10 @@ public class LivingThing : MonoBehaviourPun
     public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
     public System.Action<InfoMagicDamage> OnTakeMagicDamage = (InfoMagicDamage _) => { };
 
+    public System.Action<InfoGold> OnTakeGold = (InfoGold _) => { };
+    public System.Action<InfoGold> OnGiveGold = (InfoGold _) => { };
 
-
+    public System.Action<InfoSpendGold> OnSpendGold = (InfoSpendGold _) => { };
 
     public System.Action<InfoBasicAttackHit> OnDoBasicAttackHit = (InfoBasicAttackHit _) => { };
     public System.Action<InfoBasicAttackHit> OnTakeBasicAttackHit = (InfoBasicAttackHit _) => { };
@@ -172,6 +189,7 @@ public class LivingThing : MonoBehaviourPun
     public Team team = Team.None;
     public LivingThingType type = LivingThingType.Monster;
 
+    public float droppedGold = 10f;
     [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
     [Header("Infobar Settings")]
@@ -365,9 +383,10 @@ public class LivingThing : MonoBehaviourPun
         return stat.currentMana >= amount;
     }
 
+
     public bool SpendMana(float amount)
     {
-        if(stat.currentMana >= amount)
+        if (stat.currentMana >= amount)
         {
             photonView.RPC("RpcSpendMana", RpcTarget.All, amount);
             return true;
@@ -377,6 +396,28 @@ public class LivingThing : MonoBehaviourPun
             return false;
         }
     }
+
+    public bool HasGold(float amount)
+    {
+        return stat.currentGold >= amount;
+    }
+
+
+    public bool SpendGold(float amount)
+    {
+        if (stat.currentGold >= amount)
+        {
+            photonView.RPC("RpcSpendGold", RpcTarget.All, amount);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+
 
     public bool IsDead()
     {
@@ -450,7 +491,7 @@ public class LivingThing : MonoBehaviourPun
 
     public LivingThing GetLastAttacker()
     {
-        return lastAttacker;
+        return lastAttacker ?? this;
     }
 
     public Relation GetRelationTo(LivingThing to)
@@ -631,6 +672,13 @@ public class LivingThing : MonoBehaviourPun
         photonView.RPC("RpcFlashForDuration", RpcTarget.All, color, multiplier, duration);
     }
 
+    public void GiveGold(float amount, LivingThing to)
+    {
+        photonView.RPC("RpcGiveGold", RpcTarget.All, amount, to.photonView.ViewID);
+    }
+
+
+
     #endregion Functions For Everyone
 
     #region RPCs
@@ -688,7 +736,7 @@ public class LivingThing : MonoBehaviourPun
             stat.ValidateHealth();
         }
 
-        lastAttacker = from;
+        if(from != this) lastAttacker = from;
 
         if (photonView.IsMine)
         {
@@ -756,7 +804,7 @@ public class LivingThing : MonoBehaviourPun
                 stat.ValidateHealth();
             }
 
-            lastAttacker = from;
+            if(from != this) lastAttacker = from;
 
             if (photonView.IsMine)
             {
@@ -781,12 +829,31 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
+    protected void RpcGiveGold(float amount, int to_id)
+    {
+        LivingThing to = PhotonNetwork.GetPhotonView(to_id).GetComponent<LivingThing>();
+        stat.currentGold -= amount;
+        if (photonView.IsMine) stat.SyncChangingStats();
+        to.stat.currentGold += amount;
+        if (to.photonView.IsMine) to.stat.SyncChangingStats();
+
+
+        InfoGold info;
+        info.from = this;
+        info.to = to;
+        info.amount = amount;
+        OnGiveGold.Invoke(info);
+        to.OnTakeGold.Invoke(info);
+    }
+
+
+    [PunRPC]
     protected void RpcApplyPureDamage(float amount, int from_id)
     {
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
         stat.currentHealth -= Mathf.Max(0, amount);
         stat.ValidateHealth();
-        lastAttacker = from;
+        if(from!=this) lastAttacker = from;
         if (photonView.IsMine)
         {
             stat.SyncChangingStats();
@@ -889,7 +956,16 @@ public class LivingThing : MonoBehaviourPun
     }
 
 
-
+    [PunRPC]
+    private void RpcSpendGold(float amount)
+    {
+        stat.currentGold -= amount;
+        if (photonView.IsMine) stat.SyncChangingStats();
+        InfoSpendGold info;
+        info.livingThing = this;
+        info.amount = amount;
+        OnSpendGold.Invoke(info);
+    }
 
     [PunRPC]
     private void RpcChangeWalkAnimation(int index)

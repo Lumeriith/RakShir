@@ -36,10 +36,13 @@ public class GameManager : MonoBehaviour
     public FloatingText physicalDamageFloatingText;
     public FloatingText healFloatingText;
     public FloatingText manaHealFloatingText;
+    public FloatingText goldFloatingText;
+
 
     public System.Action<LivingThing> OnLivingThingInstantiate = (LivingThing _) => { };
     public System.Action<Activatable> OnActivatableInstantiate = (Activatable _) => { };
 
+    public float goldModifier = 1.0f;
 
     private static GameManager _instance;
     public static GameManager instance
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     public void RegisterFloatingTextEvents(LivingThing player)
     {
-        player.OnDoBasicAttackHit = (InfoBasicAttackHit info) =>
+        player.OnDoBasicAttackHit += (InfoBasicAttackHit info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
 
@@ -66,7 +69,7 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
-        player.OnDealMagicDamage = (InfoMagicDamage info) =>
+        player.OnDealMagicDamage += (InfoMagicDamage info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
 
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
-        player.OnTakeHeal = (InfoHeal info) =>
+        player.OnTakeHeal += (InfoHeal info) =>
         {
             if (info.to == info.from) return;
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
@@ -87,7 +90,7 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
-        player.OnDoHeal = (InfoHeal info) =>
+        player.OnDoHeal += (InfoHeal info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
 
@@ -97,7 +100,7 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
-        player.OnTakeManaHeal = (InfoManaHeal info) =>
+        player.OnTakeManaHeal += (InfoManaHeal info) =>
         {
             if (info.to == info.from) return;
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
@@ -108,7 +111,7 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
-        player.OnDoManaHeal = (InfoManaHeal info) =>
+        player.OnDoManaHeal += (InfoManaHeal info) =>
         {
             Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
 
@@ -118,6 +121,15 @@ public class GameManager : MonoBehaviour
             floatingText.worldPosition = worldPos;
         };
 
+        player.OnTakeGold += (InfoGold info) =>
+        {
+            Vector3 worldPos = info.from.transform.position + info.from.GetRandomOffset();
+
+            FloatingText floatingText = Instantiate(goldFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
+
+            floatingText.text = "+" + Mathf.Ceil(info.amount).ToString() + "G";
+            floatingText.worldPosition = worldPos;
+        };
 
     }
 
@@ -158,7 +170,21 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         floatingTextCanvas = transform.Find("/Common Game Logics/Floating Text Canvas");
-     }
+    }
+
+    private void Start()
+    {
+        OnLivingThingInstantiate += (LivingThing lv) =>
+        {
+            if (lv.photonView.IsMine)
+            {
+                lv.OnDeath += (InfoDeath info) =>
+                {
+                    info.victim.GiveGold(info.victim.droppedGold * GameManager.instance.goldModifier, info.killer);
+                };
+            }
+        };
+    }
 
     private void Update()
     {

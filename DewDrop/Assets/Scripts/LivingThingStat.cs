@@ -15,6 +15,7 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     [Header("Changing Stats")]
     public float currentHealth = 1000;
     public float currentMana;
+    public float currentGold = 0;
     public bool isDead;
 
     [Header("Base Stats")]
@@ -170,7 +171,7 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
 
     public void SyncChangingStats()
     {
-        float[] stats = { currentHealth, currentMana };
+        float[] stats = { currentHealth, currentMana, currentGold };
         photonView.RPC("RpcSyncChangingStats", RpcTarget.Others, stats);
     }
 
@@ -218,6 +219,7 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     {
         currentHealth = stats[0];
         currentMana = stats[1];
+        currentGold = stats[2];
     }
 
     [PunRPC]
