@@ -26,6 +26,8 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     public Sprite bootsIcon;
     public Sprite ringIcon;
     public Sprite consumableIcon;
+    public Sprite moneyIcon;
+    public Sprite bookIcon;
 
     private void Awake()
     {
@@ -39,9 +41,12 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 
     private void Start()
     {
-        if (follow.GetComponent<Consumable>() != null)
+        Consumable cons = follow.GetComponent<Consumable>();
+        if (cons != null)
         {
             image_icon.sprite = consumableIcon;
+            if (cons as cons_GoldPouch != null) image_icon.sprite = moneyIcon;
+            if (cons as cons_BookOfAgility != null || cons as cons_BookOfStrength != null || cons as cons_BookOfIntelligence != null) image_icon.sprite = bookIcon;
             return;
         }
 

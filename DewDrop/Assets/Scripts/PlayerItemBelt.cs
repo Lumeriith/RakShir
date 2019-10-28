@@ -31,7 +31,6 @@ public class PlayerItemBelt : MonoBehaviour
         Consumable consumable = item as Consumable;
         if(consumable != null && consumable.useOnPickup)
         {
-            inventory.Add(item);
             item.TransferOwnership(livingThing);
             UseConsumable(consumable, new CastInfo { owner = livingThing });
             return true;

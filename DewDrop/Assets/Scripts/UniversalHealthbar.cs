@@ -126,8 +126,8 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
 
             }
         }
-        Color hotColor = enemyHealthbarColor;
-        hotColor.a /= 8f;
+        Color hotColor = image_health_fill.color;
+        hotColor.a /= 6f;
         image_health_HoT.color = hotColor;
 
     }

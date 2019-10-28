@@ -18,6 +18,8 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode reservationModifier = KeyCode.LeftShift;
     public KeyCode selfCastModifier = KeyCode.LeftAlt;
 
+    public KeyCode activateKey = KeyCode.G;
+
     [Header("Skill Key Configurations")]
     public KeyCode WeaponSkillKey = KeyCode.Q;
     public AbilityCastMethod WeaponSkillCastMethod = AbilityCastMethod.OnRelease;
@@ -391,6 +393,7 @@ public class UnitControlManager : MonoBehaviour
                     }
                     break;
             }
+            CheckForActivate();
             CheckForAction();
             CheckForAttack();
             CheckForNewCast();
@@ -404,6 +407,23 @@ public class UnitControlManager : MonoBehaviour
 
     }
 
+    private void CheckForActivate()
+    {
+        if (Input.GetKeyDown(activateKey))
+        {
+            Collider[] colliders;
+            colliders = Physics.OverlapSphere(selectedUnit.transform.position, 5f, LayerMask.GetMask("Activatable"));
+            if(colliders.Length != 0)
+            {
+                colliders = colliders.OrderBy(collider => Vector3.Distance(selectedUnit.transform.position, collider.transform.position)).ToArray();
+                pendingTrigger = null;
+                inputState = InputState.None;
+                selectedUnit.control.CommandActivate(colliders[0].GetComponent<Activatable>(), Input.GetKey(reservationModifier));
+            }
+
+
+        }
+    }
 
     private void CheckForStop()
     {

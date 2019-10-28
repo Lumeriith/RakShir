@@ -677,6 +677,10 @@ public class LivingThing : MonoBehaviourPun
         photonView.RPC("RpcGiveGold", RpcTarget.All, amount, to.photonView.ViewID);
     }
 
+    public void EarnGold(float amount)
+    {
+        photonView.RPC("RpcEarnGold", RpcTarget.All, amount);
+    }
 
 
     #endregion Functions For Everyone
@@ -845,6 +849,22 @@ public class LivingThing : MonoBehaviourPun
         OnGiveGold.Invoke(info);
         to.OnTakeGold.Invoke(info);
     }
+
+
+    [PunRPC]
+    protected void RpcEarnGold(float amount)
+    {
+        stat.currentGold += amount;
+        if (photonView.IsMine) stat.SyncChangingStats();
+
+        InfoGold info;
+        info.to = this;
+        info.from = this;
+        info.amount = amount;
+        OnTakeGold.Invoke(info);
+    }
+
+
 
 
     [PunRPC]
