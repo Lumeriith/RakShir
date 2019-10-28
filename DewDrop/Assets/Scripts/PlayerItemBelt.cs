@@ -33,7 +33,7 @@ public class PlayerItemBelt : MonoBehaviour
         {
             inventory.Add(item);
             item.TransferOwnership(livingThing);
-            UseConsumable(consumable, new CastInfo());
+            UseConsumable(consumable, new CastInfo { owner = livingThing });
             return true;
         }
 
@@ -66,14 +66,18 @@ public class PlayerItemBelt : MonoBehaviour
 
     public void UseConsumable(Consumable consumable, CastInfo info)
     {
+        consumable.OnUse(info);
+        /*
         for (int i = 0; i < consumableBelt.Length; i++)
         {
             if (consumableBelt[i] == consumable)
             {
                 consumable.OnUse(info);
-                break;
+                return;
             }
         }
+        */
+
     }
 
     public void MoveConsumableFromBeltToInventory(int from)

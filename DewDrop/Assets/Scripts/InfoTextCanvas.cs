@@ -20,8 +20,8 @@ public class InfoTextCanvas : MonoBehaviour
                 text.follow = cons.transform;
                 text.OnClick += () =>
                 {
-                    UnitControlManager.instance.selectedUnit.control.CommandActivate(equip, Input.GetKey(UnitControlManager.instance.reservationModifier));
-                    Instantiate(UnitControlManager.instance.commandMarkerInterest, equip.transform.position, Quaternion.identity, equip.transform);
+                    UnitControlManager.instance.selectedUnit.control.CommandActivate(cons, Input.GetKey(UnitControlManager.instance.reservationModifier));
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, cons.transform.position, Quaternion.identity, cons.transform);
                 };
             }
             else if (equip != null)

@@ -8,6 +8,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     public bool clickable;
 
     private Image image_image;
+    private Image image_icon;
     private Text text_text;
     private CanvasGroup canvasGroup;
     private Camera main;
@@ -19,6 +20,13 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 
     public System.Action OnClick = () => { };
 
+    public Sprite weaponIcon;
+    public Sprite armorIcon;
+    public Sprite helmetIcon;
+    public Sprite bootsIcon;
+    public Sprite ringIcon;
+    public Sprite consumableIcon;
+
     private void Awake()
     {
         image_image = GetComponent<Image>();
@@ -26,11 +34,42 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0f;
         main = Camera.main;
+        image_icon = transform.Find("Icon").GetComponent<Image>();
     }
 
-
-    private void LateUpdate()
+    private void Start()
     {
+        if (follow.GetComponent<Consumable>() != null)
+        {
+            image_icon.sprite = consumableIcon;
+            return;
+        }
+
+        Equipment equip = follow.GetComponent<Equipment>();
+        if (equip != null)
+        {
+            switch (equip.type)
+            {
+                case EquipmentType.Helmet:
+                    image_icon.sprite = helmetIcon;
+                    break;
+                case EquipmentType.Armor:
+                    image_icon.sprite = armorIcon;
+                    break;
+                case EquipmentType.Boots:
+                    image_icon.sprite = bootsIcon;
+                    break;
+                case EquipmentType.Weapon:
+                    image_icon.sprite = weaponIcon;
+                    break;
+                case EquipmentType.Ring:
+                    image_icon.sprite = ringIcon;
+                    break;
+            }
+        }
+    }
+
+    private void LateUpdate() {
         text_text.text = text;
         if(follow == null || !follow.gameObject.activeInHierarchy)
         {
@@ -64,5 +103,6 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     {
         OnClick.Invoke();
     }
+
 
 }
