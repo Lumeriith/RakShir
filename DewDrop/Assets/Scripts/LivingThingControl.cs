@@ -392,8 +392,8 @@ public class LivingThingControl : MonoBehaviourPun
 {
     public NavMeshAgent agent { get; private set; }
 
-    public AbilityTrigger[] skillSet = new AbilityTrigger[6];
-    public float[] cooldownTime = new float[6];
+    public AbilityTrigger[] skillSet = new AbilityTrigger[7];
+    public float[] cooldownTime = new float[7];
 
     [Header("AI Settings")]
     public AIMode mode = AIMode.None;
