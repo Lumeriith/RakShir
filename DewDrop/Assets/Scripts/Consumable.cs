@@ -48,6 +48,8 @@ public abstract class Consumable : Item
         PhotonNetwork.Destroy(gameObject);
     }
 
+    public virtual bool IsReady() { return true; }
+
     public abstract bool OnUse(CastInfo info);
 
 }

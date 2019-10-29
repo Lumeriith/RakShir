@@ -69,7 +69,6 @@ MonoBehaviour:
   type: 1
   droppedGold: 100
   summoner: {fileID: 0}
-  infobar: {fileID: 7469335055242755043, guid: 1ad35dfd3492a8b4eb782fb81fbe199e, type: 3}
   head: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
@@ -138,7 +137,7 @@ MonoBehaviour:
   baseMaximumHealth: 500
   baseHealthRegenerationPerSecond: 5
   baseMaximumMana: 200
-  baseManaRegenerationPerSecond: 5.5
+  baseManaRegenerationPerSecond: 3.5
   baseMovementSpeed: 270
   baseAttackDamage: 0
   baseAttacksPerSecond: 0
@@ -163,16 +162,16 @@ MonoBehaviour:
   bonusAgility: 0
   bonusIntelligence: 0
   showScalingSettings: 1
-  additionalMaximumHealthPerUnit: 50
-  additionalHealthRegenerationPerSecondPerUnit: 2
-  additionalAttackDamagePerUnit: 5
-  additionalMovementSpeedPerUnit: 3.25
-  additionalAttackSpeedPercentagePerUnit: 2.5
-  additionalDodgeChancePerUnit: 1
+  additionalMaximumHealthPerUnit: 20
+  additionalHealthRegenerationPerSecondPerUnit: 0.2
+  additionalAttackDamagePerUnit: 2.5
+  additionalMovementSpeedPerUnit: 2.5
+  additionalAttackSpeedPercentagePerUnit: 1.5
+  additionalDodgeChancePerUnit: 0.5
   additionalMaximumManaPerUnit: 30
-  additionalManaRegenerationPerSecondPerUnit: 3
-  additionalSpellPowerPerUnit: 2
-  additionalCooldownReductionPerUnit: 2
+  additionalManaRegenerationPerSecondPerUnit: 0.5
+  additionalSpellPowerPerUnit: 1.5
+  additionalCooldownReductionPerUnit: 1.25
 --- !u!114 &685593335107112252
 MonoBehaviour:
   m_ObjectHideFlags: 0

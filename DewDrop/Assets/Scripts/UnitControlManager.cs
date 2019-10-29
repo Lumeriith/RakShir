@@ -507,7 +507,7 @@ public class UnitControlManager : MonoBehaviour
 
         if (belt == null) return;
         if (belt.consumableBelt[itemIndex - 1] == null) return;
-        if (!belt.consumableBelt[itemIndex - 1].selfValidator.Evaluate(selectedUnit)) return;
+        if (!belt.consumableBelt[itemIndex - 1].selfValidator.Evaluate(selectedUnit) || !belt.consumableBelt[itemIndex - 1].IsReady()) return;
 
         if (belt.consumableBelt[itemIndex - 1].targetingType == AbilityTrigger.TargetingType.None)
         {
@@ -647,7 +647,7 @@ public class UnitControlManager : MonoBehaviour
 
     private void DisplayAppropriateIndicator()
     {
-        if(inputState == InputState.Attack)
+        if(inputState == InputState.Attack && selectedUnit.control.skillSet[0] != null)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);

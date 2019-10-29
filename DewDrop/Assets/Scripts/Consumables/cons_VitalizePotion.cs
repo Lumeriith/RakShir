@@ -13,4 +13,9 @@ public class cons_VitalizePotion : Consumable
         DestroySelf();
         return true;
     }
+
+    public override bool IsReady()
+    {
+        return owner.currentHealth < owner.maximumHealth;
+    }
 }

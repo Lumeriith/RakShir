@@ -1,5 +1,96 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7285391045393394049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6144766866905443834}
+  - component: {fileID: 833725323511000081}
+  m_Layer: 11
+  m_Name: Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6144766866905443834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285391045393394049}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.65, z: 0}
+  m_LocalScale: {x: 3.3333325, y: 3.3333325, z: 3.3333325}
+  m_Children: []
+  m_Father: {fileID: 8411665918230525483}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &833725323511000081
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285391045393394049}
+  m_Enabled: 1
+  serializedVersion: 9
+  m_Type: 2
+  m_Color: {r: 1, g: 0, b: 0.017929077, a: 1}
+  m_Intensity: 1
+  m_Range: 6
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &8239189148619018798
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,7 +106,7 @@ GameObject:
   - component: {fileID: 296503242007732617}
   - component: {fileID: 7148003364550947271}
   m_Layer: 11
-  m_Name: cons_HealingPotion
+  m_Name: cons_MediumHealingPotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,10 +211,9 @@ MonoBehaviour:
     canBeCanceledByCaster: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: d857d3daab3666040be237faa11b63ea, type: 3}
-  itemName: "\uCCB4\uB825 \uD3EC\uC158"
+  itemName: "\uC911\uD615 \uCCB4\uB825 \uD3EC\uC158"
   itemTier: 0
-  itemDescription: "8\uCD08\uC5D0 \uAC78\uCCD0 \uC790\uC2E0\uC758 \uCD5C\uB300 \uCCB4\uB825\uC758
-    40% \uB9CC\uD07C [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
+  itemDescription: "8\uCD08\uC5D0 \uAC78\uCCD0 250\uC758 [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
   owner: {fileID: 0}
   useOnPickup: 0
   useAnimation: {fileID: 0}
@@ -151,7 +241,7 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  healMultiplier: 0.4
+  healAmount: 250
   healDuration: 8
 --- !u!1 &8411665918230754137
 GameObject:
@@ -243,7 +333,7 @@ GameObject:
   - component: {fileID: 8411665918229611651}
   - component: {fileID: 8411665918228258331}
   m_Layer: 0
-  m_Name: Mode
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,6 +351,7 @@ Transform:
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 8411665918230503145}
+  - {fileID: 6144766866905443834}
   m_Father: {fileID: 8239189148619018789}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -289,7 +380,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6871e28f73be94cc2ad06ea1d1c11d11, type: 2}
+  - {fileID: 2100000, guid: 0c40ceca0c9b18944937872aae64659a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -391,11 +482,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8373195053866796948, guid: 05c374c26181a6841a0127be72c2742d,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05c374c26181a6841a0127be72c2742d, type: 3}

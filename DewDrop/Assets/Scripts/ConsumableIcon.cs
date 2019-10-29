@@ -50,7 +50,7 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
         {
             image_icon.sprite = belt.consumableBelt[consumableIndex].itemIcon;
-            image_disabled.enabled = !belt.consumableBelt[consumableIndex].selfValidator.Evaluate(GameManager.instance.localPlayer);
+            image_disabled.enabled = !(belt.consumableBelt[consumableIndex].selfValidator.Evaluate(GameManager.instance.localPlayer) && belt.consumableBelt[consumableIndex].IsReady());
         }
 
 

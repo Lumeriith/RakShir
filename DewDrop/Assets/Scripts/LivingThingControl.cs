@@ -119,7 +119,7 @@ public class Command
     private bool ProcessConsumable(Consumable consumable, CastInfo info)
     {
         if (self.control.IsAbilityProhibitedByChannel()) return false;
-        if (!consumable.selfValidator.Evaluate(self)) return true;
+        if (!consumable.selfValidator.Evaluate(self) || !consumable.IsReady()) return true;
         PlayerItemBelt belt = self.GetComponent<PlayerItemBelt>();
 
         switch (consumable.targetingType)
