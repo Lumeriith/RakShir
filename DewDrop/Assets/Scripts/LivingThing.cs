@@ -415,6 +415,12 @@ public class LivingThing : MonoBehaviourPun
 
     public bool SpendMana(float amount)
     {
+        if (amount == 0) return true;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to spend mana of negative value! (" + amount.ToString() + ")");
+            return true;
+        }
         if (stat.currentMana >= amount)
         {
             photonView.RPC("RpcSpendMana", RpcTarget.All, amount);
@@ -434,6 +440,12 @@ public class LivingThing : MonoBehaviourPun
 
     public bool SpendGold(float amount)
     {
+        if (amount == 0) return true;
+        if(amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to spend gold of negative value! (" + amount.ToString() + ")");
+            return true;
+        }
         if (stat.currentGold >= amount)
         {
             photonView.RPC("RpcSpendGold", RpcTarget.All, amount);
@@ -501,7 +513,7 @@ public class LivingThing : MonoBehaviourPun
                 return;
             }
         }
-        Debug.LogError("Custom Walk animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        Debug.LogError(name + ": Custom Walk animation '" + animationName + "' must be put in Custom Animation Box before usage!");
     }
     public void ChangeStandAnimation(string animationName)
     {
@@ -514,7 +526,7 @@ public class LivingThing : MonoBehaviourPun
                 return;
             }
         }
-        Debug.LogError("Custom Stand animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        Debug.LogError(name + ": Custom Stand animation '" + animationName + "' must be put in Custom Animation Box before usage!");
     }
 
 
@@ -555,6 +567,11 @@ public class LivingThing : MonoBehaviourPun
 
     public void DashThroughForDuration(Vector3 location, float duration)
     {
+        if(duration < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to dash for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         CancelDash();
         CancelAirborne();
         NavMeshPath path = new NavMeshPath();
@@ -575,6 +592,11 @@ public class LivingThing : MonoBehaviourPun
 
     public void DashThroughWithSpeed(Vector3 location, float speed)
     {
+        if (speed < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to dash for negative speed! (" + speed.ToString() + ")");
+            return;
+        }
         CancelDash();
         CancelAirborne();
         NavMeshPath path = new NavMeshPath();
@@ -598,6 +620,11 @@ public class LivingThing : MonoBehaviourPun
 
     public void AirborneForDuration(Vector3 landLocation, float duration)
     {
+        if (duration < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to dash for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         CancelDash();
         CancelAirborne();
         NavMeshPath path = new NavMeshPath();
@@ -634,11 +661,23 @@ public class LivingThing : MonoBehaviourPun
     }
     public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
     public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
@@ -649,16 +688,34 @@ public class LivingThing : MonoBehaviourPun
 
     public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower = false)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
     }
 
     public void DoPureDamage(float amount, LivingThing to)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID);
     }
 
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
+        if (duration == 0) return;
+        if (duration < 0 && duration != -1)
+        {
+            Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         if (animation == null) return;
         for(int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
         {
@@ -669,11 +726,17 @@ public class LivingThing : MonoBehaviourPun
                 return;   
             }
         }
-        Debug.LogError("Custom animation '" + animation.name + "' must be put in Custom Animation Box before usage!");
+        Debug.LogError(name + ": Custom animation '" + animation.name + "' must be put in Custom Animation Box before usage!");
     }
 
     public void PlayCustomAnimation(string animationName, float duration = -1)
     {
+        if (duration == 0) return;
+        if (duration < 0 && duration != -1)
+        {
+            Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
         {
             if (CustomAnimationBox.instance.animations[i].name == animationName)
@@ -683,7 +746,7 @@ public class LivingThing : MonoBehaviourPun
                 return;
             }
         }
-        Debug.LogError("Custom animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        Debug.LogError(name + ": Custom animation '" + animationName + "' must be put in Custom Animation Box before usage!");
     }
 
     public void Kill()
@@ -698,11 +761,23 @@ public class LivingThing : MonoBehaviourPun
 
     public void FlashForDuration(Color color, float multiplier, float duration)
     {
+        if (duration == 0) return;
+        if (duration < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to flash for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         photonView.RPC("RpcFlashForDuration", RpcTarget.All, color.r, color.g, color.b, color.a, multiplier, duration);
     }
 
     public void ScaleForDuration(float multiplier, float duration)
     {
+        if (duration == 0) return;
+        if (duration < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to scale for negative duration! (" + duration.ToString() + ")");
+            return;
+        }
         photonView.RPC("RpcScaleForDuration", RpcTarget.All, multiplier, duration);
     }
 
@@ -710,11 +785,23 @@ public class LivingThing : MonoBehaviourPun
 
     public void GiveGold(float amount, LivingThing to)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to give gold of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         photonView.RPC("RpcGiveGold", RpcTarget.All, amount, to.photonView.ViewID);
     }
 
     public void EarnGold(float amount)
     {
+        if (amount == 0) return;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to earn gold of negative amount! (" + amount.ToString() + ")");
+            return;
+        }
         photonView.RPC("RpcEarnGold", RpcTarget.All, amount);
     }
 
