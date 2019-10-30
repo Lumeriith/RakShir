@@ -10,6 +10,9 @@ using System.Linq;
 public enum Team { None, Red, Blue, Creep }
 public enum LivingThingType { Monster, Player, Summon }
 
+public enum LivingThingTier { None, Lesser, Normal, Elite, Boss }
+
+
 public enum DamageType { Physical, Spell, Pure }
 public enum Relation { Own, Enemy, Ally }
 
@@ -119,6 +122,7 @@ public struct InfoSpendGold
 [RequireComponent(typeof(CapsuleCollider))]
 public class LivingThing : MonoBehaviourPun
 {
+    private NavMeshAgent agent;
     private LivingThing lastAttacker;
     private Animator animator;
     private AnimatorOverrideController aoc;
@@ -193,8 +197,24 @@ public class LivingThing : MonoBehaviourPun
 
     public Team team = Team.None;
     public LivingThingType type = LivingThingType.Monster;
+    public LivingThingTier tier = LivingThingTier.None;
 
     public float droppedGold = 10f;
+
+    public Room currentRoom
+    {
+        get
+        {
+            Component comp = agent.navMeshOwner as Component;
+            if (comp != null)
+            {
+                _currentRoom = comp.GetComponent<Room>();
+            }
+            return _currentRoom;
+        }
+    }
+    private Room _currentRoom;
+
     [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
 
@@ -240,6 +260,7 @@ public class LivingThing : MonoBehaviourPun
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
+        agent = GetComponent<NavMeshAgent>();
         model = transform.Find("Model");
         defaultScale = model.localScale;
         model.localScale = Vector3.zero;

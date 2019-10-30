@@ -30,24 +30,9 @@ public class GameManager : MonoBehaviour
     }
 
     private LivingThing _localPlayer;
-    private Transform floatingTextCanvas;
-
-    public FloatingText magicDamageFloatingText;
-    public FloatingText physicalDamageFloatingText;
-    public FloatingText healFloatingText;
-    public FloatingText manaHealFloatingText;
-    public FloatingText goldFloatingText;
-
-    public GameObject monsterSpawnEffect;
-    public GameObject monsterInfobar;
-    public GameObject playerInfobar;
-    public GameObject summonInfobar;
-
 
     public System.Action<LivingThing> OnLivingThingInstantiate = (LivingThing _) => { };
     public System.Action<Activatable> OnActivatableInstantiate = (Activatable _) => { };
-
-    public float goldModifier = 1.0f;
 
     private static GameManager _instance;
     public static GameManager instance
@@ -62,87 +47,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RegisterFloatingTextEvents(LivingThing player)
-    {
-        player.OnDoBasicAttackHit += (InfoBasicAttackHit info) =>
-        {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(physicalDamageFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.damage).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnDealMagicDamage += (InfoMagicDamage info) =>
-        {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(magicDamageFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalDamage).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnTakeHeal += (InfoHeal info) =>
-        {
-            if (info.to == info.from) return;
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(healFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalHeal).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnDoHeal += (InfoHeal info) =>
-        {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(healFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalHeal).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnTakeManaHeal += (InfoManaHeal info) =>
-        {
-            if (info.to == info.from) return;
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(manaHealFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalManaHeal).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnDoManaHeal += (InfoManaHeal info) =>
-        {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(manaHealFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalManaHeal).ToString();
-            floatingText.worldPosition = worldPos;
-        };
-
-        player.OnTakeGold += (InfoGold info) =>
-        {
-            Vector3 worldPos = info.from.transform.position + info.from.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(goldFloatingText, floatingTextCanvas).GetComponent<FloatingText>();
-
-            floatingText.text = "+" + Mathf.Ceil(info.amount).ToString() + "G";
-            floatingText.worldPosition = worldPos;
-        };
-
-    }
-
-    public void SpawnLocalPlayer(PlayerType type, Vector3 location)
+    public LivingThing SpawnLocalPlayer(PlayerType type, Vector3 location)
     {
         LivingThing localPlayer;
         List<Activatable> startItems = new List<Activatable>();
-        if(type == PlayerType.Elemental)
+        if (type == PlayerType.Elemental)
         {
             localPlayer = PhotonNetwork.Instantiate("player_Elemental", location, Quaternion.identity).GetComponent<LivingThing>();
             startItems.Add(PhotonNetwork.Instantiate("equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
@@ -158,71 +67,26 @@ public class GameManager : MonoBehaviour
             startItems.Add(PhotonNetwork.Instantiate("equip_Weapon_ReptileClaw", location, Quaternion.identity).GetComponent<Activatable>());
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
-        
-        this.localPlayer = localPlayer;
-        foreach(Activatable item in startItems)
+
+        foreach (Activatable item in startItems)
         {
             localPlayer.ActivateImmediately(item);
         }
 
-        UnitControlManager.instance.selectedUnit = localPlayer;
-        RegisterFloatingTextEvents(localPlayer);
+        this.localPlayer = localPlayer;
+
+        return localPlayer;
     }
 
-
-
-
-    private void Awake()
+    public void DropLoot(string name, Vector3 position)
     {
-        if (!PhotonNetwork.IsConnected) return;
-        floatingTextCanvas = transform.Find("/Common Game Logics/Floating Text Canvas");
-        OnLivingThingInstantiate += (LivingThing lv) =>
+        GameObject gobj = PhotonNetwork.Instantiate(name, position + Vector3.up + Random.insideUnitSphere, Random.rotation);
+        Rigidbody rb = gobj.GetComponent<Rigidbody>();
+        if(rb != null)
         {
-            if (lv.type == LivingThingType.Monster)
-            {
-
-                Instantiate(monsterSpawnEffect, lv.transform.position, Quaternion.identity);
-                lv.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(lv, 1.0f));
-                lv.RpcScaleForDuration(0f, .5f);
-                if (lv.photonView.IsMine)
-                {
-                    for (float t = 0.50f; t < 1.50f; t += .05f)
-                    {
-                        lv.RpcFlashForDuration(1, 1, 1, 1, 0.2f, t);
-                    }
-                }
-                StartCoroutine(CoroutineInstantiateInfobar(monsterInfobar, lv));
-
-            } else if (lv.type == LivingThingType.Player)
-            {
-                Instantiate(playerInfobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(lv);
-            } else if (lv.type== LivingThingType.Summon)
-            {
-                Instantiate(summonInfobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(lv);
-            }
-
-            if (lv.photonView.IsMine)
-            {
-                lv.OnDeath += (InfoDeath info) =>
-                {
-                    info.victim.GiveGold(info.victim.droppedGold * GameManager.instance.goldModifier, info.killer);
-                };
-            }
-
-
-        };
-    }
-
-    IEnumerator CoroutineInstantiateInfobar(GameObject infobar, LivingThing target)
-    {
-        yield return new WaitForSeconds(.5f);
-        if (infobar != null)
-        {
-            Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(target);
+            rb.velocity = (Vector3.up * 2 + Random.insideUnitSphere) * 10f;
         }
     }
-
-
 
     private void Update()
     {

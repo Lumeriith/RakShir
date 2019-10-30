@@ -247,6 +247,11 @@ public class UnitControlManager : MonoBehaviour
 
         IngameDebugConsole.DebugLogManager dbg = FindObjectOfType<IngameDebugConsole.DebugLogManager>();
         if (dbg != null) debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
+
+        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        {
+            if (thing.type == LivingThingType.Player && thing.photonView.IsMine) selectedUnit = thing;
+        };
     }
 
     private MeshOutline previousOutline;

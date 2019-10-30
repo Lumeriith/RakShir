@@ -52,7 +52,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("Test Game");
+            PhotonNetwork.LoadLevel("Gladiator Game");
         }
     }
 }

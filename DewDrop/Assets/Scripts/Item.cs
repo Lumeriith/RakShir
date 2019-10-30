@@ -16,7 +16,25 @@ public abstract class Item : Activatable
     [HideInInspector]
     public LivingThing owner = null;
 
+    private Rigidbody rb;
+    private Vector3 startPosition;
 
+    private void Awake()
+    {
+        startPosition = transform.position;
+        rb = GetComponent<Rigidbody>();
+    }
+    private void FixedUpdate()
+    {
+        if(rb != null)
+        {
+            if(transform.position.y < -100f)
+            {
+                rb.velocity = Vector3.up * 2f; // QoL change. Fallen items will come back.
+                transform.position = startPosition + Vector3.up;
+            }
+        }
+    }
 
     public void TransferOwnership(LivingThing owner)
     {
