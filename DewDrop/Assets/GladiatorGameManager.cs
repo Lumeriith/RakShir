@@ -5,54 +5,32 @@ using Photon.Pun;
 using Photon.Realtime;
 using NaughtyAttributes;
 using System.Text.RegularExpressions;
-
+using DecalSystem;
 public enum GladiatorGamePhase { Prepare, PvE, PvP, End };
+[System.Serializable]
+public class RoomListWrapper
+{
+    public List<Room> rooms;
+}
+
 
 public class GladiatorGameManager : MonoBehaviourPunCallbacks
 {
     public bool debugSoloPlayMode = true;
-    
+    [Header("General Settings")]
     public GladiatorGamePhase phase = GladiatorGamePhase.Prepare;
     public List<GameObject> epicLootPool, rareLootPool, commonLootPool, consumableLootPool;
-
-    
-
 
     public float goldModifier = 1.0f;
     public float goldRandomness = 0.1f;
     public float lostGoldMultiplierOnDeath = 0.3f;
 
-    private List<KeyValuePair<Photon.Realtime.Player, LivingThing>> gamePlayers = new List<KeyValuePair<Photon.Realtime.Player, LivingThing>>();
-    
-    [Header("Current Loot Decks")]
+    [Header("Map Generation Settings")]
+    public List<MapPlaceholderNode> nodes;
+    public List<RoomListWrapper> nodeRoomsMap;
+    public int redStartRoomIndex;
+    public int blueStartRoomIndex;
 
-    [SerializeField]
-    [ReadOnly]
-    private int[] redEpicLootDeck;
-    [SerializeField]
-    [ReadOnly]
-    private int[] redRareLootDeck;
-    [SerializeField]
-    [ReadOnly]
-    private int[] redCommonLootDeck;
-
-    [SerializeField]
-    [ReadOnly]
-    private int[] blueEpicLootDeck;
-    [SerializeField]
-    [ReadOnly]
-    private int[] blueRareLootDeck;
-    [SerializeField]
-    [ReadOnly]
-    private int[] blueCommonLootDeck;
-
-    private int redNextEpicLoot = 0;
-    private int redNextRareLoot = 0;
-    private int redNextCommonLoot = 0;
-
-    private int blueNextEpicLoot = 0;
-    private int blueNextRareLoot = 0;
-    private int blueNextCommonLoot = 0;
 
     [Header("Loot Drop Chance Settings")]
     public float lesserEpicDropChance = 0.00f;
@@ -75,13 +53,38 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     public float bossCommonDropChance = 0.05f;
     public float bossConsumableDropChance = 0.05f;
 
+    [Header("Current Loot Decks")]
 
+    [SerializeField]
+    [ReadOnly]
+    private int[] redEpicLootDeck;
+    [SerializeField]
+    [ReadOnly]
+    private int[] redRareLootDeck;
+    [SerializeField]
+    [ReadOnly]
+    private int[] redCommonLootDeck;
 
+    [SerializeField]
+    [ReadOnly]
+    private int[] blueEpicLootDeck;
+    [SerializeField]
+    [ReadOnly]
+    private int[] blueRareLootDeck;
+    [SerializeField]
+    [ReadOnly]
+    private int[] blueCommonLootDeck;
 
+    private Dictionary<Photon.Realtime.Player, LivingThing> gamePlayers = new Dictionary<Photon.Realtime.Player, LivingThing>();
 
-    private Room firstRoom;
+    private int redNextEpicLoot = 0;
+    private int redNextRareLoot = 0;
+    private int redNextCommonLoot = 0;
 
-
+    private int blueNextEpicLoot = 0;
+    private int blueNextRareLoot = 0;
+    private int blueNextCommonLoot = 0;
+    private List<Room> createdRooms = new List<Room>();
 
     private void SetupGame()
     {
@@ -92,6 +95,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             return;
         }
         CreateMap();
+        DecalUtils.UpdateAffectedObjects();
         BuildLootDecks();
         RegisterKillDropLootEvent();
         RegisterKillRewardGoldEvent();
@@ -112,7 +116,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
             type = nextPlayerIsRedTeam ? PlayerType.Reptile : PlayerType.Elemental;
-            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, firstRoom.entryPoint.position);
+            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].entryPoint.position);
+            if (!createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].isActivated)
+            {
+                createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].ActivateRoom(gamePlayers[players[i]]);
+            }
             nextPlayerIsRedTeam = !nextPlayerIsRedTeam;
         }
     }
@@ -168,8 +176,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator CoroutinePlayerRevival(LivingThing player)
     {
-        player.SpendGold(player.stat.currentGold * lostGoldMultiplierOnDeath);
         yield return new WaitForSeconds(4f);
+        player.SpendGold(player.stat.currentGold * lostGoldMultiplierOnDeath);
         player.Teleport(player.currentRoom.entryPoint.position);
         player.Revive();
         player.DoHeal(player.maximumHealth, player, true);
@@ -456,14 +464,40 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         {
             if(players[i].ActorNumber == actorNumber)
             {
-                gamePlayers.Add(new KeyValuePair<Photon.Realtime.Player, LivingThing>(players[i], PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>()));
+                gamePlayers.Add(players[i], PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>());
                 return;
             }
         }
     }
     private void CreateMap()
     {
-        firstRoom = transform.Find("/Beginning Room").GetComponent<Room>();
+        string roomName;
+
+        for(int i = 0; i < nodes.Count; i++)
+        {
+            roomName = nodeRoomsMap[i].rooms[Random.Range(0, nodeRoomsMap[i].rooms.Count)].gameObject.name;
+            createdRooms.Add(PhotonNetwork.InstantiateSceneObject(roomName, nodes[i].transform.position, nodes[i].transform.rotation).GetComponent<Room>());
+        }
+
+        for(int i = 0; i < createdRooms.Count; i++)
+        {
+            for(int j = 0; j < nodes[i].nextNodes.Count; j++)
+            {
+                createdRooms[i].nextRooms.Add(createdRooms[nodes.IndexOf(nodes[i].nextNodes[j])]);
+            }
+        }
+
+        photonView.RPC("RpcDisablePlaceholderNodes", RpcTarget.All);
+    }
+
+
+    [PunRPC]
+    private void RpcDisablePlaceholderNodes()
+    {
+        for(int i = 0; i < nodes.Count; i++)
+        {
+            nodes[i].gameObject.SetActive(false);
+        }
     }
 
     private List<E> ShuffleList<E>(List<E> inputList) // http://www.vcskicks.com/randomize_array.php
