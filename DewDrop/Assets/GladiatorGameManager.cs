@@ -365,6 +365,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             }
         }
 
+        index = 0;
         for (int i = 0; i < epicClumps.Count; i++)
         {
             epicClumps[i] = ShuffleList(epicClumps[i]);
