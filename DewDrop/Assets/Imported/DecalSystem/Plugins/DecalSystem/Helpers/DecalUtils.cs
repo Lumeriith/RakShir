@@ -8,20 +8,27 @@ namespace DecalSystem {
 
     static class DecalUtils {
 
+        private static MeshFilter[] affectedObjects = new MeshFilter[0];
+
+        public static void UpdateAffectedObjects()
+        {
+            affectedObjects = GameObject.FindObjectsOfType<MeshRenderer>()
+                .Where(i => i.GetComponent<Decal>() == null)
+                .Where(i => LayerMask.NameToLayer("Ground") == i.gameObject.layer)
+
+                .Select(i => i.GetComponent<MeshFilter>())
+                .Where(i => i)
+                .Where(i => i.sharedMesh)
+                .ToArray();
+        }
 
         public static MeshFilter[] GetAffectedObjects(Decal decal) {
             var bounds = GetBounds( decal );
             var isOnlyStatic = decal.gameObject.isStatic;
 
-            return GameObject.FindObjectsOfType<MeshRenderer>()
-                .Where( i => i.GetComponent<Decal>() == null ) // ignore another decals
-                .Where( i => i.gameObject.isStatic || !isOnlyStatic )
-                .Where( i => HasLayer( decal.LayerMask, i.gameObject.layer ) )
-                .Where( i => bounds.Intersects( i.bounds ) )
-
-                .Select( i => i.GetComponent<MeshFilter>() )
-                .Where( i => i )
-                .Where( i => i.sharedMesh )
+            return affectedObjects
+                .Where(i => i)
+                .Where(i => bounds.Intersects(i.GetComponent<MeshRenderer>().bounds))
                 .ToArray();
         }
 
@@ -31,7 +38,7 @@ namespace DecalSystem {
 
             return Terrain.activeTerrains
                 .Where( i => i.gameObject.isStatic || !isOnlyStatic )
-                .Where( i => HasLayer( decal.LayerMask, i.gameObject.layer ) )
+                .Where( i => HasLayer( LayerMask.NameToLayer("Ground"), i.gameObject.layer ) )
                 .Where( i => bounds.Intersects( i.GetBounds() ) )
                 .ToArray();
         }
@@ -67,16 +74,6 @@ namespace DecalSystem {
             bounds.center += terrain.transform.position;
             return bounds;
         }
-
-
-        public static void SetDirty(Decal decal) {
-            if (decal.gameObject.scene.IsValid()) {
-                //if (!EditorApplication.isPlaying) EditorSceneManager.MarkSceneDirty( decal.gameObject.scene );
-            } else {
-                //EditorUtility.SetDirty( decal.gameObject );
-            }
-        }
-
 
         public static void FixRatio(Decal decal, ref Vector3 oldScale) {
             var transform = decal.transform;

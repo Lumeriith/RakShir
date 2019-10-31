@@ -30,13 +30,11 @@ namespace DecalSystem {
 
 
             EditorGUILayout.Separator();
-            Target.LayerMask = GUIUtils.LayerMaskField( "Layer Mask", Target.LayerMask );
             Target.MaxAngle = EditorGUILayout.Slider( "Max Angle", Target.MaxAngle, 0, 180 );
             Target.Offset = EditorGUILayout.Slider( "Offset", Target.Offset, 0.005f, 0.05f );
 
 
             EditorGUILayout.Separator();
-            if (GUILayout.Button( "Build" )) Target.BuildAndSetDirty();
 
 
             //EditorGUILayout.Separator();
@@ -46,7 +44,6 @@ namespace DecalSystem {
 
             if (GUI.changed) {
                 Target.OnValidate();
-                Target.BuildAndSetDirty();
                 GUI.changed = false;
             }
         }

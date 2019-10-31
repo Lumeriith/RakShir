@@ -15,7 +15,6 @@ namespace DecalSystem {
         [FormerlySerializedAs( "material" )] public Material Material;
         [FormerlySerializedAs( "sprite" )] public Sprite Sprite;
 
-        [FormerlySerializedAs( "affectedLayers" ), FormerlySerializedAs( "AffectedLayers" )] public LayerMask LayerMask = -1;
         [FormerlySerializedAs( "maxAngle" )] public float MaxAngle = 90.0f;
         [FormerlySerializedAs( "pushDistance" ), FormerlySerializedAs( "PushDistance" )] public float Offset = 0.009f;
 
@@ -61,7 +60,7 @@ namespace DecalSystem {
         void Update() {
             if (transform.hasChanged) {
                 transform.hasChanged = false;
-                BuildAndSetDirty();
+                DecalBuilder.Build(this);
             }
         }
 
@@ -87,14 +86,6 @@ namespace DecalSystem {
             //    }
             //}
         }
-
-
-        public void BuildAndSetDirty() {
-            // if (Sprite) DecalUtils.FixRatio( this, ref oldScale );
-            DecalBuilder.Build( this );
-            DecalUtils.SetDirty( this );
-        }
-
 
     }
 }
