@@ -15,17 +15,35 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     public GladiatorGamePhase phase = GladiatorGamePhase.Prepare;
     public List<GameObject> epicLootPool, rareLootPool, commonLootPool, consumableLootPool;
 
+    
+
+
     public float goldModifier = 1.0f;
     public float goldRandomness = 0.1f;
+    public float lostGoldMultiplierOnDeath = 0.3f;
 
-    private List<KeyValuePair<Photon.Realtime.Player, LivingThing>> gamePlayers;
+    private List<KeyValuePair<Photon.Realtime.Player, LivingThing>> gamePlayers = new List<KeyValuePair<Photon.Realtime.Player, LivingThing>>();
+    
+    [Header("Current Loot Decks")]
 
+    [SerializeField]
+    [ReadOnly]
     private int[] redEpicLootDeck;
+    [SerializeField]
+    [ReadOnly]
     private int[] redRareLootDeck;
+    [SerializeField]
+    [ReadOnly]
     private int[] redCommonLootDeck;
 
+    [SerializeField]
+    [ReadOnly]
     private int[] blueEpicLootDeck;
+    [SerializeField]
+    [ReadOnly]
     private int[] blueRareLootDeck;
+    [SerializeField]
+    [ReadOnly]
     private int[] blueCommonLootDeck;
 
     private int redNextEpicLoot = 0;
@@ -35,6 +53,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private int blueNextEpicLoot = 0;
     private int blueNextRareLoot = 0;
     private int blueNextCommonLoot = 0;
+
     [Header("Loot Drop Chance Settings")]
     public float lesserEpicDropChance = 0.00f;
     public float lesserRareDropChance = 0.00f;
@@ -62,20 +81,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private Room firstRoom;
 
-    private List<E> ShuffleList<E>(List<E> inputList) // http://www.vcskicks.com/randomize_array.php
-    {
-        List<E> randomList = new List<E>();
 
-        System.Random r = new System.Random();
-        int randomIndex = 0;
-        while (inputList.Count > 0)
-        {
-            randomIndex = r.Next(0, inputList.Count); //Choose a random object in the list
-            randomList.Add(inputList[randomIndex]); //add it to the new, random list
-            inputList.RemoveAt(randomIndex); //remove to avoid duplicates
-        }
-        return randomList; //return the new random list
-    }
 
     private void SetupGame()
     {
@@ -89,8 +95,14 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         BuildLootDecks();
         RegisterKillDropLootEvent();
         RegisterKillRewardGoldEvent();
+        RegisterPlayerDeathEvent();
         SpawnPlayers();
+        SetPhase(GladiatorGamePhase.PvE);
     }
+
+
+    
+
     private void SpawnPlayers()
     {
         bool nextPlayerIsRedTeam = Random.value < .5f;
@@ -131,10 +143,14 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
         {
-            thing.OnDeath += (InfoDeath info) =>
+            if(thing.type == LivingThingType.Player)
             {
-                HandlePlayerDeath(info.victim);
-            };
+                thing.OnDeath += (InfoDeath info) =>
+                {
+                    HandlePlayerDeath(info.victim);
+                };
+            }
+
         };
     }
     
@@ -152,10 +168,27 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private IEnumerator CoroutinePlayerRevival(LivingThing player)
     {
-
-        yield return new WaitForSeconds()
+        player.SpendGold(player.stat.currentGold * lostGoldMultiplierOnDeath);
+        yield return new WaitForSeconds(4f);
+        player.Teleport(player.currentRoom.entryPoint.position);
+        player.Revive();
+        player.DoHeal(player.maximumHealth, player, true);
+        player.DoManaHeal(player.stat.finalMaximumMana, player, true);
+        player.statusEffect.ApplyStatusEffect(StatusEffect.Invulnerable(player, 5f));
     }
 
+    private void SetPhase(GladiatorGamePhase phase)
+    {
+        photonView.RPC("RpcSetPhase", RpcTarget.All, (int)phase);
+    }
+
+    [PunRPC]
+    private void RpcSetPhase(int phase)
+    {
+        this.phase = (GladiatorGamePhase)phase;
+    }
+
+    [PunRPC]
     private void RpcDropLoot(string name, Vector3 position)
     {
         GameManager.instance.DropLoot(name, position);
@@ -165,6 +198,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         float randomValue = Random.value;
         float epic = 0f, rare = 0f, common = 0f, consumable = 0f;
+
+        if (victim.type != LivingThingType.Monster) return;
 
         if(victim.tier == LivingThingTier.Lesser)
         {
@@ -253,9 +288,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             {
                 rewardTarget = killer.summoner;
             }
+            if (rewardTarget == null) return;
+            victim.GiveGold(victim.droppedGold * goldModifier * (1 + goldRandomness * (Random.value * 2f - 1f)), rewardTarget);
         }
 
-        victim.GiveGold(victim.droppedGold * goldModifier * (1 + goldRandomness * (Random.value * 2f - 1f)), rewardTarget);
+        
     }
 
 
@@ -371,6 +408,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             blueEpicLootDeck, blueRareLootDeck, blueCommonLootDeck);
     }
 
+    [PunRPC]
     private void RpcSyncLootDecks(int[] a, int[] b, int[] c, int[] d, int[] e, int[] f)
     {
         redEpicLootDeck = a;
@@ -402,13 +440,14 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
+    [PunRPC]
     private void RpcCreateLocalPlayer(int type, Vector3 pos)
     {
         LivingThing thing = GameManager.instance.SpawnLocalPlayer((PlayerType)type, pos);
         photonView.RPC("RpcRegisterLivingThingOnGamePlayers", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, thing.photonView.ViewID);
     }
 
+    [PunRPC]
     private void RpcRegisterLivingThingOnGamePlayers(int actorNumber, int viewId)
     {
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
@@ -423,8 +462,51 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     }
     private void CreateMap()
     {
-        // firstRoom = ~~~~~
+        firstRoom = transform.Find("/Beginning Room").GetComponent<Room>();
+    }
 
+    private List<E> ShuffleList<E>(List<E> inputList) // http://www.vcskicks.com/randomize_array.php
+    {
+        List<E> randomList = new List<E>();
+
+        System.Random r = new System.Random();
+        int randomIndex = 0;
+        while (inputList.Count > 0)
+        {
+            randomIndex = r.Next(0, inputList.Count); //Choose a random object in the list
+            randomList.Add(inputList[randomIndex]); //add it to the new, random list
+            inputList.RemoveAt(randomIndex); //remove to avoid duplicates
+        }
+        return randomList; //return the new random list
+    }
+
+    [Button("Autocomplete Pools")]
+    private void AutocompletePools()
+    {
+        epicLootPool = new List<GameObject>();
+        rareLootPool = new List<GameObject>();
+        commonLootPool = new List<GameObject>();
+        consumableLootPool = new List<GameObject>();
+
+        object[] resources = Resources.LoadAll("");
+        foreach (object obj in resources)
+        {
+            GameObject gobj = obj as GameObject;
+            if (gobj == null) continue;
+            if (gobj.name.StartsWith("cons_"))
+            {
+                consumableLootPool.Add(gobj);
+            }
+            else if (gobj.name.StartsWith("equip_"))
+            {
+                Equipment equip = gobj.GetComponent<Equipment>();
+                if (equip == null) continue;
+                if (equip.itemTier == ItemTier.Common) commonLootPool.Add(gobj);
+                if (equip.itemTier == ItemTier.Rare) rareLootPool.Add(gobj);
+                if (equip.itemTier == ItemTier.Epic) epicLootPool.Add(gobj);
+
+            }
+        }
     }
 
 }

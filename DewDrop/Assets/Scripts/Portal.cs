@@ -22,12 +22,13 @@ public class Portal : Activatable
     protected override void OnChannelCancel(LivingThing activator) { }
     protected override void OnChannelSuccess(LivingThing activator)
     {
-        if(activator.photonView.IsMine && isOpen)
+        Room nextRoom = room.nextRooms[Random.Range(0, room.nextRooms.Count)];
+        if (activator.photonView.IsMine && isOpen)
         {
-            Room nextRoom = room.nextRooms[Random.Range(0, room.nextRooms.Count)];
             activator.Teleport(nextRoom.entryPoint.position);
             nextRoom.ActivateRoom(activator);
         }
+        activator.currentRoom = nextRoom;
     }
 
 }

@@ -317,7 +317,7 @@ public class UnitControlManager : MonoBehaviour
 
         bool shouldTakeInputs = false;
 
-        if (debugLogWindow.alpha == 0 && nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
+        if (debugLogWindow.alpha == 0 && nodyGraphController.Graph.ActiveNode != null && nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
             shouldTakeInputs = true;
         
 

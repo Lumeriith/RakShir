@@ -762,12 +762,13 @@ public class LivingThingControl : MonoBehaviourPun
 
         }
 
-
+        if (currentCommand == null) agentDestination = transform.position;
 
         if (agent.enabled && agent.isOnNavMesh) agent.destination = agentDestination;
 
         if(agent.enabled && !agent.isOnNavMesh) FixPosition();
- 
+
+        
 
 
         WalkCheck();

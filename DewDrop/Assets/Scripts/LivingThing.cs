@@ -205,12 +205,12 @@ public class LivingThing : MonoBehaviourPun
     {
         get
         {
-            Component comp = agent.navMeshOwner as Component;
-            if (comp != null)
-            {
-                _currentRoom = comp.GetComponent<Room>();
-            }
+            TryUpdateCurrentRoom();
             return _currentRoom;
+        }
+        set
+        {
+            _currentRoom = value;
         }
     }
     private Room _currentRoom;
@@ -309,6 +309,8 @@ public class LivingThing : MonoBehaviourPun
         };
     }
 
+
+
     private void Start()
     {
         GameManager.instance.OnLivingThingInstantiate.Invoke(this);
@@ -317,6 +319,8 @@ public class LivingThing : MonoBehaviourPun
     private void Update()
     {
         if (!photonView.IsMine) return;
+
+        if (_currentRoom == null) TryUpdateCurrentRoom();
 
         if (currentHealth <= 0 && !stat.isDead)
         {
@@ -398,6 +402,16 @@ public class LivingThing : MonoBehaviourPun
     #endregion Unity
 
     #region Private Functions
+
+    private void TryUpdateCurrentRoom()
+    {
+        Component comp = agent.navMeshOwner as Component;
+        
+        if (comp != null)
+        {
+            _currentRoom = comp.GetComponent<Room>();
+        }
+    }
 
     void AssignMissingTransforms()
     {

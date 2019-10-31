@@ -10,6 +10,7 @@ public abstract class Item : Activatable
     public Sprite itemIcon;
     public string itemName;
     public ItemTier itemTier;
+    public float value;
     [ResizableTextArea]
     public string itemDescription;
 
