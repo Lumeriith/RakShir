@@ -10,6 +10,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static GameType gameType = GameType.OnlineTestGame;
     public static bool properlyConfiguredGame = false;
+    public static string sceneName;
+
     public TextMeshProUGUI statusText;
     public byte maxPlayersForOnlineTestGame = 10;
     public string gameVersion = "8";
@@ -52,7 +54,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("Gladiator Game");
+            PhotonNetwork.LoadLevel(sceneName);
         }
     }
 }

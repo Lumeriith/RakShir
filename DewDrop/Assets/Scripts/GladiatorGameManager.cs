@@ -466,8 +466,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.InRoom)
         {
-            Debug.Log("Gladiator Game cannot operate if not in room, returning to Main Menu...");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+            Debug.Log("Gladiator Game cannot operate if not in room, returning to Lobby...");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+            LobbyManager.sceneName = "Gladiator Game";
             return;
         }
 

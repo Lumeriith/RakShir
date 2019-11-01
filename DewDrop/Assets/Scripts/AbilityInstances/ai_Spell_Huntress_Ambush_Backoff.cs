@@ -13,5 +13,6 @@ public class ai_Spell_Huntress_Ambush_Backoff : AbilityInstance
         info.owner.LookAt(castInfo.target.transform.position);
         info.owner.PlayCustomAnimation("Huntress - Ambush - Backoff", backoffAnimationDuration);
         info.owner.DashThroughForDuration(info.owner.transform.position + (info.owner.transform.position - info.target.transform.position).normalized * backoffDistance, backoffDuration);
+        DestroySelf();
     }
 }

@@ -22,7 +22,7 @@ public abstract class Equipment : Item
 {
     [Header("Equipment Settings")]
     public EquipmentType type;
-    public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[6];
+    public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[7];
     public List<Attachment> attachments = new List<Attachment>();
 
     private void Awake()

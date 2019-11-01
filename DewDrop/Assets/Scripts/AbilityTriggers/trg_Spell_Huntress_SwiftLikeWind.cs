@@ -20,7 +20,7 @@ public class trg_Spell_Huntress_SwiftLikeWind : AbilityTrigger
 
     public override void OnUnequip()
     {
-        if (owner.photonView.IsMine) owner.OnDodge += Swift;
+        if (owner.photonView.IsMine) owner.OnDodge -= Swift;
     }
 
 

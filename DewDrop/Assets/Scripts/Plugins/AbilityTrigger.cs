@@ -97,7 +97,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void Cast(CastInfo info)
     {
-        if (castAnimation != null)
+        if (castAnimation != null && castAnimation.Length != 0)
         {
             if (owner.control.skillSet[0] != null && owner.control.skillSet[0] == this)
             {
@@ -118,6 +118,9 @@ public abstract class AbilityTrigger : MonoBehaviour
     public abstract void OnCast(CastInfo info);
 
     public virtual void OnEquip() { }
+
+    public virtual void AliveUpdate() { }
+
     public virtual void OnUnequip() { }
 
     public virtual bool IsReady() { return true; }
@@ -182,7 +185,6 @@ public abstract class AbilityTrigger : MonoBehaviour
     {
         owner.control.cooldownTime[skillIndex] = Mathf.MoveTowards(owner.control.cooldownTime[skillIndex], 0, time);
     }
-
 
 
 }

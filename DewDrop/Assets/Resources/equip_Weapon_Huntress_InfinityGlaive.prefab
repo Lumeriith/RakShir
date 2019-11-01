@@ -109,11 +109,12 @@ Transform:
   m_LocalPosition: {x: 11.96, y: 4.87, z: -2.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2911441333179037578}
   - {fileID: 2911441333827877124}
   - {fileID: 2911441333524566664}
-  - {fileID: 2911441333179037578}
   - {fileID: 1061597445}
   - {fileID: 8686317507227350321}
+  - {fileID: 5838845347579275088}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -129,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726854da52c21184280297b776421cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationRange: 2.5
   channel:
     channelValidator:
       evaluatesFalseIfDead: 1
@@ -153,7 +155,7 @@ MonoBehaviour:
   - {fileID: 1061597446}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4998456155197659036}
   - {fileID: 0}
   attachments:
   - transform: {fileID: 2911441333179037578}
@@ -242,7 +244,7 @@ Transform:
   - {fileID: 2911441333805725737}
   - {fileID: 2911441333772613595}
   m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2911441333179037579
 MonoBehaviour:
@@ -286,7 +288,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2911441333524566667
 MonoBehaviour:
@@ -365,8 +367,87 @@ Transform:
   - {fileID: 2911441333927561663}
   - {fileID: 2911441334612817202}
   m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4266603601561224153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5838845347579275088}
+  - component: {fileID: 4998456155197659036}
+  m_Layer: 0
+  m_Name: trg_Spell_Huntress_CursedDagger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5838845347579275088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266603601561224153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2911441332996855065}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4998456155197659036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266603601561224153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1678e1534c1d449b91881300a48f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: eef693b90a5bf3642b7d1ab88b4743e2, type: 3}
+  abilityName: "\uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80"
+  abilityDescription: "\uB300\uC0C1\uC5D0\uAC8C \uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80\uC744
+    \uAF42\uC2B5\uB2C8\uB2E4.\n\n\uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80\uC740 3.5\uCD08\uAC04
+    \uC9C0\uC18D\uB418\uBA70 \uB0B4 \uAE30\uBCF8 \uACF5\uACA9\uC774 \uC801\uC911\uD558\uBA74
+    \uC9C0\uC18D \uC2DC\uAC04\uC774 \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4. \uC800\uC8FC\uC758
+    \uC601\uD5A5\uC744 \uBC1B\uB294 \uB300\uC0C1\uC740 2.5\uCD08 \uB9C8\uB2E4 100\uC758
+    [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC785\uACE0 1\uCD08 \uB3D9\uC548 [\uCE68\uBB35]\uB429\uB2C8\uB2E4."
+  castAnimation:
+  - {fileID: 7400000, guid: cb140083f3934834cb8640ce494a6bca, type: 2}
+  animationDuration: 0.75
+  indicator:
+    type: 1
+    range: 6
+    arrowWidth: 0
+    arrowLength: 0
+  targetingType: 4
+  range: 6
+  manaCost: 70
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  cooldownTime: 80
 --- !u!1001 &820476846516798787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -374,11 +455,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 7314203046110391632, guid: 32b6d17ff52caad4abf5fd99c569e1b4,
-        type: 3}
-      propertyPath: m_Name
-      value: Epic Item Effect
-      objectReference: {fileID: 0}
     - target: {fileID: 8352229629009588338, guid: 32b6d17ff52caad4abf5fd99c569e1b4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -433,6 +509,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314203046110391632, guid: 32b6d17ff52caad4abf5fd99c569e1b4,
+        type: 3}
+      propertyPath: m_Name
+      value: Epic Item Effect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32b6d17ff52caad4abf5fd99c569e1b4, type: 3}

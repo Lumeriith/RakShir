@@ -17,7 +17,6 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
 
     private Vector3 start;
 
-    CastInfo info;
 
     ParticleSystem whoof;
     GameObject flash;
@@ -31,7 +30,6 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
-        info = castInfo;
         if (photonView.IsMine)
         {
             Channel channel = new Channel(channelValidator, duration, false, false, false, false, null, End);
