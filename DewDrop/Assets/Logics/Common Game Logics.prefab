@@ -98398,8 +98398,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e8bf95afb7df24f911f7135678ed77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possibleCameraDistance: {x: 10, y: 30}
+  desiredCameraDistance: {x: 10, y: 30}
+  deadzoneCameraDistance: {x: 5, y: 35}
   cameraDistanceStepSize: 3
+  clampingSpeed: 30
 --- !u!1 &5951014711730829674
 GameObject:
   m_ObjectHideFlags: 0
@@ -98464,7 +98466,7 @@ MonoBehaviour:
   m_ZDamping: 0.7
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 30
+  m_CameraDistance: 10
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
