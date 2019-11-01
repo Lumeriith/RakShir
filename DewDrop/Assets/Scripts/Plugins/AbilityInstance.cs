@@ -98,7 +98,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         {
             if(clear != 0) ps.Stop(false, clear == 2 ? ParticleSystemStopBehavior.StopEmittingAndClear : ParticleSystemStopBehavior.StopEmitting);
             ps.gameObject.AddComponent<ParticleSystemAutoDestroy>();
-            ps.transform.parent = null;
+            ps.transform.parent = transform.parent;
         }
     }
 

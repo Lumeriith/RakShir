@@ -186,5 +186,15 @@ public abstract class AbilityTrigger : MonoBehaviour
         owner.control.cooldownTime[skillIndex] = Mathf.MoveTowards(owner.control.cooldownTime[skillIndex], 0, time);
     }
 
+    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
+    {
+        AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+    }
+
+    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
+    {
+        AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+    }
+
 
 }

@@ -223,7 +223,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                if ((ce.duration <= 0 && ce.type != StatusEffectType.HealOverTime && ce.type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && ce.IsHarmful()) || livingThing.IsDead())
+                if ((ce.type == StatusEffectType.Shield && (float)ce.parameter <= 0) || (ce.duration <= 0 && ce.type != StatusEffectType.HealOverTime && ce.type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && ce.IsHarmful()) || livingThing.IsDead())
                 {
                     removeList.Add(ce);
                 }
@@ -315,20 +315,19 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public void RpcApplyShieldDamage(float amount)
     {
         float remainingAmount = amount;
-        foreach(StatusEffect ce in statusEffects)
+        for (int i= 0;i < statusEffects.Count;i++)
         {
-            if(ce.type == StatusEffectType.Shield)
+            if(statusEffects[i].type == StatusEffectType.Shield)
             {
-                if((float)ce.parameter >= remainingAmount)
+                if((float)statusEffects[i].parameter >= remainingAmount)
                 {
-                    ce.parameter = (float)ce.parameter - remainingAmount;
+                    statusEffects[i].parameter = (float)statusEffects[i].parameter - remainingAmount;
                     break;
                 }
                 else
                 {
-                    remainingAmount -= (float)ce.parameter;
-                    ce.parameter = 0f;
-                    ce.duration = 0f;
+                    remainingAmount -= (float)statusEffects[i].parameter;
+                    statusEffects[i].parameter = 0f;
                 }
             }
         }

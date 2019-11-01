@@ -8,5 +8,6 @@ public class trg_Spell_Huntress_CursedDagger : AbilityTrigger
     {
         AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Huntress_CursedDagger", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
         StartCooldown();
+        SpendMana();
     }
 }

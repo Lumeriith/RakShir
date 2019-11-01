@@ -12,6 +12,7 @@ public class ai_Spell_Huntress_AgileMove : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         StartCoroutine("CoroutineAgileMove");
+        transform.parent = info.owner.transform;
     }
 
     protected override void AliveUpdate()
