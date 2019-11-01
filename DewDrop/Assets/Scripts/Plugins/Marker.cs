@@ -70,6 +70,12 @@ public class Marker : MonoBehaviourPun
 
     public void Destroy()
     {
+        photonView.RPC("RpcDestroy", photonView.Owner);
+    }
+
+    [PunRPC]
+    private void RpcDestroy()
+    {
         PhotonNetwork.Destroy(gameObject);
     }
 

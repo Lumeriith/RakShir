@@ -37,6 +37,19 @@ public class DebugCommands : MonoBehaviour
 
     }
 
+    [ConsoleMethod("skip", "Skip this room of local player and move to next random room")]
+    public static void Skip()
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        if(target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
+        {
+            Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
+            target.Teleport(nextRoom.entryPoint.position);
+            target.SetCurrentRoom(nextRoom);
+        }
+    }
+
+
     [ConsoleMethod("heal", "Fully heal a living thing at cursor position")]
     public static void Heal()
     {
@@ -61,8 +74,8 @@ public class DebugCommands : MonoBehaviour
         target.Kill();
     }
 
-    [ConsoleMethod("spawnall", "Spawn all Networked GameObjects with matching names at cursor position.")]
-    public static void SpawnAll(string name)
+    [ConsoleMethod("spawn", "Spawn all Networked GameObjects with matching names at cursor position.")]
+    public static void Spawn(string name)
     {
         List<GameObject> targets = new List<GameObject>();
         if (resources == null) resources = Resources.LoadAll("");
@@ -86,46 +99,6 @@ public class DebugCommands : MonoBehaviour
 
 
     }
-
-
-
-    [ConsoleMethod("spawnmultiple", "Spawn a specified number of Networked GameObject at cursor position.")]
-    public static void SpawnMultiple(string name, int amount = 1)
-    {
-        GameObject target = null;
-        if (resources == null) resources = Resources.LoadAll("");
-        foreach (object obj in resources)
-        {
-            GameObject gobj = obj as GameObject;
-            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                if (gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_"))
-                {
-                    target = gobj;
-                }
-                break;
-            }
-        }
-
-        if (target == null)
-        {
-            print("Cannot find a prefab with a name containing `" + name + "`.");
-        }
-        else
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere, Quaternion.identity);
-            }
-        }
-    }
-    [ConsoleMethod("spawn", "Spawn a Networked GameObject at cursor position.")]
-    public static void Spawn(string name)
-    {
-        SpawnMultiple(name, 1);
-    }
-
-
 
     [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]
     public static void Hot(float amount, float duration)

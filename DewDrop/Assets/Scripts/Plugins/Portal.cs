@@ -26,9 +26,10 @@ public class Portal : Activatable
         if (activator.photonView.IsMine && isOpen)
         {
             activator.Teleport(nextRoom.entryPoint.position);
-            nextRoom.ActivateRoom(activator);
+            activator.SetCurrentRoom(nextRoom);
         }
-        activator.currentRoom = nextRoom;
+
+        
     }
 
 }

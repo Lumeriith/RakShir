@@ -6,7 +6,8 @@ using Photon.Realtime;
 using NaughtyAttributes;
 using System.Text.RegularExpressions;
 using DecalSystem;
-public enum GladiatorGamePhase { Prepare, PvE, PvP, End };
+using Doozy.Engine;
+public enum GladiatorGamePhase { Waiting, PvE, PvP, End };
 [System.Serializable]
 public class RoomListWrapper
 {
@@ -18,12 +19,13 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 {
     public bool debugSoloPlayMode = true;
     [Header("General Settings")]
-    public GladiatorGamePhase phase = GladiatorGamePhase.Prepare;
+    public GladiatorGamePhase phase = GladiatorGamePhase.Waiting;
     public List<GameObject> epicLootPool, rareLootPool, commonLootPool, consumableLootPool;
 
     public float goldModifier = 1.0f;
     public float goldRandomness = 0.1f;
     public float lostGoldMultiplierOnDeath = 0.3f;
+    public GameObject monsterSpawnEffect;
 
     [Header("Map Generation Settings")]
     public List<MapPlaceholderNode> nodes;
@@ -86,25 +88,59 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private int blueNextCommonLoot = 0;
     private List<Room> createdRooms = new List<Room>();
 
+    [Button("Force Setup Game")]
     private void SetupGame()
     {
-        
+        if(phase != GladiatorGamePhase.Waiting)
+        {
+            Debug.LogWarning("Game has already started!");
+            return;
+        }
+
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.LogError("Only MasterClient can setup Gladiator game!");
             return;
         }
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         CreateMap();
-        DecalUtils.UpdateAffectedObjects();
+        photonView.RPC("RpcUpdateDecalUtils", RpcTarget.All);
         BuildLootDecks();
         RegisterKillDropLootEvent();
         RegisterKillRewardGoldEvent();
         RegisterPlayerDeathEvent();
+        photonView.RPC("RpcRegisterSpawnEffectEvent", RpcTarget.All);
         SpawnPlayers();
         SetPhase(GladiatorGamePhase.PvE);
+        photonView.RPC("RpcSendGameStartedEvent", RpcTarget.All);
     }
 
+    [PunRPC]
+    private void RpcUpdateDecalUtils()
+    {
+        DecalUtils.UpdateAffectedObjects();
+    }
 
+    [PunRPC]
+    private void RpcSendGameStartedEvent()
+    {
+        GameEventMessage.SendEvent("Game Started");
+    }
+
+    [PunRPC]
+    private void RpcRegisterSpawnEffectEvent()
+    {
+        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        {
+            if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(thing, .5f));
+            Instantiate(monsterSpawnEffect, thing.transform.position, Quaternion.identity);
+            thing.RpcScaleForDuration(0f, 0.5f);
+            for(float t = 0.5f; t < 1f; t += 0.05f)
+            {
+                thing.RpcFlashForDuration(1f, 1f, 1f, 1f, 0.2f, t);
+            }
+        };
+    }
     
 
     private void SpawnPlayers()
@@ -116,11 +152,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
             type = nextPlayerIsRedTeam ? PlayerType.Reptile : PlayerType.Elemental;
-            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].entryPoint.position);
-            if (!createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].isActivated)
-            {
-                createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].ActivateRoom(gamePlayers[players[i]]);
-            }
+            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].entryPoint.position, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].photonView.ViewID);
+
             nextPlayerIsRedTeam = !nextPlayerIsRedTeam;
         }
     }
@@ -182,7 +215,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         player.Revive();
         player.DoHeal(player.maximumHealth, player, true);
         player.DoManaHeal(player.stat.finalMaximumMana, player, true);
-        player.statusEffect.ApplyStatusEffect(StatusEffect.Invulnerable(player, 5f));
+        player.statusEffect.ApplyStatusEffect(StatusEffect.Protected(player, 5f));
     }
 
     private void SetPhase(GladiatorGamePhase phase)
@@ -438,21 +471,35 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (debugSoloPlayMode) SetupGame();
+        if (debugSoloPlayMode) StartCoroutine(CoroutineDebugSoloPlay());
+    }
+
+    IEnumerator CoroutineDebugSoloPlay()
+    {
+        yield return null;
+        SetupGame();
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        if (phase == GladiatorGamePhase.Prepare && PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        if (phase == GladiatorGamePhase.Waiting && PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
-            SetupGame();
+            StartCoroutine(CoroutineDelayedSetupGame(2f));
         }
     }
 
+    IEnumerator CoroutineDelayedSetupGame(float duration)
+    {
+        yield return new WaitForSecondsRealtime(duration);
+        SetupGame();
+    }
+
     [PunRPC]
-    private void RpcCreateLocalPlayer(int type, Vector3 pos)
+    private void RpcCreateLocalPlayer(int type, Vector3 pos, int roomViewId)
     {
         LivingThing thing = GameManager.instance.SpawnLocalPlayer((PlayerType)type, pos);
+        Room room = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
+        thing.SetCurrentRoom(room);
         photonView.RPC("RpcRegisterLivingThingOnGamePlayers", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, thing.photonView.ViewID);
     }
 
@@ -481,15 +528,26 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
         for(int i = 0; i < createdRooms.Count; i++)
         {
-            for(int j = 0; j < nodes[i].nextNodes.Count; j++)
+            int[] nextRoomViewIDs = new int[nodes[i].nextNodes.Count];
+            for (int j = 0; j < nodes[i].nextNodes.Count; j++)
             {
-                createdRooms[i].nextRooms.Add(createdRooms[nodes.IndexOf(nodes[i].nextNodes[j])]);
+                nextRoomViewIDs[j] = createdRooms[nodes.IndexOf(nodes[i].nextNodes[j])].photonView.ViewID;
             }
+            photonView.RPC("RpcSetNextRooms", RpcTarget.All, createdRooms[i].photonView.ViewID, nextRoomViewIDs);
         }
 
         photonView.RPC("RpcDisablePlaceholderNodes", RpcTarget.All);
     }
 
+    [PunRPC]
+    private void RpcSetNextRooms(int roomViewID, int[] nextRoomViewIDs)
+    {
+        Room room = PhotonNetwork.GetPhotonView(roomViewID).GetComponent<Room>();
+        for(int i = 0; i<nextRoomViewIDs.Length; i++)
+        {
+            room.nextRooms.Add(PhotonNetwork.GetPhotonView(nextRoomViewIDs[i]).GetComponent<Room>());
+        }
+    }
 
     [PunRPC]
     private void RpcDisablePlaceholderNodes()
@@ -514,6 +572,12 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
         return randomList; //return the new random list
     }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.LogWarning("Disconnected! " + cause.ToString());
+    }
+
 
     [Button("Autocomplete Pools")]
     private void AutocompletePools()

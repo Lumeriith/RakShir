@@ -201,18 +201,7 @@ public class LivingThing : MonoBehaviourPun
 
     public float droppedGold = 10f;
 
-    public Room currentRoom
-    {
-        get
-        {
-            TryUpdateCurrentRoom();
-            return _currentRoom;
-        }
-        set
-        {
-            _currentRoom = value;
-        }
-    }
+    public Room currentRoom { get; private set; }
     private Room _currentRoom;
 
     [ShowIf("ShouldShowSummonerField")]
@@ -262,6 +251,7 @@ public class LivingThing : MonoBehaviourPun
         rigidbody.useGravity = false;
         agent = GetComponent<NavMeshAgent>();
         model = transform.Find("Model");
+
         defaultScale = model.localScale;
         model.localScale = Vector3.zero;
 
@@ -320,11 +310,9 @@ public class LivingThing : MonoBehaviourPun
 
     private void Update()
     {
-        if (!photonView.IsMine) return;
 
-        if (_currentRoom == null) TryUpdateCurrentRoom();
 
-        if (currentHealth <= 0 && !stat.isDead)
+        if (photonView.IsMine && currentHealth <= 0 && !stat.isDead)
         {
             Kill();
         }
@@ -405,15 +393,6 @@ public class LivingThing : MonoBehaviourPun
 
     #region Private Functions
 
-    private void TryUpdateCurrentRoom()
-    {
-        Component comp = agent.navMeshOwner as Component;
-        
-        if (comp != null)
-        {
-            _currentRoom = comp.GetComponent<Room>();
-        }
-    }
 
     void AssignMissingTransforms()
     {
@@ -437,6 +416,15 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
+    public void Destroy()
+    {
+        photonView.RPC("RpcDestroy", photonView.Owner);
+    }
+
+    public void SetCurrentRoom(Room room)
+    {
+        photonView.RPC("RpcSetCurrentRoom", RpcTarget.All, room.photonView.ViewID);
+    }
 
     public void ActivateImmediately(Activatable activatable)
     {
@@ -846,6 +834,20 @@ public class LivingThing : MonoBehaviourPun
     #endregion Functions For Everyone
 
     #region RPCs
+    [PunRPC]
+    private void RpcDestroy()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
+
+    [PunRPC]
+    private void RpcSetCurrentRoom(int roomViewId)
+    {
+        currentRoom = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
+        GameManager.instance.OnLivingThingRoomEnter.Invoke(this);
+        if (photonView.IsMine && !currentRoom.isActivated) currentRoom.ActivateRoom(this);
+    }
+
 
     [PunRPC]
     public void RpcFlashForDuration(float r, float g, float b, float a, float multiplier, float duration)
@@ -1211,9 +1213,9 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcTeleport(Vector3 location)
     {
-        if (photonView.IsMine) control.agent.enabled = false;
+        control.agent.enabled = false;
         transform.position = location;
-        if (photonView.IsMine) control.agent.enabled = true;
+        control.agent.enabled = true;
     }
 
     [PunRPC]

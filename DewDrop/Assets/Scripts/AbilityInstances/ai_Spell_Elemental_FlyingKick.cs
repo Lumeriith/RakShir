@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 public class ai_Spell_Elemental_FlyingKick : AbilityInstance
 {
-    private CastInfo info;
     public float distance;
     public float speed;
 
@@ -29,7 +28,6 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     {
         fly.Play();
         if (!photonView.IsMine) return;
-        info = castInfo;
 
         Vector3 targetPosition = info.owner.transform.position + info.directionVector * distance;
         float dashDuration = Vector3.Distance(targetPosition, info.owner.transform.position) / speed;

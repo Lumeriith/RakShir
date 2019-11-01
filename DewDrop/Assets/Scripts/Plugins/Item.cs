@@ -29,7 +29,7 @@ public abstract class Item : Activatable
     {
         if(rb != null)
         {
-            if(transform.position.y < -100f)
+            if(transform.position.y < startPosition.y - 15f)
             {
                 rb.velocity = Vector3.up * 2f; // QoL change. Fallen items will come back.
                 transform.position = startPosition + Vector3.up;

@@ -250,7 +250,7 @@ public class UnitControlManager : MonoBehaviour
 
         GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
         {
-            if (thing.type == LivingThingType.Player && thing.photonView.IsMine) selectedUnit = thing;
+            if (thing.type == LivingThingType.Player && thing.photonView.IsMine && selectedUnit == null) selectedUnit = thing;
         };
     }
 

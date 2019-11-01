@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     public System.Action<LivingThing> OnLivingThingInstantiate = (LivingThing _) => { };
     public System.Action<Activatable> OnActivatableInstantiate = (Activatable _) => { };
+    public System.Action<LivingThing> OnLivingThingRoomEnter = (LivingThing _) => { }; 
 
     private static GameManager _instance;
     public static GameManager instance
@@ -85,6 +86,7 @@ public class GameManager : MonoBehaviour
         if(rb != null)
         {
             rb.velocity = (Vector3.up * 2 + Random.insideUnitSphere) * 3f;
+            rb.angularVelocity = Random.onUnitSphere * 360f;
         }
     }
 

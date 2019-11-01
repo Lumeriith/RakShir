@@ -45,6 +45,9 @@ public class Room : MonoBehaviourPun
         }
     }
 
+
+
+
     public bool IsCleared()
     {
         switch (clearType)

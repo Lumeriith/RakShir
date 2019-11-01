@@ -38,7 +38,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < spawnedLivingThings.Count; i++)
         {
-            PhotonNetwork.Destroy(spawnedLivingThings[i].gameObject);
+            if (spawnedLivingThings[i] != null) spawnedLivingThings[i].Destroy();
         }
 
         spawnedLivingThings.Clear();

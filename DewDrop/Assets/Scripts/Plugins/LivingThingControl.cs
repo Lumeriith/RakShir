@@ -183,10 +183,11 @@ public class Command
 
     private bool ProcessActivate(Activatable target)
     {
-        if (!target.channel.channelValidator.Evaluate(self)) return true;
         if (target == null) return true;
+        if (!target.channel.channelValidator.Evaluate(self)) return true;
+        
 
-        if (Vector3.Distance(self.transform.position, target.transform.position) <= Activatable.activationRange)
+        if (Vector3.Distance(self.transform.position, target.transform.position) <= target.activationRange)
         {
             self.control.agentDestination = self.transform.position;
             self.LookAt(target.transform.position);
@@ -212,7 +213,9 @@ public class Command
         if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
         if (self.control.IsMoveProhibitedByChannel()) return false;
         self.control.agentDestination = destination;
-        if (Vector3.Distance(destination, self.transform.position) < 0.5f && self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
+        Vector3 temp = destination - self.transform.position;
+        temp.y = 0f;
+        if (temp.magnitude < 0.1f && self.control.agent.desiredVelocity.magnitude < float.Epsilon) return true;
         if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
         {
             self.LookAt(self.control.agent.path.corners[1]);
@@ -222,6 +225,8 @@ public class Command
 
     private bool ProcessAttack(LivingThing target)
     {
+        if (target.IsDead()) return true;
+        self.LookAt(target.transform.position);
         if (self.control.skillSet[0] == null) return true;
         if (Vector3.Distance(self.transform.position, target.transform.position) > self.control.skillSet[0].range) return true;
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
@@ -229,8 +234,8 @@ public class Command
         if (!self.control.skillSet[0].isCooledDown) return true;
         if (!self.control.skillSet[0].IsReady()) return true;
         if (self.control.IsAttackProhibitedByChannel()) return true;
-        if (target.IsDead()) return true;
-        self.LookAt(target.transform.position);
+
+
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
         self.control.skillSet[0].Cast(info);
         return true;
@@ -611,6 +616,17 @@ public class LivingThingControl : MonoBehaviourPun
 
     private void Update()
     {
+        if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
+    livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
+    livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis))
+        {
+            agent.enabled = false;
+        }
+        else
+        {
+            agent.enabled = true;
+        }
+
         if (!photonView.IsMine) return;
 
 
@@ -621,16 +637,7 @@ public class LivingThingControl : MonoBehaviourPun
         }
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
-        if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
-            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
-            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis))
-        {
-            agent.enabled = false;
-        }
-        else
-        {
-            agent.enabled = true;
-        }
+
 
         if (SelfValidator.CancelsMoveCommand.Evaluate(livingThing))
         {

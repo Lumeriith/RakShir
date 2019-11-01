@@ -6,10 +6,9 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public abstract class Activatable : MonoBehaviourPun
 {
-    public const float activationRange = 2.5f;
+    public float activationRange = 2.5f;
     public Channel channel;
     public bool isInterruptedByDamage = true;
-
 
     protected abstract void OnChannelStart(LivingThing activator);
     protected abstract void OnChannelCancel(LivingThing activator);
