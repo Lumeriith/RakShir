@@ -14,7 +14,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     protected bool isCreated { get; private set; } = false;
     protected bool isDestroyed { get; private set; } = false;
 
-    protected bool isAlive { get { return isCreated && !isDestroyed; } }
+    public bool isAlive { get { return isCreated && !isDestroyed; } }
     public CastInfo info;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -84,6 +84,13 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     }
 
+    [PunRPC]
+    protected void RpcDoEvent(string eventString)
+    {
+        OnReceiveEvent(eventString);
+    }
+
+    protected virtual void OnReceiveEvent(string eventString) { }
 
     public void DetachChildParticleSystemsAndAutoDelete(DetachBehaviour behaviour = DetachBehaviour.DontStop)
     {

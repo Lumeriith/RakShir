@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using Photon.Pun;
 
 public enum IndicatorType { None, Range, Arrow }
 [System.Serializable]
@@ -14,9 +15,13 @@ public class Indicator
 
 }
 
+public enum AbilityInstanceEventTargetType { EveryInstance, FirstInstance, LastInstance };
+
 public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
+
+    
 
     [Header("Metadata Settings")]
     public Sprite abilityIcon;
@@ -37,6 +42,8 @@ public abstract class AbilityTrigger : MonoBehaviour
     public SelfValidator selfValidator;
 
     private float specialFillAmount = 0;
+    private List<AbilityInstance> instances = new List<AbilityInstance>();
+
 
     public float cooldownTime;
 
@@ -119,7 +126,15 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public virtual void OnEquip() { }
 
-    public virtual void AliveUpdate() { }
+    public virtual void AliveUpdate(bool isMine) { }
+
+    private void Update()
+    {
+        if(_owner != null)
+        {
+            AliveUpdate(_owner.photonView.IsMine);
+        }
+    }
 
     public virtual void OnUnequip() { }
 
@@ -188,13 +203,74 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
-        AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        PurgeInstancesList();
+        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        instances.Add(instance);
     }
 
     public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
     {
-        AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        PurgeInstancesList();
+        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        instances.Add(instance);
+    }
+
+    private void PurgeInstancesList()
+    {
+        for (int i = instances.Count - 1; i >= 0; i--)
+        {
+            if (instances[i] == null || !instances[i].isAlive)
+            {
+                instances.RemoveAt(i);
+            }
+        }
+    }
+    
+    public bool IsAnyInstanceActive()
+    {
+        PurgeInstancesList();
+        return instances.Count != 0;
+    }
+
+    public AbilityInstance GetLastInstance()
+    {
+        PurgeInstancesList();
+        if (instances.Count == 0) return null;
+        return instances[instances.Count - 1];
+    }
+
+    public AbilityInstance GetFirstInstsance()
+    {
+        PurgeInstancesList();
+        if (instances.Count == 0) return null;
+        return instances[0];
     }
 
 
+
+    public void SendEventToAbilityInstance(string eventString, AbilityInstanceEventTargetType target)
+    {
+        if (!IsAnyInstanceActive())
+        {
+            Debug.LogWarning("There is no active AbilityInstance to send event to!\n" + name);
+            return;
+        }
+        switch (target)
+        {
+            case AbilityInstanceEventTargetType.EveryInstance:
+                for(int i = 0; i < instances.Count; i++)
+                {
+                    instances[i].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                }
+                break;
+            case AbilityInstanceEventTargetType.FirstInstance:
+                instances[0].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                break;
+            case AbilityInstanceEventTargetType.LastInstance:
+                instances[instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                break;
+        }
+
+
+    }
 }

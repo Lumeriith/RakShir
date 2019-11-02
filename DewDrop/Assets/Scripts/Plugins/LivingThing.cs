@@ -416,6 +416,12 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
+
+    public void ApplyStatusEffect(StatusEffect statusEffect)
+    {
+        this.statusEffect.ApplyStatusEffect(statusEffect);
+    }
+
     public void Destroy()
     {
         photonView.RPC("RpcDestroy", photonView.Owner);
