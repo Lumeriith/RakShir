@@ -472,14 +472,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (debugSoloPlayMode) StartCoroutine(CoroutineDebugSoloPlay());
+        if (debugSoloPlayMode) StartCoroutine(CoroutineDelayedSetupGame(1f));
     }
 
-    IEnumerator CoroutineDebugSoloPlay()
-    {
-        yield return null;
-        SetupGame();
-    }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {

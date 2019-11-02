@@ -157,6 +157,13 @@ public class StatusEffect
     {
         return new StatusEffect(caster, StatusEffectType.Silence, duration);
     }
+
+    public static StatusEffect Blind(LivingThing caster, float duration)
+    {
+        return new StatusEffect(caster, StatusEffectType.Blind, duration);
+    }
+
+
     public static StatusEffect DamageOverTime(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
     {
         return new StatusEffect(caster, StatusEffectType.DamageOverTime, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
