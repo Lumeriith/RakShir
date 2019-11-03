@@ -122,6 +122,8 @@ public struct InfoSpendGold
 [RequireComponent(typeof(CapsuleCollider))]
 public class LivingThing : MonoBehaviourPun
 {
+    private bool didDamageFlash;
+
     private NavMeshAgent agent;
     private LivingThing lastAttacker;
     private Animator animator;
@@ -292,11 +294,11 @@ public class LivingThing : MonoBehaviourPun
         OnTakeDamage += (InfoDamage _) => {
             if (GameManager.instance.localPlayer == null || GameManager.instance.localPlayer != this)
             {
-                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.10f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.08f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.06f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.04f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.3f, 0.02f);
+                if (didDamageFlash) return;
+                didDamageFlash = true;
+                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.10f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.06f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.02f);
             }
         };
     }
@@ -310,7 +312,7 @@ public class LivingThing : MonoBehaviourPun
 
     private void Update()
     {
-
+        didDamageFlash = false;
 
         if (photonView.IsMine && currentHealth <= 0 && !stat.isDead)
         {

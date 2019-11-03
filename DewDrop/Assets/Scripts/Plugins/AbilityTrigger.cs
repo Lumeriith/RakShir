@@ -21,8 +21,31 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
-    
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
 
+        if (targetingType == TargetingType.PointNonStrict || targetingType == TargetingType.PointStrict || targetingType == TargetingType.Target)
+        {
+            UnityEditor.Handles.color = new Color(1, 0, 0, 1);
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, range);
+        }
+
+        if (indicator != null && indicator.type == IndicatorType.Range)
+        {
+            UnityEditor.Handles.color = new Color(1, 0, 0, 1);
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, indicator.range);
+        }
+        if (indicator != null && indicator.type == IndicatorType.Arrow)
+        {
+            UnityEditor.Handles.color = new Color(0, 1, 0, 1);
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, indicator.arrowLength);
+        }
+
+
+
+    }
+#endif
     [Header("Metadata Settings")]
     public Sprite abilityIcon;
     public string abilityName;

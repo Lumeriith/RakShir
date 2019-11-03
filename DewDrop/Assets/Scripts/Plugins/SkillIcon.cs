@@ -73,7 +73,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 image_cooldownFill.fillAmount = target.control.skillSet[skillIndex].cooldownTime == 0 ? 0 : target.control.cooldownTime[skillIndex] / target.control.skillSet[skillIndex].cooldownTime;
             }
             
-            image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
+            image_specialIndicator.enabled = image_specialFill.fillAmount != 0 && !image_disabled.enabled;
         }
 
         if(target.control.cooldownTime[skillIndex] == 0f || skillIndex == 0)

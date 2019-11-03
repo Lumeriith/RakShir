@@ -121,7 +121,8 @@ public class SelfValidator : System.ICloneable
     public static SelfValidator CanTick = new SelfValidator
     {
         excludes = new List<StatusEffectType>()
-        { StatusEffectType.Stasis }
+        { StatusEffectType.Stasis },
+        evaluatesFalseIfDead = false
     };
 
 
@@ -136,6 +137,7 @@ public class SelfValidator : System.ICloneable
             StatusEffectType.Charm,
             StatusEffectType.Fear,
             StatusEffectType.Dash },
+        evaluatesFalseIfDead = false,
         invertResult = true
     };
     public static SelfValidator CancelsChaseCommand = new SelfValidator
@@ -148,6 +150,7 @@ public class SelfValidator : System.ICloneable
             StatusEffectType.Charm,
             StatusEffectType.Fear,
             StatusEffectType.MindControl },
+        evaluatesFalseIfDead = false,
         invertResult = true
     };
 
