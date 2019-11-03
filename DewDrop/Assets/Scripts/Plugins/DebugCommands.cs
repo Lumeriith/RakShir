@@ -37,6 +37,18 @@ public class DebugCommands : MonoBehaviour
 
     }
 
+    [ConsoleMethod("reset", "Reset all cooldowns of local player and fully heals mana")]
+    public static void Reset()
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        for(int i = 0; i < target.control.skillSet.Length; i++)
+        {
+            if (target.control.skillSet[i] != null) target.control.skillSet[i].ResetCooldown();
+        }
+        target.DoManaHeal(target.stat.finalMaximumMana, target, true);
+    }
+
+
     [ConsoleMethod("skip", "Skip this room of local player and move to next random room")]
     public static void Skip()
     {
