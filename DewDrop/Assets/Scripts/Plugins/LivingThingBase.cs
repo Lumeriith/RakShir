@@ -11,6 +11,7 @@ public class LivingThingBase : MonoBehaviour
     public Material ownBase;
     public Material enemyBase;
     public Material allyBase;
+    public float decalScale = 1f;
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
@@ -18,6 +19,7 @@ public class LivingThingBase : MonoBehaviour
         decalObject.transform.parent = transform;
         decalObject.transform.position = transform.position;
         decalObject.transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+        decalObject.transform.localScale = Vector3.one * decalScale;
         decal = decalObject.AddComponent<DecalSystem.Decal>();
     }
 

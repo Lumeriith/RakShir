@@ -47,7 +47,7 @@ MonoBehaviour:
   abilityName: "\uB9F9\uB3C5 \uCC0C\uB974\uAE30"
   abilityDescription: "\uB3C5\uAE30\uAC00 \uC11C\uB9B0 \uB2E8\uAC80\uC73C\uB85C \uC801\uC744
     \uCC0C\uB985\uB2C8\uB2E4.\n\uB0B4 \uAE30\uBCF8 \uACF5\uACA9\uC774 \uC801\uC911\uD55C
-    \uC0C1\uB300\uAC00 4\uCD08\uC5D0 \uAC78\uCCD0 30\uC758 \uC9C0\uC18D \uD53C\uD574\uB97C
+    \uC0C1\uB300\uAC00 4\uCD08\uC5D0 \uAC78\uCCD0 40\uC758 \uC9C0\uC18D \uD53C\uD574\uB97C
     \uC785\uC2B5\uB2C8\uB2E4."
   castAnimation:
   - {fileID: 7400000, guid: b94463e2ac9bc8940848fa82574d9be6, type: 2}
@@ -59,7 +59,7 @@ MonoBehaviour:
     arrowWidth: 0
     arrowLength: 0
   targetingType: 4
-  range: 1.7
+  range: 2.6
   manaCost: 0
   targetValidator:
     canTargetSelf: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
     invertResult: 0
   selfValidator:
     evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
+    excludes: 090a0b0c0d0e0f1201
     invertResult: 0
   cooldownTime: 1
   channelDuration: 0.35
@@ -231,7 +231,7 @@ MonoBehaviour:
   itemTier: 1
   value: 400
   itemDescription: "[\uACF5\uACA9 \uD53C\uD574] 10\r\n[\uCD08\uB2F9 \uACF5\uACA9 \uC18D\uB3C4]
-    1.2"
+    1.4"
   owner: {fileID: 0}
   type: 3
   skillSetReplacements:
@@ -247,7 +247,7 @@ MonoBehaviour:
     attachTo: 2
     offsetPosition: {x: 0, y: 0, z: 0}
     offsetRotation: {x: 0, y: 0, z: 0}
-  poisonAmount: 30
+  poisonAmount: 40
   poisonDuration: 4
 --- !u!1 &2050374248503361881
 GameObject:

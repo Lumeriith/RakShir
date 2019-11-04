@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using Photon.Pun;
+using Photon.Realtime;
 
 public abstract class Item : Activatable
 {
@@ -19,6 +20,7 @@ public abstract class Item : Activatable
 
     private Rigidbody rb;
     private Vector3 startPosition;
+
 
     private void Awake()
     {
@@ -88,6 +90,7 @@ public abstract class Item : Activatable
     protected void RpcDisown()
     {
         if (owner == null) return;
+        transform.position = owner.transform.position + owner.GetCenterOffset();
         owner = null;
         transform.SetParent(null);
         gameObject.SetActive(true);

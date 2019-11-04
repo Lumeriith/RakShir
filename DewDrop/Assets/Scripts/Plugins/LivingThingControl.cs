@@ -185,7 +185,8 @@ public class Command
     {
         if (target == null) return true;
         if (!target.channel.channelValidator.Evaluate(self)) return true;
-        
+        Item item = target as Item;
+        if (item != null && item.owner != null) return true;
 
         if (Vector3.Distance(self.transform.position, target.transform.position) <= target.activationRange)
         {
@@ -235,7 +236,6 @@ public class Command
         if (!self.control.skillSet[0].IsReady()) return true;
         if (self.control.IsAttackProhibitedByChannel()) return true;
 
-
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
         self.control.skillSet[0].Cast(info);
         return true;
@@ -281,6 +281,12 @@ public class Command
 
         if (SelfValidator.CancelsChaseCommand.Evaluate(self)) return true;
         if (target == null || target.IsDead()) return true;
+
+        if (self.control.skillSet[0] == null) return true;
+        if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
+        if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
+        // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
+
         if (Vector3.Distance(self.transform.position, target.transform.position) <= self.control.skillSet[0].range)
         {
 
@@ -289,7 +295,7 @@ public class Command
         }
         else
         {
-
+            if (self.control.IsAttackProhibitedByChannel(false)) return false;
             if (self.control.IsMoveProhibitedByChannel()) return false;
 
             self.control.agentDestination = target.transform.position;
@@ -560,7 +566,7 @@ public class LivingThingControl : MonoBehaviourPun
     }
 
 
-    public bool IsAttackProhibitedByChannel()
+    public bool IsAttackProhibitedByChannel(bool cancelsCancelableChannels = true)
     {
         bool result = false;
         for (int i = 0; i < ongoingChannels.Count; i++)
@@ -568,7 +574,7 @@ public class LivingThingControl : MonoBehaviourPun
             if (ongoingChannels[i].HasEnded()) continue;
             if (!ongoingChannels[i].canAttack)
             {
-                if (ongoingChannels[i].canBeCanceledByCaster)
+                if (ongoingChannels[i].canBeCanceledByCaster && cancelsCancelableChannels)
                 {
                     ongoingChannels[i].Cancel();
                 }

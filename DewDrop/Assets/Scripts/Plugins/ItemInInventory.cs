@@ -33,13 +33,24 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler
         if (GameManager.instance.localPlayer == null) return;
         if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
 
-        if(belt.inventory[index] as Equipment != null)
+        if(data.button == PointerEventData.InputButton.Left)
         {
-            belt.EquipEquipmentFromInventory(index);
-        } else if (belt.inventory[index] as Consumable != null)
-        {
-            belt.MoveConsumableFromInventoryToBelt(index);
+            if (belt.inventory[index] as Equipment != null)
+            {
+                belt.EquipEquipmentFromInventory(index);
+            }
+            else if (belt.inventory[index] as Consumable != null)
+            {
+                belt.MoveConsumableFromInventoryToBelt(index);
+            }
         }
+        else if (data.button == PointerEventData.InputButton.Right)
+        {
+            belt.inventory[index].Disown();
+            belt.inventory.RemoveAt(index);
+        }
+
+
     }
 
     private void ShowItem()

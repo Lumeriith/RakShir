@@ -137,7 +137,8 @@ public class UnitControlManager : MonoBehaviour
         }
         else
         {
-            return cursorRay.origin - cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y);
+            float targetY = selectedUnit.transform.position.y;
+            return cursorRay.origin - (cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y)) * (cursorRay.origin.y - targetY) / cursorRay.origin.y;
         }
 
     }

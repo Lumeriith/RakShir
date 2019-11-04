@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class ai_cons_Sparkstone : AbilityInstance
 {
 
@@ -36,11 +36,21 @@ public class ai_cons_Sparkstone : AbilityInstance
     {
         yield return new WaitForSeconds(delay);
         spark.transform.position = info.point + info.owner.GetCenterOffset();
+
+        if (photonView.IsMine)
+        {
+            info.owner.Teleport(info.point);
+            photonView.RPC("RpcBoom", RpcTarget.All);
+            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
+            DestroySelf();
+        }
+    }
+
+    [PunRPC]
+    private void RpcBoom()
+    {
         spark.Play();
         pre.Stop();
         destination.Stop();
-        if (photonView.IsMine) info.owner.Teleport(info.point);
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
-        DestroySelf();
     }
 }

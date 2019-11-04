@@ -10,6 +10,10 @@ public class FloatingTextCanvas : MonoBehaviour
     public FloatingText manaHealFloatingText;
     public FloatingText goldFloatingText;
 
+    public FloatingText pureDamageFloatingText;
+    public FloatingText dodgeFloatingText;
+    public FloatingText missFloatingText;
+
     private static FloatingTextCanvas _instance;
     public static FloatingTextCanvas instance
     {
@@ -29,6 +33,7 @@ public class FloatingTextCanvas : MonoBehaviour
         {
             if (thing.type == LivingThingType.Player && thing.photonView.IsMine) RegisterFloatingTextEvents(thing);
         };
+
     }
 
     public void RegisterFloatingTextEvents(LivingThing player)
@@ -50,6 +55,16 @@ public class FloatingTextCanvas : MonoBehaviour
             FloatingText floatingText = Instantiate(magicDamageFloatingText, transform).GetComponent<FloatingText>();
 
             floatingText.text = Mathf.Ceil(info.finalDamage).ToString();
+            floatingText.worldPosition = worldPos;
+        };
+
+        player.OnDealPureDamage += (InfoDamage info) =>
+        {
+            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+
+            FloatingText floatingText = Instantiate(pureDamageFloatingText, transform).GetComponent<FloatingText>();
+
+            floatingText.text = Mathf.Ceil(info.damage).ToString();
             floatingText.worldPosition = worldPos;
         };
 
@@ -104,6 +119,28 @@ public class FloatingTextCanvas : MonoBehaviour
             floatingText.text = "+" + Mathf.Ceil(info.amount).ToString() + "G";
             floatingText.worldPosition = worldPos;
         };
+
+        player.OnDodge += (InfoMiss info) =>
+        {
+            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+
+            FloatingText floatingText = Instantiate(dodgeFloatingText, transform).GetComponent<FloatingText>();
+
+            floatingText.worldPosition = worldPos;
+        };
+
+        player.OnMiss += (InfoMiss info) =>
+        {
+            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+
+            FloatingText floatingText = Instantiate(missFloatingText, transform).GetComponent<FloatingText>();
+
+            floatingText.worldPosition = worldPos;
+        };
+
+
+
+
 
     }
 }

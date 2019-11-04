@@ -423,13 +423,64 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         #endregion Build Epic Loot Deck
 
         List<int> numberMap = new List<int>();
+        List<int> shuffledMap;
+        List<int> lootDeck;
 
         for(int i = 0; i < rareLootPool.Count; i++)
         {
             numberMap.Add(i);
         }
-        redRareLootDeck = ShuffleList(numberMap).ToArray();
-        blueRareLootDeck = ShuffleList(numberMap).ToArray();
+
+        // Make Red Rare Loot Deck
+        shuffledMap = ShuffleList(numberMap);
+        lootDeck = new List<int>();
+        List<EquipmentType> types = new List<EquipmentType> { EquipmentType.Armor, EquipmentType.Boots, EquipmentType.Helmet, EquipmentType.Ring };
+        types = ShuffleList(types);
+        types.Insert(0, EquipmentType.Weapon);
+
+        for (int i = 0; i < types.Count; i++)
+        {
+            for (int j = 0; j < shuffledMap.Count; j++)
+            {
+                if (rareLootPool[shuffledMap[j]].GetComponent<Equipment>().type == types[i])
+                {
+                    lootDeck.Add(shuffledMap[j]);
+                    shuffledMap.RemoveAt(j);
+                    break;
+                }
+            }
+        }
+
+        lootDeck.AddRange(shuffledMap);
+        redRareLootDeck = lootDeck.ToArray();
+
+        // Make Blue Rare Loot Deck
+        for (int i = 0; i < rareLootPool.Count; i++)
+        {
+            numberMap.Add(i);
+        }
+        shuffledMap = ShuffleList(numberMap);
+        lootDeck = new List<int>();
+        types = new List<EquipmentType> { EquipmentType.Armor, EquipmentType.Boots, EquipmentType.Helmet, EquipmentType.Ring };
+        types = ShuffleList(types);
+        types.Insert(0, EquipmentType.Weapon);
+        
+        for (int i = 0; i < types.Count; i++)
+        {
+            for (int j = 0; j < shuffledMap.Count; j++)
+            {
+                if (rareLootPool[shuffledMap[j]].GetComponent<Equipment>().type == types[i])
+                {
+                    lootDeck.Add(shuffledMap[j]);
+                    shuffledMap.RemoveAt(j);
+                    break;
+                }
+            }
+        }
+        lootDeck.AddRange(shuffledMap);
+        blueRareLootDeck = lootDeck.ToArray();
+
+
 
         numberMap.Clear();
         for (int i = 0; i < commonLootPool.Count; i++)

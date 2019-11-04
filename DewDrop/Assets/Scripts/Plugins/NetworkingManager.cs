@@ -6,7 +6,19 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 public class NetworkingManager : MonoBehaviourPunCallbacks
 {
+    public static NetworkingManager instance
+    {
+        get
+        {
+            if (_instance == null) _instance = FindObjectOfType<NetworkingManager>();
+            return _instance;
+        }
+    }
+    private static NetworkingManager _instance;
+
     public const byte event_SyncAllStats = 1;
+    public const byte event_SyncItemsAndEquipments = 2;
+
 
     private float lastSyncAllStats = 0;
     public float syncAllStatsInterval = 5f;
@@ -21,10 +33,19 @@ public class NetworkingManager : MonoBehaviourPunCallbacks
        
         if (Time.time - lastSyncAllStats > syncAllStatsInterval)
         {
-            lastSyncAllStats = Time.time;
-            PhotonNetwork.RaiseEvent(event_SyncAllStats, null, raiseToAll, sendReliably);
+            Sync();
         }
     }
 
+    public void Sync()
+    {
+        lastSyncAllStats = Time.time;
+        PhotonNetwork.RaiseEvent(event_SyncAllStats, null, raiseToAll, sendReliably);
+    }
+
     
+
+
+
+
 }

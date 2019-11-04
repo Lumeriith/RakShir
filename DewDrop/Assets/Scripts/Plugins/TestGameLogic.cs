@@ -33,6 +33,10 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
         GameManager.instance.SpawnLocalPlayer(PlayerType.Elemental, reptileSpawnPoint.position);
     }
 
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        if(PhotonNetwork.IsMasterClient) NetworkingManager.instance.Sync();
+    }
 
     public override void OnDisconnected(DisconnectCause cause)
     {

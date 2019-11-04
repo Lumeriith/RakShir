@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView))]
-public abstract class Activatable : MonoBehaviourPun
+public abstract class Activatable : MonoBehaviourPunCallbacks
 {
     public float activationRange = 2.5f;
     public Channel channel;

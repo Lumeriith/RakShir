@@ -149,6 +149,9 @@ public class LivingThing : MonoBehaviourPun
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
     public System.Action<InfoDamage> OnTakeDamage = (InfoDamage _) => { };
 
+    public System.Action<InfoDamage> OnDealPureDamage = (InfoDamage _) => { };
+    public System.Action<InfoDamage> OnTakePureDamage = (InfoDamage _) => { };
+
     public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
     public System.Action<InfoMagicDamage> OnTakeMagicDamage = (InfoMagicDamage _) => { };
 
@@ -962,14 +965,14 @@ public class LivingThing : MonoBehaviourPun
             InfoMiss info;
             info.from = from;
             info.to = this;
-            OnMiss.Invoke(info);
+            from.OnMiss.Invoke(info);
         }
         else if (random < stat.finalDodgeChance / 100f)
         {
             InfoMiss info;
             info.from = from;
             info.to = this;
-            OnMiss.Invoke(info);
+            from.OnMiss.Invoke(info);
             OnDodge.Invoke(info);
         }
         else
@@ -1066,6 +1069,8 @@ public class LivingThing : MonoBehaviourPun
         info2.type = DamageType.Pure;
         OnTakeDamage.Invoke(info2);
         from.OnDealDamage.Invoke(info2);
+        OnTakePureDamage.Invoke(info2);
+        from.OnDealPureDamage.Invoke(info2);
     }
 
 

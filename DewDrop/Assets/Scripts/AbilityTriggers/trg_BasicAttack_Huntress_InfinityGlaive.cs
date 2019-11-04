@@ -7,7 +7,7 @@ public class trg_BasicAttack_Huntress_InfinityGlaive : AbilityTrigger
 
     public override void OnCast(CastInfo info)
     {
-        Channel channel = new Channel(selfValidator, 0.3f, false, true, false, true, ChannelSuccess, ResetCooldown);
+        Channel channel = new Channel(selfValidator, 0.3f, false, false, false, true, ChannelSuccess, ResetCooldown);
         info.owner.control.StartChanneling(channel, true);
         StartCooldown(true);
     }

@@ -9,7 +9,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
     public override void OnEquip(LivingThing owner)
     {
         owner.stat.baseAttackDamage = 10f;
-        owner.stat.baseAttacksPerSecond = 1.2f;
+        owner.stat.baseAttacksPerSecond = 1.4f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - PoisonDagger Stand");

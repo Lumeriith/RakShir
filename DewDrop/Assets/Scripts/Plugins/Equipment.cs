@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using NaughtyAttributes;
+using Photon.Realtime;
 
 public enum ItemTier { Common, Rare, Epic, Legendary }
 public enum EquipmentType { Helmet, Armor, Boots, Weapon, Ring }
@@ -24,6 +25,9 @@ public abstract class Equipment : Item
     public EquipmentType type;
     public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[7];
     public List<Attachment> attachments = new List<Attachment>();
+
+    private bool isEquipped = false;
+
 
     private void Awake()
     {
@@ -51,6 +55,7 @@ public abstract class Equipment : Item
     [PunRPC]
     protected void RpcEquip()
     {
+        isEquipped = true;
         for (int i = 0; i < skillSetReplacements.Length; i++)
         {
             
@@ -70,6 +75,7 @@ public abstract class Equipment : Item
     [PunRPC]
     protected void RpcUnequip()
     {
+        isEquipped = false;
         for (int i = 0; i < skillSetReplacements.Length; i++)
         {
             if (skillSetReplacements[i] != null)

@@ -44,9 +44,7 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
         if (!photonView.IsMine) return;
         if (Vector3.Distance(startPosition, transform.position) > distance)
         {
-            fly.Stop();
-            empoweredFly.Stop();
-            DetachChildParticleSystemsAndAutoDelete();
+            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
             DestroySelf();
         }
     }
