@@ -230,6 +230,7 @@ public class LivingThing : MonoBehaviourPun
     [HideInInspector]
     public MeshOutline outline;
 
+    public float unitRadius { get; private set; }
     public float currentHealth
     {
         get
@@ -244,6 +245,11 @@ public class LivingThing : MonoBehaviourPun
             return stat.finalMaximumHealth;
         }
     }
+    [Header("Decay Settings")]
+    public bool shouldDecay = true;
+    public float startDecayTime = 20f;
+    public float endDecayTime = 40f;
+    private float timeOfDeath = 0f;
 
     #endregion References For Everyone
 
@@ -270,15 +276,35 @@ public class LivingThing : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            GetComponent<NavMeshAgent>().avoidancePriority++;
+            agent.avoidancePriority++;
         }
+
+        if (type == LivingThingType.Monster && tier == LivingThingTier.Boss)
+        {
+            agent.avoidancePriority -= 5;
+        }
+        if (type == LivingThingType.Monster && tier == LivingThingTier.Elite)
+        {
+            agent.avoidancePriority -= 2;
+        }
+        if (type == LivingThingType.Player) agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        agent.stoppingDistance = 0.1f;
+        agent.autoRepath = false;
+        agent.autoBraking = true;
         defaultClips = animator.runtimeAnimatorController.animationClips;
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
 
+        Renderer renderer = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
+        if (renderer != null)
+        {
+            outline = renderer.gameObject.AddComponent<MeshOutline>();
+        }
+        else
+        {
+            outline = transform.Find("Model").gameObject.AddComponent<MeshOutline>();
+        }
 
-
-        outline = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>().gameObject.AddComponent<MeshOutline>();
         outline.enabled = false;
 
         AssignMissingTransforms();
@@ -299,9 +325,9 @@ public class LivingThing : MonoBehaviourPun
             {
                 if (didDamageFlash) return;
                 didDamageFlash = true;
-                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.10f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.06f);
-                RpcFlashForDuration(1, 1, 1, 1, 0.6f, 0.02f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.5f, 0.10f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.5f, 0.06f);
+                RpcFlashForDuration(1, 1, 1, 1, 0.5f, 0.02f);
             }
         };
     }
@@ -311,6 +337,7 @@ public class LivingThing : MonoBehaviourPun
     private void Start()
     {
         GameManager.instance.OnLivingThingInstantiate.Invoke(this);
+        unitRadius = GetComponent<CapsuleCollider>().radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
     }
 
     private void Update()
@@ -334,6 +361,13 @@ public class LivingThing : MonoBehaviourPun
                 scale *= scaleMultipliers[i];
             }
             model.localScale = scale;
+        }
+
+        if (IsDead() && shouldDecay)
+        {
+            model.localScale = model.localScale * Mathf.Clamp01(1 - (Time.time - timeOfDeath - startDecayTime) / (endDecayTime - startDecayTime));
+            if (Time.time - timeOfDeath > endDecayTime && photonView.IsMine) Destroy();
+            return;
         }
 
 
@@ -421,7 +455,10 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
-
+    public void SetReadableName(string readableName)
+    {
+        photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
+    }
     public void ApplyStatusEffect(StatusEffect statusEffect)
     {
         this.statusEffect.ApplyStatusEffect(statusEffect);
@@ -599,6 +636,7 @@ public class LivingThing : MonoBehaviourPun
         CancelDash();
         CancelAirborne();
         photonView.RPC("RpcTeleport", RpcTarget.All, location);
+        
     }
 
     public void DashThroughForDuration(Vector3 location, float duration)
@@ -661,6 +699,8 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to dash for negative duration! (" + duration.ToString() + ")");
             return;
         }
+        if (!SelfValidator.CanBeAirborned.Evaluate(this)) return;
+
         CancelDash();
         CancelAirborne();
         NavMeshPath path = new NavMeshPath();
@@ -845,6 +885,13 @@ public class LivingThing : MonoBehaviourPun
     #endregion Functions For Everyone
 
     #region RPCs
+
+    [PunRPC]
+    private void RpcSetReadableName(string readableName)
+    {
+        this.readableName = readableName;
+    }
+
     [PunRPC]
     private void RpcDestroy()
     {
@@ -1095,6 +1142,7 @@ public class LivingThing : MonoBehaviourPun
         
         killer.OnKill.Invoke(info);
         animator.SetBool("IsDead", true);
+        timeOfDeath = Time.time;
     }
 
 

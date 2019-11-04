@@ -11,6 +11,7 @@ public class ai_Monster_Rhino_Basicattack : AbilityInstance
         transform.Find("Flash").position = castInfo.target.transform.position + castInfo.target.GetCenterOffset();
 
         info.owner.DashThroughForDuration(info.owner.transform.position + (info.target.transform.position - info.owner.transform.position).normalized * distance, duration);
+        info.target.AirborneForDuration(info.target.transform.position + (info.target.transform.position - info.owner.transform.position).normalized * distance*0.75f, duration*0.75f   );
         if (!photonView.IsMine) return;
         castInfo.owner.DoBasicAttackImmediately(castInfo.target);
         DetachChildParticleSystemsAndAutoDelete();

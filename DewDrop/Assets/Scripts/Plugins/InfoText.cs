@@ -29,6 +29,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     public Sprite moneyIcon;
     public Sprite bookIcon;
 
+    private float creationTime;
     private void Awake()
     {
         image_image = GetComponent<Image>();
@@ -37,6 +38,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         canvasGroup.alpha = 0f;
         main = Camera.main;
         image_icon = transform.Find("Icon").GetComponent<Image>();
+        creationTime = Time.time;
     }
 
     private void Start()
@@ -75,8 +77,16 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     }
 
     private void LateUpdate() {
-        text_text.text = text;
-        if(follow == null || !follow.gameObject.activeInHierarchy)
+        if (follow == null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            if(Time.time - creationTime > 1f) Destroy(gameObject);
+            return;
+        }
+        Vector3 viewportPoint = main.WorldToViewportPoint(follow.transform.position);
+        if (viewportPoint.x < 0 || viewportPoint.x > 1 || viewportPoint.y < 0 || viewportPoint.y > 1||viewportPoint.z < 0|| !follow.gameObject.activeInHierarchy)
         {
             canvasGroup.alpha = 0f;
             canvasGroup.blocksRaycasts = false;
@@ -84,6 +94,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         }
         else
         {
+            text_text.text = text;
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             canvasGroup.interactable = true;

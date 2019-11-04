@@ -11,7 +11,7 @@ public class MonsterInfobar : MonoBehaviour, IInfobar
     {
         get
         {
-            if (_renderer == null) _renderer = target.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
+            if (_renderer == null) _renderer = target.transform.Find("Model").GetComponentInChildren<Renderer>();
             return _renderer;
         }
     }
@@ -44,17 +44,19 @@ public class MonsterInfobar : MonoBehaviour, IInfobar
             return;
         }
 
-        if (target.IsDead())
+        if (target.IsDead() || !renderer.isVisible)
         {
             canvasGroup.alpha = 0f;
+            uhb.enabled = false;
+            return;
         }
         else
         {
+            uhb.enabled = true;
             canvasGroup.alpha = 1f;
         }
-
-        uhb.SetTarget(target);
         
+        uhb.SetTarget(target);
         transform.position = Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset;
     }
 }

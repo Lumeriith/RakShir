@@ -125,6 +125,15 @@ public class SelfValidator : System.ICloneable
         evaluatesFalseIfDead = false
     };
 
+    public static SelfValidator CanBeAirborned = new SelfValidator
+    {
+        excludes = new List<StatusEffectType>()
+        { StatusEffectType.Stasis,
+          StatusEffectType.Unstoppable,
+          StatusEffectType.Invulnerable,
+          StatusEffectType.Untargetable},
+        evaluatesFalseIfDead = true
+    };
 
     public static SelfValidator CancelsMoveCommand = new SelfValidator
     {

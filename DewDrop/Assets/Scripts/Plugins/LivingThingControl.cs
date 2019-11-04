@@ -229,7 +229,7 @@ public class Command
         if (target.IsDead()) return true;
         self.LookAt(target.transform.position);
         if (self.control.skillSet[0] == null) return true;
-        if (Vector3.Distance(self.transform.position, target.transform.position) > self.control.skillSet[0].range) return true;
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].range) return true;
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
         if (!self.control.skillSet[0].isCooledDown) return true;
@@ -252,7 +252,7 @@ public class Command
         if(lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / self.control.attackMoveTargetChecksForSecond)
         {
             lastAttackMoveCheckTime = Time.time;
-            List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, self.control.skillSet[0].range, self.control.skillSet[0].targetValidator);
+            List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].range, 6f), self.control.skillSet[0].targetValidator);
             if(targets.Count == 0)
             {
                 if (self.control.IsMoveProhibitedByChannel()) return false;
@@ -287,7 +287,7 @@ public class Command
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
         // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
 
-        if (Vector3.Distance(self.transform.position, target.transform.position) <= self.control.skillSet[0].range)
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius <= self.control.skillSet[0].range)
         {
 
             self.control.agentDestination = self.transform.position;
@@ -315,7 +315,7 @@ public class Command
     private bool ProcessAutoChase(LivingThing target)
     {
 
-        if(Vector3.Distance(self.transform.position,target.transform.position) > self.control.autoChaseRange)
+        if(Vector3.Distance(self.transform.position,target.transform.position) - target.unitRadius > self.control.autoChaseRange)
         {
             autoChaseOutOfRangeTime += Time.deltaTime;
         }
@@ -344,7 +344,7 @@ public class Command
                 return true;
             case AbilityTrigger.TargetingType.Target:
                 if (!trigger.targetValidator.Evaluate(self, info.target)) return true;
-                if (Vector3.Distance(self.transform.position, info.target.transform.position) > trigger.range)
+                if (Vector3.Distance(self.transform.position, info.target.transform.position) - info.target.unitRadius > trigger.range)
                 {
                     self.control.agentDestination = info.target.transform.position;
                     if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
@@ -413,13 +413,14 @@ public class LivingThingControl : MonoBehaviourPun
     public float autoChaseRange = 4f;
     public float autoChaseOutOfRangeCancelTime = 2f;
     public bool autocastSpells = false;
+    public bool startWithAbilitiesCoolingdown = false;
     public float spellCastChance = 0.5f;
     [Header("AttackMove Settings")]
     public float attackMoveTargetChecksForSecond = 4f;
     [Header("Misc. Settings")]
     public float angularSpeed = 600f;
 
-    [HideInInspector]
+    //[HideInInspector]
     public List<Command> reservedCommands = new List<Command>();
     private float lastAICheckTime = 0f;
 
@@ -431,6 +432,8 @@ public class LivingThingControl : MonoBehaviourPun
 
 
     private Command currentCommand { get { return reservedCommands.Count == 0 ? null : reservedCommands[0]; } }
+
+    [SerializeField]
     private List<Channel> ongoingChannels = new List<Channel>();
     private Quaternion desiredRotation = Quaternion.identity;
 
@@ -619,9 +622,23 @@ public class LivingThingControl : MonoBehaviourPun
         if (agent.enabled && !agent.isOnNavMesh) FixPosition();
     }
 
+    private void Start()
+    {
+        if (startWithAbilitiesCoolingdown)
+        {
+            for(int i = 0; i < cooldownTime.Length; i++)
+            {
+                if(skillSet.Length > i && skillSet[i] != null)
+                {
+                    cooldownTime[i] = skillSet[i].cooldownTime;
+                }
+            }
+        }
+    }
 
     private void Update()
     {
+        bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
         if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
     livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
     livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis))
@@ -635,14 +652,19 @@ public class LivingThingControl : MonoBehaviourPun
 
         if (!photonView.IsMine) return;
 
-
-        cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime);
-        for(int i = 1; i < cooldownTime.Length; i++)
+        if (canTick)
         {
-            cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
+            cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime);
+            for (int i = 1; i < cooldownTime.Length; i++)
+            {
+                cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
+            }
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
         }
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
+        if (agent.enabled) Debug.DrawLine(transform.position, agent.destination, Color.green);
+
 
 
         if (SelfValidator.CancelsMoveCommand.Evaluate(livingThing))
@@ -656,10 +678,15 @@ public class LivingThingControl : MonoBehaviourPun
         }
 
 
+
+
+        if (!canTick)
+        {
+            return;
+        }
+
         List<Channel> channelsToRemove = new List<Channel>();
-
-
-        for(int i = 0;i < ongoingChannels.Count; i++)
+        for (int i = 0;i < ongoingChannels.Count; i++)
         {
             if (ongoingChannels[i].HasEnded())
             {
@@ -778,6 +805,19 @@ public class LivingThingControl : MonoBehaviourPun
         if (currentCommand == null) agentDestination = transform.position;
 
         if (agent.enabled && agent.isOnNavMesh) agent.destination = agentDestination;
+
+        if(agent.enabled && agent.isOnNavMesh)
+        {
+            if (agent.destination == transform.position)
+            {
+                agent.isStopped = true;
+            }
+            else
+            {
+                agent.isStopped = false;
+            }
+        }
+
 
         if(agent.enabled && !agent.isOnNavMesh) FixPosition();
 

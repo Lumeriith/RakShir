@@ -12,6 +12,7 @@ public class FloatingText : MonoBehaviour
     public Vector3 gravity;
     public Vector3 initialVelocity;
     private Vector3 velocity;
+   
     public string text
     {
         get
@@ -59,8 +60,22 @@ public class FloatingText : MonoBehaviour
             return;
         }
 
+
+
         worldPosition += velocity * Time.deltaTime;
         velocity += gravity * Time.deltaTime;
+
+        Vector3 viewportPoint = main.WorldToViewportPoint(worldPosition);
+        if(viewportPoint.x < 0 || viewportPoint.x > 1 || viewportPoint.y < 0 || viewportPoint.y > 1 || viewportPoint.z < 0)
+        {
+            uiText.enabled = false;
+            return;
+        }
+        else
+        {
+            uiText.enabled = true;
+        }
+
 
         transform.position = main.WorldToScreenPoint(worldPosition);
 

@@ -18,25 +18,26 @@ public abstract class Item : Activatable
     [HideInInspector]
     public LivingThing owner = null;
 
-    private Rigidbody rb;
     private Vector3 startPosition;
 
 
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         startPosition = transform.position;
-        rb = GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
-        if(rb != null)
+
+        if(transform.position.y < startPosition.y - 15f)
         {
-            if(transform.position.y < startPosition.y - 15f)
-            {
-                rb.velocity = Vector3.up * 2f; // QoL change. Fallen items will come back.
-                transform.position = startPosition + Vector3.up;
-            }
+            print("dumb");
+            print(transform.position.y);
+            print(startPosition.y);
+            GetComponent<Rigidbody>().velocity = Vector3.up * 2f; // QoL change. Fallen items will come back.
+            transform.position = startPosition + Vector3.up;
         }
+
     }
 
     public void TransferOwnership(LivingThing owner)
@@ -91,6 +92,7 @@ public abstract class Item : Activatable
     {
         if (owner == null) return;
         transform.position = owner.transform.position + owner.GetCenterOffset();
+        startPosition = transform.position;
         owner = null;
         transform.SetParent(null);
         gameObject.SetActive(true);

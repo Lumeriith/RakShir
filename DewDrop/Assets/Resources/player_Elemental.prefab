@@ -34481,6 +34481,9 @@ MonoBehaviour:
   stat: {fileID: 0}
   statusEffect: {fileID: 0}
   outline: {fileID: 0}
+  shouldDecay: 1
+  startDecayTime: 20
+  endDecayTime: 40
 --- !u!114 &5597723862311284507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34514,10 +34517,12 @@ MonoBehaviour:
   autoChaseRange: 4
   autoChaseOutOfRangeCancelTime: 2
   autocastSpells: 0
+  startWithAbilitiesCoolingdown: 0
   spellCastChance: 0.5
-  attackMoveTargetChecksForSecond: 4
+  attackMoveTargetChecksForSecond: 10
   angularSpeed: 800
   reservedCommands: []
+  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &5597723862311284506
 MonoBehaviour:
@@ -34565,14 +34570,14 @@ MonoBehaviour:
   showScalingSettings: 1
   additionalMaximumHealthPerUnit: 20
   additionalHealthRegenerationPerSecondPerUnit: 0.2
-  additionalAttackDamagePerUnit: 2.5
+  additionalAttackDamagePerUnit: 2
   additionalMovementSpeedPerUnit: 2.5
-  additionalAttackSpeedPercentagePerUnit: 1.5
-  additionalDodgeChancePerUnit: 0.5
+  additionalAttackSpeedPercentagePerUnit: 2
+  additionalDodgeChancePerUnit: 0.75
   additionalMaximumManaPerUnit: 30
   additionalManaRegenerationPerSecondPerUnit: 0.5
   additionalSpellPowerPerUnit: 1.5
-  additionalCooldownReductionPerUnit: 1.25
+  additionalCooldownReductionPerUnit: 2.5
 --- !u!114 &5597723862311284505
 MonoBehaviour:
   m_ObjectHideFlags: 0

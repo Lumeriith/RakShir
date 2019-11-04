@@ -17,7 +17,7 @@ public abstract class Activatable : MonoBehaviourPunCallbacks
 
     private List<KeyValuePair<LivingThing, Channel>> dict = new List<KeyValuePair<LivingThing, Channel>>();
 
-    private void Start()
+    protected virtual void Start()
     {
         GameManager.instance.OnActivatableInstantiate.Invoke(this);
     }

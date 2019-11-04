@@ -4,6 +4,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using Photon.Pun;
 using UnityEngine.AI;
+using UnityEngine.Rendering.PostProcessing;
 public enum RoomClearType { AlwaysCleared, ClearWhenAllDead, ClearManually }
 
 [RequireComponent(typeof(PhotonView))]
@@ -13,7 +14,9 @@ public class Room : MonoBehaviourPun
 
     public List<Room> nextRooms;
     public Transform entryPoint;
-
+    public GameObject customLighting;
+    public PostProcessProfile customPostProcessProfile;
+    public bool enableFog = false;
     public bool isActivated { get; private set; }
 
     [Header("Enemy Spawning Settings")]
@@ -89,6 +92,20 @@ public class Room : MonoBehaviourPun
         isActivated = true;
         if (!PhotonNetwork.GetPhotonView(activator_id).IsMine) return;
         StartCoroutine("CoroutineSpawn");
+        if(customLighting != null)
+        {
+            Destroy(transform.Find("/Directional Light").gameObject);
+            GameObject gobj = Instantiate(customLighting);
+            gobj.name = "Directional Light";
+        }
+
+        if(customPostProcessProfile != null)
+        {
+            Camera.main.GetComponent<PostProcessVolume>().profile = customPostProcessProfile;
+        }
+
+        RenderSettings.fog = enableFog;
+
 
     }
 

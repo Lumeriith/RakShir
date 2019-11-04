@@ -71,6 +71,9 @@ MonoBehaviour:
   stat: {fileID: 0}
   statusEffect: {fileID: 0}
   outline: {fileID: 0}
+  shouldDecay: 1
+  startDecayTime: 20
+  endDecayTime: 40
 --- !u!114 &1651788135491938816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +109,6 @@ MonoBehaviour:
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
   reservedCommands: []
-  lastBasicAttackTarget: {fileID: 0}
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &1651788135491938823
 MonoBehaviour:
@@ -411,10 +413,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1651788135491939071}
     m_Modifications:
-    - target: {fileID: 100086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
     - target: {fileID: 400086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -470,6 +468,10 @@ PrefabInstance:
     - target: {fileID: 400086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
+      propertyPath: m_Name
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_Controller

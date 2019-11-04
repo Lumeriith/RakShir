@@ -98408,6 +98408,7 @@ MonoBehaviour:
   deadzoneCameraDistance: {x: 5, y: 35}
   cameraDistanceStepSize: 3
   clampingSpeed: 30
+  visionMultiplier: 1
 --- !u!1 &5951014711730829674
 GameObject:
   m_ObjectHideFlags: 0
@@ -108121,6 +108122,12 @@ MonoBehaviour:
   - {fileID: 7400000, guid: f81ac37cca2cd2b449fd98052595e2ad, type: 2}
   - {fileID: 7400000, guid: b520f173ae516b54092a4925b3f01294, type: 2}
   - {fileID: 7400000, guid: e70b2ab17b4a87e4798442e1b46cd6e7, type: 2}
+  - {fileID: 7400000, guid: 633db15e891e8b24b9b9e5eebe703228, type: 2}
+  - {fileID: 7400000, guid: 945d2dfcbcf247a4c92c2685b2a05e7f, type: 2}
+  - {fileID: 7400000, guid: 6ce984a24e6e9f045baea51bd5304cba, type: 2}
+  - {fileID: 7400000, guid: d87261d0262fc0b4289bef86ace7b3b0, type: 2}
+  - {fileID: 7400000, guid: e10bacadfe081d94f93b81f4544f8320, type: 2}
+  - {fileID: 7400000, guid: 28b06e160ecce4c4ab5809273eb10f89, type: 2}
 --- !u!1 &5951014712189166613
 GameObject:
   m_ObjectHideFlags: 0
@@ -117794,22 +117801,22 @@ MonoBehaviour:
   selfCastModifier: 308
   activateKey: 103
   WeaponSkillKey: 113
-  WeaponSkillCastMethod: 2
+  WeaponSkillCastMethod: 0
   ArmorSkillKey: 119
-  ArmorSkillCastMethod: 2
+  ArmorSkillCastMethod: 0
   BootsSkillKey: 101
-  BootsSkillCastMethod: 2
+  BootsSkillCastMethod: 0
   WeaponUltimateSkillKey: 114
-  WeaponUltimateSkillCastMethod: 2
+  WeaponUltimateSkillCastMethod: 0
   RingSkillKey: 32
-  RingSkillCastMethod: 2
+  RingSkillCastMethod: 0
   Item1Key: 49
   Item2Key: 50
   Item3Key: 51
   Item4Key: 52
   Item5Key: 53
   Item6Key: 54
-  ItemUseMethod: 2
+  ItemUseMethod: 0
   canDrawOutline:
     canTargetSelf: 1
     canTargetOwnSummon: 1
@@ -119481,7 +119488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: b8b288bfeb0a9424a8ac160bd5774f2a, type: 2}
+  sharedProfile: {fileID: 11400000, guid: aeb0e642b463ada4ba09e4f351e40931, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
