@@ -6,7 +6,7 @@ public class ai_cons_BookOfIntelligence : AbilityInstance
 {
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
-        info.owner.stat.intelligence += 1f;
+        info.owner.stat.intelligence += 3f;
         if (photonView.IsMine) info.owner.stat.SyncSecondaryStats();
         StartCoroutine(CoroutineFollow());
     }

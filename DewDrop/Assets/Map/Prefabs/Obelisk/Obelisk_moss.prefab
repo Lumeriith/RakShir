@@ -9,7 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8390301893286592972}
-  m_Layer: 0
+  - component: {fileID: 6787151789910118618}
+  - component: {fileID: 2712000653947836514}
+  - component: {fileID: 120525875530270794}
+  m_Layer: 11
   m_Name: Obelisk_moss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +35,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6787151789910118618
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322494670282151562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2.42
+  m_Height: 20.42
+  m_Direction: 1
+  m_Center: {x: 0, y: 8.68, z: 0}
+--- !u!114 &2712000653947836514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322494670282151562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &120525875530270794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322494670282151562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8f6b18e105da2408b33a9b5c86b58f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationRange: 5
+  channel:
+    channelValidator:
+      evaluatesFalseIfDead: 1
+      excludes: 090a0b0c0d0e0f12
+      invertResult: 0
+    duration: 0
+    canMove: 0
+    canAttack: 0
+    canUseAbility: 0
+    canBeCanceledByCaster: 0
+  isInterruptedByDamage: 1
+  isOpen: 0
 --- !u!1 &741715951354263295
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +107,7 @@ GameObject:
   - component: {fileID: 3028761804826417852}
   - component: {fileID: 3404511804466105252}
   - component: {fileID: 3037079798496499454}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Obelisk_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +190,7 @@ GameObject:
   - component: {fileID: 4650302753353469630}
   - component: {fileID: 1932230168741066257}
   - component: {fileID: 7572564372317705934}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Obelisk_holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

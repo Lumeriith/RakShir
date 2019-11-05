@@ -10,7 +10,8 @@ public class Portal : Activatable
 
     private void Awake()
     {
-        room = GetComponentInParent<Room>();
+        room = transform.parent.parent.GetComponent<Room>();
+        if (room == null) room = transform.parent.GetComponent<Room>();
     }
 
     private void Update()

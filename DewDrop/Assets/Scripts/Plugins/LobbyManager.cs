@@ -5,12 +5,11 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine.SceneManagement;
-public enum GameType { OnlineTestGame }
+public enum GameType { Gladiator, Playground }
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    public static GameType gameType = GameType.OnlineTestGame;
+    public static GameType gameType = GameType.Playground;
     public static bool properlyConfiguredGame = false;
-    public static string sceneName;
 
     public TextMeshProUGUI statusText;
     public byte maxPlayersForOnlineTestGame = 10;
@@ -26,25 +25,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.GameVersion = gameVersion;
-        if (gameType == GameType.OnlineTestGame)
+        if (gameType == GameType.Gladiator)
         {
             PhotonNetwork.Disconnect();
             PhotonNetwork.ConnectUsingSettings();
             statusText.text = "Connecting to Master Server";
+        } else if (gameType == GameType.Playground)
+        {
+            PhotonNetwork.OfflineMode = true;
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
     }
 
     public override void OnConnectedToMaster()
     {
-        statusText.text = "Connected to Master.\nJoining Random Room...";
-        PhotonNetwork.JoinRandomRoom();
+        if(gameType == GameType.Gladiator)
+        {
+            statusText.text = "Connected to Master.\nJoining Random Room...";
+            PhotonNetwork.JoinRandomRoom();
+        }
+
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         statusText.text = "Join Random Room Failed.\n" + message;
-        if(gameType == GameType.OnlineTestGame)
+        if(gameType == GameType.Gladiator)
         {
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersForOnlineTestGame });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 });
             statusText.text += "\nCreating a Room...";
         }
 
@@ -54,7 +61,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel(sceneName);
+            if(gameType == GameType.Gladiator) PhotonNetwork.LoadLevel("Gladiator");
+            else if (gameType == GameType.Playground) PhotonNetwork.LoadLevel("Playground");
         }
     }
 }

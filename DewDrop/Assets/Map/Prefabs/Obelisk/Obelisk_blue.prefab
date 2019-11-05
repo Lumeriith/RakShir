@@ -9,7 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 639744569329694506}
-  m_Layer: 13
+  - component: {fileID: 2687910066026395411}
+  - component: {fileID: 3528180260514504548}
+  - component: {fileID: 2449485477008380646}
+  m_Layer: 11
   m_Name: Obelisk_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +35,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2687910066026395411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028131385258422288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &3528180260514504548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028131385258422288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8f6b18e105da2408b33a9b5c86b58f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationRange: 5
+  channel:
+    channelValidator:
+      evaluatesFalseIfDead: 1
+      excludes: 090a0b0c0d0e0f12
+      invertResult: 0
+    duration: 0
+    canMove: 0
+    canAttack: 0
+    canUseAbility: 0
+    canBeCanceledByCaster: 0
+  isInterruptedByDamage: 1
+  isOpen: 0
+--- !u!136 &2449485477008380646
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028131385258422288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.03
+  m_Height: 19.02
+  m_Direction: 1
+  m_Center: {x: -0.57, y: 0, z: -1.95}
 --- !u!1 &8036631820286607711
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +107,7 @@ GameObject:
   - component: {fileID: 613649814806639004}
   - component: {fileID: 940776992940012919}
   - component: {fileID: 7339395698385165558}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_Ring.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,11 +186,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 639744569329694506}
     m_Modifications:
-    - target: {fileID: 7017476975500689520, guid: 57d766cb5f5781b4891ad4dd0439ce4d,
-        type: 3}
-      propertyPath: m_Name
-      value: Obelisk_holder_blue
-      objectReference: {fileID: 0}
     - target: {fileID: 8338052770103680163, guid: 57d766cb5f5781b4891ad4dd0439ce4d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -201,6 +260,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017476975500689520, guid: 57d766cb5f5781b4891ad4dd0439ce4d,
+        type: 3}
+      propertyPath: m_Name
+      value: Obelisk_holder_blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7017476975500689520, guid: 57d766cb5f5781b4891ad4dd0439ce4d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522279596870952939, guid: 57d766cb5f5781b4891ad4dd0439ce4d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57d766cb5f5781b4891ad4dd0439ce4d, type: 3}

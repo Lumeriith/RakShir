@@ -22,15 +22,22 @@ public class ai_Spell_Rare_HarvestSoul : AbilityInstance
     private IEnumerator CoroutineHarvestSoul()
     {
         yield return new WaitForSeconds(delay);
-        info.owner.DoPureDamage(info.target.maximumHealth * damageRatio, info.target);
+        if(info.target.type == LivingThingType.Monster && (info.target.tier == LivingThingTier.Boss || info.target.tier == LivingThingTier.Elite))
+        {
+            info.owner.DoPureDamage(info.target.maximumHealth * damageRatio * 0.5f, info.target);
+        }
+        else
+        {
+            info.owner.DoPureDamage(info.target.maximumHealth * damageRatio, info.target);
+        }
+        info.owner.DoHeal(healAmount, info.owner);
+        info.owner.DoManaHeal(manahealAmount, info.owner);
         float start = Time.time;
         while(Time.time - start < gracePeriod)
         {
             yield return new WaitForSeconds(0.05f);
             if (info.target.IsDead())
             {
-                info.owner.DoHeal(healAmount, info.owner);
-                info.owner.DoManaHeal(manahealAmount, info.owner);
                 if(info.owner.control.skillSet[4] != null && info.owner.control.skillSet[4] as trg_Spell_Rare_HarvestSoul != null)
                 {
                     info.owner.control.skillSet[4].ApplyCooldownReduction(cooldownReductionAmount);

@@ -174,7 +174,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 21300000, guid: 8644585336f9f7d4ebd350a02295fc93, type: 3}
   abilityName: "\uAD6C\uB984 \uC810\uBA78"
   abilityDescription: "\uC9E7\uC740 \uAC70\uB9AC\uB97C \uC21C\uAC04 \uC774\uB3D9\uD569\uB2C8\uB2E4.
-    \uC790\uC2E0\uC758 \uC0DD\uBA85\uB825\uC774 60% \uC774\uC0C1\uC77C \uB54C \uC0AC\uC6A9\uD558\uBA74
+    \uC790\uC2E0\uC758 \uC0DD\uBA85\uB825\uC774 75% \uC774\uC0C1\uC77C \uB54C \uC0AC\uC6A9\uD558\uBA74
     \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774 8\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
   castAnimation:
   - {fileID: 7400000, guid: fcfc33be89816744fafbe85610d46bf3, type: 2}
@@ -204,7 +204,7 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f120110
     invertResult: 0
   cooldownTime: 12
-  healthThreshold: 0.6
+  healthThreshold: 0.75
   cooldownReduction: 8
 --- !u!1001 &1612898456162796947
 PrefabInstance:
@@ -288,11 +288,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
-      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -362,6 +357,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

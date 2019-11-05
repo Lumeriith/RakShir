@@ -148,6 +148,9 @@ MonoBehaviour:
   stat: {fileID: 0}
   statusEffect: {fileID: 0}
   outline: {fileID: 0}
+  shouldDecay: 1
+  startDecayTime: 20
+  endDecayTime: 40
 --- !u!114 &3788430676306712879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,10 +182,12 @@ MonoBehaviour:
   autoChaseRange: 10
   autoChaseOutOfRangeCancelTime: 2
   autocastSpells: 1
+  startWithAbilitiesCoolingdown: 0
   spellCastChance: 0.3
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
   reservedCommands: []
+  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &3788430676306712878
 MonoBehaviour:
@@ -196,11 +201,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de52ed1dc4fbfe846a4d873896547ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 200
+  currentHealth: 250
   currentMana: 0
   currentGold: 0
   isDead: 0
-  baseMaximumHealth: 300
+  baseMaximumHealth: 250
   baseHealthRegenerationPerSecond: 0
   baseMaximumMana: 0
   baseManaRegenerationPerSecond: 0
@@ -268,6 +273,7 @@ MonoBehaviour:
   ownBase: {fileID: 0}
   enemyBase: {fileID: 0}
   allyBase: {fileID: 0}
+  decalScale: 1
 --- !u!114 &3788430676306712867
 MonoBehaviour:
   m_ObjectHideFlags: 0

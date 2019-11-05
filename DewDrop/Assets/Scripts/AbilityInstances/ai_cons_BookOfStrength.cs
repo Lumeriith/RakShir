@@ -6,7 +6,7 @@ public class ai_cons_BookOfStrength : AbilityInstance
 {
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
-        info.owner.stat.strength += 1f;
+        info.owner.stat.strength += 3f;
         if(photonView.IsMine) info.owner.stat.SyncSecondaryStats();
         StartCoroutine(CoroutineFollow());
     }

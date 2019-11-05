@@ -89,7 +89,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private List<Room> createdRooms = new List<Room>();
 
     [Button("Force Setup Game")]
-    private void SetupGame()
+    public void SetupGame()
     {
         if(phase != GladiatorGamePhase.Waiting)
         {
@@ -340,6 +340,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private void BuildLootDecks()
     {
+        
         #region Build Epic Loot Deck
         List<List<int>> epicClumps = new List<List<int>>();
         List<string> epicClumpSetNames = new List<string>();
@@ -517,9 +518,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.InRoom)
         {
-            Debug.Log("Gladiator Game cannot operate if not in room, returning to Lobby...");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
-            LobbyManager.sceneName = "Gladiator Game";
+            Debug.Log("Gladiator Game cannot operate if not in room, returning to Main Menu...");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
             return;
         }
 
@@ -605,11 +605,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private List<E> ShuffleList<E>(List<E> inputList) // http://www.vcskicks.com/randomize_array.php
+    private List<E> ShuffleList<E>(List<E> inputList)
     {
         List<E> randomList = new List<E>();
 
-        System.Random r = new System.Random();
+        System.Random r = new System.Random(Random.Range(int.MinValue, int.MaxValue));
         int randomIndex = 0;
         while (inputList.Count > 0)
         {
@@ -622,7 +622,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.LogWarning("Disconnected! " + cause.ToString());
+        Debug.LogError("Disconnected! " + cause.ToString());
     }
 
 

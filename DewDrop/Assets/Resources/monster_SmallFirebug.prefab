@@ -71,6 +71,9 @@ MonoBehaviour:
   stat: {fileID: 0}
   statusEffect: {fileID: 0}
   outline: {fileID: 0}
+  shouldDecay: 1
+  startDecayTime: 20
+  endDecayTime: 40
 --- !u!114 &1152925636380131605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,10 +105,12 @@ MonoBehaviour:
   autoChaseRange: 10
   autoChaseOutOfRangeCancelTime: 2
   autocastSpells: 0
+  startWithAbilitiesCoolingdown: 0
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
   reservedCommands: []
+  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &1152925636380131602
 MonoBehaviour:
@@ -191,6 +196,7 @@ MonoBehaviour:
   ownBase: {fileID: 0}
   enemyBase: {fileID: 0}
   allyBase: {fileID: 0}
+  decalScale: 1
 --- !u!114 &1152925636380131601
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -90,8 +90,9 @@ public class Room : MonoBehaviourPun
     private void RpcActivateRoom(int activator_id)
     {
         isActivated = true;
-        if (!PhotonNetwork.GetPhotonView(activator_id).IsMine) return;
-        StartCoroutine("CoroutineSpawn");
+        LivingThing activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<LivingThing>();
+        if (!activator.photonView.IsMine) return;
+        StartCoroutine(CoroutineSpawn(activator));
         if(customLighting != null)
         {
             Destroy(transform.Find("/Directional Light").gameObject);
@@ -109,7 +110,7 @@ public class Room : MonoBehaviourPun
 
     }
 
-    private IEnumerator CoroutineSpawn()
+    private IEnumerator CoroutineSpawn(LivingThing activator)
     {
         int i = 0;
         while (i < spawners.Count)
@@ -134,7 +135,7 @@ public class Room : MonoBehaviourPun
             }
             else
             {
-                spawners[i].Spawn();
+                spawners[i].Spawn(activator);
                 yield return new WaitForSeconds(spawnDelay);
             }
             i++;

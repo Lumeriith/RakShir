@@ -12,6 +12,8 @@ public class Spawner : MonoBehaviour
     [HideInInspector]
     public List<LivingThing> spawnedLivingThings;
 
+    private bool started = false;
+
     private void Awake()
     {
         Renderer renderer = GetComponent<Renderer>();
@@ -20,18 +22,25 @@ public class Spawner : MonoBehaviour
 
     public bool IsCleared()
     {
-        if (spawnedLivingThings.Count == 0) return false;
+        if (spawnedLivingThings.Count == 0) return started;
         for (int i = 0; i < spawnedLivingThings.Count; i++)
         {
-            if (spawnedLivingThings[i] == null || spawnedLivingThings[i].IsAlive()) return false;
+            if (spawnedLivingThings[i] != null && spawnedLivingThings[i].IsAlive()) return false;
         }
         return true;
     }
 
 
-    public void Spawn()
+    public void Spawn(LivingThing activator = null)
     {
-        spawnedLivingThings.Add(PhotonNetwork.Instantiate(livingThingPrefab.name, transform.position, transform.rotation).GetComponent<LivingThing>());
+        started = true;
+        LivingThing thing = PhotonNetwork.Instantiate(livingThingPrefab.name, transform.position, transform.rotation).GetComponent<LivingThing>();
+        spawnedLivingThings.Add(thing);
+        if(activator != null)
+        {
+            thing.control.CommandChase(activator);
+        }
+        print(livingThingPrefab.name);
     }
 
     public void DestroyAllSpawnedLivingThings()

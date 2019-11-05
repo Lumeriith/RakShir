@@ -20,7 +20,6 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
         {
             Debug.Log("Test Game cannot operate if not in room, returning to Main Menu...");
             UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
-            LobbyManager.sceneName = "Test Game";
         }
     }
     public void SpawnAsReptile()
