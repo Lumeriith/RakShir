@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
+    public static SortedList<float, Rect> drawnInfoTextRects = new SortedList<float, Rect>(new DuplicateKeyComparer<float>());
+
     public bool clickable;
 
     private Image image_image;
@@ -12,6 +15,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     private Text text_text;
     private CanvasGroup canvasGroup;
     private Camera main;
+    private RectTransform rectTransform;
 
     public string text;
 
@@ -39,6 +43,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         main = Camera.main;
         image_icon = transform.Find("Icon").GetComponent<Image>();
         creationTime = Time.time;
+        rectTransform = GetComponent<RectTransform>();
     }
 
     private void Start()
@@ -76,6 +81,11 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         }
     }
 
+    private void Update()
+    {
+        drawnInfoTextRects.Clear();
+    }
+
     private void LateUpdate() {
         if (follow == null)
         {
@@ -94,11 +104,23 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         }
         else
         {
+
             text_text.text = text;
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             canvasGroup.interactable = true;
             transform.position = main.WorldToScreenPoint(follow.transform.position) + offsetUI;
+            Rect myRect = new Rect((Vector2)transform.position - rectTransform.sizeDelta/2f, rectTransform.sizeDelta);
+            for (int i = 0; i < drawnInfoTextRects.Count; i++)
+            {
+                if (myRect.Overlaps(drawnInfoTextRects.Values[i]))
+                {
+                    transform.position += Vector3.up * (drawnInfoTextRects.Values[i].yMax - myRect.yMin);
+                    myRect = new Rect((Vector2)transform.position - rectTransform.sizeDelta / 2f, rectTransform.sizeDelta);
+
+                }
+            }
+            drawnInfoTextRects.Add(myRect.y, myRect);
         }
     }
 
@@ -106,19 +128,37 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData data)
     {
-        image_image.color = new Color(180f / 255f, 180f / 255f, 180f / 255f, 200f / 255f);
+        if(data.button == PointerEventData.InputButton.Left) image_image.color = new Color(180f / 255f, 180f / 255f, 180f / 255f, 200f / 255f);
+
     }
 
     public void OnPointerUp(PointerEventData data)
     {
-        image_image.color = new Color(0f, 0f, 0f, 189f / 255f);
+        if (data.button == PointerEventData.InputButton.Left) image_image.color = new Color(0f, 0f, 0f, 189f / 255f);
     }
 
 
     public void OnPointerClick(PointerEventData data)
     {
-        OnClick.Invoke();
+        if (data.button == PointerEventData.InputButton.Left) OnClick.Invoke();
     }
 
 
+}
+
+public class DuplicateKeyComparer<TKey> : IComparer<TKey> where TKey : IComparable
+{
+    #region IComparer<TKey> Members
+
+    public int Compare(TKey x, TKey y)
+    {
+        int result = x.CompareTo(y);
+
+        if (result == 0)
+            return 1;   // Handle equality as beeing greater
+        else
+            return result;
+    }
+
+    #endregion
 }
