@@ -25,6 +25,12 @@ public abstract class Item : Activatable
     {
         base.Start();
         startPosition = transform.position;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if(rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.None;
+            rb.drag = 1f;
+        }
     }
     private void FixedUpdate()
     {

@@ -129,6 +129,11 @@ public class UnitControlManager : MonoBehaviour
     Vector3 GetCurrentCursorPositionInWorldSpace()
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        float targetY = selectedUnit.transform.position.y;
+        return cursorRay.origin - (cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y)) * (cursorRay.origin.y - targetY) / cursorRay.origin.y;
+
+        /*
+        
         RaycastHit hit;
 
         if(Physics.Raycast(cursorRay, out hit, 100, LayerMask.GetMask("Ground")))
@@ -140,7 +145,7 @@ public class UnitControlManager : MonoBehaviour
             float targetY = selectedUnit.transform.position.y;
             return cursorRay.origin - (cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y)) * (cursorRay.origin.y - targetY) / cursorRay.origin.y;
         }
-
+        */
     }
 
     private bool CommandAbilityOnContext(AbilityTrigger trigger, bool isReservation)
@@ -381,6 +386,7 @@ public class UnitControlManager : MonoBehaviour
                         {
                             inputState = InputState.None;
                             pendingTrigger = null;
+                            pendingConsumable = null;
                         }
                     }
                     break;
@@ -396,6 +402,7 @@ public class UnitControlManager : MonoBehaviour
                             CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
                         }
                         pendingTrigger = null;
+                        pendingConsumable = null;
                     }
                     break;
             }
@@ -423,6 +430,7 @@ public class UnitControlManager : MonoBehaviour
             {
                 colliders = colliders.OrderBy(collider => Vector3.Distance(selectedUnit.transform.position, collider.transform.position)).ToArray();
                 pendingTrigger = null;
+                pendingConsumable = null;
                 inputState = InputState.None;
                 selectedUnit.control.CommandActivate(colliders[0].GetComponent<Activatable>(), Input.GetKey(reservationModifier));
             }
@@ -444,6 +452,7 @@ public class UnitControlManager : MonoBehaviour
         if (Input.GetKeyDown(attackKey))
         {
             pendingTrigger = null;
+            pendingConsumable = null;
             inputState = InputState.Attack;
         }
     }
@@ -585,12 +594,14 @@ public class UnitControlManager : MonoBehaviour
                 if (act != null)
                 {
                     pendingTrigger = null;
+                    pendingConsumable = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
                     Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
                 } else if (Input.GetKey(reservationModifier))
                 {
                     pendingTrigger = null;
+                    pendingConsumable = null;
                     inputState = InputState.None;
                     Vector3 pos = GetCurrentCursorPositionInWorldSpace();
                     selectedUnit.control.CommandMove(pos, true);
@@ -599,6 +610,7 @@ public class UnitControlManager : MonoBehaviour
                 else
                 {
                     pendingTrigger = null;
+                    pendingConsumable = null;
                     inputState = InputState.ContinousMove;
                     Vector3 pos = GetCurrentCursorPositionInWorldSpace();
                     selectedUnit.control.CommandMove(pos, false);
@@ -613,6 +625,7 @@ public class UnitControlManager : MonoBehaviour
                 if (target != null)
                 {
                     pendingTrigger = null;
+                    pendingConsumable = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
                     Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
@@ -620,6 +633,7 @@ public class UnitControlManager : MonoBehaviour
                 else if (act != null)
                 {
                     pendingTrigger = null;
+                    pendingConsumable = null;
                     inputState = InputState.None;
                     selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
                     Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
@@ -629,6 +643,7 @@ public class UnitControlManager : MonoBehaviour
                     if (Input.GetKey(reservationModifier))
                     {
                         pendingTrigger = null;
+                        pendingConsumable = null;
                         inputState = InputState.None;
                         Vector3 pos = GetCurrentCursorPositionInWorldSpace();
                         selectedUnit.control.CommandMove(pos, true);
@@ -637,6 +652,7 @@ public class UnitControlManager : MonoBehaviour
                     else
                     {
                         pendingTrigger = null;
+                        pendingConsumable = null;
                         inputState = InputState.ContinousMove;
                         Vector3 pos = GetCurrentCursorPositionInWorldSpace();
                         selectedUnit.control.CommandMove(pos, false);
@@ -653,6 +669,10 @@ public class UnitControlManager : MonoBehaviour
 
     private void DisplayAppropriateIndicator()
     {
+        Indicator indicator = null;
+        if (pendingTrigger != null) indicator = pendingTrigger.indicator;
+        else if (pendingConsumable != null) indicator = pendingConsumable.indicator;
+
         if(inputState == InputState.Attack && selectedUnit.control.skillSet[0] != null)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
@@ -660,16 +680,16 @@ public class UnitControlManager : MonoBehaviour
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
             rangeIndicator.transform.localScale = new Vector3(selectedUnit.control.skillSet[0].indicator.range * 2, selectedUnit.control.skillSet[0].indicator.range * 2, 4);
-
+            
         }
-        else if(pendingTrigger != null && pendingTrigger.indicator.type == IndicatorType.Range)
+        else if(indicator != null && indicator.type == IndicatorType.Range)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
-            rangeIndicator.transform.localScale = new Vector3(pendingTrigger.indicator.range * 2, pendingTrigger.indicator.range * 2, 4);
-        } else if (pendingTrigger != null && pendingTrigger.indicator.type == IndicatorType.Arrow)
+            rangeIndicator.transform.localScale = new Vector3(indicator.range * 2, indicator.range * 2, 4);
+        } else if (indicator != null && indicator.type == IndicatorType.Arrow)
         {
             rangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(true);
@@ -681,11 +701,11 @@ public class UnitControlManager : MonoBehaviour
             Vector3 cursorPos = GetCurrentCursorPositionInWorldSpace();
             rotation.z = -Quaternion.LookRotation(cursorPos - selectedUnit.transform.position, Vector3.up).eulerAngles.y;
 
-            baseScale.x = pendingTrigger.indicator.arrowWidth;
-            baseScale.y = pendingTrigger.indicator.arrowLength - 1f;
+            baseScale.x = indicator.arrowWidth;
+            baseScale.y = indicator.arrowLength - 1f;
             baseScale.z = 4f;
 
-            headScale.x = pendingTrigger.indicator.arrowWidth;
+            headScale.x = indicator.arrowWidth;
             headScale.y = 1f;
             headScale.z = 4f;
 

@@ -8,8 +8,9 @@ public class Portal : Activatable
 
     public bool isOpen;
 
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         room = transform.parent.parent.GetComponent<Room>();
         if (room == null) room = transform.parent.GetComponent<Room>();
     }

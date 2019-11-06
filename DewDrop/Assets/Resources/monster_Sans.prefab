@@ -105,10 +105,12 @@ MonoBehaviour:
   autoChaseRange: 4
   autoChaseOutOfRangeCancelTime: 2
   autocastSpells: 0
+  startWithAbilitiesCoolingdown: 0
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
   reservedCommands: []
+  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &1651788135491938823
 MonoBehaviour:
@@ -122,11 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de52ed1dc4fbfe846a4d873896547ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 200
+  currentHealth: 2000
   currentMana: 0
   currentGold: 0
   isDead: 0
-  baseMaximumHealth: 200
+  baseMaximumHealth: 2000
   baseHealthRegenerationPerSecond: 0
   baseMaximumMana: 0
   baseManaRegenerationPerSecond: 0
@@ -413,6 +415,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1651788135491939071}
     m_Modifications:
+    - target: {fileID: 100086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
     - target: {fileID: 400086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -468,10 +474,6 @@ PrefabInstance:
     - target: {fileID: 400086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 100086, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
-      propertyPath: m_Name
-      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: a58154c350c4ccf47a6cdad03a8dca1a, type: 3}
       propertyPath: m_Controller
