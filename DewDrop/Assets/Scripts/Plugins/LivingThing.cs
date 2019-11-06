@@ -315,9 +315,9 @@ public class LivingThing : MonoBehaviourPun
             if (!renderers[i].material.HasProperty("_EmissionColor") ||
                 !renderers[i].material.HasProperty("_EmissionMap")) continue;
             materials.Add(renderers[i].material);
-            defaultEmissionColors.Add(materials[i].GetColor("_EmissionColor"));
-            defaultEmissionMaps.Add(materials[i].GetTexture("_EmissionMap"));
-            defaultKeywordEnabled.Add(materials[i].IsKeywordEnabled("_EMISSION"));
+            defaultEmissionColors.Add(materials[materials.Count - 1].GetColor("_EmissionColor"));
+            defaultEmissionMaps.Add(materials[materials.Count - 1].GetTexture("_EmissionMap"));
+            defaultKeywordEnabled.Add(materials[materials.Count - 1].IsKeywordEnabled("_EMISSION"));
         }
 
         OnTakeDamage += (InfoDamage _) => {
