@@ -9,19 +9,17 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
     public Transform elementalSpawnPoint;
     public Transform reptileSpawnPoint;
 
+
     private void Start()
     {
         DecalSystem.DecalUtils.UpdateAffectedObjects();
-    }
-
-    private void Update()
-    {
         if (!PhotonNetwork.InRoom)
         {
-            Debug.Log("Test Game cannot operate if not in room, returning to Main Menu...");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+            PhotonNetwork.OfflineMode = true;
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
     }
+
     public void SpawnAsReptile()
     {
         GameManager.instance.SpawnLocalPlayer(PlayerType.Reptile, reptileSpawnPoint.position);
