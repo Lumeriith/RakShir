@@ -7,11 +7,10 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
 
     public TargetValidator targetValidator;
     public float range;
-    public float slowDuration;
-    public float slowAmount;
+    public float airborneDuration = 0.65f;
+    public float airborneDistance = 1.5f;
     public float damage;
-    public float shieldAmount;
-    public float shieldDuration;
+
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
@@ -19,10 +18,9 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
         List<LivingThing> lvs = info.owner.GetAllTargetsInRange(info.owner.transform.position, range, targetValidator);
         for(int i = 0; i < lvs.Count; i++)
         {
-            lvs[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
+            lvs[i].AirborneForDuration(lvs[i].transform.position + (lvs[i].transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration);
             info.owner.DoMagicDamage(damage, lvs[i]);
         }
-        info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(info.owner, shieldDuration, shieldAmount));
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }

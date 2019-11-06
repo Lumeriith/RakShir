@@ -153,8 +153,8 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
         if (!PhotonNetwork.InRoom) return;
         if (!isDead)
         {
-            currentHealth = Mathf.MoveTowards(currentHealth, finalMaximumHealth, finalHealthRegenerationPerSecond * Time.deltaTime);
-            currentMana = Mathf.MoveTowards(currentMana, finalMaximumMana, finalManaRegenerationPerSecond * Time.deltaTime);
+            currentHealth = Mathf.Clamp(Mathf.MoveTowards(currentHealth, finalMaximumHealth, finalHealthRegenerationPerSecond * Time.deltaTime), 0, finalMaximumHealth);
+            currentMana = Mathf.Clamp(Mathf.MoveTowards(currentMana, finalMaximumMana, finalManaRegenerationPerSecond * Time.deltaTime), 0, finalMaximumMana);
         }
     }
 

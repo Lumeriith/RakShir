@@ -21,5 +21,16 @@ public class trg_Spell_Elemental_DoubleKick : AbilityTrigger
         AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Elemental_DoubleKick", owner.transform.position, Quaternion.identity, info, data);
     }
 
+    private float lastCheckTime;
+    private bool cachedIsReady = false;
+    public override bool IsReady()
+    {
+        if (Time.time - lastCheckTime > 0.1f)
+        {
+            cachedIsReady = owner.GetAllTargetsInRange(owner.transform.position, kickRange, kickTargetValidator).Count != 0;
+            lastCheckTime = Time.time;
+        }
+        return cachedIsReady;
+    }
 
 }
