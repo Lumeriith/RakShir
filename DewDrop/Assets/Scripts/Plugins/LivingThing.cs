@@ -144,6 +144,7 @@ public class LivingThing : MonoBehaviourPun
     private List<Texture> defaultEmissionMaps = new List<Texture>();
     private List<bool> defaultKeywordEnabled = new List<bool>();
 
+    private Displacement ongoingDisplacement;
 
     #region Action Declarations
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
@@ -455,6 +456,16 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
+    public void StartDisplacement(Displacement displacement)
+    {
+        
+        photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
+            displacement.isTargetDisplacement,
+            displacement.vector1,
+            displacement.vector2,
+            displacement.duration, )
+    }
+
     public void SetReadableName(string readableName)
     {
         photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
@@ -995,7 +1006,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcLookAt(Vector3 lookPosition, bool immediately)
+    public void RpcLookAt(Vector3 lookPosition, bool immediately)
     {
         control.LookAt(lookPosition, immediately);
     }

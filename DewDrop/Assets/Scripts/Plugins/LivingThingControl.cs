@@ -528,6 +528,7 @@ public class LivingThingControl : MonoBehaviourPun
 
     public void LookAt(Vector3 location, bool immediately = false)
     {
+        if (Vector3.Distance(transform.position, location) <= float.Epsilon) return;
         Vector3 euler = Quaternion.LookRotation(location - transform.position, transform.up).eulerAngles;
         euler.x = 0;
         euler.z = 0;

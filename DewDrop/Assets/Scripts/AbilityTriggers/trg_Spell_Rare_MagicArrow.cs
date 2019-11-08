@@ -7,7 +7,7 @@ public class trg_Spell_Rare_MagicArrow : AbilityTrigger
     public int shotArrows = 0;
     public override void OnCast(CastInfo info)
     {
-        info.owner.control.StartChanneling(new Channel(selfValidator, 0.4f, false, false, false, false, ChannelFinish, null));
+        info.owner.control.StartChanneling(new Channel(selfValidator, 0.2f, false, false, false, false, ChannelFinish, null));
         StartCooldown();
         SpendMana();
     }
