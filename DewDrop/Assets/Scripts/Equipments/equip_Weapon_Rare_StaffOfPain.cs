@@ -8,7 +8,7 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
     public override void OnEquip(LivingThing owner)
     {
         owner.stat.baseAttackDamage = 20f;
-        owner.stat.baseAttacksPerSecond = 1f;
+        owner.stat.baseAttacksPerSecond = 1.4f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - MagicBow Stand");
@@ -31,10 +31,10 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
 
     private void DealMagicDamage(InfoMagicDamage info)
     {
-        List<StatusEffect> pains = info.to.statusEffect.GetCustomStatusEffectsByName("Pain");
+        List<StatusEffect> pains = info.to.statusEffect.GetCustomStatusEffectsByName("고통");
         if (pains.Count == 0)
         {
-            info.to.ApplyStatusEffect(StatusEffect.Custom(info.from, "Pain", painDuration));
+            info.to.ApplyStatusEffect(StatusEffect.Custom(info.from, "고통", painDuration));
         }
         else
         {

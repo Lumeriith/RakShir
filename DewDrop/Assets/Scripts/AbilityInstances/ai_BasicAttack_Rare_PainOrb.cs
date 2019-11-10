@@ -36,7 +36,7 @@ public class ai_BasicAttack_Rare_PainOrb : AbilityInstance
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
             info.owner.DoBasicAttackImmediately(info.target);
-            List<StatusEffect> statusEffects = info.target.statusEffect.GetCustomStatusEffectsByName("Pain");
+            List<StatusEffect> statusEffects = info.target.statusEffect.GetCustomStatusEffectsByName("고통");
             if (statusEffects.Count != 0)
             {
                 info.target.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
