@@ -18,6 +18,8 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     private ParticleSystem fly;
     private ParticleSystem hit;
 
+    private Displacement displacement;
+
     private void Awake()
     {
         fly = transform.Find("Fly").GetComponent<ParticleSystem>();
@@ -29,12 +31,8 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         fly.Play();
         if (!photonView.IsMine) return;
 
-        Vector3 targetPosition = info.owner.transform.position + info.directionVector * distance;
-        float dashDuration = Vector3.Distance(targetPosition, info.owner.transform.position) / speed;
-        info.owner.DashThroughForDuration(targetPosition, dashDuration);
-        Channel channel = new Channel(channelValidator, dashDuration, false, false, true, false, null, Stopped);
-        info.owner.control.StartChanneling(channel);
-        StartCoroutine(CoroutineEndAfterFullDistance(dashDuration));
+        displacement = new Displacement(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, EasingFunction.Ease.Linear, Stopped, Stopped);
+        info.owner.StartDisplacement(displacement);
     }
 
     private void Stopped()
@@ -57,13 +55,13 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 
-        info.owner.CancelDash();
+        displacement.Cancel();
 
         photonView.RPC("RpcHit", RpcTarget.All, other.ClosestPoint(transform.position));
         info.owner.DoBasicAttackImmediately(lv);
         info.owner.DoMagicDamage(bonusDamage, lv);
 
-        lv.AirborneForDuration(lv.transform.position + info.owner.transform.forward * airborneDistance, airborneTime);
+        lv.StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneTime, false, false, EasingFunction.Ease.EaseOutSine));
 
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();

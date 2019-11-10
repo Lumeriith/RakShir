@@ -285,6 +285,9 @@ public class Command
         if (self.control.skillSet[0] == null) return true;
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
+
+        if (self.currentRoom != target.currentRoom) return true;
+
         // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
 
         if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius <= self.control.skillSet[0].range)
@@ -336,6 +339,9 @@ public class Command
         if (!trigger.selfValidator.Evaluate(self)) return true;
         if (!self.HasMana(trigger.manaCost)) return true;
         if (!trigger.IsReady()) return true;
+
+        if (info.target != null && self.currentRoom != info.target.currentRoom) return true;
+
         switch (trigger.targetingType)
         {
             case AbilityTrigger.TargetingType.None:

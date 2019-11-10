@@ -10,8 +10,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     {
         if (photonView.IsMine)
         {
-
-            info.owner.DashThroughForDuration(transform.position + info.directionVector * distance, duration);
+            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true));
             info.owner.LookAt(transform.position + info.directionVector, true);
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();

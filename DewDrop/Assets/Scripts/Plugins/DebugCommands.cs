@@ -37,6 +37,17 @@ public class DebugCommands : MonoBehaviour
 
     }
 
+    [ConsoleMethod("blue", "Apply superb cooldown reduction and mana regeneration to the target")]
+    public static void blue()
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.stat.baseManaRegenerationPerSecond = 1000f;
+        target.stat.baseCooldownReduction = 10000f;
+        target.stat.SyncBaseStats();
+    }
+
+
     [ConsoleMethod("reset", "Reset all cooldowns of local player and fully heals mana")]
     public static void Reset()
     {

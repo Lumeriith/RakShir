@@ -25,6 +25,8 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     public float shieldDuration = 5f;
 
     private Vector3 forwardVector;
+    private Displacement displacement;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         hit = transform.Find("Hit").GetComponent<ParticleSystem>();
@@ -46,10 +48,17 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     {
         float duration = Vector3.Distance(chargeDestination, info.owner.transform.position) / chargeSpeed;
         photonView.RPC("RpcCharge", RpcTarget.All);
-        info.owner.DashThroughForDuration(chargeDestination, duration);
-        info.owner.control.StartChanneling(new Channel(selfValidator, duration, false, false, false, false, ChannelCanceled, ChannelCanceled));
+        displacement = new Displacement(chargeDestination - info.owner.transform.position, duration, true, true, EasingFunction.Ease.Linear, StopCharge, StopCharge);
+        info.owner.StartDisplacement(displacement);
         collider.enabled = true;
         info.owner.PlayCustomAnimation("Rare - Charge");
+    }
+
+    private void StopCharge()
+    {
+        photonView.RPC("RpcStopCharge", RpcTarget.All);
+        DetachChildParticleSystemsAndAutoDelete();
+        DestroySelf();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,14 +67,14 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         if (!photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-
+        displacement.Cancel();
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(other.transform.position, radius, targetValidator);
-        info.owner.CancelDash();
+
         for (int i = 0;i < targets.Count; i++)
         {
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
             info.owner.DoMagicDamage(damage, targets[i]);
-            targets[i].AirborneForDuration(targets[i].transform.position + forwardVector * airborneDistance, airborneDuration);
+            targets[i].StartDisplacement(new Displacement(forwardVector * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutQuad));
             targets[i].ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
         }
 
@@ -106,7 +115,6 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     private void ChannelCanceled()
     {
         if (!isAlive) return;
-        info.owner.CancelDash();
         DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
         DestroySelf();
     }

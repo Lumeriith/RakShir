@@ -11,30 +11,26 @@ public class ai_Spell_Rare_Slip : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.rotation = castInfo.directionQuaternion;
-        StartCoroutine(CoroutineSlip());
-    }
-
-    private IEnumerator CoroutineSlip()
-    {
         Vector3 posA = transform.position + info.directionVector * distance * 3f / 4f;
         Vector3 posB = transform.position + info.directionVector * distance;
-        
+
         info.owner.stat.bonusDodgeChance += 50f;
+
 
         if (photonView.IsMine)
         {
-            info.owner.DashThroughForDuration(posA, duration / 2f + .1f);
+            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true, EasingFunction.Ease.EaseOutQuad, StopSlip, StopSlip));
             info.owner.ApplyStatusEffect(StatusEffect.HealOverTime(info.owner, healDuration, (info.owner.maximumHealth - info.owner.currentHealth) * healMultiplier));
         }
-        yield return new WaitForSeconds(duration / 2f);
-        if (photonView.IsMine) info.owner.DashThroughForDuration(posB, duration / 2f);
-        yield return new WaitForSeconds(duration / 2f);
+    }
+
+
+
+    private void StopSlip()
+    {
         info.owner.stat.bonusDodgeChance -= 50f;
-        if (photonView.IsMine)
-        {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
-        }
+        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
+        DestroySelf();
     }
 
     protected override void AliveUpdate()

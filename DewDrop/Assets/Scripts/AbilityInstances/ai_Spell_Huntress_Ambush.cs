@@ -13,18 +13,12 @@ public class ai_Spell_Huntress_Ambush : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        StartCoroutine(CoroutineAmbush());
-
+        info.owner.StartDisplacement(new Displacement(info.target, marginToTarget, dashSpeed, true, true, Slice, Canceled));
+        info.owner.PlayCustomAnimation("Huntress - Ambush - Dash", dashAnimationDuration);
     }
 
-    IEnumerator CoroutineAmbush()
+    private void Slice()
     {
-        Vector3 dashPosition = info.target.transform.position + (info.owner.transform.position - info.target.transform.position).normalized * marginToTarget;
-        float dashDuration = Vector3.Distance(info.owner.transform.position, dashPosition) / dashSpeed;
-        info.owner.DashThroughForDuration(dashPosition, dashDuration);
-        info.owner.LookAt(dashPosition, true);
-        info.owner.PlayCustomAnimation("Huntress - Ambush - Dash", dashAnimationDuration);
-        yield return new WaitForSeconds(dashDuration);
         info.owner.DoMagicDamage(70, info.target);
         info.owner.LookAt(info.target.transform.position, true);
         info.owner.PlayCustomAnimation("Huntress - Ambush - Slice", sliceAnimationDuration);
@@ -32,5 +26,12 @@ public class ai_Spell_Huntress_Ambush : AbilityInstance
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }
+
+    private void Canceled()
+    {
+        DestroySelf();
+    }
+
+
 
 }

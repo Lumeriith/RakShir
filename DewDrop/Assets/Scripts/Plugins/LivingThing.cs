@@ -144,7 +144,8 @@ public class LivingThing : MonoBehaviourPun
     private List<Texture> defaultEmissionMaps = new List<Texture>();
     private List<bool> defaultKeywordEnabled = new List<bool>();
 
-    private Displacement ongoingDisplacement;
+    [HideInInspector]
+    public Displacement ongoingDisplacement = null;
 
     #region Action Declarations
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
@@ -207,7 +208,34 @@ public class LivingThing : MonoBehaviourPun
 
     public float droppedGold = 10f;
 
-    public Room currentRoom { get; private set; }
+
+    public Room currentRoom {
+        get
+        {
+            if(_currentRoom == null)
+            {
+                RaycastHit info;
+                if(Physics.Raycast(transform.position, Vector3.down, out info, 200f, LayerMask.GetMask("Ground")))
+                {
+                    _currentRoom = info.collider.GetComponent<Room>();
+                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.GetComponent<Room>();
+                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.GetComponent<Room>();
+                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.GetComponent<Room>();
+                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.parent.GetComponent<Room>();
+                    // Oh god this is horrifying. Let's fix this later.
+
+                }
+
+            }
+            return _currentRoom;
+        }
+        set
+        {
+            _currentRoom = value;
+        }
+
+    }
+
     private Room _currentRoom;
 
     [ShowIf("ShouldShowSummonerField")]
@@ -258,6 +286,7 @@ public class LivingThing : MonoBehaviourPun
 
     private void Awake()
     {
+        ongoingDisplacement = null;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
@@ -344,6 +373,21 @@ public class LivingThing : MonoBehaviourPun
     private void Update()
     {
         didDamageFlash = false;
+
+        if(ongoingDisplacement != null)
+        {
+
+
+            //Fix This to a better solution involving SelfValidator
+            if(photonView.IsMine && (IsAffectedBy(StatusEffectType.Root) || IsAffectedBy(StatusEffectType.Stun) || IsAffectedBy(StatusEffectType.Polymorph) || IsAffectedBy(StatusEffectType.Silence)) && ongoingDisplacement.isFriendly)
+            {
+                CancelDisplacement();
+            }
+            else if (ongoingDisplacement.Tick())
+            {
+                ongoingDisplacement = null;
+            }
+        }
 
         if (photonView.IsMine && currentHealth <= 0 && !stat.isDead)
         {
@@ -456,20 +500,22 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
-    public void StartDisplacement(Displacement displacement)
+
+    public void CancelDisplacement()
     {
-        
-        photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
-            displacement.isTargetDisplacement,
-            displacement.vector1,
-            displacement.vector2,
-            displacement.duration, )
+        photonView.RPC("RpcCancelDisplacement", RpcTarget.All);
+    }
+
+    public bool IsAffectedBy(StatusEffectType type)
+    {
+        return statusEffect.IsAffectedBy(type);
     }
 
     public void SetReadableName(string readableName)
     {
         photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
     }
+
     public void ApplyStatusEffect(StatusEffect statusEffect)
     {
         this.statusEffect.ApplyStatusEffect(statusEffect);
@@ -644,12 +690,10 @@ public class LivingThing : MonoBehaviourPun
 
     public void Teleport(Vector3 location)
     {
-        CancelDash();
-        CancelAirborne();
         photonView.RPC("RpcTeleport", RpcTarget.All, location);
-        
     }
 
+    /*
     public void DashThroughForDuration(Vector3 location, float duration)
     {
         if(duration < 0)
@@ -741,6 +785,7 @@ public class LivingThing : MonoBehaviourPun
         statusEffect.CleanseStatusEffect(StatusEffectType.Dash);
         photonView.RPC("RpcCancelDash", RpcTarget.All);
     }
+    */
 
     public void LookAt(Vector3 lookPosition, bool immediately = false)
     {
@@ -891,11 +936,59 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcEarnGold", RpcTarget.All, amount);
     }
+    public void StartDisplacement(Displacement displacement)
+    {
 
+
+        if (ongoingDisplacement != null)
+        {
+            ongoingDisplacement.Cancel();
+            ongoingDisplacement = null;
+        }
+
+        if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
+
+        ongoingDisplacement = displacement;
+        ongoingDisplacement.self = this;
+
+        photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
+    displacement.isTargetDisplacement,
+    displacement.vector1,
+    displacement.vector2,
+    displacement.duration,
+    displacement.isFriendly,
+    displacement.lookForward,
+    (int)displacement.ease);
+    }
 
     #endregion Functions For Everyone
 
     #region RPCs
+    [PunRPC]
+    private void RpcStartDisplacement(bool isTargetDisplacement, Vector3 vector1, Vector3 vector2, float duration, bool isFriendly, bool lookForward, int ease)
+    {
+        Displacement displacement = new Displacement
+        {
+            isTargetDisplacement = isTargetDisplacement,
+            vector1 = vector1,
+            vector2 = vector2,
+            duration = duration,
+            isFriendly = isFriendly,
+            lookForward = lookForward,
+            ease = (EasingFunction.Ease)ease
+        };
+
+        if (ongoingDisplacement != null)
+        {
+            ongoingDisplacement.Cancel();
+            ongoingDisplacement = null;
+        }
+
+
+        ongoingDisplacement = displacement;
+        ongoingDisplacement.self = this;
+    }
+
 
     [PunRPC]
     private void RpcSetReadableName(string readableName)
@@ -1285,11 +1378,16 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcTeleport(Vector3 location)
     {
+        if(ongoingDisplacement != null && !ongoingDisplacement.isFriendly)
+        {
+            ongoingDisplacement.Cancel();
+            ongoingDisplacement = null;
+        }
         control.agent.enabled = false;
         transform.position = location;
         control.agent.enabled = true;
     }
-
+    /*
     [PunRPC]
     private void RpcCancelDash()
     {
@@ -1304,7 +1402,16 @@ public class LivingThing : MonoBehaviourPun
         if (lastAirborneCoroutine == null) return;
         StopCoroutine(lastAirborneCoroutine);
     }
+    */
 
+    [PunRPC]
+    private void RpcCancelDisplacement()
+    {
+        if (ongoingDisplacement == null) return;
+        ongoingDisplacement.Cancel();
+        ongoingDisplacement = null;
+    }
+    
 
 
 

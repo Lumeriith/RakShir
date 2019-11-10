@@ -57,7 +57,7 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 
-        lv.AirborneForDuration(lv.transform.position + info.directionVector * pushDistance, airborneDuration);
+        lv.StartDisplacement(new Displacement(info.directionVector * pushDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutSine));
 
         info.owner.DoBasicAttackImmediately(lv);
         info.owner.DoMagicDamage(bonusDamage, lv);

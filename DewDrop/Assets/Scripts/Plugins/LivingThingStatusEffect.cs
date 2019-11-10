@@ -106,9 +106,11 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
     public bool IsAffectedBy(StatusEffectType type) // TODO: Cache this!
     {
-        foreach(StatusEffect ce in statusEffects)
+        if(type == StatusEffectType.Dash) return livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.isFriendly;
+        if (type == StatusEffectType.Airborne) return livingThing.ongoingDisplacement != null && !livingThing.ongoingDisplacement.isFriendly;
+        for(int i = 0; i < statusEffects.Count; i++)
         {
-            if (ce.type == type) return true;
+            if (statusEffects[i].type == type) return true;
         }
         return false;
     }

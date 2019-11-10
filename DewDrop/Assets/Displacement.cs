@@ -2,22 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Photon.Pun;
+
 public class Displacement
 {
-    private bool hasFinished = false;
+    public bool hasFinished { get; private set; }
 
     public bool isTargetDisplacement = false;
 
     public Vector3 vector1;
     public Vector3 vector2;
     public float duration;
-    public LivingThing target;
+    public LivingThing target
+    {
+        get
+        {
+            if (_target == null) _target = PhotonNetwork.GetPhotonView((int)vector1.z).GetComponent<LivingThing>();
+            return _target;
+        }
+        set
+        {
+
+        }
+    }
+    private LivingThing _target;
     public LivingThing self;
 
     public bool isFriendly;
     public bool lookForward;
     public EasingFunction.Ease ease;
-    private EasingFunction.Function easeFunction;
+    private EasingFunction.Function easeFunction
+    {
+        get
+        {
+            if (_easeFunction == null) _easeFunction = EasingFunction.GetEasingFunctionDerivative(ease);
+            return _easeFunction;
+        }
+    }
+    private EasingFunction.Function _easeFunction;
 
     private float elapsedTime = 0f;
 
@@ -26,9 +48,8 @@ public class Displacement
 
     public void SetStartPosition(Vector3 position)
     {
-        if (!isTargetDisplacement) return;
+        if (isTargetDisplacement) return;
         vector1 = position;
-        vector2 = position + vector2;
     }
 
     public void SetSelf(LivingThing self)
@@ -40,28 +61,35 @@ public class Displacement
     {
         if (hasFinished) return;
         if (canceledCallback != null) canceledCallback.Invoke();
+        if (self.ongoingDisplacement == this) self.ongoingDisplacement = null;
         hasFinished = true;
     }
 
+    public Displacement()
+    {
+
+    }
+
+
     // Warning: Callbacks are only called on local!
-    Displacement(Vector3 displacementVector, float duration, bool isFriendly, bool lookForward, EasingFunction.Ease ease = EasingFunction.Ease.Linear, UnityAction finishedCallback=null, UnityAction canceledCallback=null)
+    public Displacement(Vector3 displacementVector, float duration, bool isFriendly, bool lookForward, EasingFunction.Ease ease = EasingFunction.Ease.Linear, UnityAction finishedCallback=null, UnityAction canceledCallback=null)
     {
         isTargetDisplacement = false;
-        this.vector2 = displacementVector;
+        vector2 = displacementVector;
         this.duration = duration;
         this.isFriendly = isFriendly;
-        this.lookForward = lookForward;
+        this.lookForward = lookForward; 
         this.ease = ease;
         this.finishedCallback = finishedCallback;
         this.canceledCallback = canceledCallback;
     }
 
     // Warning: Callbacks are only called on local!
-    Displacement(LivingThing to, float gap, float speed, bool isFriendly, bool lookForward, UnityAction finishedCallback, UnityAction canceledCallback)
+    public Displacement(LivingThing to, float gap, float speed, bool isFriendly, bool lookForward, UnityAction finishedCallback, UnityAction canceledCallback)
     {
         isTargetDisplacement = true;
         target = to;
-        vector1 = new Vector3(gap, speed);
+        vector1 = new Vector3(gap, speed, to.photonView.ViewID);
         this.isFriendly = isFriendly;
         this.lookForward = lookForward;
         this.finishedCallback = finishedCallback;
@@ -71,8 +99,6 @@ public class Displacement
     public bool Tick()
     {
         if (hasFinished) return true;
-        if (easeFunction == null) easeFunction = EasingFunction.GetEasingFunction(ease);
-
         
         if (isTargetDisplacement)
         {
@@ -91,10 +117,17 @@ public class Displacement
         }
         else
         {
-            float t = easeFunction(0f, 1f, elapsedTime / duration);
-            self.transform.position = Vector3.Lerp(vector1, vector2, t);
-            if (lookForward) self.RpcLookAt(vector2, true);
-            if(elapsedTime >= duration)
+            if(elapsedTime == 0)
+            {
+                self.transform.position = vector1;
+            }
+            else
+            {
+                float t = easeFunction(0f, 1f, (elapsedTime) / duration);
+                self.transform.position += vector2 / duration * t * Time.deltaTime;
+            }
+            if (lookForward) self.RpcLookAt(self.transform.position + vector2, true);
+            if (elapsedTime >= duration)
             {
                 if (finishedCallback != null) finishedCallback.Invoke();
                 hasFinished = true;

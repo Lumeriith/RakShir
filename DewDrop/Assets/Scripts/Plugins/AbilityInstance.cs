@@ -35,7 +35,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
             castInfo.owner = null;
         }
         castInfo.point = (Vector3)initData[1];
-        castInfo.directionVector = (Vector3)initData[2];
+        castInfo.directionVector = ((Vector3)initData[2]).normalized;
 
         if ((int)initData[3] != -1)
         {

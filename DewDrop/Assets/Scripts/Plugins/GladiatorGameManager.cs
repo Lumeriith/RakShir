@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using System.Text.RegularExpressions;
 using DecalSystem;
 using Doozy.Engine;
+using UnityEngine.UI;
 public enum GladiatorGamePhase { Waiting, PvE, PvP, End };
 [System.Serializable]
 public class RoomListWrapper
@@ -17,6 +18,7 @@ public class RoomListWrapper
 
 public class GladiatorGameManager : MonoBehaviourPunCallbacks
 {
+    public Toggle readyCheckbox;
     public bool debugSoloPlayMode = true;
     [Header("General Settings")]
     public GladiatorGamePhase phase = GladiatorGamePhase.Waiting;
@@ -78,6 +80,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private int[] blueCommonLootDeck;
 
     private Dictionary<Photon.Realtime.Player, LivingThing> gamePlayers = new Dictionary<Photon.Realtime.Player, LivingThing>();
+    private Dictionary<Photon.Realtime.Player, bool> readyStatuses = new Dictionary<Photon.Realtime.Player, bool>();
+
 
     private int redNextEpicLoot = 0;
     private int redNextRareLoot = 0;
@@ -87,6 +91,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private int blueNextRareLoot = 0;
     private int blueNextCommonLoot = 0;
     private List<Room> createdRooms = new List<Room>();
+
+
+
 
     [Button("Force Setup Game")]
     public void SetupGame()
@@ -524,15 +531,35 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
 
         if (debugSoloPlayMode) StartCoroutine(CoroutineDelayedSetupGame(1f));
+        readyStatuses.Add(PhotonNetwork.LocalPlayer, false);
     }
 
+    private void Update()
+    {
+        //readyCheckbox.gameObject.SetActive(readyStatuses.Count == 2);
+        if (phase == GladiatorGamePhase.Waiting && PhotonNetwork.IsMasterClient && readyStatuses.Count == 2)
+        {
+            foreach(bool value in readyStatuses.Values)
+            {
+                if (!value) return;
+            }
+            SetupGame();
+        }
+    }
 
+    public void UpdateReady()
+    {
+        photonView.RPC("RpcUpdateReady", RpcTarget.All, readyCheckbox.isOn);
+    }
+
+    [PunRPC]
+    private void RpcUpdateReady(bool isReady, PhotonMessageInfo info)
+    {
+        readyStatuses[info.Sender] = isReady;
+    }
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        if (phase == GladiatorGamePhase.Waiting && PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
-        {
-            StartCoroutine(CoroutineDelayedSetupGame(2f));
-        }
+        if(phase == GladiatorGamePhase.Waiting) readyStatuses.Add(newPlayer, false);
     }
 
     IEnumerator CoroutineDelayedSetupGame(float duration)
