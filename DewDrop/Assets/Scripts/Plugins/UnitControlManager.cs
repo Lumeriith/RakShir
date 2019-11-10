@@ -52,6 +52,7 @@ public class UnitControlManager : MonoBehaviour
 
     private Camera mainCamera;
     private DecalSystem.Decal rangeIndicator;
+    private DecalSystem.Decal secondRangeIndicator;
     private DecalSystem.Decal arrowHead;
     private DecalSystem.Decal arrowBase;
 
@@ -247,6 +248,7 @@ public class UnitControlManager : MonoBehaviour
     {
         mainCamera = Camera.main;
         rangeIndicator = transform.Find("Range Indicator").GetComponent<DecalSystem.Decal>();
+        secondRangeIndicator = transform.Find("Second Range Indicator").GetComponent<DecalSystem.Decal>();
         arrowHead = transform.Find("ArrowHead").GetComponent<DecalSystem.Decal>();
         arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
         nodyGraphController = FindObjectOfType<GraphController>();
@@ -670,13 +672,30 @@ public class UnitControlManager : MonoBehaviour
     private void DisplayAppropriateIndicator()
     {
         Indicator indicator = null;
-        if (pendingTrigger != null) indicator = pendingTrigger.indicator;
-        else if (pendingConsumable != null) indicator = pendingConsumable.indicator;
+        AbilityTrigger.TargetingType targetingType = AbilityTrigger.TargetingType.None;
+        TargetValidator targetValidator = null;
+
+        float targetingRange = 0f;
+        if (pendingTrigger != null)
+        {
+            indicator = pendingTrigger.indicator;
+            targetingType = pendingTrigger.targetingType;
+            targetingRange = pendingTrigger.range;
+            targetValidator = pendingTrigger.targetValidator;
+        }
+        else if (pendingConsumable != null)
+        {
+            indicator = pendingConsumable.indicator;
+            targetingType = pendingConsumable.targetingType;
+            targetingRange = pendingConsumable.range;
+            targetValidator = pendingConsumable.targetValidator;
+        }
 
         if(inputState == InputState.Attack && selectedUnit.control.skillSet[0] != null)
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
+            secondRangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
             rangeIndicator.transform.localScale = new Vector3(selectedUnit.control.skillSet[0].indicator.range * 2, selectedUnit.control.skillSet[0].indicator.range * 2, 4);
@@ -686,12 +705,37 @@ public class UnitControlManager : MonoBehaviour
         {
             rangeIndicator.transform.position = selectedUnit.transform.position;
             rangeIndicator.gameObject.SetActive(true);
+            if (indicator.enableSecondRangeIndicator)
+            {
+                secondRangeIndicator.gameObject.SetActive(true);
+                if (targetingType == AbilityTrigger.TargetingType.PointNonStrict) secondRangeIndicator.transform.position = selectedUnit.transform.position + Vector3.ClampMagnitude(GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position, targetingRange);
+                else if (targetingType == AbilityTrigger.TargetingType.PointStrict) secondRangeIndicator.transform.position = GetCurrentCursorPositionInWorldSpace();
+                else if (targetingType == AbilityTrigger.TargetingType.Target)
+                {
+                    LivingThing thing = GetFirstValidTarget(targetValidator);
+                    if(thing == null)
+                    {
+                        secondRangeIndicator.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        secondRangeIndicator.transform.position = thing.transform.position;
+                    }
+                    
+                }
+                secondRangeIndicator.transform.localScale = new Vector3(indicator.secondRange * 2, indicator.secondRange * 2, 4);
+            }
+            else
+            {
+                secondRangeIndicator.gameObject.SetActive(false);
+            }
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
             rangeIndicator.transform.localScale = new Vector3(indicator.range * 2, indicator.range * 2, 4);
         } else if (indicator != null && indicator.type == IndicatorType.Arrow)
         {
             rangeIndicator.gameObject.SetActive(false);
+
             arrowHead.gameObject.SetActive(true);
             arrowBase.gameObject.SetActive(true);
 
@@ -716,10 +760,23 @@ public class UnitControlManager : MonoBehaviour
             arrowHead.transform.localScale = headScale;
             arrowHead.transform.rotation = Quaternion.Euler(rotation);
             arrowHead.transform.position = arrowBase.transform.position + (cursorPos - selectedUnit.transform.position).normalized * (baseScale.y / 2 + headScale.y / 2);
+
+            if (indicator.enableSecondRangeIndicator)
+            {
+                secondRangeIndicator.gameObject.SetActive(true);
+                secondRangeIndicator.transform.position = selectedUnit.transform.position + (cursorPos - selectedUnit.transform.position).normalized * indicator.arrowLength;
+                secondRangeIndicator.transform.localScale = new Vector3(indicator.secondRange * 2, indicator.secondRange * 2, 4);
+            }
+            else
+            {
+                secondRangeIndicator.gameObject.SetActive(false);
+            }
+
         }
         else
         {
             rangeIndicator.gameObject.SetActive(false);
+            secondRangeIndicator.gameObject.SetActive(false);
             arrowHead.gameObject.SetActive(false);
             arrowBase.gameObject.SetActive(false);
         }

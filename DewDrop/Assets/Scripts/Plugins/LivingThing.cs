@@ -1259,12 +1259,16 @@ public class LivingThing : MonoBehaviourPun
 
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 
-        stat.currentHealth += amount;
+        finalAmount = Mathf.Clamp(finalAmount, 0, Mathf.Max(0, stat.finalMaximumHealth - stat.currentHealth));
+        
+        stat.currentHealth += finalAmount;
         stat.ValidateHealth();
         if (photonView.IsMine)
         {
             stat.SyncChangingStats();
         }
+
+        if (finalAmount <= 0) return;
 
         InfoHeal info;
         info.from = from;
@@ -1378,7 +1382,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcTeleport(Vector3 location)
     {
-        if(ongoingDisplacement != null && !ongoingDisplacement.isFriendly)
+        if(ongoingDisplacement != null && (!ongoingDisplacement.isFriendly || ongoingDisplacement.isTargetDisplacement))
         {
             ongoingDisplacement.Cancel();
             ongoingDisplacement = null;

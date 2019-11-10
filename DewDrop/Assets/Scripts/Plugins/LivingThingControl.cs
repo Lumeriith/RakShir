@@ -368,6 +368,7 @@ public class Command
                 }
             case AbilityTrigger.TargetingType.Direction:
                 self.LookAt(self.transform.position + info.directionVector);
+                self.control.agentDestination = self.transform.position;
                 trigger.Cast(info);
                 return true;
             case AbilityTrigger.TargetingType.PointStrict:
@@ -392,6 +393,7 @@ public class Command
                 {
                     info.point = self.transform.position + (info.point - self.transform.position).normalized * trigger.range;
                 }
+                self.control.agentDestination = self.transform.position;
                 self.LookAt(info.point);
                 trigger.Cast(info);
                 return true;
@@ -511,11 +513,47 @@ public class LivingThingControl : MonoBehaviourPun
         reservedCommands.Add(command);
     }
 
+    /*
     public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.Ability, trigger, info);
+
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
+    }
+    */
+
+    public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.Ability, trigger, info);
+        Command temp = null;
+        if (!trigger.dontCancelBasicCommands)
+        {
+            if (!reserve) reservedCommands.Clear();
+            reservedCommands.Add(command);
+        }
+        else
+        {
+            if (!reserve && reservedCommands.Count != 0)
+            {
+                if (reservedCommands[0].type != CommandType.Ability && reservedCommands[0].type != CommandType.Consumable)
+                {
+                    temp = reservedCommands[0];
+                }
+                reservedCommands.Clear();
+                reservedCommands.Add(command);
+                if (temp != null) reservedCommands.Add(temp);
+            }
+            else
+            {
+                reservedCommands.Add(command);
+            }
+        }
+
+
+
+
+
     }
 
     public void CommandConsumable(Consumable consumable, CastInfo info, bool reserve = false)

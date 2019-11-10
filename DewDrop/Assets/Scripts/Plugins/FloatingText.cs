@@ -11,6 +11,7 @@ public class FloatingText : MonoBehaviour
     public Vector3 worldPosition;
     public Vector3 gravity;
     public Vector3 initialVelocity;
+    public float randomPosMagnitude = 0.3f;
     private Vector3 velocity;
    
     public string text
@@ -49,6 +50,7 @@ public class FloatingText : MonoBehaviour
     }
     private void Start()
     {
+        worldPosition += Random.onUnitSphere * randomPosMagnitude;
         Update();
     }
 

@@ -152,6 +152,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         List<float> reservedMagicDamageAmounts = new List<float>();
         List<LivingThing> reservedMagicDamageCasters = new List<LivingThing>();
 
+        int temp = 0;
 
         foreach (StatusEffect ce in statusEffects)
         {
@@ -178,8 +179,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                     {
                         if (photonView.IsMine)
                         {
-                            reservedHealAmounts.Add((float)ce.parameter);
-                            reservedHealCasters.Add(ce.caster);
+                            temp = reservedHealCasters.IndexOf(ce.caster);
+                            if(temp != -1)
+                            {
+                                reservedHealAmounts[temp] += (float)ce.parameter;
+                            }
+                            else
+                            {
+                                reservedHealAmounts.Add((float)ce.parameter);
+                                reservedHealCasters.Add(ce.caster);
+                            }
+
                             //ce.caster.DoHeal((float)ce.parameter, livingThing, true);
                             removeList.Add(ce);
                         }
@@ -189,8 +199,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                         float amount = Mathf.Min((float)ce.parameter, (float)ce.parameter / ce.duration * overTimeEffectTickInterval);
                         if (photonView.IsMine)
                         {
-                            reservedHealAmounts.Add(amount);
-                            reservedHealCasters.Add(ce.caster);
+                            temp = reservedHealCasters.IndexOf(ce.caster);
+                            if (temp != -1)
+                            {
+                                reservedHealAmounts[temp] += amount;
+                            }
+                            else
+                            {
+                                reservedHealAmounts.Add(amount);
+                                reservedHealCasters.Add(ce.caster);
+                            }
+
                             //ce.caster.DoHeal(amount, livingThing);
                         }
                         ce.parameter = (float)ce.parameter - amount;
@@ -202,8 +221,17 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                     {
                         if (photonView.IsMine)
                         {
-                            reservedMagicDamageAmounts.Add((float)ce.parameter);
-                            reservedMagicDamageCasters.Add(ce.caster);
+                            temp = reservedMagicDamageCasters.IndexOf(ce.caster);
+                            if (temp != -1)
+                            {
+                                reservedMagicDamageAmounts[temp] += (float)ce.parameter;
+                            }
+                            else
+                            {
+                                reservedMagicDamageAmounts.Add((float)ce.parameter);
+                                reservedMagicDamageCasters.Add(ce.caster);
+                            }
+
                             //ce.caster.DoMagicDamage((float)ce.parameter, livingThing, true);
                         }
                         removeList.Add(ce);
@@ -213,8 +241,16 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                         float amount = Mathf.Min((float)ce.parameter, (float)ce.parameter / ce.duration * overTimeEffectTickInterval);
                         if (photonView.IsMine)
                         {
-                            reservedMagicDamageAmounts.Add(amount);
-                            reservedMagicDamageCasters.Add(ce.caster);
+                            temp = reservedMagicDamageCasters.IndexOf(ce.caster);
+                            if (temp != -1)
+                            {
+                                reservedMagicDamageAmounts[temp] += amount;
+                            }
+                            else
+                            {
+                                reservedMagicDamageAmounts.Add(amount);
+                                reservedMagicDamageCasters.Add(ce.caster);
+                            }
                             //ce.caster.DoMagicDamage(amount, livingThing, true);
                         }
                         ce.parameter = (float)ce.parameter - amount;

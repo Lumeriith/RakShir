@@ -12,7 +12,8 @@ public class Indicator
     public float range;
     public float arrowWidth;
     public float arrowLength;
-
+    public bool enableSecondRangeIndicator = false;
+    public float secondRange = 0.35f;
 }
 
 public enum AbilityInstanceEventTargetType { EveryInstance, FirstInstance, LastInstance };
@@ -56,6 +57,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public float animationDuration;
     public Indicator indicator = new Indicator();
     [Header("Trigger Settings")]
+    public bool dontCancelBasicCommands = false;
     public TargetingType targetingType;
     [ShowIf("ShouldRangeFieldShow")]
     public float range;
