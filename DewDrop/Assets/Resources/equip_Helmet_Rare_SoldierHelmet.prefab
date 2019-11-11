@@ -106,18 +106,20 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: 4dba913c611d2624aabe687729a28d64, type: 3}
   itemName: "\uBCD1\uC0AC\uC758 \uD22C\uAD6C"
   itemTier: 1
   value: 400
   itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +150\r\n[\uCD08\uB2F9 \uCCB4\uB825
-    \uC7AC\uC0DD] +5"
+    \uC7AC\uC0DD] +2"
   owner: {fileID: 0}
   type: 0
   skillSetReplacements:
@@ -185,6 +187,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
   manaCost: 0
@@ -289,6 +294,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
+      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -358,11 +368,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

@@ -6,7 +6,7 @@ public class trg_Spell_Rare_BurningGrounds : AbilityTrigger
 {
     public override void OnCast(CastInfo info)
     {
-        info.owner.control.StartChanneling(new Channel(selfValidator, 0.5f, false, false, false, false, ChannelFinished, null));
+        info.owner.control.StartChanneling(new Channel(selfValidator, 0.3f, false, false, false, false, ChannelFinished, null));
         StartCooldown();
         SpendMana();
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class trg_Spell_Rare_FlowOfMana : AbilityTrigger
 {
     public float manaHealAmount = 5f;
-
+    public float cooldownReduction = 1f;
     public override void OnCast(CastInfo info)
     {
         
@@ -23,6 +23,13 @@ public class trg_Spell_Rare_FlowOfMana : AbilityTrigger
 
     private void DealMagicDamage(InfoMagicDamage info)
     {
+        if (!isCooledDown) return;
+
         owner.DoManaHeal(manaHealAmount, owner);
+        for(int i = 1; i < owner.control.cooldownTime.Length; i++)
+        {
+            owner.control.cooldownTime[i] = Mathf.MoveTowards(owner.control.cooldownTime[i], 0, cooldownReduction);
+        }
+        StartCooldown();
     }
 }

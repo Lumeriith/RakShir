@@ -106,18 +106,20 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: 20dda2ffe1d56e24cb90616964243a20, type: 3}
   itemName: "\uD54F\uAE30 \uC11C\uB9B0 \uD22C\uAD6C"
   itemTier: 1
   value: 400
-  itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +75\r\n[\uCD08\uB2F9 \uCCB4\uB825
-    \uC7AC\uC0DD] +5\r\n[\uACF5\uACA9 \uC18D\uB3C4] +20%"
+  itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +100\n[\uCD08\uB2F9 \uCCB4\uB825 \uC7AC\uC0DD]
+    +2.5\n[\uACF5\uACA9 \uC18D\uB3C4] +20%"
   owner: {fileID: 0}
   type: 0
   skillSetReplacements:
@@ -175,7 +177,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 21300000, guid: 4d337ba4d98bcfe4094e7fbde3a9ebb5, type: 3}
   abilityName: "\uD761\uD608"
   abilityDescription: "\uC790\uC2E0\uC774 \uC8FC\uB294 \uACF5\uACA9 \uD53C\uD574\uC758
-    25% \uB9CC\uD07C [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
+    35% \uB9CC\uD07C [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
   castAnimation: []
   animationDuration: 0
   indicator:
@@ -183,6 +185,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
   manaCost: 0
@@ -203,7 +208,7 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 0
-  healMultiplier: 0.25
+  healMultiplier: 0.35
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +291,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
+      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -355,11 +365,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

@@ -70,8 +70,24 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     {
         if (!isCreated || isDestroyed) return;
         isDestroyed = true;
-        photonView.RPC("RpcDestroySelf",RpcTarget.AllViaServer);
+        photonView.RPC("RpcDestroySelf", RpcTarget.AllViaServer);
     }
+
+    public void DestroySelf(float delay)
+    {
+        if (!isCreated || isDestroyed) return;
+
+        StartCoroutine(CoroutineDelayedDestroySelf(delay));
+
+    }
+
+    private IEnumerator CoroutineDelayedDestroySelf(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isDestroyed = true;
+        photonView.RPC("RpcDestroySelf", RpcTarget.AllViaServer);
+    }
+
 
     [PunRPC]
     protected void RpcDestroySelf()

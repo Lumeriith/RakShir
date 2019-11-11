@@ -106,11 +106,13 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: 3dfb84e8858084747b9cace83e11720a, type: 3}
   itemName: "\uC5EC\uC0AC\uB0E5\uAFBC\uC758 \uD22C\uAD6C"
@@ -185,6 +187,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
   manaCost: 0

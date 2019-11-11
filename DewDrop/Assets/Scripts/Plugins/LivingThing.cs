@@ -946,27 +946,39 @@ public class LivingThing : MonoBehaviourPun
     }
     public void StartDisplacement(Displacement displacement)
     {
-
-
-        if (ongoingDisplacement != null)
+        if(!displacement.isFriendly && !SelfValidator.CanBePushed.Evaluate(this))
         {
-            ongoingDisplacement.Cancel();
-            ongoingDisplacement = null;
+            if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
+
+            
+            displacement.self = this;
+            displacement.Cancel();
+
+        }
+        else
+        {
+            if (ongoingDisplacement != null)
+            {
+                ongoingDisplacement.Cancel();
+                ongoingDisplacement = null;
+            }
+
+            if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
+
+            ongoingDisplacement = displacement;
+            ongoingDisplacement.self = this;
+
+            photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
+        displacement.isTargetDisplacement,
+        displacement.vector1,
+        displacement.vector2,
+        displacement.duration,
+        displacement.isFriendly,
+        displacement.lookForward,
+        (int)displacement.ease);
         }
 
-        if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
 
-        ongoingDisplacement = displacement;
-        ongoingDisplacement.self = this;
-
-        photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
-    displacement.isTargetDisplacement,
-    displacement.vector1,
-    displacement.vector2,
-    displacement.duration,
-    displacement.isFriendly,
-    displacement.lookForward,
-    (int)displacement.ease);
     }
 
     #endregion Functions For Everyone

@@ -106,11 +106,13 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: d1120f4d8d5ba2243be2513d9ad98c5c, type: 3}
   itemName: "\uAD6C\uB984\uBC1F\uC774\uC758 \uC2E0\uBC1C"
@@ -173,9 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 21300000, guid: 8644585336f9f7d4ebd350a02295fc93, type: 3}
   abilityName: "\uAD6C\uB984 \uC810\uBA78"
-  abilityDescription: "\uC9E7\uC740 \uAC70\uB9AC\uB97C \uC21C\uAC04 \uC774\uB3D9\uD569\uB2C8\uB2E4.
-    \uC790\uC2E0\uC758 \uC0DD\uBA85\uB825\uC774 75% \uC774\uC0C1\uC77C \uB54C \uC0AC\uC6A9\uD558\uBA74
-    \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774 8\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
+  abilityDescription: "\uC9E7\uC740 \uAC70\uB9AC\uB97C \uC21C\uAC04 \uC774\uB3D9\uD55C
+    \uD6C4 \uC8FC\uBCC0 \uC801\uB4E4\uC5D0\uAC8C 80\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    \uC90D\uB2C8\uB2E4. \uC801\uC5D0\uAC8C \uC801\uC911\uD558\uBA74 \uC7AC\uC0AC\uC6A9
+    \uB300\uAE30\uC2DC\uAC04\uC774 6\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
   castAnimation:
   - {fileID: 7400000, guid: fcfc33be89816744fafbe85610d46bf3, type: 2}
   animationDuration: 0.6
@@ -184,9 +187,9 @@ MonoBehaviour:
     range: 3
     arrowWidth: 0
     arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0
-  dontCancelBasicCommands: 0
+    enableSecondRangeIndicator: 1
+    secondRange: 1.5
+  dontCancelBasicCommands: 1
   targetingType: 2
   range: 3
   manaCost: 20
@@ -206,9 +209,7 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f120110
     invertResult: 0
-  cooldownTime: 12
-  healthThreshold: 0.75
-  cooldownReduction: 8
+  cooldownTime: 10
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0

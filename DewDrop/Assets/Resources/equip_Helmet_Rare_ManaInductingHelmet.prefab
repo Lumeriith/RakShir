@@ -106,18 +106,20 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: fe6bef2673b98bf4481aef3aae9300d4, type: 3}
   itemName: "\uB9C8\uB825 \uC720\uB3C4\uC758 \uD22C\uAD6C"
   itemTier: 1
   value: 400
   itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +100\r\n[\uCD08\uB2F9 \uB9C8\uB098
-    \uC7AC\uC0DD] +2.5\r\n[\uCD08\uB2F9 \uCCB4\uB825 \uC7AC\uC0DD] +4"
+    \uC7AC\uC0DD] +3\n[\uCD08\uB2F9 \uCCB4\uB825 \uC7AC\uC0DD] +1.5"
   owner: {fileID: 0}
   type: 0
   skillSetReplacements:
@@ -175,7 +177,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 21300000, guid: 52757f119de466a488483498607d72f8, type: 3}
   abilityName: "\uB9C8\uB825 \uC720\uB3C4"
   abilityDescription: "\uC790\uC2E0\uC774 \uC8FC\uB294 \uB9C8\uBC95 \uD53C\uD574\uC758
-    35%\uB97C [\uBCF4\uD638\uB9C9]\uC73C\uB85C \uD68D\uB4DD\uD569\uB2C8\uB2E4. \uC774
+    45%\uB97C [\uBCF4\uD638\uB9C9]\uC73C\uB85C \uD68D\uB4DD\uD569\uB2C8\uB2E4. \uC774
     \uBCF4\uD638\uB9C9\uC740 5\uCD08 \uB3D9\uC548 \uB9C8\uBC95 \uD53C\uD574\uB97C
     \uC8FC\uC9C0 \uC54A\uC73C\uBA74 \uC0AC\uB77C\uC9D1\uB2C8\uB2E4."
   castAnimation: []
@@ -209,7 +211,7 @@ MonoBehaviour:
     invertResult: 0
   cooldownTime: 0
   shieldDuration: 5
-  shieldAmountMultiplier: 0.35
+  shieldAmountMultiplier: 0.45
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0

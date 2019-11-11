@@ -58,6 +58,9 @@ MonoBehaviour:
     range: 1.8
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 1.8
   manaCost: 0
@@ -220,11 +223,13 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: f5e6609669e8dc8439f78fbecbf20ca6, type: 3}
   itemName: "\uB3C5\uAE30 \uC11C\uB9B0 \uB2E8\uAC80"
@@ -303,6 +308,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
   manaCost: 80
@@ -383,6 +391,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0.75
     arrowLength: 7
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 3
   range: 7
   manaCost: 20

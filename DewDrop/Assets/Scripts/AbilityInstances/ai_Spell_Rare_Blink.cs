@@ -6,6 +6,12 @@ public class ai_Spell_Rare_Blink : AbilityInstance
 {
     private ParticleSystem start;
     private ParticleSystem end;
+
+    public TargetValidator targetValidator;
+    public float damage = 80f;
+    public float cooldownReduction = 6f;
+    public float radius = 1.5f;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         start = transform.Find("Start").GetComponent<ParticleSystem>();
@@ -17,6 +23,12 @@ public class ai_Spell_Rare_Blink : AbilityInstance
         if (photonView.IsMine)
         {
             info.owner.Teleport(info.point);
+            List<LivingThing> targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, radius, targetValidator);
+            if (targets.Count > 0) info.owner.control.skillSet[3].ApplyCooldownReduction(cooldownReduction);
+            for(int i = 0; i < targets.Count; i++)
+            {
+                info.owner.DoMagicDamage(damage, targets[i]);
+            }
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();
         }

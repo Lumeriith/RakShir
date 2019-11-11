@@ -106,18 +106,20 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: f49c6ba9f95eb4041bb0ed4731112937, type: 3}
   itemName: "\uB9C8\uB825\uC758 \uACBD\uAC11"
   itemTier: 1
   value: 400
-  itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +200\r\n[\uCD5C\uB300 \uB9C8\uB098]
-    +50\r\n[\uCD08\uB2F9 \uCCB4\uB825 \uC7AC\uC0DD] +4.5"
+  itemDescription: "[\uCD5C\uB300 \uCCB4\uB825] +250\n[\uCD5C\uB300 \uB9C8\uB098]
+    +50\r\n[\uCD08\uB2F9 \uCCB4\uB825 \uC7AC\uC0DD] +2.5"
   owner: {fileID: 0}
   type: 1
   skillSetReplacements:
@@ -188,6 +190,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 1
   targetingType: 0
   range: 0
   manaCost: 6

@@ -4849,6 +4849,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 542b28150701f654d925212a0c1dfb16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  damage: 80
+  cooldownReduction: 6
+  radius: 1.5
 --- !u!1 &9023206002905909379
 GameObject:
   m_ObjectHideFlags: 0
@@ -4964,8 +4979,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.9
-      minScalar: 0.2
+      scalar: 0.4
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5017,8 +5032,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 1.7
+      scalar: 1
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5824,7 +5839,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 20
+        scalar: 10
         minScalar: 5
         maxCurve:
           serializedVersion: 2
@@ -9775,8 +9790,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.9
-      minScalar: 0.2
+      scalar: 1.2
+      minScalar: 0.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -10635,7 +10650,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 20
+        scalar: 30
         minScalar: 5
         maxCurve:
           serializedVersion: 2

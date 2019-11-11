@@ -63,6 +63,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
     public void ApplyStatusEffect(StatusEffect ce)
     {
+        if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing)) return;
         int uid = Random.Range(int.MinValue, int.MaxValue);
         while(GetStatusEffectByUID(uid) != null) // Just in case the uid generation threads the needle:
         {
@@ -79,6 +80,11 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public void CleanseStatusEffect(StatusEffectType type)
     {
         photonView.RPC("RpcCleanseStatusEffect", RpcTarget.All, (byte)type);
+    }
+
+    public void CleanseAllHarmfulStatusEffects()
+    {
+        photonView.RPC("RpcCleanseAllHarmfulStatusEffects", RpcTarget.All);
     }
 
     public void RemoveStatusEffect(StatusEffect ce)
@@ -420,6 +426,20 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                 statusEffects[i].duration = 0;
                 statusEffects.RemoveAt(i);
                 statusEffectCountMap[type] -= 1;
+            }
+        }
+    }
+
+    [PunRPC]
+    public void RpcCleanseAllHarmfulStatusEffects()
+    {
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            if (statusEffects[i].IsHarmful())
+            {
+                statusEffectCountMap[(int)statusEffects[i].type] -= 1;
+                statusEffects[i].duration = 0;
+                statusEffects.RemoveAt(i);
             }
         }
     }
