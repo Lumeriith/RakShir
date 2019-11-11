@@ -147,6 +147,8 @@ public class LivingThing : MonoBehaviourPun
     [HideInInspector]
     public Displacement ongoingDisplacement = null;
 
+    private float defaultMovementSpeed;
+
     #region Action Declarations
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
     public System.Action<InfoDamage> OnTakeDamage = (InfoDamage _) => { };
@@ -301,6 +303,8 @@ public class LivingThing : MonoBehaviourPun
         statusEffect = GetComponent<LivingThingStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
 
+        defaultMovementSpeed = stat.baseMovementSpeed;
+
         animator = transform.Find("Model").GetComponent<Animator>();
         animator.applyRootMotion = false;
 
@@ -393,6 +397,10 @@ public class LivingThing : MonoBehaviourPun
         {
             Kill();
         }
+
+        float walkSpeedMultiplier = stat.finalMovementSpeed / 100f * (100f + statusEffect.totalSpeedAmount) / 100f * (100f - statusEffect.totalSlowAmount) / defaultMovementSpeed;
+        walkSpeedMultiplier = 1 + (walkSpeedMultiplier - 1) * 0.5f;
+        animator.SetFloat("WalkSpeedMultiplier", walkSpeedMultiplier);
 
         if(scaleMultipliers.Count == 0)
         {
