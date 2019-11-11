@@ -106,11 +106,13 @@ MonoBehaviour:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   itemIcon: {fileID: 21300000, guid: 8eec809dd5a7256408b5678c683fc9d1, type: 3}
   itemName: "\uD55C\uAE30 \uC11C\uB9B0 \uB9DD\uD1A0"
@@ -188,6 +190,9 @@ MonoBehaviour:
     range: 4
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
   manaCost: 60
@@ -290,6 +295,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
+      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -359,11 +369,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

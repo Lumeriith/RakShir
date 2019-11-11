@@ -40,7 +40,6 @@ public class Spawner : MonoBehaviour
         {
             thing.control.CommandChase(activator);
         }
-        print(livingThingPrefab.name);
     }
 
     public void DestroyAllSpawnedLivingThings()

@@ -127,11 +127,11 @@ public abstract class AbilityTrigger : MonoBehaviour
         }
     }
 
-    public void Cast(CastInfo info, float animationDurationMultiuplier = 1f)
+    public void Cast(CastInfo info, float animationDurationMultiplier = 1f)
     {
         if (castAnimation != null && castAnimation.Length != 0)
         {
-            owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiuplier);
+            owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier);
         }
         this.info = info;
         OnCast(info);

@@ -5,16 +5,20 @@ using UnityEngine;
 public class ai_Spell_Rare_HamstringBuff : AbilityInstance
 {
     private StatusEffect speed;
+    private StatusEffect haste;
     public float speedAmount;
-    public float speedDuration;
+    public float duration = 3f;
+    public float hasteAmount = 100f;
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.parent = info.owner.transform;
         if (photonView.IsMine)
         {
-            speed = StatusEffect.Speed(info.owner, speedDuration, speedAmount);
+            speed = StatusEffect.Speed(info.owner, duration, speedAmount);
+            haste = StatusEffect.Haste(info.owner, duration, hasteAmount);
             info.owner.ApplyStatusEffect(speed);
+            info.owner.ApplyStatusEffect(haste);
             info.owner.control.skillSet[0].ResetCooldown();
         }
     }
@@ -24,6 +28,7 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         if(eventString == "RemoveBuff")
         {
             if (photonView.IsMine && speed.isAlive) speed.Remove();
+            if (photonView.IsMine && haste.isAlive) haste.Remove();
             DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
             DestroySelf();
         }

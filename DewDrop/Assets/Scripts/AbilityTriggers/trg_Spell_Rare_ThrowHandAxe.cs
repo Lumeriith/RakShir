@@ -6,7 +6,7 @@ public class trg_Spell_Rare_ThrowHandAxe : AbilityTrigger
 {
     public override void OnCast(CastInfo info)
     {
-        info.owner.control.StartChanneling(new Channel(selfValidator, 0.75f, false, false, false, false, ChannelFinished, ChannelCanceled));
+        info.owner.control.StartChanneling(new Channel(selfValidator, 0.5833f, false, false, false, false, ChannelFinished, ChannelCanceled));
         StartCooldown();
         SpendMana();
     }

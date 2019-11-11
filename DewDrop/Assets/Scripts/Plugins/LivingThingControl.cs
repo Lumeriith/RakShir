@@ -7,7 +7,7 @@ using Photon.Pun;
 using UnityEngine.Events;
 
 
-public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable }
+public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable, AutoAttackInRange }
 
 public enum AIMode { None, AutoAttackInRange, AutoChaseToAttack }
 
@@ -115,9 +115,13 @@ public class Command
                 return ProcessActivate((Activatable)parameters[0]);
             case CommandType.Consumable:
                 return ProcessConsumable((Consumable)parameters[0], (CastInfo)parameters[1]);
+            case CommandType.AutoAttackInRange:
+                return ProcessAutoAttackInRange((LivingThing)parameters[0]);
         }
         return false;
     }
+    
+
 
     private bool ProcessConsumable(Consumable consumable, CastInfo info)
     {
@@ -240,7 +244,8 @@ public class Command
         if (self.control.IsAttackProhibitedByChannel()) return true;
 
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
-        self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (100f + self.statusEffect.totalHasteAmount)/100f);
+        //self.control.skillSet[0].Cast(info, 1f);
+        self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (1f + self.statusEffect.totalHasteAmount / 100f));
         return true;
     }
 
@@ -293,7 +298,7 @@ public class Command
 
         // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
 
-        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius <= self.control.skillSet[0].range)
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius < self.control.skillSet[0].range)
         {
 
             self.control.agentDestination = self.transform.position;
@@ -330,10 +335,21 @@ public class Command
             autoChaseOutOfRangeTime = 0f;
         }
         
-        if (autoChaseOutOfRangeTime >= self.control.autoChaseOutOfRangeCancelTime) return true;
+        if (autoChaseOutOfRangeTime > self.control.autoChaseOutOfRangeCancelTime) return true;
         
         return ProcessChase(target);
     }
+
+    private bool ProcessAutoAttackInRange(LivingThing target)
+    {
+        if (self.control.skillSet[0] == null) return true;
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].range)
+        {
+            return true;
+        }
+        return ProcessChase(target);
+    }
+
 
     private bool ProcessAbility(AbilityTrigger trigger, CastInfo info)
     {
@@ -515,6 +531,13 @@ public class LivingThingControl : MonoBehaviourPun
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
+    public void CommandAutoAttackInRange(LivingThing target, bool reserve = false)
+    {
+        Command command = new Command(livingThing, CommandType.AutoAttackInRange, target);
+        if (!reserve) reservedCommands.Clear();
+        reservedCommands.Add(command);
+    }
+
 
     /*
     public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
@@ -807,7 +830,7 @@ public class LivingThingControl : MonoBehaviourPun
         if (Time.time - lastAICheckTime >= aiInterval)
         {
             lastAICheckTime = Time.time;
-
+            List<LivingThing> acTargets;
 
             if (currentCommand == null)
             {
@@ -819,20 +842,34 @@ public class LivingThingControl : MonoBehaviourPun
                     case AIMode.AutoAttackInRange:
                         if (skillSet[0] == null) break;
                         if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
-                        List<LivingThing> aaTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
-                        for (int i = 0; i < aaTargets.Count; i++)
+                        acTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
+                        for (int i = 0; i < acTargets.Count; i++)
                         {
-                            if (!aaTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, aaTargets[i]))
+                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, acTargets[i]))
                             {
-                                CommandAttack(aaTargets[i]);
+                                CommandAutoAttackInRange(acTargets[i]);
                                 break;
                             }
                         }
                         break;
+                    /*
+                    if (skillSet[0] == null) break;
+                    if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
+                    List<LivingThing> aaTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
+                    for (int i = 0; i < aaTargets.Count; i++)
+                    {
+                        if (!aaTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, aaTargets[i]))
+                        {
+                            CommandAttack(aaTargets[i]);
+                            break;
+                        }
+                    }
+                    break;
+                    */
                     case AIMode.AutoChaseToAttack:
                         if (skillSet[0] == null) break;
                         if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
-                        List<LivingThing> acTargets = livingThing.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
+                        acTargets = livingThing.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
                         for (int i = 0; i < acTargets.Count; i++)
                         {
                             if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, acTargets[i]))
