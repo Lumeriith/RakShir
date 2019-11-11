@@ -127,20 +127,11 @@ public abstract class AbilityTrigger : MonoBehaviour
         }
     }
 
-    public void Cast(CastInfo info)
+    public void Cast(CastInfo info, float animationDurationMultiuplier = 1f)
     {
         if (castAnimation != null && castAnimation.Length != 0)
         {
-            if (owner.control.skillSet[0] != null && owner.control.skillSet[0] == this)
-            {
-                float duration = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.totalHasteAmount) / 100f) + 0.05f;
-                owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], duration * animationDuration);
-            }
-            else
-            {
-                owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration);
-            }
-
+            owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiuplier);
         }
         this.info = info;
         OnCast(info);

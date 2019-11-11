@@ -7,8 +7,8 @@ public class trg_BasicAttack_SmallFireball : AbilityTrigger
     
     public override void OnCast(CastInfo info)
     {
-        Channel channel = new Channel(selfValidator, 1f / 3f, false, false, false, true, ChannelSuccess, ResetCooldown);
-        owner.control.StartChanneling(channel, true);
+        Channel channel = new Channel(selfValidator, 1f / 3f, false, false, false, true, ChannelSuccess, ResetCooldown, true);
+        owner.control.StartChanneling(channel);
         StartCooldown(true);
     }
 

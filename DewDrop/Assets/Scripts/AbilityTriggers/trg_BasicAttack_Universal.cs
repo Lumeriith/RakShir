@@ -9,8 +9,8 @@ public class trg_BasicAttack_Universal : AbilityTrigger
     public string abilityInstance = "ai_BasicAttack_Rare_";
     public override void OnCast(CastInfo info)
     {
-        Channel channel = new Channel(selfValidator, channelDuration, false, false, false, true, ChannelSuccess, ResetCooldown);
-        info.owner.control.StartChanneling(channel, true);
+        Channel channel = new Channel(selfValidator, channelDuration, false, false, false, true, ChannelSuccess, ResetCooldown, true);
+        info.owner.control.StartChanneling(channel);
         StartCooldown(true);
     }
 

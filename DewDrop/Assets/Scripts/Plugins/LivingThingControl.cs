@@ -17,7 +17,7 @@ public enum AIMode { None, AutoAttackInRange, AutoChaseToAttack }
 public class Channel
 {
     public SelfValidator channelValidator;
-    
+    public LivingThing owner;
     public float duration;
 
     public bool canMove;
@@ -25,7 +25,9 @@ public class Channel
     public bool canUseAbility;
 
     public bool canBeCanceledByCaster;
-    
+
+    public bool isBasicAttack = false;
+
     public UnityAction finishedCallback = null;
     public UnityAction canceledCallback = null;
 
@@ -33,7 +35,7 @@ public class Channel
 
     private bool hasEnded = false;
 
-    public Channel(SelfValidator channelValidator, float duration, bool canMove, bool canAttack, bool canUseAbility, bool canBeCanceledByCaster, UnityAction finishedCallback, UnityAction canceledCallback)
+    public Channel(SelfValidator channelValidator, float duration, bool canMove, bool canAttack, bool canUseAbility, bool canBeCanceledByCaster, UnityAction finishedCallback = null, UnityAction canceledCallback = null, bool isBasicAttack = false)
     {
         this.channelValidator = channelValidator;
         this.duration = duration;
@@ -43,12 +45,13 @@ public class Channel
         this.canBeCanceledByCaster = canBeCanceledByCaster;
         this.finishedCallback = finishedCallback;
         this.canceledCallback = canceledCallback;
+        this.isBasicAttack = isBasicAttack;
     }
 
     public void Tick()
     {
         if (hasEnded) return;
-        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime);
+        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime * (100f + owner.statusEffect.totalHasteAmount) / 100f);
         if(duration == 0)
         {
             hasEnded = true;
@@ -237,7 +240,7 @@ public class Command
         if (self.control.IsAttackProhibitedByChannel()) return true;
 
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
-        self.control.skillSet[0].Cast(info);
+        self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (100f + self.statusEffect.totalHasteAmount)/100f);
         return true;
     }
 
@@ -583,11 +586,12 @@ public class LivingThingControl : MonoBehaviourPun
         }
     }
 
-    public void StartChanneling(Channel channel, bool multiplyAttackIntervalToDuration = false)
+    public void StartChanneling(Channel channel)
     {
-        if (multiplyAttackIntervalToDuration)
+        channel.owner = livingThing;
+        if (channel.isBasicAttack)
         {
-            channel.duration *= (1f / livingThing.stat.finalAttacksPerSecond) / ((100f + livingThing.statusEffect.totalHasteAmount) / 100f);
+            channel.duration *= 1f / livingThing.stat.finalAttacksPerSecond;
         }
         ongoingChannels.Add(channel);
     }
