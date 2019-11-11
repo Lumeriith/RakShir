@@ -17,35 +17,32 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public float totalDamageOverTimeAmount { get; private set; }
     public float totalShieldAmount { get; private set; }
 
-    private Transform model;
-    public float modelOffsetSpeed = 3f;
-    public float modelOffsetMultiplier = 2.5f;
-
     private float lastOverTimeEffectTickTime = 0f;
+
+    private int[] statusEffectCountMap;
 
     private void Awake()
     {
+        int maxStatusEffectTypeValue = 0;
+        foreach(StatusEffectType type in System.Enum.GetValues(typeof(StatusEffectType)))
+        {
+            if ((int)type > maxStatusEffectTypeValue) maxStatusEffectTypeValue = (int)type;
+        }
+        statusEffectCountMap = new int[maxStatusEffectTypeValue + 1];
         livingThing = GetComponent<LivingThing>();
-        model = transform.Find("Model");
         lastOverTimeEffectTickTime = Time.time;
-
+        
     }
 
-    private void Update()
-    {
-        Vector3 offset = model.transform.localPosition;
-        offset.y = Mathf.MoveTowards(offset.y, modelOffset * modelOffsetMultiplier, modelOffsetSpeed * Time.deltaTime);
-        model.transform.localPosition = offset;
-    }
 
     public List<StatusEffect> GetStatusEffectsByType(StatusEffectType type)
     {
         List<StatusEffect> result = new List<StatusEffect>();
-        foreach (StatusEffect ce in statusEffects)
+        for (int i = 0;i<statusEffects.Count;i++)
         {
-            if (ce.type == type)
+            if (statusEffects[i].type == type)
             {
-                result.Add(ce);
+                result.Add(statusEffects[i]);
             }
         }
         return result;
@@ -54,11 +51,11 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public List<StatusEffect> GetCustomStatusEffectsByName(string name)
     {
         List<StatusEffect> result = new List<StatusEffect>();
-        foreach (StatusEffect ce in statusEffects)
+        for (int i = 0; i < statusEffects.Count; i++)
         {
-            if (ce.type == StatusEffectType.Custom && (string)ce.parameter == name)
+            if (statusEffects[i].type == StatusEffectType.Custom && (string)statusEffects[i].parameter == name)
             {
-                result.Add(ce);
+                result.Add(statusEffects[i]);
             }
         }
         return result;
@@ -75,7 +72,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.owner = livingThing;
         statusEffects.Add(ce);
         StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
-
+        statusEffectCountMap[(int)ce.type] += 1;
         photonView.RPC("RpcApplyStatusEffect", RpcTarget.Others, uid, ce.caster.photonView.ViewID, (byte)ce.type, ce.duration, ce.parameter);
     }
 
@@ -104,29 +101,24 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         photonView.RPC("RpcSetParameterOfStatusEffect", RpcTarget.All, ce.uid, parameter);
     }
 
-    public bool IsAffectedBy(StatusEffectType type) // TODO: Cache this!
+    public bool IsAffectedBy(StatusEffectType type)
     {
         if(type == StatusEffectType.Dash) return livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.isFriendly;
         if (type == StatusEffectType.Airborne) return livingThing.ongoingDisplacement != null && !livingThing.ongoingDisplacement.isFriendly;
-        for(int i = 0; i < statusEffects.Count; i++)
-        {
-            if (statusEffects[i].type == type) return true;
-        }
-        return false;
+        return statusEffectCountMap[(int)type] > 0;
     }
 
     public StatusEffect GetStatusEffectByUID(int uid)
     {
-        foreach(StatusEffect ce in statusEffects)
+        for(int i = 0; i < statusEffects.Count; i++)
         {
-            if (ce.uid == uid) return ce;
+            if (statusEffects[i].uid == uid) return statusEffects[i];
         }
         return null;
     }
 
 
     private bool wasStunned = false;
-    private float modelOffset = 0;
     private void FixedUpdate()
     {
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
@@ -154,52 +146,53 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         int temp = 0;
 
-        foreach (StatusEffect ce in statusEffects)
+
+        for(int i = 0; i < statusEffects.Count; i++)
         {
-            if (!canTick && ce.type != StatusEffectType.Stasis) continue;
-            if (ce.type == StatusEffectType.Airborne)
+            if (!canTick && statusEffects[i].type != StatusEffectType.Stasis) continue;
+            if (statusEffects[i].type == StatusEffectType.Airborne)
             {
-                remainingAirboneDuration += ce.duration;
+                remainingAirboneDuration += statusEffects[i].duration;
                 if (!tickedAirborne)
                 {
-                    ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
+                    statusEffects[i].duration = Mathf.MoveTowards(statusEffects[i].duration, 0, Time.deltaTime);
                     tickedAirborne = true;
                 }
             }
             else
             {
-                ce.duration = Mathf.MoveTowards(ce.duration, 0, Time.deltaTime);
+                statusEffects[i].duration = Mathf.MoveTowards(statusEffects[i].duration, 0, Time.deltaTime);
             }
 
             if (doOverTimeEffectTicks)
             {
-                if (ce.type == StatusEffectType.HealOverTime)
+                if (statusEffects[i].type == StatusEffectType.HealOverTime)
                 {
-                    if(ce.duration == 0)
+                    if(statusEffects[i].duration == 0)
                     {
                         if (photonView.IsMine)
                         {
-                            temp = reservedHealCasters.IndexOf(ce.caster);
+                            temp = reservedHealCasters.IndexOf(statusEffects[i].caster);
                             if(temp != -1)
                             {
-                                reservedHealAmounts[temp] += (float)ce.parameter;
+                                reservedHealAmounts[temp] += (float)statusEffects[i].parameter;
                             }
                             else
                             {
-                                reservedHealAmounts.Add((float)ce.parameter);
-                                reservedHealCasters.Add(ce.caster);
+                                reservedHealAmounts.Add((float)statusEffects[i].parameter);
+                                reservedHealCasters.Add(statusEffects[i].caster);
                             }
 
                             //ce.caster.DoHeal((float)ce.parameter, livingThing, true);
-                            removeList.Add(ce);
+                            removeList.Add(statusEffects[i]);
                         }
                     }
                     else
                     {
-                        float amount = Mathf.Min((float)ce.parameter, (float)ce.parameter / ce.duration * overTimeEffectTickInterval);
+                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * overTimeEffectTickInterval);
                         if (photonView.IsMine)
                         {
-                            temp = reservedHealCasters.IndexOf(ce.caster);
+                            temp = reservedHealCasters.IndexOf(statusEffects[i].caster);
                             if (temp != -1)
                             {
                                 reservedHealAmounts[temp] += amount;
@@ -207,41 +200,41 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedHealAmounts.Add(amount);
-                                reservedHealCasters.Add(ce.caster);
+                                reservedHealCasters.Add(statusEffects[i].caster);
                             }
 
                             //ce.caster.DoHeal(amount, livingThing);
                         }
-                        ce.parameter = (float)ce.parameter - amount;
+                        statusEffects[i].parameter = (float)statusEffects[i].parameter - amount;
                     }
                 }
-                else if (ce.type == StatusEffectType.DamageOverTime)
+                else if (statusEffects[i].type == StatusEffectType.DamageOverTime)
                 {
-                    if (ce.duration == 0)
+                    if (statusEffects[i].duration == 0)
                     {
                         if (photonView.IsMine)
                         {
-                            temp = reservedMagicDamageCasters.IndexOf(ce.caster);
+                            temp = reservedMagicDamageCasters.IndexOf(statusEffects[i].caster);
                             if (temp != -1)
                             {
-                                reservedMagicDamageAmounts[temp] += (float)ce.parameter;
+                                reservedMagicDamageAmounts[temp] += (float)statusEffects[i].parameter;
                             }
                             else
                             {
-                                reservedMagicDamageAmounts.Add((float)ce.parameter);
-                                reservedMagicDamageCasters.Add(ce.caster);
+                                reservedMagicDamageAmounts.Add((float)statusEffects[i].parameter);
+                                reservedMagicDamageCasters.Add(statusEffects[i].caster);
                             }
 
                             //ce.caster.DoMagicDamage((float)ce.parameter, livingThing, true);
                         }
-                        removeList.Add(ce);
+                        removeList.Add(statusEffects[i]);
                     }
                     else
                     {
-                        float amount = Mathf.Min((float)ce.parameter, (float)ce.parameter / ce.duration * overTimeEffectTickInterval);
+                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * overTimeEffectTickInterval);
                         if (photonView.IsMine)
                         {
-                            temp = reservedMagicDamageCasters.IndexOf(ce.caster);
+                            temp = reservedMagicDamageCasters.IndexOf(statusEffects[i].caster);
                             if (temp != -1)
                             {
                                 reservedMagicDamageAmounts[temp] += amount;
@@ -249,11 +242,11 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedMagicDamageAmounts.Add(amount);
-                                reservedMagicDamageCasters.Add(ce.caster);
+                                reservedMagicDamageCasters.Add(statusEffects[i].caster);
                             }
                             //ce.caster.DoMagicDamage(amount, livingThing, true);
                         }
-                        ce.parameter = (float)ce.parameter - amount;
+                        statusEffects[i].parameter = (float)statusEffects[i].parameter - amount;
                     }
                 }
             }
@@ -261,9 +254,9 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                if ((ce.type == StatusEffectType.Shield && (float)ce.parameter <= 0) || (ce.duration <= 0 && ce.type != StatusEffectType.HealOverTime && ce.type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && ce.IsHarmful()) || livingThing.IsDead())
+                if ((statusEffects[i].type == StatusEffectType.Shield && (float)statusEffects[i].parameter <= 0) || (statusEffects[i].duration <= 0 && statusEffects[i].type != StatusEffectType.HealOverTime && statusEffects[i].type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && statusEffects[i].IsHarmful()) || livingThing.IsDead())
                 {
-                    removeList.Add(ce);
+                    removeList.Add(statusEffects[i]);
                 }
             }
 
@@ -288,42 +281,42 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         totalDamageOverTimeAmount = 0;
         totalShieldAmount = 0;
 
-        foreach (StatusEffect ce in statusEffects)
+        for(int i = 0; i < statusEffects.Count; i++)
         {
-            if (ce.type == StatusEffectType.Haste && ce.parameter != null)
+            if (statusEffects[i].type == StatusEffectType.Haste && statusEffects[i].parameter != null)
             {
-                totalHasteAmount += (float)ce.parameter;
+                totalHasteAmount += (float)statusEffects[i].parameter;
             }
-            if (ce.type == StatusEffectType.Slow && ce.parameter != null)
+            if (statusEffects[i].type == StatusEffectType.Slow && statusEffects[i].parameter != null)
             {
-                totalSlowAmount += (float)ce.parameter;
+                totalSlowAmount += (float)statusEffects[i].parameter;
             }
-            if (ce.type == StatusEffectType.Speed && ce.parameter != null)
+            if (statusEffects[i].type == StatusEffectType.Speed && statusEffects[i].parameter != null)
             {
-                totalSpeedAmount += (float)ce.parameter;
-            }
-
-            if (ce.type == StatusEffectType.HealOverTime)
-            {
-                totalHealOverTimeAmount += (float)ce.parameter;
+                totalSpeedAmount += (float)statusEffects[i].parameter;
             }
 
-            if (ce.type == StatusEffectType.DamageOverTime)
+            if (statusEffects[i].type == StatusEffectType.HealOverTime)
             {
-                totalDamageOverTimeAmount += (float)ce.parameter;
+                totalHealOverTimeAmount += (float)statusEffects[i].parameter;
             }
 
-            if (ce.type == StatusEffectType.Shield)
+            if (statusEffects[i].type == StatusEffectType.DamageOverTime)
             {
-                totalShieldAmount += (float)ce.parameter;
+                totalDamageOverTimeAmount += (float)statusEffects[i].parameter;
+            }
+
+            if (statusEffects[i].type == StatusEffectType.Shield)
+            {
+                totalShieldAmount += (float)statusEffects[i].parameter;
             }
         }
 
-
-        foreach (StatusEffect ce in removeList)
+        for(int i = 0; i < removeList.Count; i++)
         {
-            RemoveStatusEffect(ce);
+            RemoveStatusEffect(removeList[i]);
         }
+
 
         if (photonView.IsMine)
         {
@@ -341,7 +334,6 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         }
 
-        modelOffset = remainingAirboneDuration;
     }
 
     public void ApplyShieldDamage(float amount)
@@ -382,79 +374,54 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.owner = livingThing;
         ce.uid = uid;
         statusEffects.Add(ce);
-
+        statusEffectCountMap[(int)ce.type] += 1;
         StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
     }
 
     [PunRPC]
     public void RpcRemoveStatusEffect(int uid)
     {
-        for(int i = 0; i < statusEffects.Count; i++)
-        {
-            if (statusEffects[i].uid == uid)
-            {
-                statusEffects[i].duration = 0;
-                statusEffects.RemoveAt(i);
-                break;
-            }
-        }
-
+        StatusEffect se = GetStatusEffectByUID(uid);
+        if (se == null) return;
+        statusEffectCountMap[(int)se.type] -= 1;
+        se.duration = 0;
+        statusEffects.Remove(se);
     }
 
     [PunRPC]
     public void RpcAddDurationToStatusEffect(int uid, float duration)
     {
-        foreach(StatusEffect ce in statusEffects)
-        {
-            if (ce.uid == uid)
-            {
-                ce.duration += duration;
-                break;
-            }
-        }
+        StatusEffect se = GetStatusEffectByUID(uid);
+        if(se != null) se.duration += duration;
     }
 
     [PunRPC]
     public void RpcSetDurationOfStatusEffect(int uid, float duration)
     {
-        foreach(StatusEffect ce in statusEffects)
-        {
-            if(ce.uid == uid)
-            {
-                ce.duration = duration;
-                break;
-            }
-        }
+        StatusEffect se = GetStatusEffectByUID(uid);
+        if (se != null) se.duration = duration;
     }
 
     [PunRPC]
     public void RpcSetParameterOfStatusEffect(int uid, object parameter)
     {
-        foreach (StatusEffect ce in statusEffects)
-        {
-            if (ce.uid == uid)
-            {
-                ce.parameter = parameter;
-                break;
-            }
-        }
+        StatusEffect se = GetStatusEffectByUID(uid);
+        if (se != null) se.parameter = parameter;
     }
 
 
     [PunRPC]
     public void RpcCleanseStatusEffect(byte type)
     {
-        for (int i = 0; i < statusEffects.Count; i++)
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
         {
             if (statusEffects[i].type == (StatusEffectType)type)
             {
                 statusEffects[i].duration = 0;
                 statusEffects.RemoveAt(i);
-                RpcCleanseStatusEffect(type);
-                break;
+                statusEffectCountMap[type] -= 1;
             }
         }
-
     }
 
     [PunRPC]
