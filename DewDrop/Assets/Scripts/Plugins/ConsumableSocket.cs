@@ -23,6 +23,7 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
         if (belt == null) return;
         if (belt.consumableBelt[consumableIndex] == null) return;
         belt.MoveConsumableFromBeltToInventory(consumableIndex);
+        if (belt.consumableBelt[consumableIndex] == null) DescriptionBox.HideDescription();
     }
 
     private PointerEventData hover = null;
