@@ -63,6 +63,8 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
             }
         }
     }
+
+    private PointerEventData hover;
     public void OnPointerEnter(PointerEventData data)
     {
         if (GameManager.instance.localPlayer == null) return;
@@ -72,16 +74,30 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
         if (belt.inventory[index] as Equipment != null)
         {
             DescriptionBox.ShowDescription(belt.inventory[index] as Equipment);
+            hover = data;
         }
         else if (belt.inventory[index] as Consumable != null)
         {
             DescriptionBox.ShowDescription(belt.inventory[index] as Consumable);
+            hover = data;
         }
 
     }
     public void OnPointerExit(PointerEventData data)
     {
-        DescriptionBox.HideDescription();
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
+    }
+    private void OnDisable()
+    {
+        if(hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
     }
 
 

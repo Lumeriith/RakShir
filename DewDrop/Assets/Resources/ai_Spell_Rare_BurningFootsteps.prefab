@@ -4793,7 +4793,7 @@ MonoBehaviour:
   ticks: 12
   tickInterval: 0.5
   damage: 15
-  radius: 1
+  radius: 0.8
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -4823,7 +4823,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6065787899943558624
 Transform:
   m_ObjectHideFlags: 0
@@ -14547,7 +14547,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -14848,8 +14848,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 0.6
+      scalar: 0.6
+      minScalar: 0.8
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -14901,8 +14901,8 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.8
-      minScalar: 0.8
+      scalar: 1
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -14954,8 +14954,8 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.8
-      minScalar: 0.8
+      scalar: 1
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -15429,7 +15429,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 80
+      scalar: 20
       minScalar: 10
       maxCurve:
         serializedVersion: 2

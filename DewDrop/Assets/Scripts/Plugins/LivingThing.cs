@@ -373,7 +373,7 @@ public class LivingThing : MonoBehaviourPun
             if (relation == Relation.Ally) basePrefab = Resources.Load<GameObject>("Ally Base");
             else if (relation == Relation.Enemy) basePrefab = Resources.Load<GameObject>("Enemy Base");
             else basePrefab = Resources.Load<GameObject>("Self Base");
-            unitBase = Instantiate(basePrefab, transform.position + 0.05f * Vector3.up, transform.rotation, transform);
+            unitBase = Instantiate(basePrefab, transform.position + 0.01f * Vector3.up, transform.rotation, transform);
             unitBase.transform.Rotate(90, 0, 0, Space.Self);
             unitBase.transform.localScale = unitRadius * 2 * Vector3.one;
         }
