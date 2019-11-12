@@ -44,25 +44,7 @@ public class DescriptionSyntax
     {
         try
         {
-            string[] parameters = element.Split(' ');
-            AbilityInstance ai;
-            float amount;
-            switch (parameters[0].ToUpper())
-            {
-                case "MAGIC":
-                    ai = ((GameObject)Resources.Load(parameters[1])).GetComponent<AbilityInstance>();
-                    amount = (float)ai.GetType().GetField(parameters[2]).GetValue(ai);
-                    amount = amount * UnitControlManager.instance.selectedUnit.stat.finalSpellPower / 100f;
-                    return prefixMagic + ((int)amount).ToString() + suffixMagic;
-                case "MAGIC_IGNORE":
-                    ai = ((GameObject)Resources.Load(parameters[1])).GetComponent<AbilityInstance>();
-                    return prefixMagic + ((int)ai.GetType().GetField(parameters[2]).GetValue(ai)).ToString() + suffixMagic;
-                case "VALUE":
-                    ai = ((GameObject)Resources.Load(parameters[1])).GetComponent<AbilityInstance>();
-                    return (string)ai.GetType().GetField(parameters[2]).GetValue(ai);
-            }
-
-            return "[" + element + "]";
+            return "<color=yellow>" + element + "</color>";
         }
         catch
         {

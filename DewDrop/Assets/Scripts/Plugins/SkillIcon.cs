@@ -11,19 +11,36 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private Image image_icon;
     private Image image_disabled;
     private TextMeshProUGUI tmpu_cooldown;
-    private SkillDetailBox detailBox;
     private Image image_cooldownFill;
     private Image image_specialFill;
     private Image image_specialIndicator;
 
+    private PointerEventData hover;
     public void OnPointerEnter(PointerEventData data)
     {
-        detailBox.gameObject.SetActive(true);
+        if(UnitControlManager.instance.selectedUnit.control.skillSet[skillIndex] != null)
+        {
+            DescriptionBox.ShowDescription(UnitControlManager.instance.selectedUnit.control.skillSet[skillIndex]);
+            hover = data;
+        }
     }
 
     public void OnPointerExit(PointerEventData data)
     {
-        detailBox.gameObject.SetActive(false);
+        if(hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
     }
 
     private void Awake()
@@ -32,8 +49,6 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
         image_specialFill = transform.Find("Mask/Special Fill Image").GetComponent<Image>();
         tmpu_cooldown = transform.Find("Mask/Cooldown Text").GetComponent<TextMeshProUGUI>();
-        detailBox = transform.Find("Detail Box").GetComponent<SkillDetailBox>();
-        detailBox.gameObject.SetActive(false);
         image_cooldownFill = transform.Find("Mask/Cooldown Fill Image").GetComponent<Image>();
         image_specialIndicator = transform.Find("Special Indicator").GetComponent<Image>();
     }

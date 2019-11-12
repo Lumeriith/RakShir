@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class EquippableSocket : MonoBehaviour, IPointerClickHandler
+public class EquippableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
     public EquipmentType equipmentType;
@@ -15,6 +15,8 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler
     public Color[] socketColorByTier = new Color[4];
     public Color emptySocketColor;
 
+
+
     public void OnPointerClick(PointerEventData data)
     {
         LivingThing target = GameManager.instance.localPlayer;
@@ -23,8 +25,37 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler
         if (belt == null) return;
         if (belt.equipped[(int)equipmentType] == null) return;
         belt.UnequipEquipment((int)equipmentType);
+        if (belt.equipped[(int)equipmentType] == null) DescriptionBox.HideDescription();
     }
 
+    private PointerEventData hover = null;
+    public void OnPointerEnter(PointerEventData data)
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        if (target == null || !target.photonView.IsMine) return;
+        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        if (belt == null) return;
+        if (belt.equipped[(int)equipmentType] == null) return;
+        DescriptionBox.ShowDescription(belt.equipped[(int)equipmentType]);
+        hover = data;
+    }
+    public void OnPointerExit(PointerEventData data)
+    {
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
+    }
 
     private void Awake()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemInInventory : MonoBehaviour, IPointerClickHandler
+public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private Image tierGradient;
     private Image icon;
@@ -33,7 +33,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler
         if (GameManager.instance.localPlayer == null) return;
         if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
 
-        if(data.button == PointerEventData.InputButton.Left)
+        if (data.button == PointerEventData.InputButton.Left)
         {
             if (belt.inventory[index] as Equipment != null)
             {
@@ -50,8 +50,39 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler
             belt.inventory.RemoveAt(index);
         }
 
+        if (belt.inventory.Count <= index || belt.inventory[index] == null) DescriptionBox.HideDescription();
+        else
+        {
+            if (belt.inventory[index] as Equipment != null)
+            {
+                DescriptionBox.ShowDescription(belt.inventory[index] as Equipment);
+            }
+            else if (belt.inventory[index] as Consumable != null)
+            {
+                DescriptionBox.ShowDescription(belt.inventory[index] as Consumable);
+            }
+        }
+    }
+    public void OnPointerEnter(PointerEventData data)
+    {
+        if (GameManager.instance.localPlayer == null) return;
+        if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
+
+        if (belt.inventory[index] as Equipment != null)
+        {
+            DescriptionBox.ShowDescription(belt.inventory[index] as Equipment);
+        }
+        else if (belt.inventory[index] as Consumable != null)
+        {
+            DescriptionBox.ShowDescription(belt.inventory[index] as Consumable);
+        }
 
     }
+    public void OnPointerExit(PointerEventData data)
+    {
+        DescriptionBox.HideDescription();
+    }
+
 
     private void ShowItem()
     {

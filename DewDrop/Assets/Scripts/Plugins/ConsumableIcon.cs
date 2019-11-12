@@ -9,26 +9,43 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private Image image_icon;
     private Image image_disabled;
-    private ConsumableDetailBox detailBox;
+
 
     private PlayerItemBelt belt;
 
+    private PointerEventData hover = null;
     public void OnPointerEnter(PointerEventData data)
     {
-        detailBox.gameObject.SetActive(true);
+        if (belt.consumableBelt[consumableIndex] != null)
+        {
+            DescriptionBox.ShowDescription(belt.consumableBelt[consumableIndex]);
+            hover = data;
+        }
+        
     }
 
     public void OnPointerExit(PointerEventData data)
     {
-        detailBox.gameObject.SetActive(false);
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (hover != null)
+        {
+            DescriptionBox.HideDescription();
+            hover = null;
+        }
     }
 
     private void Awake()
     {
         image_icon = transform.Find("Mask/Icon Image").GetComponent<Image>();
         image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
-        detailBox = transform.Find("Detail Box").GetComponent<ConsumableDetailBox>();
-        detailBox.gameObject.SetActive(false);
     }
     private void Update()
     {
