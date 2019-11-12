@@ -91,7 +91,6 @@ GameObject:
   - component: {fileID: 3788430676306712879}
   - component: {fileID: 3788430676306712878}
   - component: {fileID: 3788430676306712877}
-  - component: {fileID: 3788430676306712876}
   - component: {fileID: 3788430676306712867}
   - component: {fileID: 3788430676306712866}
   - component: {fileID: 3788430676306712865}
@@ -204,11 +203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de52ed1dc4fbfe846a4d873896547ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 250
+  currentHealth: 300
   currentMana: 0
   currentGold: 0
   isDead: 0
-  baseMaximumHealth: 250
+  baseMaximumHealth: 300
   baseHealthRegenerationPerSecond: 0
   baseMaximumMana: 0
   baseManaRegenerationPerSecond: 0
@@ -259,24 +258,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &3788430676306712876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3788430676306712870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 0}
-  enemyBase: {fileID: 0}
-  allyBase: {fileID: 0}
-  decalScale: 1
 --- !u!114 &3788430676306712867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,7 +361,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.87, z: 0}

@@ -1725,7 +1725,6 @@ GameObject:
   - component: {fileID: 5469519706206756600}
   - component: {fileID: 711134979490095696}
   - component: {fileID: 8362917597867669950}
-  - component: {fileID: 2672719885976068261}
   - component: {fileID: 3064732080597462934}
   - component: {fileID: 1177611052704444802}
   - component: {fileID: 8633419417548430690}
@@ -1891,24 +1890,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &2672719885976068261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8984262413198452557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 0}
-  enemyBase: {fileID: 0}
-  allyBase: {fileID: 0}
-  decalScale: 1
 --- !u!114 &3064732080597462934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2012,7 +1993,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.87
+  m_Radius: 0.5
   m_Height: 2.73
   m_Direction: 1
   m_Center: {x: 0, y: 1.35, z: 0}

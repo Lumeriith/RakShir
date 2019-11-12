@@ -66,6 +66,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public void OnPointerEnter(PointerEventData data)
     {
         if (GameManager.instance.localPlayer == null) return;
+        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>();
         if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
 
         if (belt.inventory[index] as Equipment != null)

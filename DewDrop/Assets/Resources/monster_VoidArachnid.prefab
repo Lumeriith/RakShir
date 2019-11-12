@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 269293227870613992}
   - component: {fileID: 269293227870613999}
   - component: {fileID: 269293227870613998}
-  - component: {fileID: 269293227870613997}
   - component: {fileID: 269293227870613996}
   - component: {fileID: 269293227870613987}
   - component: {fileID: 269293227870613986}
@@ -179,24 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &269293227870613997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 269293227870613991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 0}
-  enemyBase: {fileID: 0}
-  allyBase: {fileID: 0}
-  decalScale: 1
 --- !u!114 &269293227870613996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,6 +494,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 1.5
   manaCost: 0

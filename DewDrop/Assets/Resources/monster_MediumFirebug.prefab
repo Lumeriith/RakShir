@@ -789,7 +789,6 @@ GameObject:
   - component: {fileID: 599211593138908010}
   - component: {fileID: 5361822929039939522}
   - component: {fileID: 4015097376030526508}
-  - component: {fileID: 7394937415004919095}
   - component: {fileID: 7583900572536117764}
   - component: {fileID: 6044050559946802192}
   - component: {fileID: 3776094301340821744}
@@ -956,24 +955,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &7394937415004919095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4546933464446964447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 0}
-  enemyBase: {fileID: 0}
-  allyBase: {fileID: 0}
-  decalScale: 1
 --- !u!114 &7583900572536117764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1058,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.8
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.87, z: 0}
@@ -1135,6 +1116,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 5
   manaCost: 0
@@ -1681,6 +1665,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 2
   manaCost: 0

@@ -54,6 +54,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 2
   manaCost: 0
@@ -89,7 +92,6 @@ GameObject:
   - component: {fileID: 1822146169533988947}
   - component: {fileID: 1822146169533988940}
   - component: {fileID: 1822146169533988941}
-  - component: {fileID: 1822146169533988942}
   - component: {fileID: 1822146169533988943}
   - component: {fileID: 1822146169533988936}
   - component: {fileID: 1822146169533988937}
@@ -200,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de52ed1dc4fbfe846a4d873896547ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 200
+  currentHealth: 600
   currentMana: 0
   currentGold: 0
   isDead: 0
@@ -255,24 +257,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &1822146169533988942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1822146169533988932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 0}
-  enemyBase: {fileID: 0}
-  allyBase: {fileID: 0}
-  decalScale: 1
 --- !u!114 &1822146169533988943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +360,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.62
+  m_Radius: 0.85
   m_Height: 2.72
   m_Direction: 1
   m_Center: {x: 0, y: 1.12, z: 0}

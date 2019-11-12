@@ -83,17 +83,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8f6b18e105da2408b33a9b5c86b58f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activationRange: 5
+  activationRange: 7.5
   channel:
     channelValidator:
       evaluatesFalseIfDead: 1
       excludes: 090a0b0c0d0e0f12
       invertResult: 0
+    owner: {fileID: 0}
     duration: 0
     canMove: 0
     canAttack: 0
     canUseAbility: 0
     canBeCanceledByCaster: 0
+    isBasicAttack: 0
   isInterruptedByDamage: 1
   isOpen: 0
 --- !u!1 &741715951354263295

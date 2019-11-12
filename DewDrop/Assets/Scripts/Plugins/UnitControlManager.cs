@@ -51,10 +51,10 @@ public class UnitControlManager : MonoBehaviour
     private KeyCode pendingTriggerActivationKey;
 
     private Camera mainCamera;
-    private DecalSystem.Decal rangeIndicator;
-    private DecalSystem.Decal secondRangeIndicator;
-    private DecalSystem.Decal arrowHead;
-    private DecalSystem.Decal arrowBase;
+    private Transform rangeIndicator;
+    private Transform secondRangeIndicator;
+    private Transform arrowHead;
+    private Transform arrowBase;
 
     private GraphController nodyGraphController;
 
@@ -247,10 +247,10 @@ public class UnitControlManager : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        rangeIndicator = transform.Find("Range Indicator").GetComponent<DecalSystem.Decal>();
-        secondRangeIndicator = transform.Find("Second Range Indicator").GetComponent<DecalSystem.Decal>();
-        arrowHead = transform.Find("ArrowHead").GetComponent<DecalSystem.Decal>();
-        arrowBase = transform.Find("ArrowBase").GetComponent<DecalSystem.Decal>();
+        rangeIndicator = transform.Find("Range Indicator");
+        secondRangeIndicator = transform.Find("Second Range Indicator");
+        arrowHead = transform.Find("ArrowHead");
+        arrowBase = transform.Find("ArrowBase");
         nodyGraphController = FindObjectOfType<GraphController>();
 
         IngameDebugConsole.DebugLogManager dbg = FindObjectOfType<IngameDebugConsole.DebugLogManager>();

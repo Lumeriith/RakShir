@@ -114,7 +114,6 @@ public struct InfoSpendGold
 [RequireComponent(typeof(LivingThingControl))]
 [RequireComponent(typeof(LivingThingStat))]
 [RequireComponent(typeof(LivingThingStatusEffect))]
-[RequireComponent(typeof(LivingThingBase))]
 [RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(PhotonTransformViewClassic))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -216,18 +215,7 @@ public class LivingThing : MonoBehaviourPun
         {
             if(_currentRoom == null)
             {
-                RaycastHit info;
-                if(Physics.Raycast(transform.position, Vector3.down, out info, 200f, LayerMask.GetMask("Ground")))
-                {
-                    _currentRoom = info.collider.GetComponent<Room>();
-                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.GetComponent<Room>();
-                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.GetComponent<Room>();
-                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.GetComponent<Room>();
-                    if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.parent.GetComponent<Room>();
-                    // Oh god this is horrifying. Let's fix this later.
-
-                }
-
+                UpdateCurrentRoom();
             }
             return _currentRoom;
         }
@@ -239,6 +227,8 @@ public class LivingThing : MonoBehaviourPun
     }
 
     private Room _currentRoom;
+
+    private GameObject unitBase;
 
     [ShowIf("ShouldShowSummonerField")]
     public LivingThing summoner = null;
@@ -376,6 +366,22 @@ public class LivingThing : MonoBehaviourPun
 
     private void Update()
     {
+        if(unitBase == null && GameManager.instance.localPlayer != null)
+        {
+            GameObject basePrefab;
+            Relation relation = GameManager.instance.localPlayer.GetRelationTo(this);
+            if (relation == Relation.Ally) basePrefab = Resources.Load<GameObject>("Ally Base");
+            else if (relation == Relation.Enemy) basePrefab = Resources.Load<GameObject>("Enemy Base");
+            else basePrefab = Resources.Load<GameObject>("Self Base");
+            unitBase = Instantiate(basePrefab, transform.position + 0.05f * Vector3.up, transform.rotation, transform);
+            unitBase.transform.Rotate(90, 0, 0, Space.Self);
+            unitBase.transform.localScale = unitRadius * 2 * Vector3.one;
+        }
+        if(unitBase != null)
+        {
+            unitBase.SetActive(!IsDead());
+        }
+
         didDamageFlash = false;
 
         if(ongoingDisplacement != null)
@@ -478,6 +484,10 @@ public class LivingThing : MonoBehaviourPun
         }
     }
 
+    private void FixedUpdate()
+    {
+        UpdateCurrentRoom();
+    }
 
 
 
@@ -508,7 +518,19 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
-
+    public void UpdateCurrentRoom()
+    {
+        RaycastHit info;
+        if (Physics.Raycast(transform.position + 1f * Vector3.up, Vector3.down, out info, 200f, LayerMask.GetMask("Ground")))
+        {
+            _currentRoom = info.collider.GetComponent<Room>();
+            if (_currentRoom == null) _currentRoom = info.collider.transform.parent.GetComponent<Room>();
+            if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.GetComponent<Room>();
+            if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.GetComponent<Room>();
+            if (_currentRoom == null) _currentRoom = info.collider.transform.parent.parent.parent.parent.GetComponent<Room>();
+            // Oh god this is horrifying. Let's fix this later.
+        }
+    }
     public void CancelDisplacement()
     {
         photonView.RPC("RpcCancelDisplacement", RpcTarget.All);

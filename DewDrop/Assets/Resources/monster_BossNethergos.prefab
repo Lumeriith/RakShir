@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2421799425875584463}
   - component: {fileID: 7179340271612615015}
   - component: {fileID: 2194198262150267529}
-  - component: {fileID: 5722736049390951314}
   - component: {fileID: 4680448481330828449}
   - component: {fileID: 8803377896308165301}
   - component: {fileID: 2138162784718022229}
@@ -180,24 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffects: []
-  modelOffsetSpeed: 3
-  modelOffsetMultiplier: 2.5
---- !u!114 &5722736049390951314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644611692407725178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4968a4b42d628c4681f0970513a485d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownBase: {fileID: 2100000, guid: a5adb44c14f7734449c84bae3fcfdb71, type: 2}
-  enemyBase: {fileID: 2100000, guid: 6308abd88a6a1c542b27dcfbcd685b80, type: 2}
-  allyBase: {fileID: 2100000, guid: 3f7572514ba51ff49aea6781145cb524, type: 2}
-  decalScale: 8.48
 --- !u!114 &4680448481330828449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +340,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 20
   manaCost: 0
@@ -526,6 +510,9 @@ MonoBehaviour:
     range: 0
     arrowWidth: 0
     arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
   targetingType: 4
   range: 20
   manaCost: 0
@@ -554,10 +541,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3449554137628856861}
     m_Modifications:
-    - target: {fileID: 127320, guid: 632b889d0975e1f4189b9e357bd22b46, type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
     - target: {fileID: 414788, guid: 632b889d0975e1f4189b9e357bd22b46, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.79
@@ -613,6 +596,10 @@ PrefabInstance:
     - target: {fileID: 414788, guid: 632b889d0975e1f4189b9e357bd22b46, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 127320, guid: 632b889d0975e1f4189b9e357bd22b46, type: 3}
+      propertyPath: m_Name
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 9524072, guid: 632b889d0975e1f4189b9e357bd22b46, type: 3}
       propertyPath: m_Controller
