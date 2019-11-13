@@ -45,7 +45,7 @@ public class StatusEffect
     {
         get
         {
-            return (duration > 0) && owner.statusEffect.GetStatusEffectByUID(uid) != null;
+            return (duration > 0) && owner != null && owner.statusEffect.GetStatusEffectByUID(uid) != null;
         }
     }
 

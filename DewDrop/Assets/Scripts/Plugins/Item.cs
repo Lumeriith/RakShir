@@ -30,6 +30,7 @@ public abstract class Item : Activatable
         {
             rb.constraints = RigidbodyConstraints.None;
             rb.drag = 1f;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
         }
     }
     private void FixedUpdate()

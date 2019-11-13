@@ -32251,6 +32251,7 @@ MonoBehaviour:
   customPostProcessProfile: {fileID: 11400000, guid: 3b42dbdfc8b7a24478035dc41f627c05,
     type: 2}
   enableFog: 0
+  rerollsShopUponEntering: 1
   spawnDelay: 0.5
   spawners:
   - {fileID: 0}
@@ -47995,6 +47996,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LargeFlames (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c,
+        type: 3}
+      propertyPath: UVModule.flipU
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4723718275106078, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.55938
@@ -48006,11 +48012,6 @@ PrefabInstance:
     - target: {fileID: 4723718275106078, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.55938
-      objectReference: {fileID: 0}
-    - target: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c,
-        type: 3}
-      propertyPath: UVModule.flipU
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
