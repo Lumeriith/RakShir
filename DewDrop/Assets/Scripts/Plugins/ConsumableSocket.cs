@@ -22,7 +22,26 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
         PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
         if (belt == null) return;
         if (belt.consumableBelt[consumableIndex] == null) return;
-        belt.MoveConsumableFromBeltToInventory(consumableIndex);
+
+        if(data.button == PointerEventData.InputButton.Left && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
+        {
+            belt.MoveConsumableFromBeltToInventory(consumableIndex);
+        }
+        else if (data.button == PointerEventData.InputButton.Right && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
+        {
+            belt.MoveConsumableFromBeltToInventory(consumableIndex, true);
+            belt.inventory[belt.inventory.Count - 1].Disown();
+            belt.inventory.RemoveAt(belt.inventory.Count - 1);
+        }
+        else if (data.button == PointerEventData.InputButton.Middle && GameManager.cachedCurrentNodeType == IngameNodeType.Shop)
+        {
+            Item item = belt.consumableBelt[consumableIndex];
+            belt.MoveConsumableFromBeltToInventory(consumableIndex, true);
+            belt.inventory[belt.inventory.Count - 1].Disown();
+            belt.inventory.RemoveAt(belt.inventory.Count - 1);
+            ShopManager.instance.SellItem(item);
+        }
+
         if (belt.consumableBelt[consumableIndex] == null) DescriptionBox.HideDescription();
     }
 

@@ -57,6 +57,17 @@ public abstract class Item : Activatable
         photonView.RPC("RpcDisown", RpcTarget.All);
     }
 
+    public void DestroySelf()
+    {
+        photonView.RPC("RpcDestroySelf", photonView.Owner);
+    }
+
+    [PunRPC]
+    public void RpcDestroySelf()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
+
     protected override void OnChannelCancel(LivingThing activator)
     {
 

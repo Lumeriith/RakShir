@@ -329,7 +329,7 @@ public class LivingThing : MonoBehaviourPun
             outline = transform.Find("Model").gameObject.AddComponent<MeshOutline>();
         }
 
-        outline.enabled = false;
+        outline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
 
         AssignMissingTransforms();
 
@@ -364,6 +364,7 @@ public class LivingThing : MonoBehaviourPun
         unitRadius = GetComponent<CapsuleCollider>().radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
     }
 
+    
     private void Update()
     {
         if(unitBase == null && GameManager.instance.localPlayer != null)
@@ -487,6 +488,23 @@ public class LivingThing : MonoBehaviourPun
     private void FixedUpdate()
     {
         UpdateCurrentRoom();
+        if(GameManager.instance.localPlayer != null)
+        {
+            switch (GetRelationTo(GameManager.instance.localPlayer))
+            {
+                case Relation.Own:
+                    outline.OutlineColor = UnitControlManager.instance.selfOutlineColor;
+                    break;
+                case Relation.Ally:
+                    outline.OutlineColor = UnitControlManager.instance.allyOutlineColor;
+                    break;
+                case Relation.Enemy:
+                    outline.OutlineColor = UnitControlManager.instance.enemyOutlineColor;
+                    break;
+            }
+            outline.OutlineWidth = 1.5f;
+        }
+
     }
 
 
@@ -1246,13 +1264,14 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyPureDamage(float amount, int from_id)
     {
+        if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
         stat.currentHealth -= Mathf.Max(0, amount);
         stat.ValidateHealth();
         if(from!=this) lastAttacker = from;
         if (photonView.IsMine)
         {
-            stat.SyncChangingStats();
+            stat.SyncChangingStats();   
         }
 
         InfoDamage info2;

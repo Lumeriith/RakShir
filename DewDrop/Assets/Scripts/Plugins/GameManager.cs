@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-
+using Doozy.Engine.Nody;
+using Doozy.Engine.Nody.Nodes;
 public enum PlayerType { Elemental, Reptile }
-
+public enum IngameNodeType { Unknown, Ingame, Menu, Inventory, Shop }
 public class GameManager : MonoBehaviour
 {
     private static StatusEffectType[] statusEffectsToDisplay =
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
     public CursorShapeType cursorShape = CursorShapeType.Normal;
     private CursorShapeType lastCursorShape;
 
+
     public LivingThing localPlayer
     {
         get
@@ -73,29 +75,69 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetVisionMultiplier(float multiplier)
+    public static GraphController nodyGraphController
+    {
+        get
+        {
+            if (_nodyGraphController == null) _nodyGraphController = FindObjectOfType<GraphController>();
+            return _nodyGraphController;
+        }
+    }
+
+    private static GraphController _nodyGraphController = null;
+
+    public static IngameNodeType cachedCurrentNodeType { get; private set; }
+    private void FixedUpdate()
+    {
+        cachedCurrentNodeType = GetCurrentNode();
+    }
+
+    public static IngameNodeType GetCurrentNode() // Probably would be a good idea to cache this? or not?
+    {
+        if (nodyGraphController.Graph.ActiveNode != null && nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph)
+        {
+            string nodeName = ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name;
+            if (nodeName == "Ingame") return IngameNodeType.Ingame;
+            else if (nodeName == "Menu") return IngameNodeType.Menu;
+            else if (nodeName == "Inventory") return IngameNodeType.Inventory;
+            else if (nodeName == "Shop") return IngameNodeType.Shop;
+        }
+        return IngameNodeType.Unknown;
+    }
+
+    public static void SetVisionMultiplier(float multiplier)
     {
         PlayerViewCamera.instance.visionMultiplier = multiplier;
     }
 
-    public LivingThing SpawnLocalPlayer(PlayerType type, Vector3 location)
+    public static LivingThing SpawnLivingThing(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
+    {
+        return PhotonNetwork.Instantiate("LivingThings/" + livingThingName, location, rotation).GetComponent<LivingThing>();
+    }
+
+    public static Item SpawnItem(string itemName, Vector3 location, Quaternion rotation = new Quaternion())
+    {
+        return PhotonNetwork.Instantiate("Items/" + itemName, location, rotation).GetComponent<Item>();
+    }
+
+    public static LivingThing SpawnLocalPlayer(PlayerType type, Vector3 location)
     {
         LivingThing localPlayer;
         List<Activatable> startItems = new List<Activatable>();
         if (type == PlayerType.Elemental)
         {
-            localPlayer = PhotonNetwork.Instantiate("player_Elemental", location, Quaternion.identity).GetComponent<LivingThing>();
-            startItems.Add(PhotonNetwork.Instantiate("equip_Armor_ElementalIntegrity", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Boots_ElementalDetermination", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Weapon_ElementalJustice", location, Quaternion.identity).GetComponent<Activatable>());
+            localPlayer = SpawnLivingThing("player_Elemental", location);
+            startItems.Add(SpawnItem("equip_Armor_ElementalIntegrity", location));
+            startItems.Add(SpawnItem("equip_Boots_ElementalDetermination", location));
+            startItems.Add(SpawnItem("equip_Weapon_ElementalJustice", location));
             AvatarManager.instance.SetAvatar(PlayerType.Elemental);
         }
         else
         {
-            localPlayer = PhotonNetwork.Instantiate("player_Reptile", location, Quaternion.identity).GetComponent<LivingThing>();
-            startItems.Add(PhotonNetwork.Instantiate("equip_Armor_ReptileSkin", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Boots_ReptileFeet", location, Quaternion.identity).GetComponent<Activatable>());
-            startItems.Add(PhotonNetwork.Instantiate("equip_Weapon_ReptileClaw", location, Quaternion.identity).GetComponent<Activatable>());
+            localPlayer = SpawnLivingThing("player_Reptile", location);
+            startItems.Add(SpawnItem("equip_Armor_ReptileSkin", location));
+            startItems.Add(SpawnItem("equip_Boots_ReptileFeet", location));
+            startItems.Add(SpawnItem("equip_Weapon_ReptileClaw", location));
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
 
@@ -104,14 +146,14 @@ public class GameManager : MonoBehaviour
             localPlayer.ActivateImmediately(item);
         }
 
-        this.localPlayer = localPlayer;
+        instance.localPlayer = localPlayer;
         localPlayer.SetReadableName(PlayerPrefs.GetString("characterName", "이름없는 영웅"));
         return localPlayer;
     }
 
-    public void DropLoot(string name, Vector3 position)
+    public static void DropLoot(string name, Vector3 position)
     {
-        GameObject gobj = PhotonNetwork.Instantiate(name, position + Vector3.up + Random.insideUnitSphere, Random.rotation);
+        GameObject gobj = SpawnItem(name, position + Vector3.up * 2f + Random.insideUnitSphere * 0.8f, Random.rotation).gameObject;
         Rigidbody rb = gobj.GetComponent<Rigidbody>();
         if(rb != null)
         {

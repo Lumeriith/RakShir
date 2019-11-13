@@ -733,7 +733,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2262550681225800936}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11832,6 +11832,7 @@ Transform:
   - {fileID: 5951014711690440670}
   - {fileID: 767569084478720190}
   - {fileID: 5951014712024714300}
+  - {fileID: 5848965238773268086}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -89094,6 +89095,97 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!1 &5368234723500645847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5848965238773268086}
+  - component: {fileID: 8400239067316784460}
+  m_Layer: 0
+  m_Name: Shop Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5848965238773268086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5368234723500645847}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 767569082761898594}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8400239067316784460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5368234723500645847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863aa75a164b75d498cf41b91026c824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsAlwaysInStock:
+  - {fileID: 4528130683239093077, guid: adc06383d2ae2864fb22a6ddc1847e1d, type: 3}
+  - {fileID: 3491105507781250132, guid: 237b8f96f6556b84fad072d7215acbfe, type: 3}
+  - {fileID: 3391344415861288528, guid: 4cc4a2b7b1920384fa0ca5d87c526a1b, type: 3}
+  sellableEquipments:
+  - {fileID: 9189937867593367065, guid: cfe43061697aa1e4199884297636124f, type: 3}
+  - {fileID: 8534018554195944956, guid: b8c7fadd0cda8b3479493c6ea8b56837, type: 3}
+  - {fileID: 1993413656186376059, guid: b9ee8b4a3dc6d164482056c87f01f9ab, type: 3}
+  - {fileID: 3509998004210148744, guid: 3280e68718a90fd45b25c1f0de4cf1ac, type: 3}
+  - {fileID: -846211004121778506, guid: b0b8e72cc2f94e446b7ed303444f1254, type: 3}
+  - {fileID: 6530457878267445145, guid: f6dac9acda0095f4fab971bee1977ab0, type: 3}
+  - {fileID: -8947406572414406492, guid: a7c2a99998162db41bb9b0be3ed06a06, type: 3}
+  - {fileID: 4222466331479860056, guid: 45df9173e95444540a413317adf1bff9, type: 3}
+  - {fileID: 5296771753872778142, guid: 0323c491eb1731440899371685837d1b, type: 3}
+  - {fileID: 8087790992898681346, guid: 34f2f3330e2069a4dba1f56efd7ae266, type: 3}
+  - {fileID: 5659252693593703740, guid: 2268f4378328164499dc50710f998265, type: 3}
+  - {fileID: 6220307396854544708, guid: 8e28c4b6f56b42b4e839cf4633c0f036, type: 3}
+  - {fileID: 4157870256618669823, guid: e59efdd8e7c898340a2955c787af5687, type: 3}
+  - {fileID: 1585493933625332035, guid: 0fcef510cabeb8b4398f9ebab11f9637, type: 3}
+  - {fileID: 4730112352626647802, guid: 853e2779cd398504aa81ecbaf1c73baf, type: 3}
+  - {fileID: 100491632777612709, guid: c3a1bf0df97682545af97645c062d486, type: 3}
+  - {fileID: 6238484734688276376, guid: f8b14e60860847c428cc7a3b9eb83557, type: 3}
+  - {fileID: 1764531974660790046, guid: 25132a177f5050447b05c12aed08dd30, type: 3}
+  - {fileID: 5712709392225772483, guid: 5106fc4cd21ee97418c60700ff4b276e, type: 3}
+  - {fileID: 7908824260882226595, guid: 2e7253218aae75f47b483dc536338743, type: 3}
+  - {fileID: 1079809460508228261, guid: 41b093d6d54c33b4ab35968d339e2274, type: 3}
+  - {fileID: 6982339730158293271, guid: 97a50aa8153214446b3fa4e67ba94b20, type: 3}
+  - {fileID: 8399559041125144535, guid: 74bbf0f0052c7d94ab3af19e10402c8c, type: 3}
+  - {fileID: 8675049684924432928, guid: 71c1aa70dab19734687bdfc32e27e6e8, type: 3}
+  - {fileID: 1828341915913043312, guid: 7df555ec251ceef448bb2d5fb3fac207, type: 3}
+  - {fileID: 4388318766977272984, guid: 8523295a0b94b02409a8e1e6b87ea04e, type: 3}
+  - {fileID: 8355745374286122010, guid: 9c9ee11637e493c49b30be877eb8d574, type: 3}
+  - {fileID: 3441593768182024394, guid: 35c3ce718e3016a4e914596b9a3883e2, type: 3}
+  - {fileID: 4149316480683061870, guid: 9a8fba098f682ab47a9f3feaf078b74f, type: 3}
+  equipmentsInStockPerShop: 1
+  sellableConsumables:
+  - {fileID: 7148003364550947271, guid: 3cac8587be46bbd4cae4c6e4bc62cfa9, type: 3}
+  - {fileID: 7148003364550947271, guid: cfbbb3b41b1efa8428ce8046ba06e9d9, type: 3}
+  - {fileID: 7148003364550947271, guid: 8856975bba4ed5c4fa4f1d3fa1d1a55d, type: 3}
+  - {fileID: -6488681294149496507, guid: 789ce205f28176c47b98c4524519474e, type: 3}
+  - {fileID: -1490632428244911969, guid: 6a112e519eaddf842bb1555ada43ee54, type: 3}
+  - {fileID: -6737120330219658619, guid: 0d0653a6dd478624fbef23ee1c0d9554, type: 3}
+  - {fileID: 8239189148619018785, guid: 2646d666adc1d274ab20adaaa6388e4e, type: 3}
+  - {fileID: -5844607081334156347, guid: 5011a4b8c4571d34e86fe7071af9d7ff, type: 3}
+  consumablesInStockPerShop: 3
+  itemSellingValueModifier: 0.5
+  currentStock: []
+  currentStockNumber: 
 --- !u!1 &5379627976956794534
 GameObject:
   m_ObjectHideFlags: 0

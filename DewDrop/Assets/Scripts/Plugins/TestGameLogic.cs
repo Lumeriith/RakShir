@@ -22,12 +22,12 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
 
     public void SpawnAsReptile()
     {
-        GameManager.instance.SpawnLocalPlayer(PlayerType.Reptile, reptileSpawnPoint.position);
+        GameManager.SpawnLocalPlayer(PlayerType.Reptile, reptileSpawnPoint.position);
     }
     
     public void SpawnAsElemental()
     { 
-        GameManager.instance.SpawnLocalPlayer(PlayerType.Elemental, reptileSpawnPoint.position);
+        GameManager.SpawnLocalPlayer(PlayerType.Elemental, reptileSpawnPoint.position);
     }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)

@@ -269,34 +269,20 @@ public class UnitControlManager : MonoBehaviour
 
         if (target != null)
         {
-            if (previousOutline != null) previousOutline.enabled = false;
+            if (previousOutline != null) previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
             previousOutline = target.outline;
 
 
             if (target.outline != null)
             {
-                target.outline.enabled = true;
-                switch (selectedUnit.GetRelationTo(target))
-                {
-                    case Relation.Own:
-                        target.outline.OutlineColor = selfOutlineColor;
-                        break;
-                    case Relation.Ally:
-                        target.outline.OutlineColor = allyOutlineColor;
-                        break;
-                    case Relation.Enemy:
-                        target.outline.OutlineColor = enemyOutlineColor;
-                        break;
-                }
-                target.outline.OutlineMode = MeshOutline.Mode.OutlineVisible;
-                target.outline.OutlineWidth = 1.5f;
+                target.outline.OutlineMode = MeshOutline.Mode.OutlineAndSilhouette;
             }
         }
         else
         {
             if (previousOutline != null)
             {
-                previousOutline.enabled = false;
+                previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
                 previousOutline = null;
             }
         }
@@ -310,7 +296,7 @@ public class UnitControlManager : MonoBehaviour
 
         if (previousOutline != null)
         {
-            previousOutline.enabled = false;
+            previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
             previousOutline = null;
         }
 
@@ -325,7 +311,7 @@ public class UnitControlManager : MonoBehaviour
 
         bool shouldTakeInputs = false;
 
-        if (debugLogWindow.alpha == 0 && nodyGraphController.Graph.ActiveNode != null && nodyGraphController.Graph.ActiveNode.NodeType == Doozy.Engine.Nody.Models.NodeType.SubGraph && ((SubGraphNode)nodyGraphController.Graph.ActiveNode).SubGraph.ActiveNode.Name == "Ingame")
+        if (debugLogWindow.alpha == 0 && GameManager.cachedCurrentNodeType == IngameNodeType.Ingame)
             shouldTakeInputs = true;
         
 

@@ -61,87 +61,6 @@ MonoBehaviour:
   m_name: Start
   m_notes: 
   ErrorNodeIsNotConnected: 0
---- !u!114 &-3794315289776792004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97aebf4d1c7c46d9843e5c78fd464d44, type: 3}
-  m_Name: GameEventNode
-  m_EditorClassIdentifier: 
-  ErrorNodeNameIsEmpty: 0
-  ErrorDuplicateNameFoundInGraph: 0
-  m_inputSockets:
-  - m_connectionMode: 1
-    m_connections:
-    - m_inputConnectionPoint: {x: -2, y: 4}
-      m_outputConnectionPoint: {x: 202, y: 4}
-      m_id: 36b0cc56-7dc4-480d-8e7f-861293f7840f
-      m_inputNodeId: ab859d25-54af-477f-99bf-d7b3fd31ae51
-      m_inputSocketId: 493c8016-d946-428c-9299-0e952994a374
-      m_outputNodeId: 9f9301ab-8c34-4121-9fd7-d40ebdfa324f
-      m_outputSocketId: df4884fb-e48e-410a-91e8-e807f0740385
-    m_connectionPoints:
-    - {x: -2, y: 4}
-    - {x: 202, y: 4}
-    m_direction: 0
-    m_canBeDeleted: 0
-    m_canBeReordered: 0
-    m_curveModifier: 0
-    m_height: 24
-    m_width: 216
-    m_x: 0
-    m_y: 38
-    m_id: 493c8016-d946-428c-9299-0e952994a374
-    m_nodeId: ab859d25-54af-477f-99bf-d7b3fd31ae51
-    m_socketName: InputSocket_0
-    m_value: '{}'
-    m_valueTypeQualifiedName: Doozy.Engine.Nody.Connections.PassthroughConnection,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_outputSockets:
-  - m_connectionMode: 0
-    m_connections: []
-    m_connectionPoints:
-    - {x: -2, y: 4}
-    - {x: 202, y: 4}
-    m_direction: 1
-    m_canBeDeleted: 0
-    m_canBeReordered: 0
-    m_curveModifier: 0
-    m_height: 24
-    m_width: 216
-    m_x: 0
-    m_y: 62
-    m_id: 665a652d-2bba-4f98-a446-210ab73791be
-    m_nodeId: ab859d25-54af-477f-99bf-d7b3fd31ae51
-    m_socketName: OutputSocket_0
-    m_value: '{}'
-    m_valueTypeQualifiedName: Doozy.Engine.Nody.Connections.PassthroughConnection,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_nodeType: 4
-  m_allowDuplicateNodeName: 0
-  m_allowEmptyNodeName: 0
-  m_canBeDeleted: 1
-  m_debugMode: 0
-  m_useFixedUpdate: 0
-  m_useLateUpdate: 0
-  m_useUpdate: 0
-  m_height: 152
-  m_width: 216
-  m_x: 276
-  m_y: -168
-  m_minimumInputSocketsCount: 1
-  m_minimumOutputSocketsCount: 1
-  m_graphId: 30e48131-cd47-4309-84f5-602bdaa35272
-  m_id: ab859d25-54af-477f-99bf-d7b3fd31ae51
-  m_name: Enter Online Test Game
-  m_notes: 
-  ErrorNotSendingAnyGameEvent: 0
-  GameEvent: Enter Online Test Game
 --- !u!114 &-3439500217180687841
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -315,7 +234,7 @@ MonoBehaviour:
   m_version: 1
   m_description: 
   m_id: 30e48131-cd47-4309-84f5-602bdaa35272
-  m_lastModified: 132174076613873795
+  m_lastModified: 132180876684650058
 --- !u!114 &574489738285805625
 MonoBehaviour:
   m_ObjectHideFlags: 1

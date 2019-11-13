@@ -17,6 +17,41 @@ public class PlayerItemBelt : MonoBehaviour
         livingThing = GetComponent<LivingThing>();
     }
 
+    public bool HasSpaceFor(Item item)
+    {
+        Equipment equipment = item as Equipment;
+        if (equipment != null && equipped[(int)equipment.type] == null)
+        {
+            return true;
+        }
+
+        Consumable consumable = item as Consumable;
+        if (consumable != null && consumable.useOnPickup)
+        {
+            return true;
+        }
+
+        if (consumable != null)
+        {
+            for (int i = 0; i < consumableBelt.Length; i++)
+            {
+                if (consumableBelt[i] == null)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (inventory.Count < inventoryCapacity)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public bool Pickup(Item item)
     {
         Equipment equipment = item as Equipment;
@@ -79,11 +114,11 @@ public class PlayerItemBelt : MonoBehaviour
 
     }
 
-    public void MoveConsumableFromBeltToInventory(int from)
+    public void MoveConsumableFromBeltToInventory(int from, bool ignoreInventoryCapacity = false)
     {
         Consumable target = consumableBelt[from] as Consumable;
         if (target == null) return;
-        if (inventory.Count >= inventoryCapacity) return;
+        if (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity) return;
         inventory.Add(consumableBelt[from]);
         consumableBelt[from] = null;
     }
@@ -134,11 +169,11 @@ public class PlayerItemBelt : MonoBehaviour
         return true;
     }
     
-    public void UnequipEquipment(int index)
+    public void UnequipEquipment(int index, bool ignoreInventoryCapacity = false)
     {
         Equipment target = equipped[index] as Equipment;
         if (target == null) return;
-        if (inventory.Count >= inventoryCapacity) return;
+        if (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity) return;
         if (equipped[index] == null) return;
         inventory.Add(target);
         target.Unequip();

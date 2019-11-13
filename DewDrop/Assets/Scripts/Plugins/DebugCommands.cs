@@ -37,8 +37,23 @@ public class DebugCommands : MonoBehaviour
 
     }
 
+    [ConsoleMethod("reroll", "Reroll Shop stocks.")]
+    public static void Reroll()
+    {
+        ShopManager.instance.RerollShop();
+    }
+
+    [ConsoleMethod("earn", "Make a living thing at cursor position earn specified aount of money")]
+    public static void Earn(float amount)
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.EarnGold(amount);
+    }
+
+
     [ConsoleMethod("blue", "Apply superb cooldown reduction and mana regeneration to the target")]
-    public static void blue()
+    public static void Blue()
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
@@ -80,6 +95,7 @@ public class DebugCommands : MonoBehaviour
         if (target == null) target = GameManager.instance.localPlayer;
         target.DoHeal(target.maximumHealth, target, true);
     }
+
     [ConsoleMethod("revive", "Revive a living thing at cursor position")]
     public static void Revive()
     {
@@ -117,10 +133,15 @@ public class DebugCommands : MonoBehaviour
 
         foreach(GameObject target in targets)
         {
-            PhotonNetwork.Instantiate(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere, Quaternion.identity);
+            if(target.name.StartsWith("player_") || target.name.StartsWith("monster_"))
+            {
+                GameManager.SpawnLivingThing(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
+            } else if (target.name.StartsWith("cons_") || target.name.StartsWith("equip_"))
+            {
+                GameManager.SpawnItem(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
+            }
+            
         }
-
-
     }
 
     [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]

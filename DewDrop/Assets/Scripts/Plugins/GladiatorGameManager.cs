@@ -239,7 +239,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RpcDropLoot(string name, Vector3 position)
     {
-        GameManager.instance.DropLoot(name, position);
+        GameManager.DropLoot(name, position);
     }
 
     private void DropLootOnContext(LivingThing killer, LivingThing victim)
@@ -571,7 +571,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RpcCreateLocalPlayer(int type, Vector3 pos, int roomViewId)
     {
-        LivingThing thing = GameManager.instance.SpawnLocalPlayer((PlayerType)type, pos);
+        LivingThing thing = GameManager.SpawnLocalPlayer((PlayerType)type, pos);
         Room room = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
         thing.SetCurrentRoom(room);
         photonView.RPC("RpcRegisterLivingThingOnGamePlayers", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, thing.photonView.ViewID);

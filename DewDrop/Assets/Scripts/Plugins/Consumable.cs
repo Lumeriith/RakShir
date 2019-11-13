@@ -41,19 +41,7 @@ public abstract class Consumable : Item
         return isUsed;
     }
 
-    public void DestroySelf()
-    {
-        PlayerItemBelt belt = owner.GetComponent<PlayerItemBelt>();
-        if (belt == null) return;
-        photonView.RPC("RpcDestroySelf", photonView.Owner);
-    }
 
-    [PunRPC]
-    public void RpcDestroySelf()
-    {
-        PhotonNetwork.Destroy(gameObject);
-
-    }
 
     public virtual bool IsReady() { return true; }
 

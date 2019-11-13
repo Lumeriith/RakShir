@@ -18,6 +18,7 @@ public class DescriptionBox : MonoBehaviour
     private Text text_title;
     private Text text_subtitle;
     private Text text_description;
+    private Text text_secondSubtitle;
     private CanvasGroup group;
     private RectTransform rectTransform;
 
@@ -33,6 +34,7 @@ public class DescriptionBox : MonoBehaviour
         image_icon = transform.Find("Title Panel/Icon").GetComponent<Image>();
         text_title = transform.Find("Title Panel/Title").GetComponent<Text>();
         text_subtitle = transform.Find("Title Panel/Subtitle").GetComponent<Text>();
+        text_secondSubtitle = transform.Find("Title Panel/Second Subtitle").GetComponent<Text>();
         text_description = transform.Find("Description").GetComponent<Text>();
         group = GetComponent<CanvasGroup>();
         rectTransform = GetComponent<RectTransform>();
@@ -66,6 +68,7 @@ public class DescriptionBox : MonoBehaviour
             }
             text_subtitle.text += "소모품";
             text_description.text = DescriptionSyntax.Decode(consumable.itemDescription);
+            text_secondSubtitle.text = ((int)consumable.value).ToString() + "G";
         }
         else if (trigger != null)
         {
@@ -82,6 +85,7 @@ public class DescriptionBox : MonoBehaviour
                 text_subtitle.text += "재사용 대기시간 " + trigger.cooldownTime.ToString() + "초";
             }
             text_description.text = DescriptionSyntax.Decode(trigger.abilityDescription);
+            text_secondSubtitle.text = "";
         }
         else if (equipment != null)
         {
@@ -121,6 +125,7 @@ public class DescriptionBox : MonoBehaviour
                     break;
             }
             text_description.text = DescriptionSyntax.Decode(equipment.itemDescription);
+            text_secondSubtitle.text = ((int)equipment.value).ToString() + "G";
         }
 
         if (preferredAlpha == 0) return;

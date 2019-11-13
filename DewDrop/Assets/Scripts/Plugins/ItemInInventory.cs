@@ -15,6 +15,8 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     private CanvasGroup canvasGroup;
 
+    private Text value;
+
     public int index;
     public Color consumableSubtitleColor;
     public Color weaponSubtitleColor;
@@ -28,12 +30,16 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public Color rareColor;
     public Color commonColor;
 
+    public bool showValue = false;
+
     public void OnPointerClick(PointerEventData data)
     {
         if (GameManager.instance.localPlayer == null) return;
         if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
 
-        if (data.button == PointerEventData.InputButton.Left)
+
+
+        if (data.button == PointerEventData.InputButton.Left && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
         {
             if (belt.inventory[index] as Equipment != null)
             {
@@ -44,10 +50,17 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
                 belt.MoveConsumableFromInventoryToBelt(index);
             }
         }
-        else if (data.button == PointerEventData.InputButton.Right)
+        else if (data.button == PointerEventData.InputButton.Right && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
         {
             belt.inventory[index].Disown();
             belt.inventory.RemoveAt(index);
+        }
+        else if (data.button == PointerEventData.InputButton.Middle && GameManager.cachedCurrentNodeType == IngameNodeType.Shop)
+        {
+            Item item = belt.inventory[index];
+            belt.inventory[index].Disown();
+            belt.inventory.RemoveAt(index);
+            ShopManager.instance.SellItem(item);
         }
 
         if (belt.inventory.Count <= index || belt.inventory[index] == null) DescriptionBox.HideDescription();
@@ -118,6 +131,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
         name = transform.Find("Name").GetComponent<Text>();
         subtitle = transform.Find("Subtitle").GetComponent<Text>();
         canvasGroup = GetComponent<CanvasGroup>();
+        value = transform.Find("Value").GetComponent<Text>();
     }
 
     void Update()
@@ -132,7 +146,8 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
         ShowItem();
         icon.sprite = belt.inventory[index].itemIcon;
         name.text = belt.inventory[index].itemName;
-
+        value.text = "판매가격 " + (int)(belt.inventory[index].value * ShopManager.instance.itemSellingValueModifier) + "G";
+        value.enabled = showValue;
         string subtitle = "";
         Color color = Color.white;
 

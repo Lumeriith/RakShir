@@ -24,7 +24,25 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
         PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
         if (belt == null) return;
         if (belt.equipped[(int)equipmentType] == null) return;
-        belt.UnequipEquipment((int)equipmentType);
+
+        if(data.button == PointerEventData.InputButton.Left && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
+        {
+            belt.UnequipEquipment((int)equipmentType);
+        } else if (data.button == PointerEventData.InputButton.Right && (GameManager.cachedCurrentNodeType == IngameNodeType.Inventory || GameManager.cachedCurrentNodeType == IngameNodeType.Shop))
+        {
+            belt.UnequipEquipment((int)equipmentType, true);
+            belt.inventory[belt.inventory.Count - 1].Disown();
+            belt.inventory.RemoveAt(belt.inventory.Count - 1);
+        }
+        else if (data.button == PointerEventData.InputButton.Middle && GameManager.cachedCurrentNodeType == IngameNodeType.Shop)
+        {
+            Item item = belt.equipped[(int)equipmentType];
+            belt.UnequipEquipment((int)equipmentType, true);
+            belt.inventory[belt.inventory.Count - 1].Disown();
+            belt.inventory.RemoveAt(belt.inventory.Count - 1);
+            ShopManager.instance.SellItem(item);
+        }
+
         if (belt.equipped[(int)equipmentType] == null) DescriptionBox.HideDescription();
     }
 

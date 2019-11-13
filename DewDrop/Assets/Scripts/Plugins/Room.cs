@@ -18,7 +18,7 @@ public class Room : MonoBehaviourPun
     public PostProcessProfile customPostProcessProfile;
     public bool enableFog = false;
     public bool isActivated { get; private set; }
-
+    public bool rerollsShopUponEntering = true;
     [Header("Enemy Spawning Settings")]
     public float spawnDelay = 0.5f;
     [ReorderableList]
@@ -92,6 +92,7 @@ public class Room : MonoBehaviourPun
         isActivated = true;
         LivingThing activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<LivingThing>();
         if (!activator.photonView.IsMine) return;
+        if (rerollsShopUponEntering) ShopManager.instance.RerollShop();
         StartCoroutine(CoroutineSpawn(activator));
         if(customLighting != null)
         {

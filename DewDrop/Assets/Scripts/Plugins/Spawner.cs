@@ -34,7 +34,7 @@ public class Spawner : MonoBehaviour
     public void Spawn(LivingThing activator = null)
     {
         started = true;
-        LivingThing thing = PhotonNetwork.Instantiate(livingThingPrefab.name, transform.position, transform.rotation).GetComponent<LivingThing>();
+        LivingThing thing = GameManager.SpawnLivingThing(livingThingPrefab.name, transform.position, transform.rotation);
         spawnedLivingThings.Add(thing);
         if(activator != null)
         {

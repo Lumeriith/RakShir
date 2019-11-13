@@ -63,7 +63,7 @@ public class AbilityInstanceManager : MonoBehaviour
             }
         }
 
-        return PhotonNetwork.Instantiate(prefabName, position, rotation, 0, initData).GetComponent<AbilityInstance>();
+        return PhotonNetwork.Instantiate("AbilityInstances/" + prefabName, position, rotation, 0, initData).GetComponent<AbilityInstance>();
         
     }
 

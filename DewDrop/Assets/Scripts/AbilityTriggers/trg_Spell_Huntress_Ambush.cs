@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class trg_Spell_Huntress_Ambush : AbilityTrigger
 {
-    private Marker huntressMark = null;
     private LivingThing huntressMarkTarget;
 
     private LivingThing dashTarget;
@@ -47,12 +46,7 @@ public class trg_Spell_Huntress_Ambush : AbilityTrigger
         if (owner.photonView.IsMine)
         {
             owner.OnDoBasicAttackHit -= HuntressMark;
-            if(huntressMark != null)
-            {
-                huntressMark.Destroy();
-                huntressMark = null;
-                huntressMarkTarget = null;
-            }
+            huntressMarkTarget = null;
         }
     }
 
@@ -62,8 +56,6 @@ public class trg_Spell_Huntress_Ambush : AbilityTrigger
         {
             if(!huntressMarkTargetValidator.Evaluate(owner, huntressMarkTarget))
             {
-                huntressMark.Destroy();
-                huntressMark = null;
                 huntressMarkTarget = null;
             }
         }
@@ -97,11 +89,6 @@ public class trg_Spell_Huntress_Ambush : AbilityTrigger
     {
         if (!huntressMarkTargetValidator.Evaluate(info.from, info.to)) return;
 
-        if(huntressMark == null)
-        {
-            huntressMark = Marker.CreateMarker("marker_HuntressMark", info.to.transform.position, info.from);
-        }
-        huntressMark.AttachTo(info.to, MarkerAttachType.Top, new Vector3(0f, 1.5f, 0f));
         huntressMarkTarget = info.to;
     }
 

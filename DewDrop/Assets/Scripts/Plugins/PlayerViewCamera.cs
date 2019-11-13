@@ -48,13 +48,17 @@ public class PlayerViewCamera : MonoBehaviour
             cvc.Follow = GameManager.instance.localPlayer.transform;
         }
 
-        if (Input.mouseScrollDelta.y < 0)
+        if(GameManager.cachedCurrentNodeType == IngameNodeType.Ingame)
         {
-            cameraDistance = Mathf.MoveTowards(cameraDistance, deadzoneCameraDistance.y, cameraDistanceStepSize);
-        }
-        else if (Input.mouseScrollDelta.y > 0)
-        {
-            cameraDistance = Mathf.MoveTowards(cameraDistance, deadzoneCameraDistance.x, cameraDistanceStepSize);
+            if (Input.mouseScrollDelta.y < 0)
+            {
+                cameraDistance = Mathf.MoveTowards(cameraDistance, deadzoneCameraDistance.y, cameraDistanceStepSize);
+            }
+            else if (Input.mouseScrollDelta.y > 0)
+            {
+                cameraDistance = Mathf.MoveTowards(cameraDistance, deadzoneCameraDistance.x, cameraDistanceStepSize);
+            }
+
         }
         if (cameraDistance > desiredCameraDistance.y) cameraDistance = Mathf.MoveTowards(cameraDistance, desiredCameraDistance.y, clampingSpeed * Time.deltaTime);
         if (cameraDistance < desiredCameraDistance.x) cameraDistance = Mathf.MoveTowards(cameraDistance, desiredCameraDistance.x, clampingSpeed * Time.deltaTime);
