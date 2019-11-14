@@ -40,7 +40,7 @@ public class PlayerInfoHUD : MonoBehaviour
 
         image_mana_fill.fillAmount = target.stat.currentMana / target.stat.finalMaximumMana;
 
-        tmpu_health_text.text = string.Format("{0:n0}/{1:n0}", (int)target.currentHealth, (int)target.maximumHealth);
+        tmpu_health_text.text = string.Format("{0:n0}/{1:n0}", (int)target.currentHealth + (int)target.statusEffect.totalShieldAmount, (int)target.maximumHealth);
         tmpu_mana_text.text = string.Format("{0:n0}/{1:n0}", (int)target.stat.currentMana, (int)target.stat.finalMaximumMana);
         tmpu_gold_text.text = string.Format("{0:n0}", (int)target.stat.currentGold);
     }

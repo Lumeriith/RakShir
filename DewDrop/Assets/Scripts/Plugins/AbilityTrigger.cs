@@ -52,7 +52,8 @@ public abstract class AbilityTrigger : MonoBehaviour
     public string abilityName;
     [ResizableTextArea]
     public string abilityDescription;
-    [Header("Visual Settings")]
+    [Header("Effect Settings")]
+    public GameObject[] soundEffect;
     public AnimationClip[] castAnimation;
     public float animationDuration;
     public Indicator indicator = new Indicator();
@@ -129,6 +130,11 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void Cast(CastInfo info, float animationDurationMultiplier = 1f)
     {
+        if(soundEffect != null && soundEffect.Length != 0)
+        {
+            SFXManager.CreateSFXInstance(soundEffect[Random.Range(0, soundEffect.Length)].name, owner.transform.position);
+        }
+
         if (castAnimation != null && castAnimation.Length != 0)
         {
             owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier);

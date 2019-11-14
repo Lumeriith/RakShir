@@ -11,11 +11,18 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
     public float range = 3f;
     public TargetValidator targetValidator;
 
+    private SFXInstance loopSFX;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         hit = transform.Find("Hit").gameObject;
         transform.Find("Burn").GetComponent<ParticleSystem>().Play();
-        if (photonView.IsMine) StartCoroutine(CoroutineBurningGrounds());
+        if (photonView.IsMine)
+        {
+            SFXManager.CreateSFXInstance("si_Spell_Rare_BurningGrounds Start", transform.position);
+            loopSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_BurningGrounds Loop", transform.position);
+            StartCoroutine(CoroutineBurningGrounds());
+        }
     }
 
     private IEnumerator CoroutineBurningGrounds()
@@ -28,9 +35,11 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
             {
                 info.owner.DoMagicDamage(damage, targets[j]);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
+                SFXManager.CreateSFXInstance("si_Spell_Rare_BurningGrounds Hit", transform.position);
             }
             yield return new WaitForSeconds(tickInterval);
         }
+        loopSFX.DestroyFadingOut(1f);
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }

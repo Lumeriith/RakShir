@@ -63,6 +63,7 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
         info.owner.DoMagicDamage(bonusDamage, lv);
         Vector3 hitPos = other.ClosestPoint(transform.position);
         photonView.RPC("CreateFlash", RpcTarget.All, hitPos);
+        SFXManager.CreateSFXInstance("si_Spell_Elemental_FrontKick Hit", transform.position);
         if(!didHit)
         {
             didHit = true;

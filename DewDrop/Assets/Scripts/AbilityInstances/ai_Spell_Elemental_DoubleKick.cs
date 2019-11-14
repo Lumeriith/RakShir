@@ -54,9 +54,11 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
         }));
         yield return new WaitForSeconds(kickDelay);
         photonView.RPC("CreateHitEffect", RpcTarget.All, target.transform.position + target.GetCenterOffset());
+        SFXManager.CreateSFXInstance("si_Spell_Elemental_DoubleKick Hit 0", target.transform.position);
         Kick();
         yield return new WaitForSeconds(kickInterval);
         photonView.RPC("CreateHitEffect", RpcTarget.All, target.transform.position + target.GetCenterOffset());
+        SFXManager.CreateSFXInstance("si_Spell_Elemental_DoubleKick Hit 1", target.transform.position);
         Kick();
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();

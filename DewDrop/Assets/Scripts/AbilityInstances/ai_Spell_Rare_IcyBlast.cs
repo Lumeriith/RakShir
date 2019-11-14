@@ -30,6 +30,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         if (photonView.IsMine)
         {
             range.Play();
+            
             info.owner.control.StartChanneling(new Channel(channelValidator, 0.5f, false, false, false, false, ChannelFinished, ChannelCanceled));
         }
     }
@@ -41,6 +42,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
 
     private void ChannelFinished()
     {
+        SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Blast", transform.position);
         photonView.RPC("RpcBlast", RpcTarget.All);
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
@@ -52,6 +54,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
             }
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
             targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
+            SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Hit", transform.position);
             info.owner.DoMagicDamage(damage, targets[i]);
         }
         DetachChildParticleSystemsAndAutoDelete();

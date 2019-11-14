@@ -178,8 +178,10 @@ MonoBehaviour:
   abilityName: "\uBD88\uD0C0\uB294 \uB300\uC9C0"
   abilityDescription: "\uB300\uC0C1 \uC9C0\uC5ED\uC5D0 4\uCD08 \uB3D9\uC548 \uC9C0\uC18D\uB418\uB294
     \uD654\uC5FC \uC9C0\uB300\uB97C \uD615\uC131\uD569\uB2C8\uB2E4. \uD654\uC5FC \uC9C0\uB300\uC5D0
-    \uC11C\uC788\uB294 \uC801\uB4E4\uC740 0.5\uCD08\uB2F9 30\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    \uC11C\uC788\uB294 \uC801\uB4E4\uC740 0.5\uCD08\uB2F9 25\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
     \uC785\uC2B5\uB2C8\uB2E4."
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: 0e01b5243b8d0114d82e7efacc76d09d, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: a85b0d92de5b5af47919f587f2734656, type: 2}
   animationDuration: 0.75
@@ -189,7 +191,7 @@ MonoBehaviour:
     arrowWidth: 0
     arrowLength: 0
     enableSecondRangeIndicator: 1
-    secondRange: 3
+    secondRange: 3.75
   dontCancelBasicCommands: 0
   targetingType: 1
   range: 6.5
@@ -218,11 +220,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
-        type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
     - target: {fileID: 6182557291494950518, guid: 0e634c1fb017a744b85d8122d8f3e45b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -278,6 +275,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
+        type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e634c1fb017a744b85d8122d8f3e45b, type: 3}
 --- !u!4 &4877100979240223717 stripped
@@ -293,11 +295,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
-      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -367,6 +364,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

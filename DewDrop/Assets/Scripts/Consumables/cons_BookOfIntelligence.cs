@@ -8,6 +8,7 @@ public class cons_BookOfIntelligence : Consumable
     public override bool OnUse(CastInfo info)
     {
         AbilityInstanceManager.CreateAbilityInstance("ai_cons_BookOfIntelligence", info.owner.transform.position, Quaternion.identity, info);
+        SFXManager.CreateSFXInstance("si_cons_BookOfIntelligence", info.owner.transform.position);
         DestroySelf();
         return true;
     }

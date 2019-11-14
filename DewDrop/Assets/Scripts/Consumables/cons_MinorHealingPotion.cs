@@ -8,6 +8,7 @@ public class cons_MinorHealingPotion : Consumable
     public float healDuration = 10f;
     public override bool OnUse(CastInfo info)
     {
+        SFXManager.CreateSFXInstance("si_cons_AnyPotion", info.owner.transform.position);
         AbilityInstanceManager.CreateAbilityInstance("ai_cons_HealOverTime", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info, new object[] { healAmount, healDuration });
         DestroySelf();
         return true;

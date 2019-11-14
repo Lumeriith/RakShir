@@ -13,12 +13,16 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
     private ParticleSystem circle;
     private GameObject hit;
 
+    private SFXInstance loopSFX;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         circle = transform.Find("Circle").GetComponent<ParticleSystem>();
         circle.Play();
         hit = transform.Find("Hit").gameObject;
         if (!photonView.IsMine) return;
+        SFXManager.CreateSFXInstance("si_Spell_Rare_HealingCircle Start", transform.position);
+        loopSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_HealingCircle Loop", transform.position);
         StartCoroutine(CoroutineHeal());
     }
 
@@ -36,6 +40,7 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
             }
         }
         yield return new WaitForSeconds(0.1f);
+        loopSFX.DestroyFadingOut(1f);
         DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
         DestroySelf();
     }

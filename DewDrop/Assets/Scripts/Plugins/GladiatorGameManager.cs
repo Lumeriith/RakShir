@@ -348,6 +348,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             }
             if (rewardTarget == null) return;
             victim.GiveGold(victim.droppedGold * goldModifier * (1 + goldRandomness * (Random.value * 2f - 1f)), rewardTarget);
+            SFXManager.CreateSFXInstance("si_local_EarnMoney", victim.transform.position, rewardTarget.photonView.Owner);
         }
 
         

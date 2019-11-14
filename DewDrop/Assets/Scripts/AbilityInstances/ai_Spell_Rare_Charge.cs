@@ -23,6 +23,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     public float shieldAmount = 30f;
     public float shieldDuration = 5f;
 
+    private SFXInstance chargeSFX;
     private Vector3 forwardVector;
     private Displacement displacement;
 
@@ -47,6 +48,8 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     {
         float duration = Vector3.Distance(chargeDestination, info.owner.transform.position) / chargeSpeed;
         photonView.RPC("RpcCharge", RpcTarget.All);
+        chargeSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_Charge", transform.position);
+        chargeSFX.Follow(this);
         displacement = new Displacement(chargeDestination - info.owner.transform.position, duration, true, true, EasingFunction.Ease.EaseOutQuad, StopCharge, StopCharge);
         info.owner.StartDisplacement(displacement);
         collider.enabled = true;
@@ -66,7 +69,9 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         if (!photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Charge Hit", transform.position);
         displacement.Cancel();
+        //chargeSFX.Stop();
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(other.transform.position, radius, targetValidator);
 
         for (int i = 0;i < targets.Count; i++)

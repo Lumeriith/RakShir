@@ -18,6 +18,8 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     private ParticleSystem fly;
     private ParticleSystem hit;
 
+    private SFXInstance flyingSound;
+
     private Displacement displacement;
 
     private void Awake()
@@ -30,7 +32,8 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     {
         fly.Play();
         if (!photonView.IsMine) return;
-
+        flyingSound = SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick", transform.position);
+        flyingSound.Follow(this);
         displacement = new Displacement(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, EasingFunction.Ease.Linear, Stopped, Stopped);
         info.owner.StartDisplacement(displacement);
     }
@@ -56,11 +59,11 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 
         displacement.Cancel();
-
+        if(flyingSound != null) flyingSound.Stop();
         photonView.RPC("RpcHit", RpcTarget.All, other.ClosestPoint(transform.position));
         info.owner.DoBasicAttackImmediately(lv);
         info.owner.DoMagicDamage(bonusDamage, lv);
-
+        SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick Hit", transform.position);
         lv.StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneTime, false, false, EasingFunction.Ease.EaseOutSine));
 
         DetachChildParticleSystemsAndAutoDelete();

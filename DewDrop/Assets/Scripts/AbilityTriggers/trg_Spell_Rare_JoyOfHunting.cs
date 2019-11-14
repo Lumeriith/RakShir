@@ -10,4 +10,9 @@ public class trg_Spell_Rare_JoyOfHunting : AbilityTrigger
         StartCooldown();
         SpendMana();
     }
+
+    public override bool IsReady()
+    {
+        return !IsAnyInstanceActive();
+    }
 }

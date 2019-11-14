@@ -9,7 +9,7 @@ public class ai_Spell_Rare_JoyOfHunting : AbilityInstance
     public float duration = 4f;
 
     private float startTime;
-
+    private SFXInstance loopSFX;
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.parent = info.owner.transform;
@@ -18,7 +18,8 @@ public class ai_Spell_Rare_JoyOfHunting : AbilityInstance
         info.owner.ApplyStatusEffect(StatusEffect.Speed(info.owner, duration, speedAmount));
         info.owner.ApplyStatusEffect(StatusEffect.Haste(info.owner, duration, hasteAmount));
         startTime = Time.time;
-        
+        loopSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_JoyOfHunting Loop", transform.position);
+        loopSFX.Follow(this);
     }
 
     protected override void AliveUpdate()
@@ -27,6 +28,7 @@ public class ai_Spell_Rare_JoyOfHunting : AbilityInstance
         {
             DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
             DestroySelf();
+            loopSFX.DestroyFadingOut(1f);
         }
     }
 }
