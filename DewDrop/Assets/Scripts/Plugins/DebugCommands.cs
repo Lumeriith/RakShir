@@ -52,15 +52,25 @@ public class DebugCommands : MonoBehaviour
     }
 
 
-    [ConsoleMethod("blue", "Apply superb cooldown reduction and mana regeneration to the target")]
+    [ConsoleMethod("blue", "Apply superb cooldown reduction and mana regeneration bonus to the target")]
     public static void Blue()
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
-        target.stat.baseManaRegenerationPerSecond = 1000f;
-        target.stat.baseCooldownReduction = 10000f;
-        target.stat.SyncBaseStats();
+        target.stat.bonusManaRegenerationPerSecond += 1000f;
+        target.stat.bonusCooldownReduction += 10000f;
+        target.stat.SyncTemporaryAttributes();
     }
+
+    [ConsoleMethod("red", "Apply superb attack damage bonus to the target")]
+    public static void Red()
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        target.stat.bonusAttackDamage += 10000f;
+        target.stat.SyncTemporaryAttributes();
+    }
+
 
 
     [ConsoleMethod("reset", "Reset all cooldowns of local player and fully heals mana")]

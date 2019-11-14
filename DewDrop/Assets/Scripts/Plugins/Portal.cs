@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Doozy.Engine;
 public class Portal : Activatable
 {
     private Room room;
@@ -24,11 +24,9 @@ public class Portal : Activatable
     protected override void OnChannelCancel(LivingThing activator) { }
     protected override void OnChannelSuccess(LivingThing activator)
     {
-        Room nextRoom = room.nextRooms[Random.Range(0, room.nextRooms.Count)];
         if (activator.photonView.IsMine && isOpen)
         {
-            activator.Teleport(nextRoom.entryPoint.position);
-            activator.SetCurrentRoom(nextRoom);
+            GameEventMessage.SendEvent("Map Obelisk");
         }
 
         

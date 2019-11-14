@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+using Doozy.Engine;
 using Doozy.Engine.Nody;
 using Doozy.Engine.Nody.Nodes;
 public enum PlayerType { Elemental, Reptile }
-public enum IngameNodeType { Unknown, Ingame, Menu, Inventory, Shop }
+public enum IngameNodeType { Unknown, Ingame, Menu, Inventory, Shop, Map, MapObelisk, Moving }
 public class GameManager : MonoBehaviour
 {
     private static StatusEffectType[] statusEffectsToDisplay =
@@ -101,6 +102,9 @@ public class GameManager : MonoBehaviour
             else if (nodeName == "Menu") return IngameNodeType.Menu;
             else if (nodeName == "Inventory") return IngameNodeType.Inventory;
             else if (nodeName == "Shop") return IngameNodeType.Shop;
+            else if (nodeName == "Map") return IngameNodeType.Map;
+            else if (nodeName == "Map Obelisk") return IngameNodeType.MapObelisk;
+            else if (nodeName == "Moving") return IngameNodeType.Moving;
         }
         return IngameNodeType.Unknown;
     }
@@ -230,7 +234,22 @@ public class GameManager : MonoBehaviour
         return result;
     }
 
+    public static void DoObeliskTeleportation(Room room)
+    {
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.Invulnerable(instance.localPlayer, 4f));
+        instance.StartCoroutine(CoroutineMove(room));
+        GameEventMessage.SendEvent("Move Started");
+    }
 
+
+    private static IEnumerator CoroutineMove(Room room)
+    {
+        yield return new WaitForSeconds(2.5f);
+        instance.localPlayer.Teleport(room.entryPoint.position);
+        instance.localPlayer.SetCurrentRoom(room);
+        GameEventMessage.SendEvent("Move Finished");
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(instance.localPlayer, 3.5f, 30f));
+    }
 
 
 

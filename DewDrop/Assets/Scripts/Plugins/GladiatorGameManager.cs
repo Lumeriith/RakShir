@@ -18,6 +18,16 @@ public class RoomListWrapper
 
 public class GladiatorGameManager : MonoBehaviourPunCallbacks
 {
+    public static GladiatorGameManager instance
+    {
+        get
+        {
+            if (_instance == null) _instance = FindObjectOfType<GladiatorGameManager>();
+            return _instance;
+        }
+    }
+    private static GladiatorGameManager _instance;
+
     public Toggle readyCheckbox;
     public bool debugSoloPlayMode = true;
     [Header("General Settings")]
@@ -79,7 +89,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [ReadOnly]
     private int[] blueCommonLootDeck;
 
-    private Dictionary<Photon.Realtime.Player, LivingThing> gamePlayers = new Dictionary<Photon.Realtime.Player, LivingThing>();
+    public Dictionary<Photon.Realtime.Player, LivingThing> gamePlayers = new Dictionary<Photon.Realtime.Player, LivingThing>();
     private Dictionary<Photon.Realtime.Player, bool> readyStatuses = new Dictionary<Photon.Realtime.Player, bool>();
 
 
