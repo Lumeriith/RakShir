@@ -427,7 +427,6 @@ public class LivingThing : MonoBehaviourPun
         {
             model.localScale = model.localScale * Mathf.Clamp01(1 - (Time.time - timeOfDeath - startDecayTime) / (endDecayTime - startDecayTime));
             if (Time.time - timeOfDeath > endDecayTime && photonView.IsMine) Destroy();
-            return;
         }
 
 

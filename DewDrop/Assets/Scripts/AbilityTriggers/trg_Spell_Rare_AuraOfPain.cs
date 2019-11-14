@@ -10,5 +10,11 @@ public class trg_Spell_Rare_AuraOfPain : AbilityTrigger
         StartCooldown();
         SpendMana();
         CreateAbilityInstance("ai_Spell_Rare_AuraOfPain", info.owner.transform.position, Quaternion.identity);
+
+    }
+
+    public override bool IsReady()
+    {
+        return !IsAnyInstanceActive();
     }
 }

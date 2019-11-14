@@ -7,13 +7,16 @@ public class trg_Spell_Rare_BurningFootsteps : AbilityTrigger
     public float duration = 4f;
     public float speedAmount = 15f;
     public float minimumDistance = 0.75f;
-    
+
+    private bool isCoroutineRunning = false;
+
     public override void OnCast(CastInfo info)
     {
         StartCoroutine(CoroutineMakeFire(info));
         StartCooldown();
         SpendMana();
         info.owner.ApplyStatusEffect(StatusEffect.Speed(info.owner, duration, speedAmount));
+        isCoroutineRunning = true;
     }
 
     private IEnumerator CoroutineMakeFire(CastInfo info)
@@ -40,10 +43,16 @@ public class trg_Spell_Rare_BurningFootsteps : AbilityTrigger
             }
             
         }
+        isCoroutineRunning = false;
+    }
+    public override bool IsReady()
+    {
+        return !isCoroutineRunning;
     }
 
     public override void OnUnequip()
     {
         StopAllCoroutines();
+        isCoroutineRunning = false;
     }
 }

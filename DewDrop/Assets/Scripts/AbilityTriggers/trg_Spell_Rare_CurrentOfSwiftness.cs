@@ -6,9 +6,12 @@ public class trg_Spell_Rare_CurrentOfSwiftness : AbilityTrigger
 {
     public override void OnCast(CastInfo info)
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Rare_CurrentOfSwiftness", transform.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_Spell_Rare_CurrentOfSwiftness", transform.position, Quaternion.identity);
         StartCooldown();
         SpendMana();
     }
-
+    public override bool IsReady()
+    {
+        return !IsAnyInstanceActive();
+    }
 }
