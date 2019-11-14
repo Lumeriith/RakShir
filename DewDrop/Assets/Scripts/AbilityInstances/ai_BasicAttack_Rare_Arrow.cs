@@ -11,6 +11,8 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
 
     private Vector3 offset;
 
+    private SFXInstance loopSFX;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.position = info.owner.leftHand.position;
@@ -18,6 +20,8 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
         land = transform.Find("Land").GetComponent<ParticleSystem>();
         fly = transform.Find("Fly").GetComponent<ParticleSystem>();
         fly.Play();
+        loopSFX = SFXManager.CreateSFXInstance("si_BasicAttack_Rare_Arrow Loop", transform.position);
+        loopSFX.Follow(this);
     }
 
     protected override void AliveUpdate()
@@ -28,7 +32,10 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
         {
             info.owner.DoBasicAttackImmediately(info.target);
             photonView.RPC("RpcLanded", RpcTarget.All);
-            fly.Stop();
+            if(fly != null) fly.Stop();
+
+            loopSFX.Stop();
+            SFXManager.CreateSFXInstance("si_BasicAttack_Rare_Arrow", transform.position);
             DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();
         }
