@@ -18,8 +18,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     public float airborneDistance = 1f;
     public float airborneDuration = 0.5f;
     public float damage = 50f;
-    public float slowAmount = 30f;
-    public float slowDuration = 2f;
+    public float stunDuration = 1.5f;
     public float radius = 2.5f;
     public float shieldAmount = 30f;
     public float shieldDuration = 5f;
@@ -48,7 +47,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     {
         float duration = Vector3.Distance(chargeDestination, info.owner.transform.position) / chargeSpeed;
         photonView.RPC("RpcCharge", RpcTarget.All);
-        displacement = new Displacement(chargeDestination - info.owner.transform.position, duration, true, true, EasingFunction.Ease.Linear, StopCharge, StopCharge);
+        displacement = new Displacement(chargeDestination - info.owner.transform.position, duration, true, true, EasingFunction.Ease.EaseOutQuad, StopCharge, StopCharge);
         info.owner.StartDisplacement(displacement);
         collider.enabled = true;
         info.owner.PlayCustomAnimation("Rare - Charge");
@@ -75,7 +74,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
             info.owner.DoMagicDamage(damage, targets[i]);
             targets[i].StartDisplacement(new Displacement(forwardVector * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutQuad));
-            targets[i].ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
+            targets[i].ApplyStatusEffect(StatusEffect.Stun(info.owner, stunDuration));
         }
 
         if (targets.Count != 0)

@@ -221,14 +221,14 @@ MonoBehaviour:
   animationDuration: 1
   indicator:
     type: 1
-    range: 7
+    range: 6
     arrowWidth: 0
     arrowLength: 0
     enableSecondRangeIndicator: 0
     secondRange: 0.35
   dontCancelBasicCommands: 0
   targetingType: 4
-  range: 7
+  range: 6
   manaCost: 0
   targetValidator:
     canTargetSelf: 0
@@ -296,9 +296,9 @@ MonoBehaviour:
   abilityName: "\uB9C8\uB825 \uD654\uC0B4"
   abilityDescription: "\uC9C0\uC815\uD55C \uBC29\uD5A5\uC73C\uB85C \uBE60\uB974\uAC8C
     \uB0A0\uC544\uAC00\uB294 \uD654\uC0B4\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4. \uD654\uC0B4\uC740
-    \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC5D0\uAC8C 60\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC5D0\uAC8C 90\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
     \uC90D\uB2C8\uB2E4.  \uB9E4 3\uBC88\uC9F8 \uD654\uC0B4\uC740 \uD658\uC601\uC758
-    \uD798\uC774 \uAE43\uB4E4\uC5B4 50%\uC758 \uCD94\uAC00 \uD53C\uD574\uB97C \uC8FC\uACE0
+    \uD798\uC774 \uAE43\uB4E4\uC5B4 30%\uC758 \uCD94\uAC00 \uD53C\uD574\uB97C \uC8FC\uACE0
     \uC801\uC911\uD55C \uC801\uC744 1\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uC2DC\uD0B5\uB2C8\uB2E4."
   castAnimation:
   - {fileID: 7400000, guid: a3195cb9cb39e644cbb00ba3bbab1a41, type: 2}
@@ -307,7 +307,7 @@ MonoBehaviour:
     type: 2
     range: 0
     arrowWidth: 0.7
-    arrowLength: 12
+    arrowLength: 10
     enableSecondRangeIndicator: 0
     secondRange: 0.35
   dontCancelBasicCommands: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   dontCancelBasicCommands: 0
   targetingType: 0
   range: 0
-  manaCost: 30
+  manaCost: 20
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -635,11 +635,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
-      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -699,6 +694,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 3.309375
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c417f27cec461a343a1c9f6cc6f0e98a, type: 3}

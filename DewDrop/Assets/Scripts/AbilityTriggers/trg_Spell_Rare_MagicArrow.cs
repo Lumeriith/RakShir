@@ -19,14 +19,15 @@ public class trg_Spell_Rare_MagicArrow : AbilityTrigger
 
     private void ChannelFinish()
     {
-        if(++shotArrows >= 3)
+        info.owner.control.LookAt(info.owner.transform.position + info.directionVector, true);
+        if (++shotArrows >= 3)
         {
-            CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.leftHand.position, info.directionQuaternion, new object[] { true });
+            CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.transform.position + info.owner.GetCenterOffset() * 1.55f + info.directionVector, info.directionQuaternion, new object[] { true });
             shotArrows = 0;
         }
         else
         {
-            CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.leftHand.position, info.directionQuaternion, new object[] { false });
+            CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.transform.position + info.owner.GetCenterOffset() * 1.55f + info.directionVector, info.directionQuaternion, new object[] { false });
         }
     }
 }

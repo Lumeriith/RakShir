@@ -725,6 +725,11 @@ public class LivingThing : MonoBehaviourPun
         Vector3 bottom = this.bottom.position - transform.position;
         Vector3 top = this.top.position - transform.position;
 
+        bottom.x = 0f;
+        bottom.z = 0f;
+        top.x = 0f;
+        top.z = 0f;
+
         return Vector3.Lerp(bottom, top, 0.5f);
     }
 
