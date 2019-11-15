@@ -26,7 +26,7 @@ public class trg_Spell_Rare_Overpower : AbilityTrigger
     {
         if (!isCooledDown) return;
         info.to.statusEffect.ApplyStatusEffect(StatusEffect.Stun(info.from, stunDuration));
-
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Overpower", transform.position);
         StartCooldown();
     }
 }

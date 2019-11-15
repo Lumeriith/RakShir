@@ -23,11 +23,13 @@ public class trg_Spell_Rare_MagicArrow : AbilityTrigger
         if (++shotArrows >= 3)
         {
             CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.transform.position + info.owner.GetCenterOffset() * 1.55f + info.directionVector, info.directionQuaternion, new object[] { true });
+            SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow EmpoweredCast", info.owner.transform.position);
             shotArrows = 0;
         }
         else
         {
             CreateAbilityInstance("ai_Spell_Rare_MagicArrow", info.owner.transform.position + info.owner.GetCenterOffset() * 1.55f + info.directionVector, info.directionQuaternion, new object[] { false });
+            SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow Cast", info.owner.transform.position);
         }
     }
 }

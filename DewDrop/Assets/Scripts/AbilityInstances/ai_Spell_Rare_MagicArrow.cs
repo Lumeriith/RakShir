@@ -58,10 +58,12 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
         {
             info.owner.DoMagicDamage(damage + bonusDamage, lv);
             lv.statusEffect.ApplyStatusEffect(StatusEffect.Stun(info.owner, stunDuration));
+            SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow EmpoweredHit", transform.position);
         }
         else
         {
             info.owner.DoMagicDamage(damage, lv);
+            SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow Hit", transform.position);
         }
 
 

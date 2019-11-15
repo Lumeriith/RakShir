@@ -28,6 +28,7 @@ public class trg_Spell_Rare_Solidity : AbilityTrigger
     {
         if (!isCooledDown) return;
         owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(owner, shieldDuration, owner.maximumHealth * shieldAmountHealthMultiplier, true));
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Solidity", owner.transform.position);
         StartCooldown();
     }
 }

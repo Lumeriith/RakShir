@@ -176,10 +176,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 21300000, guid: 89bd5adc55c570e468da42bcde366eec, type: 3}
   abilityName: "\uACAC\uACE0\uD568"
-  abilityDescription: "\uD53C\uD574\uB97C \uC785\uC73C\uBA74 \uCD5C\uB300 5\uCD08
-    \uB3D9\uC548 \uC720\uC9C0\uB418\uB294 \uCD5C\uB300 \uCCB4\uB825\uC758 15% \uB9CC\uD07C\uC758
+  abilityDescription: "\uD53C\uD574\uB97C \uC785\uC73C\uBA74 \uCD5C\uB300 6\uCD08
+    \uB3D9\uC548 \uC720\uC9C0\uB418\uB294 \uCD5C\uB300 \uCCB4\uB825\uC758 17.5% \uB9CC\uD07C\uC758
     [\uBCF4\uD638\uB9C9]\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4.\n\n\uC774 \uD6A8\uACFC\uB294
     10\uCD08\uC5D0 \uD55C \uBC88\uC529\uB9CC \uBC1C\uB3D9\uD569\uB2C8\uB2E4."
+  soundEffect:
+  - {fileID: 0}
   castAnimation: []
   animationDuration: 0
   indicator:
@@ -210,8 +212,8 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 10
-  shieldDuration: 5
-  shieldAmountHealthMultiplier: 0.15
+  shieldDuration: 6
+  shieldAmountHealthMultiplier: 0.175
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,11 +221,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
-        type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
     - target: {fileID: 6182557291494950518, guid: 0e634c1fb017a744b85d8122d8f3e45b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -279,6 +276,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
+        type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e634c1fb017a744b85d8122d8f3e45b, type: 3}
 --- !u!4 &4877100979240223717 stripped
@@ -294,11 +296,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
-    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
-        type: 3}
-      propertyPath: m_Name
-      value: ItemEffect_Rare
-      objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -368,6 +365,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082653522129449212, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_Name
+      value: ItemEffect_Rare
       objectReference: {fileID: 0}
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}

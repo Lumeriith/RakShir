@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1607579122048388713}
   - component: {fileID: 1607579122048388714}
   m_Layer: 0
-  m_Name: si_Spell_Rare_ManaShield Loop
+  m_Name: si_Spell_Rare_ThrowDagger Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c50f2a57b3ce740817fcfffb48f789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.95, y: 1.05}
+  pitchRandomMultiplier: {x: 0.9, y: 1.1}
   destroyWhenNotPlaying: 1
 --- !u!82 &1607579122048388713
 AudioSource:
@@ -58,11 +58,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1838379260092020110, guid: 3420e9129528250489ce94560d42b496,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 3d6143e6927d43642befa264125f4f04, type: 3}
+  m_audioClip: {fileID: 8300000, guid: aa84abb9cec814946b51a126a54c99d5, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
-  m_Pitch: 1.2
-  Loop: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

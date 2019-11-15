@@ -44,6 +44,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
         if (!photonView.IsMine) return;
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
+        SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowDagger Hit", transform.position);
         info.owner.DoBasicAttackImmediately(lv);
         info.owner.DoMagicDamage(30f, lv);
         photonView.RPC("RpcLand", RpcTarget.All, transform.position);
