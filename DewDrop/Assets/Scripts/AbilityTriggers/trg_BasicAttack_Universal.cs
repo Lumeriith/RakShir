@@ -7,6 +7,7 @@ public class trg_BasicAttack_Universal : AbilityTrigger
     [Header("Universal Basicattack Settings")]
     public float channelDuration = 0.3f;
     public string abilityInstance = "ai_BasicAttack_Rare_";
+    public List<GameObject> channelFinishedSoundEffects; 
     public override void OnCast(CastInfo info)
     {
         Channel channel = new Channel(selfValidator, channelDuration, false, false, false, true, ChannelSuccess, ResetCooldown, true);
@@ -18,5 +19,9 @@ public class trg_BasicAttack_Universal : AbilityTrigger
     private void ChannelSuccess()
     {
         AbilityInstanceManager.CreateAbilityInstance(abilityInstance, info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
+        if(channelFinishedSoundEffects != null && channelFinishedSoundEffects.Count != 0)
+        {
+            SFXManager.CreateSFXInstance(channelFinishedSoundEffects[Random.Range(0, channelFinishedSoundEffects.Count)].name, owner.transform.position);
+        }
     }
 }

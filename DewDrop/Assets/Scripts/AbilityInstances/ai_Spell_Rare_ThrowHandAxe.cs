@@ -26,6 +26,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
     private float elapsedTime = 0f;
     private new Collider collider;
     private bool isComingBack = false;
+    private SFXInstance loopSFX;
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
@@ -36,6 +37,11 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         fly.Play();
         start = transform.position;
         destination = transform.position + info.directionVector * distance;
+        if (photonView.IsMine)
+        {
+            loopSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Loop", transform.position);
+            loopSFX.Follow(this);
+        }
     }
 
     protected override void AliveUpdate()
@@ -59,6 +65,8 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
 
         if(elapsedTime > flyDuration && photonView.IsMine)
         {
+            loopSFX.DestroyFadingOut(.35f);
+            SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Stop", transform.position);
             DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
             DestroySelf();
         }
@@ -73,6 +81,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         thing.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
         info.owner.DoMagicDamage(damage, thing);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
+        SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Hit", transform.position);
     }
 
     [PunRPC]

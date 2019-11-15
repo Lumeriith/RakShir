@@ -6,8 +6,8 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
 {
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 70f;
-        owner.stat.baseAttacksPerSecond = 0.9f;
+        owner.stat.baseAttackDamage = 80f;
+        owner.stat.baseAttacksPerSecond = 0.8f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - SharpHandAxe Stand");

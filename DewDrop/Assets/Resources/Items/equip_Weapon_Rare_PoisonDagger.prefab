@@ -85,6 +85,7 @@ MonoBehaviour:
   cooldownTime: 1
   channelDuration: 0.05
   abilityInstance: ai_Monster_Firebug_Basicattack
+  channelFinishedSoundEffects: []
 --- !u!1 &248810123261368969
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +384,7 @@ MonoBehaviour:
   abilityName: "\uB2E8\uAC80 \uB358\uC9C0\uAE30"
   abilityDescription: "\uB300\uC0C1 \uBC29\uD5A5\uC73C\uB85C \uB2E8\uAC80\uC744 \uB358\uC9D1\uB2C8\uB2E4.
     \uB2E8\uAC80\uC774 \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC740 \uC790\uC2E0\uC758
-    \uAE30\uBCF8 \uACF5\uACA9 \uD53C\uD574\uC640 40\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    [\uAE30\uBCF8 \uACF5\uACA9 \uD53C\uD574]\uC640 40\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
     \uBC1B\uC2B5\uB2C8\uB2E4. \uB2E8\uAC80\uC774 \uC801\uC5D0\uAC8C \uC801\uC911\uD558\uBA74
     20\uC758 \uB9C8\uB098\uB97C \uB3CC\uB824\uBC1B\uACE0 \uB2E8\uAC80 \uB358\uC9C0\uAE30\uC758
     \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774 4\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
@@ -391,7 +392,7 @@ MonoBehaviour:
   - {fileID: 1607579122048388727, guid: 6c088884b30482d468c1d7028f17c787, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: 6eb87548a40b18541a52e0378e4209a6, type: 2}
-  animationDuration: 1
+  animationDuration: 0.8
   indicator:
     type: 2
     range: 0

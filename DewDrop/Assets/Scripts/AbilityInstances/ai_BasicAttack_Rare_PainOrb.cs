@@ -47,9 +47,12 @@ public class ai_BasicAttack_Rare_PainOrb : AbilityInstance
                     statusEffects[i].Remove();
                 }
 
+                SFXManager.CreateSFXInstance("si_BasicAttack_Rare_PainOrb EmpoweredHit", transform.position);
+
             }
             else
             {
+                SFXManager.CreateSFXInstance("si_BasicAttack_Rare_PainOrb Hit", transform.position);
                 photonView.RPC("RpcLanded", RpcTarget.All, false);
             }
             

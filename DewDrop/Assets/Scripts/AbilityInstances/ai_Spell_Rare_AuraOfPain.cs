@@ -43,6 +43,7 @@ public class ai_Spell_Rare_AuraOfPain : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
             for(int j = 0; j < targets.Count; j++)
             {
+                SFXManager.CreateSFXInstance("si_Spell_Rare_AuraOfPain Hit", targets[j].transform.position);
                 targets[j].ApplyStatusEffect(StatusEffect.Slow(info.owner, tickInterval, slowAmount));
                 info.owner.DoMagicDamage(damage, targets[j]);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);

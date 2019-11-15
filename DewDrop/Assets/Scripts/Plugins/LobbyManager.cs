@@ -35,6 +35,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             PhotonNetwork.OfflineMode = true;
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
+
+        Music.Play("Silence");
     }
 
     public override void OnConnectedToMaster()

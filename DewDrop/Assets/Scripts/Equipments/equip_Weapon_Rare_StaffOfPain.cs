@@ -7,8 +7,8 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
     public float painDuration = 4f;
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 20f;
-        owner.stat.baseAttacksPerSecond = 1.4f;
+        owner.stat.baseAttackDamage = 30f;
+        owner.stat.baseAttacksPerSecond = 1.1f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - MagicBow Stand");

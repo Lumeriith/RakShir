@@ -10,6 +10,7 @@ public class MainMenuLogic : MonoBehaviour
     public InputField input_CharacterName;
     private void Start()
     {
+        Music.Play("MainMenu");
         input_CharacterName.text = PlayerPrefs.GetString("characterName", "이름없는 영웅");
     }
 

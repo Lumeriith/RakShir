@@ -18,6 +18,8 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
             PhotonNetwork.OfflineMode = true;
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
+
+        Music.Play("PvP");
     }
 
     public void SpawnAsReptile()

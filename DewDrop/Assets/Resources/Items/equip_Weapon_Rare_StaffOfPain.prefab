@@ -9609,14 +9609,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 21300000, guid: 16324660e337c054da5be521f76f1e34, type: 3}
   abilityName: "\uACE0\uD1B5\uC758 \uC624\uBE0C"
-  abilityDescription: "\uC801\uC5D0\uAC8C \uC624\uBE0C\uB97C \uBC1C\uC0AC\uD574 \uD53C\uD574\uC744
-    \uC90D\uB2C8\uB2E4. \uB0B4\uAC00 \uB9C8\uBC95 \uD53C\uD574\uB97C \uC900 \uC801\uC5D0\uAC8C
-    4\uCD08 \uB3D9\uC548 \uACE0\uD1B5 \uD6A8\uACFC\uAC00 \uC801\uC6A9\uB429\uB2C8\uB2E4.
-    \uACE0\uD1B5 \uD6A8\uACFC\uAC00 \uC788\uB294 \uC801\uC5D0\uAC8C \uB0B4 \uAE30\uBCF8
-    \uACF5\uACA9\uC774 \uC801\uC911\uD558\uBA74 \uACE0\uD1B5 \uD6A8\uACFC\uB97C \uC81C\uAC70\uD558\uACE0
-    30\uC758 \uCD94\uAC00 [\uACE0\uC815 \uD53C\uD574]\uB97C \uC8FC\uBA70 [\uC774\uB3D9
+  abilityDescription: "\uC801\uC5D0\uAC8C \uC624\uBE0C\uB97C \uBC1C\uC0AC\uD574 \uD53C\uD574\uB97C
+    \uC90D\uB2C8\uB2E4.\r\n\r\n\uB0B4\uAC00 \uB9C8\uBC95 \uD53C\uD574\uB97C \uC900
+    \uC801\uC5D0\uAC8C 4\uCD08 \uB3D9\uC548 \uACE0\uD1B5 \uD6A8\uACFC\uAC00 \uC801\uC6A9\uB429\uB2C8\uB2E4.
+    \uACE0\uD1B5 \uD6A8\uACFC\uAC00 \uC788\uB294 \uC801\uC5D0\uAC8C \uACE0\uD1B5\uC758
+    \uC624\uBE0C\uAC00 \uC801\uC911\uD558\uBA74 \uACE0\uD1B5 \uD6A8\uACFC\uB97C \uC81C\uAC70\uD558\uACE0
+    50\uC758 \uCD94\uAC00 [\uACE0\uC815 \uD53C\uD574]\uB97C \uC8FC\uBA70 [\uC774\uB3D9
     \uC18D\uB3C4]\uB97C 0.75\uCD08 \uB3D9\uC548 40% \uB290\uB824\uC9C0\uAC8C \uD569\uB2C8\uB2E4."
-  soundEffect: []
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: ecac15be7db63da469ddfc223b28b2ce, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: f81ac37cca2cd2b449fd98052595e2ad, type: 2}
   animationDuration: 1
@@ -9650,6 +9651,7 @@ MonoBehaviour:
   cooldownTime: 1
   channelDuration: 0.23
   abilityInstance: ai_BasicAttack_Rare_PainOrb
+  channelFinishedSoundEffects: []
 --- !u!1 &4149316480683061871
 GameObject:
   m_ObjectHideFlags: 0
@@ -9772,8 +9774,8 @@ MonoBehaviour:
   itemName: "\uACE0\uD1B5\uC758 \uC9C0\uD321\uC774"
   itemTier: 1
   value: 400
-  itemDescription: "[\uACF5\uACA9 \uD53C\uD574] 20\r\n[\uCD08\uB2F9 \uACF5\uACA9 \uC18D\uB3C4]
-    1.4"
+  itemDescription: "[\uACF5\uACA9 \uD53C\uD574] 30\n[\uCD08\uB2F9 \uACF5\uACA9 \uC18D\uB3C4]
+    1.1"
   owner: {fileID: 0}
   type: 3
   skillSetReplacements:
@@ -48102,13 +48104,14 @@ MonoBehaviour:
   abilityName: "\uC601\uD63C \uC218\uD655"
   abilityDescription: "\uC801\uC758 \uC601\uD63C\uC744 1.5\uCD08 \uD6C4 \uC218\uD655\uD558\uC5EC
     \uC801\uC758 \uCD5C\uB300 \uCCB4\uB825\uC758 30%\uC5D0 \uD574\uB2F9\uD558\uB294
-    [\uACE0\uC815 \uD53C\uD574]\uB97C \uC785\uD788\uBA70 \uC790\uC2E0\uC774 150\uC758
-    [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD558\uACE0 200\uC758 [\uB9C8\uB098\uB97C \uD68C\uBCF5]\uD569\uB2C8\uB2E4.
+    [\uACE0\uC815 \uD53C\uD574]\uB97C \uC785\uD788\uBA70 \uC790\uC2E0\uC774 200\uC758
+    [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD558\uACE0 100\uC758 [\uB9C8\uB098\uB97C \uD68C\uBCF5]\uD569\uB2C8\uB2E4.
     \uC601\uD63C \uC218\uD655\uC774 \uB05D\uB0AC\uC744 \uB54C \uC801\uC774 \uC0AC\uB9DD\uD55C
     \uC0C1\uD0DC\uC774\uBA74 \uC601\uD63C \uC218\uD655\uC758 \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774
-    80\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4.\r\n\r\n\uBCF4\uC2A4 \uBC0F \uC5D8\uB9AC\uD2B8
+    40\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4.\r\n\r\n\uBCF4\uC2A4 \uBC0F \uC5D8\uB9AC\uD2B8
     \uBAAC\uC2A4\uD130\uC5D0\uAC8C\uB294 \uC808\uBC18\uC758 \uD53C\uD574\uB9CC \uC785\uD799\uB2C8\uB2E4."
-  soundEffect: []
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: d0cb782b15f6b844d818e6b2d77ab0e2, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: e70b2ab17b4a87e4798442e1b46cd6e7, type: 2}
   animationDuration: 0.5
@@ -48139,7 +48142,7 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 90
+  cooldownTime: 50
 --- !u!1 &6951293882612354485
 GameObject:
   m_ObjectHideFlags: 0
@@ -57698,7 +57701,8 @@ MonoBehaviour:
     \uACE0\uD1B5\uC758 \uC544\uC6B0\uB77C\uC5D0 \uC11C\uC788\uB294 \uC801\uB4E4\uC740
     0.5\uCD08\uB2F9 20\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC785\uACE0 [\uC774\uB3D9
     \uC18D\uB3C4]\uAC00 20% \uB290\uB824\uC9D1\uB2C8\uB2E4."
-  soundEffect: []
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: 6407e70c3ae3a7c4f99538a20289e406, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: b520f173ae516b54092a4925b3f01294, type: 2}
   animationDuration: 1.25
@@ -57712,7 +57716,7 @@ MonoBehaviour:
   dontCancelBasicCommands: 1
   targetingType: 0
   range: 0
-  manaCost: 80
+  manaCost: 40
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0

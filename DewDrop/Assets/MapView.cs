@@ -137,6 +137,10 @@ public class MapView : MonoBehaviour
         {
             moveButton.SetActive(GameManager.cachedCurrentNodeType == IngameNodeType.MapObelisk && GameManager.instance.localPlayer.currentRoom.nextRooms.Contains(rooms[selectedNode]));
         }
+        else
+        {
+            moveButton.SetActive(false);
+        }
     }
 
     [Button("Update Map")]

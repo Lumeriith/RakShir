@@ -16,6 +16,7 @@ public class Room : MonoBehaviourPun
     public Transform entryPoint;
     public GameObject customLighting;
     public PostProcessProfile customPostProcessProfile;
+    public string customMusic;
     public bool enableFog = false;
     public bool isActivated { get; private set; }
     public bool rerollsShopUponEntering = true;
@@ -93,6 +94,7 @@ public class Room : MonoBehaviourPun
         LivingThing activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<LivingThing>();
         if (!activator.photonView.IsMine) return;
         if (rerollsShopUponEntering) ShopManager.instance.RerollShop();
+        if (customMusic != null) Music.Play(customMusic);
         StartCoroutine(CoroutineSpawn(activator));
         if(customLighting != null)
         {

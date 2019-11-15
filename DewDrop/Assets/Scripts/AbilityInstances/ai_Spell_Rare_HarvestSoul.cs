@@ -32,6 +32,7 @@ public class ai_Spell_Rare_HarvestSoul : AbilityInstance
         }
         info.owner.DoHeal(healAmount, info.owner);
         info.owner.DoManaHeal(manahealAmount, info.owner);
+        SFXManager.CreateSFXInstance("si_Spell_Rare_HarvestSoul Hit", transform.position);
         float start = Time.time;
         while(Time.time - start < gracePeriod)
         {
