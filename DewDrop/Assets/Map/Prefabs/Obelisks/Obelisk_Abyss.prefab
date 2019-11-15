@@ -39137,6 +39137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6040486816377329568}
   - component: {fileID: 6040486816377329569}
+  - component: {fileID: 5707811165904916429}
   m_Layer: 9
   m_Name: Light
   m_TagString: Untagged
@@ -39170,7 +39171,7 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 0.6745282, g: 0.9837262, b: 1, a: 1}
-  m_Intensity: 3
+  m_Intensity: 1
   m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -39219,6 +39220,41 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &5707811165904916429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040486816377329571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01d29d88278f45458d99e6b5199e920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strength: 1.3
+  useScattering: 0
+  overrideScattering: 1
+  overridingScattering: 0.692
+  scatteringBias: 0
+  useColorTemperatureTint: 0
+  overrideColor: 0
+  overridingColor: {r: 1, g: 1, b: 1, a: 1}
+  useShadow: 1
+  shadowMapRenderTexture: {fileID: 0}
+  useCookie: 1
+  cookieMapRenderTexture: {fileID: 0}
+  enableOutOfPhaseColor: 0
+  outOfPhaseColorStrength: 0.1
+  outOfPhaseColor: {r: 0, g: 1, b: 1, a: 1}
+  shadowDataRenderTexture: {fileID: 0}
+  customDistanceFalloffThreshold: 0.2
+  customDistanceFalloffPower: 2
+  customCookieDistanceFalloffStartThreshold: 0.1
+  customCookieDistanceFalloffEndThreshold: 0.25
+  customCookieDistanceFalloffPower: 2
+  customAngularFalloffThreshold: 0.8
+  customAngularFalloffPower: 2
 --- !u!1 &6041520398364110454
 GameObject:
   m_ObjectHideFlags: 0
@@ -87597,7 +87633,7 @@ MonoBehaviour:
   obelisk_mask: {fileID: 2100000, guid: 69b8fb0bfb2c66d4689d3b37f7260cd5, type: 2}
   laser: {fileID: 7731082282306572465}
   explosionEff: {fileID: 3757063874853867972}
-  light: {fileID: 6040486816377329569}
+  obelisk_light: {fileID: 6040486816377329569}
   animationSpeedCurve:
     serializedVersion: 2
     m_Curve:

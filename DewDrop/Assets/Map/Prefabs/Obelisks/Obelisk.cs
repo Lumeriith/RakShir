@@ -13,7 +13,7 @@ namespace Map
         public Material obelisk_mask;
         public GameObject laser;
         public ParticleSystem explosionEff;
-        public Light light;
+        public Light obelisk_light;
         [Header("Animation Speed Setting")]
         public AnimationCurve animationSpeedCurve;
         public float speedFac = 3f;
@@ -34,7 +34,7 @@ namespace Map
             anim.enabled = false;
             ResetObelisk(false);
         }
-
+        
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -57,7 +57,7 @@ namespace Map
                 obelisk_branchLight.SetFloat("_DissolveCutoff", 1);
                 obelisk_mask.SetFloat("_DissolveCutoff", 0);
                 laser.SetActive(false);
-                light.gameObject.SetActive(false);
+                obelisk_light.gameObject.SetActive(false);
             }
             else
             {
@@ -67,7 +67,7 @@ namespace Map
                 obelisk_branchLight.SetFloat("_DissolveCutoff", 0);
                 obelisk_mask.SetFloat("_DissolveCutoff", 1);
                 laser.SetActive(true);
-                light.gameObject.SetActive(true);
+                obelisk_light.gameObject.SetActive(true);
             }
         }
 
