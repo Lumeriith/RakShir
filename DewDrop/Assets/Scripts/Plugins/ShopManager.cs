@@ -56,7 +56,7 @@ public class ShopManager : MonoBehaviour
 
     public void SellItem(Item item)
     {
-        SFXManager.CreateSFXInstance("si_local_BuyAndSell", GameManager.instance.localPlayer.transform.position, true);
+        SFXManager.CreateSFXInstance("si_local_ShopSell", GameManager.instance.localPlayer.transform.position, true);
         GameManager.instance.localPlayer.EarnGold(item.value * itemSellingValueModifier);
         item.DestroySelf();
     }
@@ -70,7 +70,7 @@ public class ShopManager : MonoBehaviour
         {
             if (GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>().HasSpaceFor(currentStock[index]))
             {
-                SFXManager.CreateSFXInstance("si_local_BuyAndSell", GameManager.instance.localPlayer.transform.position, true);
+                SFXManager.CreateSFXInstance("si_local_ShopBuy", GameManager.instance.localPlayer.transform.position, true);
                 GameManager.instance.localPlayer.SpendGold(currentStock[index].value);
                 GameManager.instance.localPlayer.ActivateImmediately(GameManager.SpawnItem(currentStock[index].name, GameManager.instance.localPlayer.transform.position));
                 currentStockNumber[index]--;

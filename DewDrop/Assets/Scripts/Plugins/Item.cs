@@ -114,5 +114,6 @@ public abstract class Item : Activatable
         owner = null;
         transform.SetParent(null);
         gameObject.SetActive(true);
+        SFXManager.CreateSFXInstance("si_local_ItemDrop", transform.position, true);
     }
 }

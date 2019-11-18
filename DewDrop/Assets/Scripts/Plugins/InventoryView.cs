@@ -22,4 +22,5 @@ public class InventoryView : MonoBehaviour
             titleName.text = playerName;
         }
     }
+
 }

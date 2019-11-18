@@ -60,6 +60,7 @@ public class PlayerItemBelt : MonoBehaviour
             inventory.Add(item);
             item.TransferOwnership(livingThing);
             EquipEquipmentFromInventory(inventory.Count - 1);
+            SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
         }
 
@@ -68,6 +69,7 @@ public class PlayerItemBelt : MonoBehaviour
         {
             item.TransferOwnership(livingThing);
             UseConsumable(consumable, new CastInfo { owner = livingThing });
+            SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
         }
 
@@ -80,6 +82,7 @@ public class PlayerItemBelt : MonoBehaviour
                     inventory.Add(item);
                     item.TransferOwnership(livingThing);
                     MoveConsumableFromInventoryToBelt(inventory.Count - 1,i);
+                    SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
                     return true;
                 }
             }
@@ -89,6 +92,7 @@ public class PlayerItemBelt : MonoBehaviour
         {
             inventory.Add(item);
             item.TransferOwnership(livingThing);
+            SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
         }
         else
@@ -119,6 +123,7 @@ public class PlayerItemBelt : MonoBehaviour
         Consumable target = consumableBelt[from] as Consumable;
         if (target == null) return;
         if (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity) return;
+        SFXManager.CreateSFXInstance("si_local_ItemUnequip", transform.position, true);
         inventory.Add(consumableBelt[from]);
         consumableBelt[from] = null;
     }
@@ -135,6 +140,7 @@ public class PlayerItemBelt : MonoBehaviour
                 {
                     consumableBelt[i] = target;
                     inventory.RemoveAt(from);
+                    SFXManager.CreateSFXInstance("si_local_ItemEquip", transform.position, true);
                     return true;
                 }
             }
@@ -148,6 +154,7 @@ public class PlayerItemBelt : MonoBehaviour
                 inventory.Add(consumableBelt[to]);
             }
             consumableBelt[to] = target;
+            SFXManager.CreateSFXInstance("si_local_ItemEquip", transform.position, true);
             return true;
         }
     }
@@ -166,6 +173,7 @@ public class PlayerItemBelt : MonoBehaviour
 
         equipped[(int)target.type] = target;
         equipped[(int)target.type].Equip();
+        SFXManager.CreateSFXInstance("si_local_ItemEquip", transform.position, true);
         return true;
     }
     
@@ -178,7 +186,7 @@ public class PlayerItemBelt : MonoBehaviour
         inventory.Add(target);
         target.Unequip();
         equipped[index] = null;
-        
+        SFXManager.CreateSFXInstance("si_local_ItemUnequip", transform.position, true);
     }
 
 
