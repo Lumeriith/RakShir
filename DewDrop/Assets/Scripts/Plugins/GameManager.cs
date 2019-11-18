@@ -60,8 +60,13 @@ public class GameManager : MonoBehaviour
     private LivingThing _localPlayer;
 
     public System.Action<LivingThing> OnLivingThingInstantiate = (LivingThing _) => { };
+    public System.Action<LivingThing> OnLivingThingDestroy = (LivingThing _) => { };
+
     public System.Action<Activatable> OnActivatableInstantiate = (Activatable _) => { };
-    public System.Action<LivingThing> OnLivingThingRoomEnter = (LivingThing _) => { }; 
+    public System.Action<LivingThing> OnLivingThingRoomEnter = (LivingThing _) => { };
+
+    [HideInInspector]
+    public List<LivingThing> everyLivingThings = new List<LivingThing>();
 
     private static GameManager _instance;
     public static GameManager instance
@@ -154,7 +159,18 @@ public class GameManager : MonoBehaviour
         localPlayer.SetReadableName(PlayerPrefs.GetString("characterName", "이름없는 영웅"));
         return localPlayer;
     }
+    private void Start()
+    {
+        OnLivingThingInstantiate += (LivingThing thing) =>
+        {
+            everyLivingThings.Add(thing);
+        };
 
+        OnLivingThingDestroy += (LivingThing thing) =>
+        {
+            everyLivingThings.Remove(thing);
+        };
+    }
     public static void DropLoot(string name, Vector3 position)
     {
         GameObject gobj = SpawnItem(name, position + Vector3.up * 2f + Random.insideUnitSphere * 0.8f, Random.rotation).gameObject;

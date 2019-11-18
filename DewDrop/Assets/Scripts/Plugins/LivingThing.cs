@@ -570,7 +570,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void Destroy()
     {
-        photonView.RPC("RpcDestroy", photonView.Owner);
+        photonView.RPC("RpcDestroy", RpcTarget.All);
     }
 
     public void SetCurrentRoom(Room room)
@@ -1063,7 +1063,9 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcDestroy()
     {
-        PhotonNetwork.Destroy(gameObject);
+        GameManager.instance.OnLivingThingDestroy.Invoke(this);
+        if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
+        
     }
 
     [PunRPC]

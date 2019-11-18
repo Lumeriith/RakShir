@@ -294,7 +294,7 @@ public class Command
         if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
         if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
 
-        if (self.currentRoom != target.currentRoom) return true;
+        if (self.currentRoom != target.currentRoom) return false;
 
         // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
 

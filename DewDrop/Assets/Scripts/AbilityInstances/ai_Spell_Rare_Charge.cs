@@ -23,6 +23,9 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     public float shieldAmount = 30f;
     public float shieldDuration = 5f;
 
+    public float minimumChargeDistance = 5f;
+    
+
     private SFXInstance chargeSFX;
     private Vector3 forwardVector;
     private Displacement displacement;
@@ -34,6 +37,10 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         collider = GetComponent<Collider>();
         collider.enabled = false;
         chargeDestination = castInfo.target.transform.position;
+        if(Vector3.Distance(chargeDestination, info.owner.transform.position) < minimumChargeDistance)
+        {
+            chargeDestination = info.owner.transform.position + (chargeDestination - info.owner.transform.position).normalized * minimumChargeDistance;
+        }
         transform.LookAt(chargeDestination);
         forwardVector = transform.forward;
         forwardVector.y = 0f;

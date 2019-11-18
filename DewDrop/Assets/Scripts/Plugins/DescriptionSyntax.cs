@@ -11,6 +11,8 @@ public class DescriptionSyntax
     {
         string remainingString = raw;
         string decodedString = "";
+        string description = "";
+        string totalDescription = "";
         int startIndex, endIndex;
 
         startIndex = raw.IndexOf("[");
@@ -26,7 +28,9 @@ public class DescriptionSyntax
             {
                 break;
             }
-            decodedString += DecodeSyntaxElement(remainingString.Substring(1, endIndex - 1));
+            description = "";
+            decodedString += DecodeSyntaxElement(remainingString.Substring(1, endIndex - 1), ref description);
+            totalDescription += description;
             remainingString = remainingString.Substring(endIndex + 1);
 
 
@@ -34,16 +38,31 @@ public class DescriptionSyntax
             startIndex = remainingString.IndexOf("[");
         }
 
+        if(totalDescription == "")
+        {
+            return decodedString + remainingString;
+        }
+        else
+        {
+            return decodedString + remainingString + "<size=13>" + totalDescription + "</size>";
+        }
 
-
-        return decodedString + remainingString;
+        
             
     }
 
-    private static string DecodeSyntaxElement(string element)
+    private static string DecodeSyntaxElement(string element, ref string description)
     {
         try
         {
+            if (element == "민첩") description = "\n\n<color=yellow>민첩</color> <color=grey>이동 속도, 공격 속도, 회피가 증가합니다.</color>";
+            else if (element == "힘") description = "\n\n<color=yellow>힘</color> <color=grey>최대 체력, 초당 체력 재생, 공격 피해가 증가합니다.</color>";
+            else if (element == "지능") description = "\n\n<color=yellow>지능</color> <color=grey>최대 마나, 초당 마나 재생, 주문력, 시간 왜곡이 증가합니다.</color>";
+            else if (element == "주문력") description = "\n\n<color=yellow>주문력</color> <color=grey>자신이 주는 대부분의 마법 피해량, 치유량, 보호막량이 주문력의 영향을 받아 더 강력해집니다. 예를 들어 주문력이 150이면 대부분의 마법 피해가 50%의 추가 피해를 줍니다.</color>";
+            else if (element == "시간 왜곡") description = "\n\n<color=yellow>시간 왜곡</color> <color=grey>자신의 마법들의 재사용 대기시간이 시간 왜곡의 영향을 받아 더 빠르게 감소합니다. 예를 들어 시간 왜곡이 100이면 내 마법들의 재사용 대기시간이 100% 더 빠르게 감소합니다.</color>";
+            else if (element == "회피") description = "\n\n<color=yellow>회피</color> <color=grey>자신에게 가해지는 기본 공격을 피하여 무효화시킬 수 있습니다. 예를 들어 회피가 20이면 20%의 확률로 기본 공격을 회피합니다.</color>";
+
+
             return "<color=yellow>" + element + "</color>";
         }
         catch
