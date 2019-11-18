@@ -61,7 +61,12 @@ public class DescriptionSyntax
             else if (element == "주문력") description = "\n\n<color=yellow>주문력</color> <color=grey>자신이 주는 대부분의 마법 피해량, 치유량, 보호막량이 주문력의 영향을 받아 더 강력해집니다. 예를 들어 주문력이 150이면 대부분의 마법 피해가 50%의 추가 피해를 줍니다.</color>";
             else if (element == "시간 왜곡") description = "\n\n<color=yellow>시간 왜곡</color> <color=grey>자신의 마법들의 재사용 대기시간이 시간 왜곡의 영향을 받아 더 빠르게 감소합니다. 예를 들어 시간 왜곡이 100이면 내 마법들의 재사용 대기시간이 100% 더 빠르게 감소합니다.</color>";
             else if (element == "회피") description = "\n\n<color=yellow>회피</color> <color=grey>자신에게 가해지는 기본 공격을 피하여 무효화시킬 수 있습니다. 예를 들어 회피가 20이면 20%의 확률로 기본 공격을 회피합니다.</color>";
-
+            else if (element == "저지 불가") description = "\n\n<color=yellow>저지 불가</color> <color=grey>저지 불가인 대상은 기절, 침묵, 밀치기 등의 방해 효과에 영향을 받지 않습니다.</color>";
+            else if (element == "침묵") description = "\n\n<color=yellow>침묵</color> <color=grey>침묵된 대상은 대부분의 마법을 사용할 수 없습니다.</color>";
+            else if (element == "실명") description = "\n\n<color=yellow>실명</color> <color=grey>실명된 대상이 행하는 모든 기본 공격은 빗나갑니다.</color>";
+            else if (element == "보호") description = "\n\n<color=yellow>보호</color> <color=grey>보호된 대상은 그 어떤 피해도 입지 않습니다.</color>";
+            else if (element == "무적") description = "\n\n<color=yellow>무적</color> <color=grey>무적인 대상은 그 어떤 피해와 해로운 효과에도 영향을 받지 않습니다.</color>";
+            
 
             return "<color=yellow>" + element + "</color>";
         }

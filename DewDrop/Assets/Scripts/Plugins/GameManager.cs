@@ -252,7 +252,7 @@ public class GameManager : MonoBehaviour
 
     public static void DoObeliskTeleportation(Room room)
     {
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.Invulnerable(instance.localPlayer, 4f));
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(instance.localPlayer, 4f));
         instance.StartCoroutine(CoroutineMove(room));
         GameEventMessage.SendEvent("Move Started");
     }
