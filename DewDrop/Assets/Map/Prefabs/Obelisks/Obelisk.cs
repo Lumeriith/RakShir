@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 namespace Map
 {
@@ -21,13 +22,21 @@ namespace Map
         public bool updateGI;
         public List<Renderer> branches = new List<Renderer>();
         public float lightDissolveTime;
+        /*
+        [Header("Audio Setting")]
+        public AudioClip startAudio;
+        public AudioClip invertStartAudio;
+        public AudioClip endAudio;
+        */
 
         private Animator anim;
         private AnimationClip activationAnimation;
+        private AudioSource audioSource;
         private float playTime;
         private void Awake()
         {
             anim = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
             activationAnimation = anim.GetCurrentAnimatorClipInfo(0)[0].clip;
             playTime = activationAnimation.length;
             lightDissolveTime += playTime;
@@ -39,10 +48,12 @@ namespace Map
         {
             if (Input.GetMouseButtonDown(0))
             {
+                ResetObelisk(false);
                 StartCoroutine("OnActivateObelisk", false);
             }
             else if (Input.GetMouseButtonDown(1))
             {
+                ResetObelisk(true);
                 StartCoroutine("OnActivateObelisk", true);
             }
         }
@@ -77,6 +88,19 @@ namespace Map
             float deltaLDT = 0;
             bool doneAnim = false;
 
+            /*
+            if (!invert)
+            {
+                audioSource.clip = startAudio;
+                audioSource.Play();
+            }
+            else
+            {
+                audioSource.clip = invertStartAudio;
+                audioSource.Play();
+            }
+            */
+
             while (true)
             {
                 if (animationSpeedCurve == null) yield break;
@@ -87,7 +111,12 @@ namespace Map
                     if (deltaPlayTime >= playTime && !doneAnim)
                     {
                         ResetObelisk(!invert);
+                        /*
                         explosionEff.Play();
+                        audioSource.Stop();
+                        audioSource.clip = endAudio;
+                        audioSource.Play();
+                        */
                         doneAnim = true;
                     }
                     else
