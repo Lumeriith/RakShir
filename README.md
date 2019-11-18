@@ -1,5 +1,5 @@
 # Dew
-Formerly Rakshir, DewDrop, is a Rogue-like + MOBA Twist Multiplayer game.
+Formerly Rakshir, DewDrop, is a Dungeon-Crawler + MOBA Twist Multiplayer game.
 
 [Documentation](Documentation.md)
 
