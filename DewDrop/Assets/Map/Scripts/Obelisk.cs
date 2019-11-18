@@ -111,8 +111,8 @@ namespace Map
                     if (deltaPlayTime >= playTime && !doneAnim)
                     {
                         ResetObelisk(!invert);
-                        /*
                         explosionEff.Play();
+                        /*
                         audioSource.Stop();
                         audioSource.clip = endAudio;
                         audioSource.Play();

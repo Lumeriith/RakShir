@@ -768,6 +768,97 @@ Transform:
   m_Father: {fileID: 4931656270035356297}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3511353161673588773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1561101923811706043}
+  - component: {fileID: 6633191923785353637}
+  m_Layer: 0
+  m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561101923811706043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511353161673588773}
+  m_LocalRotation: {x: 0.30084464, y: 0.37099534, z: -0.7635382, w: 0.43458542}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4931656270035356297}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 55.896004, y: -108.17901, z: -128.23401}
+--- !u!108 &6633191923785353637
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3511353161673588773}
+  m_Enabled: 1
+  serializedVersion: 9
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &3627565056353339218
 GameObject:
   m_ObjectHideFlags: 0
@@ -4352,7 +4443,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4931656270035356296}
-  m_LocalRotation: {x: -0, y: -0.73159933, z: -0, w: 0.6817348}
+  m_LocalRotation: {x: 0, y: -0.73159766, z: 0, w: 0.68173665}
   m_LocalPosition: {x: -30, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4365,6 +4456,7 @@ Transform:
   - {fileID: 2175495946011151385}
   - {fileID: 4931656271062198206}
   - {fileID: 2175495946303399957}
+  - {fileID: 1561101923811706043}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -94.04101, z: 0}
@@ -20287,6 +20379,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_weaponrack3_full
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.129999
@@ -20342,10 +20438,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.0869439
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_weaponrack3_full
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
@@ -20437,6 +20529,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_chain2_long (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.429001
@@ -20492,10 +20588,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.7425044
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_chain2_long (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
@@ -20587,6 +20679,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_chain2_long (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.529999
@@ -20642,10 +20738,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.7425022
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_chain2_long (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
@@ -20877,22 +20969,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -20912,6 +21004,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_container_crate_big
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.9
@@ -20968,10 +21064,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.1731005
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_container_crate_big
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
 --- !u!4 &4931656269934562564 stripped
@@ -20987,6 +21079,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_scrap10
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.291
@@ -21042,10 +21138,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.6689
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_scrap10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
@@ -21208,22 +21300,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -21308,22 +21400,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -21343,6 +21435,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_woven_carpet01a
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.9399986
@@ -21399,10 +21495,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3.7444334
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_woven_carpet01a
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
 --- !u!4 &4931656270436168263 stripped
@@ -21418,6 +21510,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_container_crate_big (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.620001
@@ -21474,10 +21570,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.9969074
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_container_crate_big (1)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 469a67ce7c458e0418fd4dd439f1912f, type: 3}
 --- !u!4 &4931656270471249278 stripped
@@ -21493,6 +21585,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_chain2_long (4)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.1100006
@@ -21548,10 +21644,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.742503
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_chain2_long (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
@@ -21708,22 +21800,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -21818,6 +21910,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
+      propertyPath: m_Name
+      value: Sword01
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.299999
@@ -21873,10 +21969,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
       propertyPath: m_LocalScale.z
       value: 4.586153
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
-      propertyPath: m_Name
-      value: Sword01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
@@ -21958,22 +22050,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -22149,6 +22241,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_broadsword4
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.6257515
@@ -22205,21 +22301,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.6201003
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_broadsword4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
---- !u!1 &4931656270855312100 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656270855345220}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4931656270855737028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: d450e5fb84b31c748989a29ecb3617b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656270855345220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4931656270855312100 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0,
     type: 3}
   m_PrefabInstance: {fileID: 4931656270855345220}
   m_PrefabAsset: {fileID: 0}
@@ -22230,6 +22322,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_shield10_c
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.9000015
@@ -22286,10 +22382,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.046
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_shield10_c
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
 --- !u!4 &4931656270953670397 stripped
@@ -22311,6 +22403,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656270035356297}
     m_Modifications:
+    - target: {fileID: 119700, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
+      propertyPath: m_Name
+      value: Berserker
+      objectReference: {fileID: 0}
     - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.7728264
@@ -22367,10 +22463,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 119700, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_Name
-      value: Berserker
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
 --- !u!4 &4931656271062198206 stripped
@@ -22386,6 +22478,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
+      propertyPath: m_Name
+      value: Sword16
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.34
@@ -22441,10 +22537,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
       propertyPath: m_LocalScale.z
       value: 7.7127066
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
-      propertyPath: m_Name
-      value: Sword16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
@@ -22611,6 +22703,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_longsword5
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5599995
@@ -22666,10 +22762,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.2027996
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_longsword5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
@@ -22773,6 +22865,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_chain2_long (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.80046
@@ -22828,10 +22924,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.742503
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_chain2_long (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
@@ -22913,22 +23005,22 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+    - target: {fileID: 198368796621386640, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198464741691905212, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -23010,15 +23102,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
---- !u!4 &4931656271397403598 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: c3d3001803458e7479fb32f1c5404308,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656271397790030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4931656271397890030 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656271397790030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4931656271397403598 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: c3d3001803458e7479fb32f1c5404308,
     type: 3}
   m_PrefabInstance: {fileID: 4931656271397790030}
   m_PrefabAsset: {fileID: 0}
