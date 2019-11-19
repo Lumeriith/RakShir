@@ -23,6 +23,7 @@ public class MainMenuLogic : MonoBehaviour
 
     public void PlayPlayground()
     {
+        PhotonNetwork.Disconnect();
         LobbyManager.gameType = GameType.Playground;
         LobbyManager.properlyConfiguredGame = true;
         SceneManager.LoadScene("Lobby");

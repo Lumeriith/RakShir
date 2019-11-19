@@ -73,6 +73,8 @@ public class MonsterInfoHUD : MonoBehaviour
                 image_statusEffectsBackdrop.color = Color.Lerp(statusEffectsBackdropColorA, statusEffectsBackdropColorB, Mathf.Sin(Time.time * sineTimeMultiplier) / 2f + 0.5f);
             }
         }
+
+        tmpu_health.enabled = text_statusEffects.text == "";
     }
 
 

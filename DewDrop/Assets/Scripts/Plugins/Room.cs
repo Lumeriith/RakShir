@@ -14,6 +14,9 @@ public class Room : MonoBehaviourPun
 
     public List<Room> nextRooms;
     public Transform entryPoint;
+    public Transform redCustomEntryPoint;
+    public Transform blueCustomEntryPoint;
+
     public GameObject customLighting;
     public PostProcessProfile customPostProcessProfile;
     public string customMusic;

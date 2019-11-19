@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using DecalSystem;
 using Doozy.Engine;
 using UnityEngine.UI;
+using DG.Tweening;
 public enum GladiatorGamePhase { Waiting, PvE, PvP, End };
 [System.Serializable]
 public class RoomListWrapper
@@ -38,6 +39,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     public float goldRandomness = 0.1f;
     public float lostGoldMultiplierOnDeath = 0.3f;
     public GameObject monsterSpawnEffect;
+
+    public float defeatGold = 1500f;
+    public float victoryGold = 1500f;
+
+    public int roundTime = 60 * 5;
 
     [Header("Map Generation Settings")]
     public List<MapPlaceholderNode> nodes;
@@ -102,13 +108,101 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private int blueNextCommonLoot = 0;
     private List<Room> createdRooms = new List<Room>();
 
+    private int redScore = 0;
+    private int blueScore = 0;
+
+    public int roundIndex = 0;
+    public bool[] didRedTeamWin = new bool[6];
+
+    private CanvasGroup canvasGroup_Victory;
+    private CanvasGroup canvasGroup_Defeat;
+
+    private Canvas canvas_PvP;
+
+    private Text text_Time;
+
+    private Coroutine roundTimeTicker;
+    [SerializeField]
+    private int remainingRoundTime = 0;
+
+    
+
+    private IEnumerator CoroutineTickTime()
+    {
+        remainingRoundTime = roundTime;
+        while (remainingRoundTime-- > 0)
+        {
+            text_Time.text = (remainingRoundTime / 60) + ":" + (remainingRoundTime % 60).ToString("00");
+            yield return new WaitForSeconds(1f);
+        }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            float damage = 1f;
+            while (true)
+            {
+                foreach(LivingThing thing in gamePlayers.Values)
+                {
+                    if(thing.currentHealth > damage)
+                    {
+                        thing.DoPureDamage(damage, thing);
+                    }
+                    else if (thing.currentHealth > 1f)
+                    {
+                        thing.DoPureDamage(thing.currentHealth - 1f, thing);
+                    }
+                }
+                damage += 1f;
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void RpcStartRoundTimer()
+    {
+        text_Time.enabled = true;
+        roundTimeTicker = StartCoroutine(CoroutineTickTime());
+    }
+
+    [PunRPC]
+    private void RpcStopRoundTimer()
+    {
+        text_Time.enabled = false;
+        if (roundTimeTicker != null) StopCoroutine(roundTimeTicker);
+        roundTimeTicker = null;
+
+    }
+
+    private void Awake()
+    {
+        canvasGroup_Victory = transform.Find("PvP Canvas/Victory").GetComponent<CanvasGroup>();
+        canvasGroup_Defeat = transform.Find("PvP Canvas/Defeat").GetComponent<CanvasGroup>();
+        text_Time = transform.Find("PvP Canvas/Time Text").GetComponent<Text>();
+        canvas_PvP = transform.Find("PvP Canvas").GetComponent<Canvas>();
+        text_Time = transform.Find("PvP Canvas/Time Text").GetComponent<Text>();
+        canvas_PvP.gameObject.SetActive(false);
+        text_Time.enabled = false;
+    }
+
+    private void Start()
+    {
+        if (!PhotonNetwork.InRoom)
+        {
+            Debug.Log("Gladiator Game cannot operate if not in room, returning to Main Menu...");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+            return;
+        }
+
+        if (debugSoloPlayMode) StartCoroutine(CoroutineDelayedSetupGame(1f));
+        readyStatuses.Add(PhotonNetwork.LocalPlayer, false);
+    }
 
 
 
     [Button("Force Setup Game")]
     public void SetupGame()
     {
-        if(phase != GladiatorGamePhase.Waiting)
+        if (phase != GladiatorGamePhase.Waiting)
         {
             Debug.LogWarning("Game has already started!");
             return;
@@ -126,10 +220,12 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         RegisterKillDropLootEvent();
         RegisterKillRewardGoldEvent();
         RegisterPlayerDeathEvent();
+        
         photonView.RPC("RpcRegisterSpawnEffectEvent", RpcTarget.All);
         SpawnPlayers();
         SetPhase(GladiatorGamePhase.PvE);
         photonView.RPC("RpcSendGameStartedEvent", RpcTarget.All);
+        RegisterPlayerRoomEnterEvent();
     }
 
     [PunRPC]
@@ -152,24 +248,37 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(thing, .5f));
             Instantiate(monsterSpawnEffect, thing.transform.position, Quaternion.identity);
             thing.RpcScaleForDuration(0f, 0.5f);
-            for(float t = 0.5f; t < 1f; t += 0.05f)
+            for (float t = 0.5f; t < 1f; t += 0.05f)
             {
                 thing.RpcFlashForDuration(1f, 1f, 1f, 1f, 0.2f, t);
             }
         };
     }
-    
+
 
     private void SpawnPlayers()
     {
         bool nextPlayerIsRedTeam = Random.value < .5f;
+        Vector3 spawnPoint;
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
         PlayerType type;
 
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
             type = nextPlayerIsRedTeam ? PlayerType.Reptile : PlayerType.Elemental;
-            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].entryPoint.position, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].photonView.ViewID);
+            if (nextPlayerIsRedTeam && createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].redCustomEntryPoint != null)
+            {
+                spawnPoint = createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].redCustomEntryPoint.position;
+            }
+            else if (!nextPlayerIsRedTeam && createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].blueCustomEntryPoint != null)
+            {
+                spawnPoint = createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].blueCustomEntryPoint.position;
+            }
+            else
+            {
+                spawnPoint = createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].entryPoint.position;
+            }
+            photonView.RPC("RpcCreateLocalPlayer", players[i], (int)type, spawnPoint, createdRooms[nextPlayerIsRedTeam ? redStartRoomIndex : blueStartRoomIndex].photonView.ViewID);
 
             nextPlayerIsRedTeam = !nextPlayerIsRedTeam;
         }
@@ -201,34 +310,156 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
         {
-            if(thing.type == LivingThingType.Player)
+            if (thing.type == LivingThingType.Player)
             {
                 thing.OnDeath += (InfoDeath info) =>
                 {
-                    HandlePlayerDeath(info.victim);
+                    HandlePlayerDeath(info);
                 };
             }
 
         };
     }
-    
-    private void HandlePlayerDeath(LivingThing player)
+
+    private void RegisterPlayerRoomEnterEvent()
     {
-        if(phase == GladiatorGamePhase.PvE)
+        GameManager.instance.OnLivingThingRoomEnter += (LivingThing thing) =>
         {
-            StartCoroutine(CoroutinePlayerRevival(player));
+            if (thing.type == LivingThingType.Player)
+            {
+                HandlePlayerRoomEnter(thing);
+            }
+        };
+    }
+
+    private void HandlePlayerDeath(InfoDeath info)
+    {
+        if (phase == GladiatorGamePhase.PvE)
+        {
+            StartCoroutine(CoroutinePlayerRevival(info.victim));
         }
         else if (phase == GladiatorGamePhase.PvP)
         {
-            throw new System.NotImplementedException();
+
+            didRedTeamWin[roundIndex] = info.victim.team == Team.Blue;
+            roundIndex++;
+            photonView.RPC("RpcSyncRoundResult", RpcTarget.Others, didRedTeamWin, roundIndex);
+            info.killer.ApplyStatusEffect(StatusEffect.Invulnerable(info.killer, 5f));
+            info.killer.ApplyStatusEffect(StatusEffect.HealOverTime(info.killer, 5f, info.killer.maximumHealth - info.killer.currentHealth, true));
+            photonView.RPC("RpcShowDefeatEffect", info.victim.photonView.Owner);
+            photonView.RPC("RpcShowVictoryEffect", info.killer.photonView.Owner);
+            photonView.RPC("RpcStopRoundTimer", RpcTarget.All);
+            
+            int redWins = 0, blueWins = 0;
+
+            for (int i = 0; i < roundIndex; i++)
+            {
+                if (didRedTeamWin[i]) redWins++;
+                else blueWins++;
+            }
+
+            if (redWins >= 3 || blueWins >= 3)
+            {
+                photonView.RPC("RpcGameEnd", RpcTarget.All);
+            }
+            else
+            {
+                info.victim.EarnGold(defeatGold);
+                info.killer.EarnGold(victoryGold);
+                StartCoroutine(CoroutinePlayerRevival(info.victim));
+                photonView.RPC("RpcStartRoundTimer", RpcTarget.All);
+            }
+
+
+
         }
     }
+
+    [PunRPC]
+    private void RpcShowDefeatEffect()
+    {
+        StartCoroutine(CoroutineShowDefeatEffect());
+
+    }
+
+    [PunRPC]
+    private void RpcShowVictoryEffect()
+    {
+        StartCoroutine(CoroutineShowVictoryEffect());
+
+    }
+
+
+
+    private IEnumerator CoroutineShowDefeatEffect()
+    {
+        canvasGroup_Defeat.DOFade(1f, 0.5f);
+        yield return new WaitForSeconds(3f);
+        canvasGroup_Defeat.DOFade(0f, 1f);
+    }
+
+    private IEnumerator CoroutineShowVictoryEffect()
+    {
+        canvasGroup_Victory.DOFade(1f, 0.5f);
+        yield return new WaitForSeconds(3f);
+        canvasGroup_Victory.DOFade(0f, 1f);
+    }
+
+
+
+
+    [PunRPC]
+    private void RpcGameEnd()
+    {
+        phase = GladiatorGamePhase.End;
+    }
+
+
+    [PunRPC]
+    private void RpcSyncRoundResult(bool[] didRedTeamWin, int roundIndex)
+    {
+        this.roundIndex = roundIndex;
+        this.didRedTeamWin = didRedTeamWin;
+    }
+
+    private void HandlePlayerRoomEnter(LivingThing player)
+    {
+        Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
+        for(int i = 0; i < players.Length; i++)
+        {
+            if (!gamePlayers[players[i]].currentRoom.name.Contains("Boss_yong")) return;
+        }
+
+        SetPhase(GladiatorGamePhase.PvP);
+        
+        for (int i = 0; i < players.Length; i++)
+        {
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.Invulnerable(gamePlayers[players[i]], 5f));
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.HealOverTime(gamePlayers[players[i]], 5f, gamePlayers[players[i]].maximumHealth - gamePlayers[players[i]].currentHealth, true));
+        }
+
+        photonView.RPC("RpcStartRoundTimer", RpcTarget.All);
+    }
+
+
 
     private IEnumerator CoroutinePlayerRevival(LivingThing player)
     {
         yield return new WaitForSeconds(4f);
         player.SpendGold(player.stat.currentGold * lostGoldMultiplierOnDeath);
-        player.Teleport(player.currentRoom.entryPoint.position);
+        if(player.team == Team.Blue && player.currentRoom.blueCustomEntryPoint != null)
+        {
+            player.Teleport(player.currentRoom.blueCustomEntryPoint.position);
+        }
+        else if (player.team == Team.Red && player.currentRoom.redCustomEntryPoint != null)
+        {
+            player.Teleport(player.currentRoom.redCustomEntryPoint.position);
+        }
+        else
+        {
+            player.Teleport(player.currentRoom.entryPoint.position);
+        }
+        
         player.Revive();
         player.DoHeal(player.maximumHealth, player, true);
         player.DoManaHeal(player.stat.finalMaximumMana, player, true);
@@ -244,6 +475,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private void RpcSetPhase(int phase)
     {
         this.phase = (GladiatorGamePhase)phase;
+        if((GladiatorGamePhase)phase == GladiatorGamePhase.PvP) canvas_PvP.gameObject.SetActive(true);
     }
 
     [PunRPC]
@@ -532,18 +764,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         blueCommonLootDeck = f;
     }
 
-    private void Start()
-    {
-        if (!PhotonNetwork.InRoom)
-        {
-            Debug.Log("Gladiator Game cannot operate if not in room, returning to Main Menu...");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
-            return;
-        }
 
-        if (debugSoloPlayMode) StartCoroutine(CoroutineDelayedSetupGame(1f));
-        readyStatuses.Add(PhotonNetwork.LocalPlayer, false);
-    }
 
     private void Update()
     {

@@ -252,7 +252,6 @@ public class GameManager : MonoBehaviour
 
     public static void DoObeliskTeleportation(Room room)
     {
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(instance.localPlayer, 4f));
         instance.StartCoroutine(CoroutineMove(room));
         GameEventMessage.SendEvent("Move Started");
     }
@@ -260,11 +259,38 @@ public class GameManager : MonoBehaviour
 
     private static IEnumerator CoroutineMove(Room room)
     {
-        yield return new WaitForSeconds(2.5f);
-        instance.localPlayer.Teleport(room.entryPoint.position);
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(instance.localPlayer, 4f));
+        for(int i = 0; i < 20; i++)
+        {
+            instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
+            yield return new WaitForSeconds(0.03f);
+        }
+        instance.localPlayer.RpcScaleForDuration(0f, 0.5f);
+        if(instance.localPlayer.team == Team.Red && room.redCustomEntryPoint != null)
+        {
+            instance.localPlayer.Teleport(room.redCustomEntryPoint.position);
+        }
+        else if (instance.localPlayer.team == Team.Blue && room.blueCustomEntryPoint != null)
+        {
+            instance.localPlayer.Teleport(room.blueCustomEntryPoint.position);
+        }
+        else
+        {
+            instance.localPlayer.Teleport(room.entryPoint.position);
+        }
+        
+        Instantiate(GladiatorGameManager.instance.monsterSpawnEffect, instance.localPlayer.transform.position, Quaternion.identity);
         instance.localPlayer.SetCurrentRoom(room);
         GameEventMessage.SendEvent("Move Finished");
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(instance.localPlayer, 0.5f));
         instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(instance.localPlayer, 3.5f, 30f));
+
+
+        yield return new WaitForSeconds(.45f);
+        for (float t = 0.5f; t < 1f; t += 0.05f)
+        {
+            instance.localPlayer.RpcFlashForDuration(1f, 1f, 1f, 1f, 0.225f, t);
+        }
     }
 
 

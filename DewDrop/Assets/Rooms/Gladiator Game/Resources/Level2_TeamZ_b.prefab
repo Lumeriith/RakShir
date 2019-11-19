@@ -32175,7 +32175,7 @@ Transform:
   - {fileID: 1517540646049448489}
   - {fileID: 443317832890609587}
   - {fileID: 9103830579897003122}
-  - {fileID: 8171719572180704387}
+  - {fileID: 416011678}
   - {fileID: 1893703327}
   - {fileID: 4680578513509789393}
   m_Father: {fileID: 0}
@@ -32246,6 +32246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextRooms: []
   entryPoint: {fileID: 1893703327}
+  redCustomEntryPoint: {fileID: 0}
+  blueCustomEntryPoint: {fileID: 0}
   customLighting: {fileID: 669299288167093443, guid: c96aa2ec67700734cb71dc56d6ec64f2,
     type: 3}
   customPostProcessProfile: {fileID: 11400000, guid: 3b42dbdfc8b7a24478035dc41f627c05,
@@ -44039,7 +44041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0812679a0b7938c47ac2a8cd6d8c3f03, type: 3}
---- !u!4 &8171719572180704387 stripped
+--- !u!4 &416011678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8171719571766218022, guid: 0812679a0b7938c47ac2a8cd6d8c3f03,
     type: 3}
@@ -47997,6 +47999,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.1701207
       objectReference: {fileID: 0}
+    - target: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c,
+        type: 3}
+      propertyPath: UVModule.flipU
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4723718275106078, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.55938
@@ -48008,11 +48015,6 @@ PrefabInstance:
     - target: {fileID: 4723718275106078, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.55938
-      objectReference: {fileID: 0}
-    - target: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c,
-        type: 3}
-      propertyPath: UVModule.flipU
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb98861c48ad2024ca93498c7dd93a6c, type: 3}

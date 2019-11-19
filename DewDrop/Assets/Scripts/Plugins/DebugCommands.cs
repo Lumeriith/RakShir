@@ -89,11 +89,33 @@ public class DebugCommands : MonoBehaviour
     public static void Skip()
     {
         LivingThing target = GameManager.instance.localPlayer;
-        if(target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
+        if (target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
         {
             Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
-            target.Teleport(nextRoom.entryPoint.position);
+            if (target.team == Team.Red && nextRoom.redCustomEntryPoint != null)
+            {
+                target.Teleport(nextRoom.redCustomEntryPoint.position);
+            }
+            else if (target.team == Team.Blue && nextRoom.blueCustomEntryPoint != null)
+            {
+                target.Teleport(nextRoom.blueCustomEntryPoint.position);
+            }
+            else
+            {
+                target.Teleport(nextRoom.entryPoint.position);
+            }
             target.SetCurrentRoom(nextRoom);
+        }
+    }
+
+    [ConsoleMethod("skipfancy", "Skip this room of local player and move to next random room by Obelisk teleportation")]
+    public static void SkipFancy()
+    {
+        LivingThing target = GameManager.instance.localPlayer;
+        if (target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
+        {
+            Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
+            GameManager.DoObeliskTeleportation(nextRoom);
         }
     }
 
