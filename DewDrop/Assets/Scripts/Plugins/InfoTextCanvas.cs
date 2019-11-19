@@ -6,6 +6,8 @@ public class InfoTextCanvas : MonoBehaviour
 {
     public InfoText consumableInfoText;
     public InfoText equipmentInfoText;
+    public InfoText obeliskInfoText;
+    public InfoText moonPortalInfoText;
 
     private void Start()
     {
@@ -33,6 +35,26 @@ public class InfoTextCanvas : MonoBehaviour
                 {
                     UnitControlManager.instance.selectedUnit.control.CommandActivate(equip, Input.GetKey(UnitControlManager.instance.reservationModifier));
                     Instantiate(UnitControlManager.instance.commandMarkerInterest, equip.transform.position, Quaternion.identity, equip.transform);
+                };
+            }
+            else if (activatable as MoonPortal != null)
+            {
+                InfoText text = Instantiate(moonPortalInfoText, transform).GetComponent<InfoText>();
+                text.follow = activatable.transform;
+                text.OnClick += () =>
+                {
+                    UnitControlManager.instance.selectedUnit.control.CommandActivate(activatable, Input.GetKey(UnitControlManager.instance.reservationModifier));
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, equip.transform);
+                };
+            }
+            else if (activatable as Portal != null)
+            {
+                InfoText text = Instantiate(obeliskInfoText, transform).GetComponent<InfoText>();
+                text.follow = activatable.transform;
+                text.OnClick += () =>
+                {
+                    UnitControlManager.instance.selectedUnit.control.CommandActivate(activatable, Input.GetKey(UnitControlManager.instance.reservationModifier));
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, equip.transform);
                 };
             }
         };

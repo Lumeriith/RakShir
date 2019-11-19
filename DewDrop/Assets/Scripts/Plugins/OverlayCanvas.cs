@@ -4,17 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 public class OverlayCanvas : MonoBehaviour
 {
+    public static OverlayCanvas instance
+    {
+        get
+        {
+            if (_instance == null) _instance = FindObjectOfType<OverlayCanvas>();
+            return _instance;
+        }
+    }
+    private static OverlayCanvas _instance;
 
     private Image image_pain;
     private Image image_damageOverTime;
     private Image image_silence;
     private Image image_stun;
-
+    private Image image_blink;
 
     private float painAmount = 0f;
     private float damageOverTimeAmount = 0f;
     private float silenceAmount = 0f;
     private float stunAmount = 0f;
+    private float blinkAmount = 0f;
 
     private LivingThing player = null;
 
@@ -24,6 +34,7 @@ public class OverlayCanvas : MonoBehaviour
         image_damageOverTime = transform.Find("Overlay - DamageOverTime").GetComponent<Image>();
         image_silence = transform.Find("Overlay - Silence").GetComponent<Image>();
         image_stun = transform.Find("Overlay - Stun").GetComponent<Image>();
+        image_blink = transform.Find("Overlay - Blink").GetComponent<Image>();
     }
     private void Update()
     {
@@ -45,6 +56,7 @@ public class OverlayCanvas : MonoBehaviour
         image_damageOverTime.color = new Color(1, 1, 1, damageOverTimeAmount);
         image_silence.color = new Color(1, 1, 1, silenceAmount);
         image_stun.color = new Color(1, 1, 1, stunAmount);
+        image_blink.color = new Color(0, 0, 0, blinkAmount);
     }
     private void TookDamage(InfoDamage info)
     {
@@ -56,6 +68,12 @@ public class OverlayCanvas : MonoBehaviour
 
     }
 
+    public static void Blink()
+    {
+        instance.blinkAmount = 1f;
+        instance.image_blink.color = new Color(0, 0, 0, instance.blinkAmount);
+    }
+
     private void UpdateAmounts()
     {
         LivingThing player = GameManager.instance.localPlayer;
@@ -64,6 +82,7 @@ public class OverlayCanvas : MonoBehaviour
         damageOverTimeAmount = Mathf.MoveTowards(damageOverTimeAmount, 0f, 4f * Time.deltaTime);
         silenceAmount = Mathf.MoveTowards(silenceAmount, 0f, 4f * Time.deltaTime);
         stunAmount = Mathf.MoveTowards(stunAmount, 0f, 4f * Time.deltaTime);
+        blinkAmount = Mathf.MoveTowards(blinkAmount, 0f, 1.75f * Time.deltaTime);
         if (player.IsAffectedBy(StatusEffectType.DamageOverTime)) damageOverTimeAmount = 1f;
         if (player.IsAffectedBy(StatusEffectType.Silence)) silenceAmount = 1f;
         if (player.IsAffectedBy(StatusEffectType.Stun)) stunAmount = 1f;

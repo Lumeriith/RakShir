@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
         Instantiate(GladiatorGameManager.instance.monsterSpawnEffect, instance.localPlayer.transform.position, Quaternion.identity);
         instance.localPlayer.SetCurrentRoom(room);
         GameEventMessage.SendEvent("Move Finished");
+        OverlayCanvas.Blink();
         instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(instance.localPlayer, 0.5f));
         instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(instance.localPlayer, 3.5f, 30f));
 
