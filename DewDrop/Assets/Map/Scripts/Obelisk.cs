@@ -44,19 +44,21 @@ namespace Map
             ResetObelisk(false);
         }
         
+        /*
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 ResetObelisk(false);
-                StartCoroutine("OnActivateObelisk", false);
+                StartCoroutine("Active", false);
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 ResetObelisk(true);
-                StartCoroutine("OnActivateObelisk", true);
+                StartCoroutine("Active", true);
             }
         }
+        */
 
         public void ResetObelisk(bool invert)
         {
@@ -82,7 +84,7 @@ namespace Map
             }
         }
 
-        public IEnumerator OnActivateObelisk(bool invert)
+        public IEnumerator Active(bool invert)
         {
             float deltaPlayTime = 0;
             float deltaLDT = 0;

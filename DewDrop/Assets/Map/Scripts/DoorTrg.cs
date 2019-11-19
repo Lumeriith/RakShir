@@ -6,20 +6,18 @@ namespace Map
 {
     public class DoorTrg : MonoBehaviour
     {
-        public Vector3 startPosition;
-        public Vector3 endPosition;
-        public float speedFactor;
+        public float dissolveTime = 3f;
+        public Material mat;
 
         private Collider coll;
+        private float deltaDissolveTime = 0;
 
         private void Awake()
         {
-            transform.position = startPosition;
             coll = GetComponent<Collider>();
-            coll.enabled = false;
+            ResetDoor();
         }
 
-        /*
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -27,19 +25,26 @@ namespace Map
                 StartCoroutine("Active");
             }
         }
-        */
+
+        public void ResetDoor()
+        {
+            mat.SetFloat("_DissolveCutoff", 1);
+            coll.enabled = false;
+        }
 
         public IEnumerator Active()
         {
+            coll.enabled = true;
             while (true)
             {
-                transform.position = Vector3.Lerp(transform.position, endPosition, Time.deltaTime * speedFactor);
-
-                if (Vector3.Distance(startPosition, endPosition) <= float.Epsilon)
+                if (deltaDissolveTime >= dissolveTime)
                 {
-                    coll.enabled = true;
+                    mat.SetFloat("_DissolveCutoff", 0);
                     yield break;
                 }
+
+                mat.SetFloat("_DissolveCutoff", Mathf.Clamp01(1 - (deltaDissolveTime / dissolveTime)));
+                deltaDissolveTime += Time.deltaTime;
                 yield return null;
             }
         }
