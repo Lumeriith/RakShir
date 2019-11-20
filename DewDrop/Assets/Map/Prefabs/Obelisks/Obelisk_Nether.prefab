@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 3967628938128475287}
   - component: {fileID: 6450802554608675309}
   - component: {fileID: 3564100031551182387}
-  m_Layer: 9
+  - component: {fileID: -3086749568154194803}
+  - component: {fileID: -7105619576132668936}
+  - component: {fileID: 1773495459733231186}
+  m_Layer: 11
   m_Name: Obelisk_Nether
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,6 +128,68 @@ MonoBehaviour:
   - {fileID: 3040561441238102841}
   - {fileID: 5711232832372605943}
   lightDissolveTime: 2
+--- !u!114 &-3086749568154194803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95842949482657412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-7105619576132668936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95842949482657412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8f6b18e105da2408b33a9b5c86b58f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationRange: 2.5
+  channel:
+    channelValidator:
+      evaluatesFalseIfDead: 1
+      excludes: 090a0b0c0d0e0f12
+      invertResult: 0
+    owner: {fileID: 0}
+    duration: 0
+    canMove: 0
+    canAttack: 0
+    canUseAbility: 0
+    canBeCanceledByCaster: 0
+    isBasicAttack: 0
+  isInterruptedByDamage: 1
+--- !u!136 &1773495459733231186
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95842949482657412}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 2.17
+  m_Height: 8.68
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.11, z: 0}
 --- !u!1 &257136706173150767
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +201,7 @@ GameObject:
   - component: {fileID: 2880160222708500236}
   - component: {fileID: 4409191520322005879}
   - component: {fileID: 5711232832372605943}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_SemiBranch03_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +280,7 @@ GameObject:
   - component: {fileID: 1462817158360403941}
   - component: {fileID: 1622221647823362751}
   - component: {fileID: 1621573696787146667}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4968,7 +5033,7 @@ GameObject:
   - component: {fileID: 1464544462166375155}
   - component: {fileID: 1622350238046136041}
   - component: {fileID: 1623004040384620627}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9739,7 +9804,7 @@ GameObject:
   - component: {fileID: 1464767724195314827}
   - component: {fileID: 1656302175051099909}
   - component: {fileID: 1621338040090318167}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14561,7 +14626,7 @@ GameObject:
   - component: {fileID: 1464415707982758887}
   - component: {fileID: 1622107139157140187}
   - component: {fileID: 1622853259780477695}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Shockwave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19314,7 +19379,7 @@ GameObject:
   - component: {fileID: 1462891707728657107}
   - component: {fileID: 1622347603035429599}
   - component: {fileID: 1622859537377924531}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24067,7 +24132,7 @@ GameObject:
   - component: {fileID: 1464550447852644701}
   - component: {fileID: 1622396732759022279}
   - component: {fileID: 1621474852577494609}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Circles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28838,7 +28903,7 @@ GameObject:
   - component: {fileID: 1464277243663486043}
   - component: {fileID: 1572925590276311561}
   - component: {fileID: 1580492715180637037}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Laser beam 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28994,7 +29059,7 @@ GameObject:
   - component: {fileID: 1464709213115758841}
   - component: {fileID: 1656299942005119297}
   - component: {fileID: 1623508736676695961}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: SparksLong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33805,7 +33870,7 @@ GameObject:
   - component: {fileID: 1463013184099897825}
   - component: {fileID: 1622331760583845191}
   - component: {fileID: 1623485757906364657}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38563,7 +38628,7 @@ GameObject:
   - component: {fileID: 1462652114277160173}
   - component: {fileID: 1621696916107931741}
   - component: {fileID: 1621361296682719637}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: GlowBlack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43334,7 +43399,7 @@ GameObject:
   - component: {fileID: 2040014169891240219}
   - component: {fileID: 3360146638039762878}
   - component: {fileID: 6058858585859425052}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Obelisk_MainCrystalMask_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43410,7 +43475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8915528481017355311}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Semi branch_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43443,7 +43508,7 @@ GameObject:
   - component: {fileID: 7436245416156998874}
   - component: {fileID: 2675946633585905189}
   - component: {fileID: 1294694674818085804}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Obelisk_Holder_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43520,7 +43585,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7617477190413081430}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Main branch_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43553,7 +43618,7 @@ GameObject:
   - component: {fileID: 2597085630680598915}
   - component: {fileID: 2397986225325415316}
   - component: {fileID: 6540337604664339786}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_MainBranch02_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43630,7 +43695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3231563953483430776}
   - component: {fileID: 3231563953483430777}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43723,7 +43788,7 @@ GameObject:
   - component: {fileID: 3230920620599772962}
   - component: {fileID: 3322180320417793690}
   - component: {fileID: 3322977577511735786}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: StartShockWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48534,7 +48599,7 @@ GameObject:
   - component: {fileID: 3231241117988317936}
   - component: {fileID: 3321568602231246878}
   - component: {fileID: 3322566676267013488}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EndSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53345,7 +53410,7 @@ GameObject:
   - component: {fileID: 3226963987776932018}
   - component: {fileID: 3321848861434188626}
   - component: {fileID: 3322530130575585890}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EndShockWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58165,7 +58230,7 @@ GameObject:
   - component: {fileID: 3231055836765198886}
   - component: {fileID: 3343763183543752710}
   - component: {fileID: 3322402940302555916}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: StartSFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62976,7 +63041,7 @@ GameObject:
   - component: {fileID: 3230778300777787424}
   - component: {fileID: 3321408778203845906}
   - component: {fileID: 3322316390480386568}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EndSFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67787,7 +67852,7 @@ GameObject:
   - component: {fileID: 3231135577763956628}
   - component: {fileID: 3321452651781287686}
   - component: {fileID: 3322920178559862224}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EndSTrails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72598,7 +72663,7 @@ GameObject:
   - component: {fileID: 3227206195040687122}
   - component: {fileID: 3322097689117645466}
   - component: {fileID: 3322960609271504664}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: EndShockWave2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77416,7 +77481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6296425324962728769}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Main_Crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77453,7 +77518,7 @@ GameObject:
   - component: {fileID: 4068986820040924304}
   - component: {fileID: 6401374465564224467}
   - component: {fileID: 7955027452707529375}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Obelisk_MainCrystal_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77532,7 +77597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2515177690520305910}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Semi branch_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77563,7 +77628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4777288053736651495}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Semi branch_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77596,7 +77661,7 @@ GameObject:
   - component: {fileID: 7043465761826137885}
   - component: {fileID: 2316125559120119526}
   - component: {fileID: 7660920829401664427}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_SemiBranch01_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77675,7 +77740,7 @@ GameObject:
   - component: {fileID: 533481867470674236}
   - component: {fileID: 5417559021593951516}
   - component: {fileID: 6970143000685820509}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82435,7 +82500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3193285651521049787}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Main branch_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82468,7 +82533,7 @@ GameObject:
   - component: {fileID: 7259903049504789474}
   - component: {fileID: 1627965645393406995}
   - component: {fileID: 3173921571943565972}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Distortion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87279,7 +87344,7 @@ GameObject:
   - component: {fileID: 6408504438893474083}
   - component: {fileID: 6760707473269911427}
   - component: {fileID: 8191466804345567453}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_MainBranch01_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87355,7 +87420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9167556751525491448}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Semi branch_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87388,7 +87453,7 @@ GameObject:
   - component: {fileID: 4958173268834388431}
   - component: {fileID: 8296998115235720739}
   - component: {fileID: 9120567911318856095}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Obelisk_HolderMask_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87464,7 +87529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 838183935100145433}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87503,7 +87568,7 @@ GameObject:
   - component: {fileID: 71045630753338403}
   - component: {fileID: 3207642848326289724}
   - component: {fileID: 3040561441238102841}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_SemiBranch04_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87582,7 +87647,7 @@ GameObject:
   - component: {fileID: 3276927722151869938}
   - component: {fileID: 5596201432103336998}
   - component: {fileID: 4076945320565285924}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Obelisk_SemiBranch02_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}

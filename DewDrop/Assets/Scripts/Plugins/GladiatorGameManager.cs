@@ -829,7 +829,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         for(int i = 0; i < nodes.Count; i++)
         {
             roomName = nodeRoomsMap[i].rooms[Random.Range(0, nodeRoomsMap[i].rooms.Count)].gameObject.name;
-            createdRooms.Add(PhotonNetwork.InstantiateSceneObject(roomName, nodes[i].transform.position, nodes[i].transform.rotation).GetComponent<Room>());
+            createdRooms.Add(PhotonNetwork.InstantiateSceneObject("Rooms/" + roomName, nodes[i].transform.position, nodes[i].transform.rotation).GetComponent<Room>());
         }
 
         for(int i = 0; i < createdRooms.Count; i++)

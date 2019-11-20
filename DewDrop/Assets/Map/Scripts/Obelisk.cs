@@ -41,9 +41,25 @@ namespace Map
             playTime = activationAnimation.length;
             lightDissolveTime += playTime;
             anim.enabled = false;
+        }
+
+        private void Start()
+        {
             ResetObelisk(false);
         }
-        
+
+        public void TurnOn()
+        {
+            ResetObelisk(false);
+            StartCoroutine("Active", false);
+        }
+
+        public void TurnOff()
+        {
+            ResetObelisk(true);
+            StartCoroutine("Active", true);
+        }
+
         /*
         private void Update()
         {

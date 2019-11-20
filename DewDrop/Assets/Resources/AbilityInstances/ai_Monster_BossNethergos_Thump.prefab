@@ -33930,7 +33930,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 8, y: 8, z: -9, w: 8}
+  m_BoundingSphereOverride: {x: 0, y: 0.15625, z: 0.03125, w: -0.03125}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -43638,8 +43638,8 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   delay: 1.5
-  damage: 140
-  stunDuration: 2
+  damage: 160
+  stunDuration: 1.25
   silenceDuration: 0
   slowDuration: 0
   slowAmount: 0
@@ -62897,6 +62897,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7697655708602101479}
     m_Modifications:
+    - target: {fileID: 7873416788757425487, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: m_Name
+      value: Stomp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7873416788757425487, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7878670417830618011, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -62951,16 +62961,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7873416788757425487, guid: 1d9e7422ec5afb843955b1a411a87261,
-        type: 3}
-      propertyPath: m_Name
-      value: Stomp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7873416788757425487, guid: 1d9e7422ec5afb843955b1a411a87261,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8035639879280917485, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
@@ -63017,6 +63017,16 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9007446425218797271, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9008974313972585523, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6310736295410678918, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
       propertyPath: playOnAwake
@@ -63072,6 +63082,11 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9206732034003972971, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 3.9
+      objectReference: {fileID: 0}
     - target: {fileID: 9206490234043779647, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
       propertyPath: playOnAwake
@@ -63086,6 +63101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206555771148984767, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: 9206623505697116753, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
@@ -63106,6 +63126,46 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSizeY.minScalar
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSizeY.scalar
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSizeZ.scalar
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: InitialModule.startSizeZ.minScalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203754570757102223, guid: 1d9e7422ec5afb843955b1a411a87261,
+        type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
+      value: 0.03425905
       objectReference: {fileID: 0}
     - target: {fileID: 6311396389076360672, guid: 1d9e7422ec5afb843955b1a411a87261,
         type: 3}
@@ -63186,6 +63246,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7697655709251001514}
     m_Modifications:
+    - target: {fileID: 1890047154130638361, guid: c0c7d40abf85fc9439ae9d3857f18a56,
+        type: 3}
+      propertyPath: m_Name
+      value: Cone Collider
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890047154130638361, guid: c0c7d40abf85fc9439ae9d3857f18a56,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2665767134787035233, guid: c0c7d40abf85fc9439ae9d3857f18a56,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -63245,16 +63315,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 214.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 1890047154130638361, guid: c0c7d40abf85fc9439ae9d3857f18a56,
-        type: 3}
-      propertyPath: m_Name
-      value: Cone Collider
-      objectReference: {fileID: 0}
-    - target: {fileID: 1890047154130638361, guid: c0c7d40abf85fc9439ae9d3857f18a56,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6738589087095219062, guid: c0c7d40abf85fc9439ae9d3857f18a56,
         type: 3}

@@ -6,7 +6,13 @@ public class Portal : Activatable
 {
     private Room room;
 
-    public bool isOpen;
+    private bool isOpen = false;
+
+    public void OpenPortal()
+    {
+        isOpen = true;
+        GuidanceArrowManager.SetObjective(transform.position);
+    }
 
     protected override void Start()
     {
@@ -15,10 +21,7 @@ public class Portal : Activatable
         if (room == null) room = transform.parent.GetComponent<Room>();
     }
 
-    private void Update()
-    {
-        isOpen = room.IsCleared();
-    }
+
 
     protected override void OnChannelStart(LivingThing activator) { }
     protected override void OnChannelCancel(LivingThing activator) { }

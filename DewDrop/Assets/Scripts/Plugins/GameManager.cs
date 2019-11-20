@@ -139,6 +139,12 @@ public class GameManager : MonoBehaviour
             startItems.Add(SpawnItem("equip_Armor_ElementalIntegrity", location));
             startItems.Add(SpawnItem("equip_Boots_ElementalDetermination", location));
             startItems.Add(SpawnItem("equip_Weapon_ElementalJustice", location));
+
+            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(SpawnItem("cons_ManaPotionMedium", location));
+
+
             AvatarManager.instance.SetAvatar(PlayerType.Elemental);
         }
         else
@@ -147,6 +153,11 @@ public class GameManager : MonoBehaviour
             startItems.Add(SpawnItem("equip_Armor_ReptileSkin", location));
             startItems.Add(SpawnItem("equip_Boots_ReptileFeet", location));
             startItems.Add(SpawnItem("equip_Weapon_ReptileClaw", location));
+
+            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(SpawnItem("cons_ManaPotionMedium", location));
+
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
 
@@ -260,7 +271,9 @@ public class GameManager : MonoBehaviour
     private static IEnumerator CoroutineMove(Room room)
     {
         instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(instance.localPlayer, 4f));
-        for(int i = 0; i < 20; i++)
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(instance.localPlayer, 4f, (instance.localPlayer.maximumHealth - instance.localPlayer.currentHealth)*0.5f, true));
+        instance.localPlayer.DoManaHeal(instance.localPlayer.stat.finalMaximumMana / 3f, instance.localPlayer, true);
+        for (int i = 0; i < 20; i++)
         {
             instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
             yield return new WaitForSeconds(0.03f);

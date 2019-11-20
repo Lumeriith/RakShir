@@ -50,7 +50,7 @@ public class MapView : MonoBehaviour
     private void OnEnable()
     {
         if (rooms == null) return;
-        if (nodes == null || nodes.Length == 0) UpdateMap();
+        UpdateMap();
 
         if (GameManager.GetCurrentNode() == IngameNodeType.MapObelisk)
         {

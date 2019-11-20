@@ -37,6 +37,21 @@ public class DebugCommands : MonoBehaviour
 
     }
 
+    [ConsoleMethod("setobjective", "Set objective to current cursor position.")]
+    public static void SetObjective()
+    {
+        GuidanceArrowManager.SetObjective(GetCurrentCursorPositionInWorldSpace());
+    }
+
+    [ConsoleMethod("removeobjective", "Remove objective if it exists.")]
+    public static void RemoveObjective()
+    {
+        GuidanceArrowManager.RemoveObjective();
+    }
+
+
+
+
     [ConsoleMethod("reroll", "Reroll Shop stocks.")]
     public static void Reroll()
     {

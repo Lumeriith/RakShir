@@ -25,6 +25,7 @@ namespace Map
             foreach (Transform child in transform)
             {
                 Rigidbody childRb = child.GetComponent<Rigidbody>();
+                childRb.interpolation = RigidbodyInterpolation.Interpolate;
                 childRb.AddExplosionForce(explosionForce, transform.position, 10f);
                 child.parent = null;
             }

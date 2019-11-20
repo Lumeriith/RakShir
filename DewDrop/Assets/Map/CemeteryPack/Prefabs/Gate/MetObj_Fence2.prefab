@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3306908}
   - component: {fileID: 2375426}
   - component: {fileID: 6575966}
-  - component: {fileID: 1828645284}
   m_Layer: 0
   m_Name: MetObj_Fence2
   m_TagString: Untagged
@@ -89,22 +88,7 @@ BoxCollider:
   m_GameObject: {fileID: 103032}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.008639235, y: 0.08594814, z: 0.07753621}
   m_Center: {x: 0.00037894258, y: 0.00052287604, z: 0.0010838897}
---- !u!114 &1828645284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e98a7724e3d9bf4e885a9637cd3ed34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPosition: {x: -16.8, y: -2.5, z: 8.59}
-  endPosition: {x: -16.8, y: 5, z: 8.59}
-  speedFactor: 5

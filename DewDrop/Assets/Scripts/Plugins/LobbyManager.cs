@@ -32,12 +32,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             statusText.text = "Connecting to Master Server";
         } else if (gameType == GameType.Playground)
         {
+            PhotonNetwork.Disconnect();
             PhotonNetwork.OfflineMode = true;
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
 
         Music.Play("Silence");
     }
+
 
     public override void OnConnectedToMaster()
     {

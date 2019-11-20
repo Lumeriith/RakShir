@@ -5,7 +5,7 @@ using NaughtyAttributes;
 using Photon.Pun;
 using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
-public enum RoomClearType { AlwaysCleared, ClearWhenAllDead, ClearManually }
+using Aura2API;
 
 [RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -17,31 +17,36 @@ public class Room : MonoBehaviourPun
     public Transform redCustomEntryPoint;
     public Transform blueCustomEntryPoint;
 
-    public GameObject customLighting;
+    public bool enableAuraCamera = true;
     public PostProcessProfile customPostProcessProfile;
     public string customMusic;
-    public bool enableFog = false;
     public bool isActivated { get; private set; }
     public bool rerollsShopUponEntering = true;
-    [Header("Enemy Spawning Settings")]
-    public float spawnDelay = 0.5f;
+    [Header("Dynamic Map Elements Settings")]
+    public float iterationDelay = 0.5f;
     [ReorderableList]
-    public List<Spawner> spawners;
+    //[InfoBox("Null element will delay the next element until all previous elements are marked finished.")]
+    public List<MapElement> mapElements;
 
-    [Button("Add Stray Spawners")]
-    private void AddStraySpawners()
+    private Light[] roomLights;
+
+    [Button("Add Stray Map Elements")]
+    private void AddStrayMapElements()
     {
-        Spawner[] spawners = GetComponentsInChildren<Spawner>();
-        for (int i = 0; i < spawners.Length; i++)
+        MapElement[] elements = GetComponentsInChildren<MapElement>();
+        for (int i = 0; i < elements.Length; i++)
         {
-            if (!this.spawners.Contains(spawners[i])) this.spawners.Add(spawners[i]);
+            if (!mapElements.Contains(elements[i])) mapElements.Add(elements[i]);
         }
     }
 
-    [InfoBox("Null element will delay the next spawn until all previous spawned LivingThings are dead.")]
-    public RoomClearType clearType = RoomClearType.ClearWhenAllDead;
 
-    private bool manualClearFlag = false;
+    private void Awake()
+    {
+        roomLights = GetComponentsInChildren<Light>();
+        if (entryPoint == null) entryPoint = transform.Find("Entry Point");
+        for (int i = 0; i < roomLights.Length; i++) roomLights[i].enabled = false;
+    }
 
     private void Start()
     {
@@ -52,34 +57,12 @@ public class Room : MonoBehaviourPun
         }
     }
 
-
-
-
-    public bool IsCleared()
+    public void ToggleTheLights(bool toggle)
     {
-        switch (clearType)
-        {
-            case RoomClearType.AlwaysCleared:
-                return true;
-            case RoomClearType.ClearWhenAllDead:
-                for(int i = 0; i < spawners.Count; i++)
-                {
-                    if (spawners[i] == null) continue;
-                    if (!spawners[i].IsCleared()) return false;
-                }
-                return true;
-            case RoomClearType.ClearManually:
-                return manualClearFlag;
-        }
-
-
-        return false;
+        for (int i = 0; i < roomLights.Length; i++) roomLights[i].enabled = toggle;
     }
 
-    public void ManuallyClearRoom()
-    {
-        photonView.RPC("RpcManuallyClearRoom", RpcTarget.All);
-    }
+
 
 
 
@@ -98,63 +81,37 @@ public class Room : MonoBehaviourPun
         if (!activator.photonView.IsMine) return;
         if (rerollsShopUponEntering) ShopManager.instance.RerollShop();
         if (customMusic != null) Music.Play(customMusic);
-        StartCoroutine(CoroutineSpawn(activator));
-        if(customLighting != null)
-        {
-            Destroy(transform.Find("/Directional Light").gameObject);
-            GameObject gobj = Instantiate(customLighting);
-            gobj.name = "Directional Light";
-        }
+        StartCoroutine(CoroutineElement(activator));
+        ToggleTheLights(true);
 
-        if(customPostProcessProfile != null)
+        if (customPostProcessProfile != null)
         {
             Camera.main.GetComponent<PostProcessVolume>().profile = customPostProcessProfile;
         }
 
-        RenderSettings.fog = enableFog;
-
+        Camera.main.GetComponent<AuraCamera>().enabled = enableAuraCamera;
 
     }
 
-    private IEnumerator CoroutineSpawn(LivingThing activator)
+
+    private IEnumerator CoroutineElement(LivingThing activator)
     {
         int i = 0;
-        while (i < spawners.Count)
+        yield return new WaitForSeconds(iterationDelay);
+        while (i < mapElements.Count)
         {
-            if (spawners[i] == null)
+            mapElements[i].Activate();
+            do
             {
-                bool allCleared = true;
-                for (int j = 0; j < i; j++)
-                {
-                    if (spawners[j] == null) continue;
-                    if (!spawners[j].IsCleared())
-                    {
-                        allCleared = false;
-                        break;
-                    }
-                }
-                if (!allCleared)
-                {
-                    yield return new WaitForSeconds(spawnDelay);
-                    continue;
-                }
+                yield return new WaitForSeconds(iterationDelay);
             }
-            else
-            {
-                spawners[i].Spawn(activator);
-                yield return new WaitForSeconds(spawnDelay);
-            }
+            while (!mapElements[i].isFinished);
             i++;
         }
 
 
     }
 
-    [PunRPC]
-    private void RpcManuallyClearRoom()
-    {
-        manualClearFlag = true;
-    }
 
 
 }

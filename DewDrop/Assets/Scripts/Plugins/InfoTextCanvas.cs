@@ -44,7 +44,7 @@ public class InfoTextCanvas : MonoBehaviour
                 text.OnClick += () =>
                 {
                     UnitControlManager.instance.selectedUnit.control.CommandActivate(activatable, Input.GetKey(UnitControlManager.instance.reservationModifier));
-                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, equip.transform);
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, activatable.transform);
                 };
             }
             else if (activatable as Portal != null)
@@ -54,7 +54,7 @@ public class InfoTextCanvas : MonoBehaviour
                 text.OnClick += () =>
                 {
                     UnitControlManager.instance.selectedUnit.control.CommandActivate(activatable, Input.GetKey(UnitControlManager.instance.reservationModifier));
-                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, equip.transform);
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, activatable.transform.position, Quaternion.identity, activatable.transform);
                 };
             }
         };
