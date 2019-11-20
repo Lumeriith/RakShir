@@ -5,15 +5,21 @@ using UnityEngine;
 public class GuidanceArrowManager : MonoBehaviour
 {
     private GameObject enemyIndicator;
+    private GameObject objectiveIndicator;
 
     private List<Transform> enemyIndicators = new List<Transform>();
 
     public float minimumDistanceToShowEnemyArrow = 15f;
 
+    public Vector2 objectiveIndicatorSize = new Vector2(2f, 5f);
+    public Vector2 objectiveIndicatorDistance = new Vector2(5f, 20f);
+
     private void Awake()
     {
         enemyIndicator = transform.Find("Enemy Indicator").gameObject;
+        objectiveIndicator = transform.Find("Objective Indicator").gameObject;
         enemyIndicator.SetActive(false);
+        objectiveIndicator.SetActive(false);
     }
 
 

@@ -1517,7 +1517,7 @@ GameObject:
   - component: {fileID: 2626153731317710024}
   - component: {fileID: 8746519622447064671}
   - component: {fileID: 117211397329071976}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2571,7 +2571,7 @@ GameObject:
   - component: {fileID: 1635518581229531173}
   - component: {fileID: 4182802667891511426}
   - component: {fileID: 3890263738447384973}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3558,7 +3558,7 @@ GameObject:
   - component: {fileID: 6216138451466749760}
   - component: {fileID: 4417227445693869919}
   - component: {fileID: 7604708119757174661}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3821,7 +3821,7 @@ GameObject:
   - component: {fileID: 100401084196567769}
   - component: {fileID: 1021066041311408084}
   - component: {fileID: 9082360212310403289}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4208,6 +4208,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8113227388594840588}
+  - component: {fileID: 563710488}
+  - component: {fileID: 563710487}
+  - component: {fileID: 563710486}
   m_Layer: 0
   m_Name: Level1_TeamA
   m_TagString: Untagged
@@ -4235,6 +4238,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 269.685, z: 0}
+--- !u!114 &563710488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105118195705414736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &563710487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105118195705414736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 24375
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 7b2b0be918b47c94183ab32a81507959, type: 2}
+--- !u!114 &563710486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105118195705414736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81621a262a09f3642a08ba5cb0fc3456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextRooms: []
+  entryPoint: {fileID: 0}
+  redCustomEntryPoint: {fileID: 0}
+  blueCustomEntryPoint: {fileID: 0}
+  customLighting: {fileID: 0}
+  customPostProcessProfile: {fileID: 0}
+  customMusic: 
+  enableFog: 0
+  rerollsShopUponEntering: 1
+  spawnDelay: 0.5
+  spawners: []
+  clearType: 1
 --- !u!1 &1142767143816845460
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,7 +4324,7 @@ GameObject:
   - component: {fileID: 8240905441903672422}
   - component: {fileID: 4783836695685825101}
   - component: {fileID: 2721594475239566494}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4324,7 +4402,7 @@ GameObject:
   - component: {fileID: 8263144238704571765}
   - component: {fileID: 7470403408216730612}
   - component: {fileID: 3744865176552509011}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4961,7 +5039,7 @@ GameObject:
   - component: {fileID: 3102554673100980906}
   - component: {fileID: 2308483516089391627}
   - component: {fileID: 8406358752604446367}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6226,7 +6304,7 @@ GameObject:
   - component: {fileID: 3937537482316812562}
   - component: {fileID: 1755570805476872852}
   - component: {fileID: 5299955846224409132}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6954,7 +7032,7 @@ GameObject:
   - component: {fileID: 1712171940548492412}
   - component: {fileID: 9203684048859640699}
   - component: {fileID: 5972183204337620298}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9317,7 +9395,7 @@ GameObject:
   - component: {fileID: 7423449674927451516}
   - component: {fileID: 8947395667829816335}
   - component: {fileID: 6339072794497270685}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9472,7 +9550,7 @@ GameObject:
   - component: {fileID: 8089277866943619232}
   - component: {fileID: 1721572329521374780}
   - component: {fileID: 3833083523849256003}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9550,7 +9628,7 @@ GameObject:
   - component: {fileID: 9052783124303815029}
   - component: {fileID: 5545632480908957261}
   - component: {fileID: 5475874205606082141}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9628,7 +9706,7 @@ GameObject:
   - component: {fileID: 7884535921257500806}
   - component: {fileID: 7814882833896710270}
   - component: {fileID: 4313074299137473897}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9690,7 +9768,7 @@ GameObject:
   - component: {fileID: 2741513106149843223}
   - component: {fileID: 6497220341953834545}
   - component: {fileID: 1394651350097977515}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10030,7 +10108,7 @@ GameObject:
   - component: {fileID: 2172074484474781841}
   - component: {fileID: 1342801177613451171}
   - component: {fileID: 423568206548614722}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11139,7 +11217,7 @@ GameObject:
   - component: {fileID: 8754532569046167938}
   - component: {fileID: 2640694405899200565}
   - component: {fileID: 8828279359931478771}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11495,7 +11573,7 @@ GameObject:
   - component: {fileID: 1352253433040897698}
   - component: {fileID: 3161041408844602329}
   - component: {fileID: 2565760974521656713}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken2.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11742,7 +11820,7 @@ GameObject:
   - component: {fileID: 1083481826697935712}
   - component: {fileID: 8990853664147361809}
   - component: {fileID: 2081735452304608151}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12635,7 +12713,7 @@ GameObject:
   - component: {fileID: 7138204808373828546}
   - component: {fileID: 3606334075478183312}
   - component: {fileID: 6694267352806685000}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12791,7 +12869,7 @@ GameObject:
   - component: {fileID: 8968330639529562309}
   - component: {fileID: 6731547991054210441}
   - component: {fileID: 2226325641172477900}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13487,7 +13565,7 @@ GameObject:
   - component: {fileID: 2165387137171966823}
   - component: {fileID: 4928728430671717238}
   - component: {fileID: 6357258051532193498}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13877,7 +13955,7 @@ GameObject:
   - component: {fileID: 3094448877935802968}
   - component: {fileID: 8049652208253532156}
   - component: {fileID: 4034728836279428847}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14902,7 +14980,7 @@ GameObject:
   - component: {fileID: 776848511909810776}
   - component: {fileID: 1726224926828882581}
   - component: {fileID: 4425962283651828245}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14980,7 +15058,7 @@ GameObject:
   - component: {fileID: 3508833945319136553}
   - component: {fileID: 2810614014620626657}
   - component: {fileID: 8070113996440052962}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken1.2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15134,7 +15212,7 @@ GameObject:
   - component: {fileID: 6206266882328239266}
   - component: {fileID: 8213814824173521136}
   - component: {fileID: 5023752790115515230}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15397,7 +15475,7 @@ GameObject:
   - component: {fileID: 1322798723187722428}
   - component: {fileID: 6354712249397028643}
   - component: {fileID: 5460974210840514108}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16435,7 +16513,7 @@ GameObject:
   - component: {fileID: 4270282425666176956}
   - component: {fileID: 6476808704825085524}
   - component: {fileID: 8418687293452028529}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17659,7 +17737,7 @@ GameObject:
   - component: {fileID: 1287985413462399775}
   - component: {fileID: 1600260318493817664}
   - component: {fileID: 6789216037497132917}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18685,7 +18763,7 @@ GameObject:
   - component: {fileID: 316536969338209473}
   - component: {fileID: 1213798158886455941}
   - component: {fileID: 9187148464607070709}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18934,7 +19012,7 @@ GameObject:
   - component: {fileID: 7868503456323729436}
   - component: {fileID: 6973095309044937537}
   - component: {fileID: 3406778015885530287}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19010,7 +19088,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8955085330911861746}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19057,7 +19135,7 @@ GameObject:
   - component: {fileID: 7623978149338490461}
   - component: {fileID: 6584718174800591716}
   - component: {fileID: 3095793092237867882}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_broken1.2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20490,7 +20568,7 @@ GameObject:
   - component: {fileID: 5460289295326833526}
   - component: {fileID: 4036030813777665244}
   - component: {fileID: 1587738939389379590}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21949,7 +22027,7 @@ GameObject:
   - component: {fileID: 2797568553592828320}
   - component: {fileID: 4866814724582255504}
   - component: {fileID: 2980819573505978092}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22519,7 +22597,7 @@ GameObject:
   - component: {fileID: 2028496040407922870}
   - component: {fileID: 7136861362002676657}
   - component: {fileID: 8822622185811219039}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22910,7 +22988,7 @@ GameObject:
   - component: {fileID: 8384007025040605756}
   - component: {fileID: 4134280923905960895}
   - component: {fileID: 8284058563903762130}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23590,7 +23668,7 @@ GameObject:
   - component: {fileID: 1542374134522903260}
   - component: {fileID: 7321433577609529512}
   - component: {fileID: 4027263967426547146}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: vase_part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25014,11 +25092,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25084,6 +25157,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.100000046
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3453847959058687533 stripped
@@ -25103,6 +25206,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -25169,6 +25277,26 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.100000046
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &5687923929244937020 stripped
@@ -25184,11 +25312,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25259,6 +25382,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.099999994
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &2191503995512260984 stripped
@@ -25274,11 +25427,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25344,6 +25492,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.100000046
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &1913009404792364961 stripped
@@ -25359,11 +25537,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25434,6 +25607,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.099999994
       objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
 --- !u!4 &3019878471398230941 stripped
@@ -25449,11 +25652,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25519,6 +25717,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.100000046
       objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
 --- !u!4 &9181336651715764214 stripped
@@ -25534,11 +25762,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25604,6 +25827,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.100000046
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &5489062535489855717 stripped
@@ -25619,11 +25872,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8955085330911861746}
     m_Modifications:
-    - target: {fileID: 1754799627835556077, guid: 747a1dd6226474f4fa1e2a28909925eb,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2
-      objectReference: {fileID: 0}
     - target: {fileID: 1754799627836054733, guid: 747a1dd6226474f4fa1e2a28909925eb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25688,6 +25936,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.100000046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556077, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556077, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556065, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556067, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556069, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754799627835556071, guid: 747a1dd6226474f4fa1e2a28909925eb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 747a1dd6226474f4fa1e2a28909925eb, type: 3}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 624416807}
   - component: {fileID: 624416806}
   - component: {fileID: 624416810}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1090,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4931656270035356297}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3511353161673588773
 GameObject:
@@ -1121,7 +1121,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4931656270035356297}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 55.896004, y: -108.17901, z: -128.23401}
 --- !u!108 &6633191923785353637
 Light:
@@ -1192,7 +1192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1307976720240674346}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4754,6 +4754,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4931656270035356297}
+  - component: {fileID: 4689155282271397797}
+  - component: {fileID: 8123732424612631807}
+  - component: {fileID: 1395878799956747870}
   m_Layer: 0
   m_Name: MiddleBoss_Berserker
   m_TagString: Untagged
@@ -4779,12 +4782,86 @@ Transform:
   - {fileID: 1307976720240674346}
   - {fileID: 2175495945491345813}
   - {fileID: 2175495946011151385}
-  - {fileID: 4931656271062198206}
   - {fileID: 2175495946303399957}
   - {fileID: 1561101923811706043}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -94.04101, z: 0}
+--- !u!114 &4689155282271397797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4931656270035356296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &8123732424612631807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4931656270035356296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 24375
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 7731d3fe46129b641934a1d200132c4e, type: 2}
+--- !u!114 &1395878799956747870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4931656270035356296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81621a262a09f3642a08ba5cb0fc3456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextRooms: []
+  entryPoint: {fileID: 0}
+  redCustomEntryPoint: {fileID: 0}
+  blueCustomEntryPoint: {fileID: 0}
+  customLighting: {fileID: 0}
+  customPostProcessProfile: {fileID: 0}
+  customMusic: 
+  enableFog: 0
+  rerollsShopUponEntering: 1
+  spawnDelay: 0.5
+  spawners: []
+  clearType: 1
 --- !u!1 &4931656270352541355
 GameObject:
   m_ObjectHideFlags: 0
@@ -20708,6 +20785,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fi_vil_forge_weaponrack3_full
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4314f5f87ead3e94394abb809290e4d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.704
@@ -20779,10 +20860,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: b7e4012ad085d5446b0704bc74f2a52d, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_weaponrack5_missing
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b7e4012ad085d5446b0704bc74f2a52d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.7835388
@@ -20839,6 +20916,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.637091
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b7e4012ad085d5446b0704bc74f2a52d, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_weaponrack5_missing
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b7e4012ad085d5446b0704bc74f2a52d, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7e4012ad085d5446b0704bc74f2a52d, type: 3}
 --- !u!4 &4931656269470317830 stripped
@@ -20857,6 +20942,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_Name
       value: fi_vil_forge_chain2_long (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21007,6 +21096,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_Name
       value: fi_vil_forge_chain2_long (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21229,10 +21322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.67
@@ -21289,10 +21378,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue (2)
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -21310,6 +21398,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -21408,6 +21501,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fi_vil_forge_scrap10
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.291
@@ -21466,15 +21563,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa189eafed3391244a83e70c2d5499f7, type: 3}
---- !u!4 &4931656269988511387 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: aa189eafed3391244a83e70c2d5499f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656269988111387}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4931656269988209339 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: aa189eafed3391244a83e70c2d5499f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656269988111387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4931656269988511387 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: aa189eafed3391244a83e70c2d5499f7,
     type: 3}
   m_PrefabInstance: {fileID: 4931656269988111387}
   m_PrefabAsset: {fileID: 0}
@@ -21485,10 +21582,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: cffd77da92125de43beff28f0051721e, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_container_crate_big_empty02
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: cffd77da92125de43beff28f0051721e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.8999996
@@ -21545,6 +21638,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.1819062
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: cffd77da92125de43beff28f0051721e, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_container_crate_big_empty02
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cffd77da92125de43beff28f0051721e, type: 3}
 --- !u!4 &4931656270087431543 stripped
@@ -21560,10 +21657,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.169998
@@ -21620,10 +21713,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue (3)
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -21645,6 +21737,11 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c590b17884b119046bc6412066500b7d, type: 3}
 --- !u!4 &4926951898501320863 stripped
@@ -21660,10 +21757,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.9799995
@@ -21720,10 +21813,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -21741,6 +21833,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -21763,6 +21860,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
       propertyPath: m_Name
       value: fi_vil_woven_carpet01a
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4c9fe795b4ea61e479f840b993b00116, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21914,6 +22015,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fi_vil_forge_chain2_long (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.1100006
@@ -22060,10 +22165,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.900002
@@ -22120,10 +22221,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue (5)
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -22141,6 +22241,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -22239,6 +22344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword01
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: fa8c0bbedbd3c5940807e37181991f3c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.299999
@@ -22310,10 +22419,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.68
@@ -22370,10 +22475,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue (1)
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -22391,6 +22495,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198503361657273424, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
       propertyPath: scalingMode
       value: 0
@@ -22485,10 +22594,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_shield01_a
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6599998
@@ -22545,17 +22650,25 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3.2989733
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_shield01_a
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b, type: 3}
---- !u!4 &4931656270767930364 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656270768054652}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4931656270768023516 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656270768054652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4931656270767930364 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: fbfab0ae2ca4aca44904e6e3cf8f726b,
     type: 3}
   m_PrefabInstance: {fileID: 4931656270768054652}
   m_PrefabAsset: {fileID: 0}
@@ -22569,6 +22682,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
       propertyPath: m_Name
       value: fi_vil_forge_broadsword4
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d450e5fb84b31c748989a29ecb3617b0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22651,6 +22768,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fi_vil_shield10_c
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.9000015
@@ -22709,92 +22830,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24a3d9606fc062840af1a55f0851be8c, type: 3}
---- !u!1 &4931656270953511645 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 24a3d9606fc062840af1a55f0851be8c,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656270953544829}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4931656270953670397 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 24a3d9606fc062840af1a55f0851be8c,
     type: 3}
   m_PrefabInstance: {fileID: 4931656270953544829}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &4931656271062053856
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 4931656270035356297}
-    m_Modifications:
-    - target: {fileID: 119700, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_Name
-      value: Berserker
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.7728264
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.145669
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.97445107
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.22459999
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 60.000004
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a8993314668e7249987de8e0c18d5d5, type: 3}
---- !u!4 &4931656271062198206 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 414814, guid: 4a8993314668e7249987de8e0c18d5d5,
+--- !u!1 &4931656270953511645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 24a3d9606fc062840af1a55f0851be8c,
     type: 3}
-  m_PrefabInstance: {fileID: 4931656271062053856}
+  m_PrefabInstance: {fileID: 4931656270953544829}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4931656271091330222
 PrefabInstance:
@@ -22806,6 +22852,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
       propertyPath: m_Name
       value: Sword16
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ce1e37850e65cee44a276a95da078f04, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23032,6 +23082,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fi_vil_forge_longsword5
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5599995
@@ -23090,15 +23144,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9505d88eeedcfb468ab544f5776ca36, type: 3}
---- !u!1 &4931656271319272567 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: a9505d88eeedcfb468ab544f5776ca36,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656271319370455}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4931656271319765079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: a9505d88eeedcfb468ab544f5776ca36,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656271319370455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4931656271319272567 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: a9505d88eeedcfb468ab544f5776ca36,
     type: 3}
   m_PrefabInstance: {fileID: 4931656271319370455}
   m_PrefabAsset: {fileID: 0}
@@ -23109,10 +23163,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: 2a5b52d9e7dc2384ea6a52399e440299, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_shield02_a
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2a5b52d9e7dc2384ea6a52399e440299, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.3302612
@@ -23169,6 +23219,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3.1508412
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2a5b52d9e7dc2384ea6a52399e440299, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_shield02_a
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2a5b52d9e7dc2384ea6a52399e440299, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a5b52d9e7dc2384ea6a52399e440299, type: 3}
 --- !u!4 &4931656271335702251 stripped
@@ -23193,6 +23251,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_Name
       value: fi_vil_forge_chain2_long (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 63f3b47f3e60f074abce25f9a68f9853, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23265,10 +23327,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4931656271443491678}
     m_Modifications:
-    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
-      propertyPath: m_Name
-      value: Magic fire pro blue (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 4731861580502952, guid: c590b17884b119046bc6412066500b7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.79
@@ -23325,10 +23383,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.194377
       objectReference: {fileID: 0}
-    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
-        type: 3}
-      propertyPath: scalingMode
-      value: 0
+    - target: {fileID: 1223526616464650, guid: c590b17884b119046bc6412066500b7d, type: 3}
+      propertyPath: m_Name
+      value: Magic fire pro blue (4)
       objectReference: {fileID: 0}
     - target: {fileID: 198401977771408020, guid: c590b17884b119046bc6412066500b7d,
         type: 3}
@@ -23350,6 +23407,11 @@ PrefabInstance:
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198696392922457284, guid: c590b17884b119046bc6412066500b7d,
+        type: 3}
+      propertyPath: scalingMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c590b17884b119046bc6412066500b7d, type: 3}
 --- !u!4 &4926951897610244067 stripped
@@ -23365,10 +23427,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
-      propertyPath: m_Name
-      value: fi_vil_forge_scrap06
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.719784
@@ -23425,17 +23483,25 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.7244005
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
+      propertyPath: m_Name
+      value: fi_vil_forge_scrap06
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3d3001803458e7479fb32f1c5404308, type: 3}
---- !u!1 &4931656271397890030 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308,
-    type: 3}
-  m_PrefabInstance: {fileID: 4931656271397790030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4931656271397403598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: c3d3001803458e7479fb32f1c5404308,
+    type: 3}
+  m_PrefabInstance: {fileID: 4931656271397790030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4931656271397890030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: c3d3001803458e7479fb32f1c5404308,
     type: 3}
   m_PrefabInstance: {fileID: 4931656271397790030}
   m_PrefabAsset: {fileID: 0}
@@ -23521,10 +23587,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1307976720240674346}
     m_Modifications:
-    - target: {fileID: 100000, guid: 116349d69f9413a48adec302c4eef458, type: 3}
-      propertyPath: m_Name
-      value: Axe01
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 116349d69f9413a48adec302c4eef458, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.9287586
@@ -23580,6 +23642,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 116349d69f9413a48adec302c4eef458, type: 3}
       propertyPath: m_LocalScale.z
       value: 3.8831825
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 116349d69f9413a48adec302c4eef458, type: 3}
+      propertyPath: m_Name
+      value: Axe01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 116349d69f9413a48adec302c4eef458, type: 3}

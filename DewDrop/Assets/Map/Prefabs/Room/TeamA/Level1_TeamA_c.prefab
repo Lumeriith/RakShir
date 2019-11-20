@@ -80174,7 +80174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1792757296703200098}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Potteries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80831,7 +80831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8136556256075342681}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Potteries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81343,7 +81343,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9127924283856141500}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Potteries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81560,6 +81560,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4490725248586376798}
+  - component: {fileID: 7111234926206046979}
+  - component: {fileID: 7005985802901726021}
+  - component: {fileID: 595385077834954066}
   m_Layer: 0
   m_Name: Level1_TeamA_c
   m_TagString: Untagged
@@ -81588,6 +81591,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 296.551, z: 0}
+--- !u!114 &7111234926206046979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331538205961139956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &7005985802901726021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331538205961139956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 24375
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 1115e00bcc114bc419b6fe513f4381a2, type: 2}
+--- !u!114 &595385077834954066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331538205961139956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81621a262a09f3642a08ba5cb0fc3456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextRooms: []
+  entryPoint: {fileID: 0}
+  redCustomEntryPoint: {fileID: 0}
+  blueCustomEntryPoint: {fileID: 0}
+  customLighting: {fileID: 0}
+  customPostProcessProfile: {fileID: 0}
+  customMusic: 
+  enableFog: 0
+  rerollsShopUponEntering: 1
+  spawnDelay: 0.5
+  spawners: []
+  clearType: 1
 --- !u!1 &2554280478280012177
 GameObject:
   m_ObjectHideFlags: 0
@@ -86874,7 +86952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3584932397438566089}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Potteries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108843,7 +108921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2097950294941637349}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110275,6 +110353,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: plate_broken2
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -110330,6 +110413,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &6735249906197499378 stripped
@@ -110345,11 +110448,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -110420,6 +110518,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3179385377403759095 stripped
@@ -110439,6 +110567,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -110495,6 +110628,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &6096903780150303805 stripped
@@ -110514,6 +110667,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -110570,6 +110728,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &6293310432664653960 stripped
@@ -110585,11 +110763,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -110660,6 +110833,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3033552503848820567 stripped
@@ -110675,11 +110878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -110750,6 +110948,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &4057183860638232819 stripped
@@ -110769,6 +110997,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -110825,6 +111058,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &5219016829048326369 stripped
@@ -110840,11 +111093,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -110915,6 +111163,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3969454547020857312 stripped
@@ -110934,6 +111212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -110990,6 +111273,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &5445147861090127301 stripped
@@ -111005,11 +111308,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111080,6 +111378,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.13232
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &4356358770710753495 stripped
@@ -111095,11 +111423,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111155,6 +111478,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &4025138509518908842 stripped
@@ -111170,11 +111523,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111245,6 +111593,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3894677014063126292 stripped
@@ -111260,11 +111638,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111335,6 +111708,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &3643836407514917254 stripped
@@ -111350,11 +111753,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111410,6 +111808,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &3743411323588885178 stripped
@@ -111425,11 +111853,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111500,6 +111923,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &3798253331446606002 stripped
@@ -111515,11 +111968,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111590,6 +112038,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &3824642060768870516 stripped
@@ -111605,11 +112083,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111680,6 +112153,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &1025158903071452600 stripped
@@ -111695,11 +112198,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111770,6 +112268,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &214781486749125103 stripped
@@ -111785,11 +112313,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111860,6 +112383,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &1029615431277010623 stripped
@@ -111875,11 +112428,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -111950,6 +112498,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &193209311357592999 stripped
@@ -111969,6 +112547,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -112025,6 +112608,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &8426483219848188262 stripped
@@ -112040,11 +112643,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112115,6 +112713,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &503786892775461548 stripped
@@ -112130,11 +112758,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112190,6 +112813,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
 --- !u!4 &3386398153672142529 stripped
@@ -112205,11 +112858,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112265,6 +112913,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &1663200289510238148 stripped
@@ -112280,11 +112958,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112355,6 +113028,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.13232
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &1856780299572159433 stripped
@@ -112370,11 +113073,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112445,6 +113143,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &1859757664461959654 stripped
@@ -112460,11 +113188,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112535,6 +113258,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &1328649207300434236 stripped
@@ -112550,11 +113303,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112625,6 +113373,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &2205937801287955223 stripped
@@ -112640,11 +113418,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112700,6 +113473,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &1738551223679501817 stripped
@@ -112715,11 +113518,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112775,6 +113573,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &1636734419083007759 stripped
@@ -112790,11 +113618,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112865,6 +113688,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &1884126825035430283 stripped
@@ -112880,11 +113733,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112955,6 +113803,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &1666919130133858425 stripped
@@ -112970,11 +113848,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113030,6 +113903,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
 --- !u!4 &6799194691391787460 stripped
@@ -113045,11 +113948,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113120,6 +114018,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &7427027664947658803 stripped
@@ -113135,11 +114063,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113210,6 +114133,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &7350140325825315802 stripped
@@ -113225,11 +114178,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113300,6 +114248,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &7275680892849994328 stripped
@@ -113315,11 +114293,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113390,6 +114363,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &7932786458040914699 stripped
@@ -113405,11 +114408,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113480,6 +114478,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &7968759470779124012 stripped
@@ -113495,11 +114523,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113570,6 +114593,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &7081147495395408192 stripped
@@ -113585,11 +114638,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113645,6 +114693,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
 --- !u!4 &6018846107112063756 stripped
@@ -113660,11 +114738,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113735,6 +114808,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &7333696976117098164 stripped
@@ -113750,11 +114853,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113825,6 +114923,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &7343985550258395259 stripped
@@ -113840,11 +114968,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113900,6 +115023,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &7366620870145892362 stripped
@@ -113915,11 +115068,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -113975,6 +115123,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &8381691958563205755 stripped
@@ -113994,6 +115172,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -114050,6 +115233,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &1121091610520162866 stripped
@@ -114065,11 +115268,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114140,6 +115338,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.15289001
       objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
 --- !u!4 &8441931234751143894 stripped
@@ -114155,11 +115383,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114230,6 +115453,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.13232
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &8070607874509748201 stripped
@@ -114245,11 +115498,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (6)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114320,6 +115568,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &8817222156107191826 stripped
@@ -114339,6 +115617,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -114395,6 +115678,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &4178747781861895348 stripped
@@ -114410,11 +115713,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114470,6 +115768,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &5618518580835106405 stripped
@@ -114485,11 +115813,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114545,6 +115868,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &5247889485403604543 stripped
@@ -114560,11 +115913,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken2.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2198935336797358978, guid: 6e480d6578380a54a9d83a16931f1163,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114619,6 +115967,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329314, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329320, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329322, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329324, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198935336797329326, guid: 6e480d6578380a54a9d83a16931f1163,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e480d6578380a54a9d83a16931f1163, type: 3}
@@ -114725,11 +116103,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114800,6 +116173,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.13232
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &4861155021609249950 stripped
@@ -114815,11 +116218,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -114890,6 +116288,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &5247889485255392850 stripped
@@ -114909,6 +116337,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -114964,6 +116397,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
@@ -115070,11 +116523,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
-        type: 3}
-      propertyPath: m_Name
-      value: plate_broken
-      objectReference: {fileID: 0}
     - target: {fileID: 2925485940773160416, guid: 50e0dcde4d829a745bc12896d91fc63a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115129,6 +116577,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Name
+      value: plate_broken
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739520, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739528, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739530, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739532, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925485940772739534, guid: 50e0dcde4d829a745bc12896d91fc63a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50e0dcde4d829a745bc12896d91fc63a, type: 3}
@@ -115235,11 +116713,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115294,6 +116767,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
@@ -115400,11 +116903,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (4)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115475,6 +116973,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.11472355
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &6136558896336664400 stripped
@@ -115494,6 +117022,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -115550,6 +117083,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &3117411229110997926 stripped
@@ -115565,11 +117118,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115625,6 +117173,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &5895519500498540510 stripped
@@ -115640,11 +117218,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (5)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115715,6 +117288,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &5774355860145477920 stripped
@@ -115734,6 +117337,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -115790,6 +117398,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &2443838485526123663 stripped
@@ -115809,6 +117437,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: plate_broken2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325303, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6467933021024227991, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
         type: 3}
@@ -115865,6 +117498,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325305, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325307, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325309, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467933021024325311, guid: fe4f327c7266b7f4cb5ce4d121cb448a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe4f327c7266b7f4cb5ce4d121cb448a, type: 3}
 --- !u!4 &2408818132458562647 stripped
@@ -115880,11 +117533,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1792757296703200098}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115955,6 +117603,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &6678450611081909232 stripped
@@ -115970,11 +117648,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken1.2 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 2685498712253558922, guid: e295d3fe172d75a41b25aa0e0d8c621b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116045,6 +117718,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.14923
       objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken1.2 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525162, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525152, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525154, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525156, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2685498712253525158, guid: e295d3fe172d75a41b25aa0e0d8c621b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e295d3fe172d75a41b25aa0e0d8c621b, type: 3}
 --- !u!4 &6846363672142991204 stripped
@@ -116060,11 +117763,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9127924283856141500}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116135,6 +117833,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &6038018860779082683 stripped
@@ -116150,11 +117878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3584932397438566089}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116225,6 +117948,36 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.18339553
       objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
 --- !u!4 &5812476201888421060 stripped
@@ -116240,11 +117993,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8136556256075342681}
     m_Modifications:
-    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
-        type: 3}
-      propertyPath: m_Name
-      value: vase_broken (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 3379595053152596885, guid: 7b16145d09e21564a91ad31e4fcfe64f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116314,6 +118062,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.18339553
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Name
+      value: vase_broken (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628661, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628665, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628667, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628669, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379595053152628671, guid: 7b16145d09e21564a91ad31e4fcfe64f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b16145d09e21564a91ad31e4fcfe64f, type: 3}
