@@ -868,8 +868,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     private List<E> ShuffleList<E>(List<E> inputList)
     {
         List<E> randomList = new List<E>();
-
-        System.Random r = new System.Random(Random.Range(int.MinValue, int.MaxValue));
+        System.DateTime 내생일ㅎㅎ = new System.DateTime(1999, 9, 17, 0, 0, 0, System.DateTimeKind.Utc);
+        System.Random r = new System.Random((int)(System.DateTime.UtcNow - 내생일ㅎㅎ).TotalSeconds);
         int randomIndex = 0;
         while (inputList.Count > 0)
         {
