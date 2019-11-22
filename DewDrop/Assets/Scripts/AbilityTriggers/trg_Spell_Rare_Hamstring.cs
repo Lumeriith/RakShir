@@ -9,6 +9,7 @@ public class trg_Spell_Rare_Hamstring : AbilityTrigger
 
     public float hamstringActiveDuration = 3f;
 
+
     public override void OnCast(CastInfo info)
     {
         hamstringActiveTime = Time.time;
@@ -61,7 +62,6 @@ public class trg_Spell_Rare_Hamstring : AbilityTrigger
         {
             if (isHamstringActive)
             {
-                
                 if(Time.time - hamstringActiveTime > 3f)
                 {
                     SendEventToAbilityInstance("RemoveBuff", AbilityInstanceEventTargetType.EveryInstance);
@@ -74,7 +74,6 @@ public class trg_Spell_Rare_Hamstring : AbilityTrigger
                     SetSpecialFillAmount((hamstringActiveDuration - Time.time + hamstringActiveTime) / hamstringActiveDuration);
                 }
             }
-
         }
     }
 
