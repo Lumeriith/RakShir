@@ -6,7 +6,7 @@ public class equip_Weapon_ElementalJustice : Equipment
 {
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 40f;
+        owner.stat.baseAttackDamage = 35f;
         owner.stat.baseAttacksPerSecond = 1.3f;
         if (photonView.IsMine)
         {

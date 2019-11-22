@@ -5,6 +5,7 @@ using Photon.Pun;
 public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 {
     public SelfValidator channelValidator;
+    public TargetValidator targetValidator;
 
     public float marginToTarget;
     public float dashSpeed;
@@ -53,10 +54,26 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
             }
         }));
         yield return new WaitForSeconds(kickDelay);
+
+        if(!targetValidator.Evaluate(info.owner, target))
+        {
+            DetachChildParticleSystemsAndAutoDelete();
+            DestroySelf();
+            yield break;
+        }
+
         photonView.RPC("CreateHitEffect", RpcTarget.All, target.transform.position + target.GetCenterOffset());
         SFXManager.CreateSFXInstance("si_Spell_Elemental_DoubleKick Hit 0", target.transform.position);
         Kick();
         yield return new WaitForSeconds(kickInterval);
+
+        if (!targetValidator.Evaluate(info.owner, target))
+        {
+            DetachChildParticleSystemsAndAutoDelete();
+            DestroySelf();
+            yield break;
+        }
+
         photonView.RPC("CreateHitEffect", RpcTarget.All, target.transform.position + target.GetCenterOffset());
         SFXManager.CreateSFXInstance("si_Spell_Elemental_DoubleKick Hit 1", target.transform.position);
         Kick();

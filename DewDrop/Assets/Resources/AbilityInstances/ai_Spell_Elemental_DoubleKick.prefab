@@ -9607,6 +9607,18 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f10
     invertResult: 0
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
   marginToTarget: 1.5
   dashSpeed: 16
   bonusDamage: 30

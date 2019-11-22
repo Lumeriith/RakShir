@@ -122,7 +122,7 @@ MonoBehaviour:
   itemTier: 1
   value: 400
   itemDescription: "[\uACF5\uACA9 \uD53C\uD574] 50\n[\uCD08\uB2F9 \uACF5\uACA9 \uC18D\uB3C4]
-    1.2"
+    1.3"
   owner: {fileID: 0}
   type: 3
   skillSetReplacements:
@@ -299,10 +299,12 @@ MonoBehaviour:
   abilityName: "\uB9C8\uB825 \uD654\uC0B4"
   abilityDescription: "\uC9C0\uC815\uD55C \uBC29\uD5A5\uC73C\uB85C \uBE60\uB974\uAC8C
     \uB0A0\uC544\uAC00\uB294 \uD654\uC0B4\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4. \uD654\uC0B4\uC740
-    \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC5D0\uAC8C 90\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
-    \uC90D\uB2C8\uB2E4.  \uB9E4 3\uBC88\uC9F8 \uD654\uC0B4\uC740 \uD658\uC601\uC758
+    \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC5D0\uAC8C 80\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    \uC90D\uB2C8\uB2E4. \uB9E4 3\uBC88\uC9F8 \uD654\uC0B4\uC740 \uD658\uC601\uC758
     \uD798\uC774 \uAE43\uB4E4\uC5B4 30%\uC758 \uCD94\uAC00 \uD53C\uD574\uB97C \uC8FC\uACE0
-    \uC801\uC911\uD55C \uC801\uC744 1\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uC2DC\uD0B5\uB2C8\uB2E4."
+    \uC801\uC911\uD55C \uC801\uC744 1\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uC2DC\uD0B5\uB2C8\uB2E4.\r\n\r\n\uB0B4
+    \uAE30\uBCF8 \uACF5\uACA9\uC774 \uC801\uC911\uD560 \uB54C\uB9C8\uB2E4 \uC7AC\uC0AC\uC6A9
+    \uB300\uAE30\uC2DC\uAC04\uC774 0.5\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
   soundEffect:
   - {fileID: 1607579122048388727, guid: 8f77121eefe921345b2786ff4a5a77e5, type: 3}
   castAnimation:
@@ -318,7 +320,7 @@ MonoBehaviour:
   dontCancelBasicCommands: 0
   targetingType: 3
   range: 0
-  manaCost: 30
+  manaCost: 20
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -335,8 +337,9 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 6
+  cooldownTime: 7
   shotArrows: 0
+  cooldownReductionAmount: 0.5
 --- !u!1 &7486490116452212683
 GameObject:
   m_ObjectHideFlags: 0

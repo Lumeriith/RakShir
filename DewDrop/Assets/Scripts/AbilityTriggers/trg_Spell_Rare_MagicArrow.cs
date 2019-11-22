@@ -5,6 +5,25 @@ using UnityEngine;
 public class trg_Spell_Rare_MagicArrow : AbilityTrigger
 {
     public int shotArrows = 0;
+    public float cooldownReductionAmount = 0.5f;
+
+    public override void OnEquip()
+    {
+        if (owner.photonView.IsMine) owner.OnDoBasicAttackHit += BasicAttackHit;
+    }
+
+
+    public override void OnUnequip()
+    {
+        if (owner.photonView.IsMine) owner.OnDoBasicAttackHit -= BasicAttackHit;
+    }
+
+    private void BasicAttackHit(InfoBasicAttackHit info)
+    {
+        ApplyCooldownReduction(cooldownReductionAmount);
+    }
+
+
     public override void OnCast(CastInfo info)
     {
         info.owner.control.StartChanneling(new Channel(selfValidator, 0.2f, false, false, false, false, ChannelFinish, null));

@@ -7,7 +7,7 @@ public class equip_Weapon_Rare_MagicBow : Equipment
     public override void OnEquip(LivingThing owner)
     {
         owner.stat.baseAttackDamage = 50f;
-        owner.stat.baseAttacksPerSecond = 1.2f;
+        owner.stat.baseAttacksPerSecond = 1.3f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - MagicBow Stand");
