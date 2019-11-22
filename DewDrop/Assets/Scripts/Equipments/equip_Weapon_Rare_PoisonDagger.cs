@@ -8,7 +8,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
     public float poisonDuration = 5f;
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 20f;
+        owner.stat.baseAttackDamage = 35f;
         owner.stat.baseAttacksPerSecond = 1.4f;
         if (photonView.IsMine)
         {
