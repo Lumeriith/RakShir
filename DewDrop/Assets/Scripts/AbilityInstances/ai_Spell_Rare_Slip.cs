@@ -6,6 +6,10 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 {
     public float duration = 1f;
     public float distance = 4.5f;
+
+    public float damage = 60f;
+    public TargetValidator validator;
+    private float elapsedTime = 0f;
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.rotation = castInfo.directionQuaternion;
@@ -17,8 +21,6 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
         if (photonView.IsMine)
         {
-            info.owner.stat.bonusDodgeChance += 75f;
-            info.owner.stat.SyncTemporaryAttributes();
             info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true, EasingFunction.Ease.EaseOutQuad, StopSlip, StopSlip));
         }
     }
@@ -27,8 +29,6 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
     private void StopSlip()
     {
-        info.owner.stat.bonusDodgeChance -= 75f;
-        info.owner.stat.SyncTemporaryAttributes();
         DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
         DestroySelf();
     }
@@ -36,5 +36,17 @@ public class ai_Spell_Rare_Slip : AbilityInstance
     protected override void AliveUpdate()
     {
         transform.position = info.owner.transform.position;
+        elapsedTime += Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!photonView.IsMine) return;
+        if (elapsedTime > duration) return;
+        LivingThing thing = other.GetComponent<LivingThing>();
+        if (thing == null) return;
+        if (!validator.Evaluate(info.owner, thing)) return;
+        thing.ApplyStatusEffect(StatusEffect.Stun(info.owner, duration - elapsedTime));
+        info.owner.DoMagicDamage(damage, thing);
     }
 }
