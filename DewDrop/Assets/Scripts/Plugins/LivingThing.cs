@@ -1080,7 +1080,7 @@ public class LivingThing : MonoBehaviourPun
     private void RpcSetCurrentRoom(int roomViewId)
     {
         Room lastRoom = currentRoom;
-        if(lastRoom != null) lastRoom.ToggleTheLights(false);
+        if(lastRoom != null && photonView.IsMine) lastRoom.ToggleTheLights(false);
         currentRoom = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
         GameManager.instance.OnLivingThingRoomEnter.Invoke(this);
         if (photonView.IsMine) currentRoom.ActivateRoom(this);
