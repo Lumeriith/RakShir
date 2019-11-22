@@ -9,6 +9,7 @@ public class trg_Monster_BossNethergos_Wake : AbilityTrigger
     {
         info.owner.ApplyStatusEffect(StatusEffect.Stasis(info.owner, wakeupDuration));
         info.owner.ApplyStatusEffect(StatusEffect.Unstoppable(info.owner, 3600f * 24f));
+        PlayerViewCamera.instance.visionMultiplier *= 1.2f;
         StartCooldown();
     }
 }

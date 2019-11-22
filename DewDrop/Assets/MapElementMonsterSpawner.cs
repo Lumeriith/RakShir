@@ -8,7 +8,7 @@ public class MapElementMonsterSpawner : MapElement
     public float radius = 3f;
     public bool lockUntilAllDead = true;
     public float spawnDelay = 0.3f;
-    
+    #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         UnityEditor.Handles.color = new Color(1, 0, 0, 0.05f);
@@ -16,7 +16,7 @@ public class MapElementMonsterSpawner : MapElement
         UnityEditor.Handles.color = Color.red;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, radius);
     }
-
+	#endif
     protected override void OnActivate(bool isLocal)
     {
         if (!isLocal) return;

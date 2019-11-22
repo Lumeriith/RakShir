@@ -269,13 +269,18 @@ public class UnitControlManager : MonoBehaviour
 
         if (target != null)
         {
-            if (previousOutline != null) previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
+            if (previousOutline != null)
+            {
+                previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
+                if (previousOutline.GetComponentInParent<LivingThing>().type != LivingThingType.Player) previousOutline.enabled = false; // TODO: Optimize This.
+            }
             previousOutline = target.outline;
 
 
             if (target.outline != null)
             {
                 target.outline.OutlineMode = MeshOutline.Mode.OutlineAndSilhouette;
+                target.outline.enabled = true;
             }
         }
         else
@@ -283,6 +288,7 @@ public class UnitControlManager : MonoBehaviour
             if (previousOutline != null)
             {
                 previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
+                if (previousOutline.GetComponentInParent<LivingThing>().type != LivingThingType.Player) previousOutline.enabled = false;
                 previousOutline = null;
             }
         }

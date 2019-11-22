@@ -427,9 +427,10 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
         for(int i = 0; i < players.Length; i++)
         {
-            if (!gamePlayers[players[i]].currentRoom.name.Contains("Boss_yong")) return;
+            if (!gamePlayers[players[i]].currentRoom.name.Contains("Nether")) return;
         }
-
+        Transform nethergos = transform.Find("/monster_BossNethergos(Clone)");
+        if (nethergos != null) nethergos.GetComponent<BossNethergosBehaviour>().Disappear();
         SetPhase(GladiatorGamePhase.PvP);
         
         for (int i = 0; i < players.Length; i++)

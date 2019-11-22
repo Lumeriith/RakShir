@@ -329,7 +329,15 @@ public class LivingThing : MonoBehaviourPun
             outline = transform.Find("Model").gameObject.AddComponent<MeshOutline>();
         }
 
-        outline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
+        if(type == LivingThingType.Player)
+        {
+            outline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
+        }
+        else
+        {
+            outline.enabled = false;
+        }
+        
 
         AssignMissingTransforms();
 
@@ -1075,7 +1083,7 @@ public class LivingThing : MonoBehaviourPun
         if(lastRoom != null) lastRoom.ToggleTheLights(false);
         currentRoom = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
         GameManager.instance.OnLivingThingRoomEnter.Invoke(this);
-        if (photonView.IsMine && !currentRoom.isActivated) currentRoom.ActivateRoom(this);
+        if (photonView.IsMine) currentRoom.ActivateRoom(this);
         if (photonView.IsMine) GuidanceArrowManager.RemoveObjective();
     }
 

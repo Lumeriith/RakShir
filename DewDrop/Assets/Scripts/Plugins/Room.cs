@@ -45,7 +45,7 @@ public class Room : MonoBehaviourPun
     {
         roomLights = GetComponentsInChildren<Light>();
         if (entryPoint == null) entryPoint = transform.Find("Entry Point");
-        for (int i = 0; i < roomLights.Length; i++) roomLights[i].enabled = false;
+        for (int i = 0; i < roomLights.Length; i++) roomLights[i].gameObject.SetActive(false);
     }
 
     private void Start()
@@ -55,11 +55,16 @@ public class Room : MonoBehaviourPun
         {
             transform.parent = map; 
         }
+        Map.Obelisk[] obelisks = GetComponentsInChildren<Map.Obelisk>();
+        for(int i = 0; i < obelisks.Length; i++)
+        {
+            obelisks[i].TurnOff();
+        }
     }
 
     public void ToggleTheLights(bool toggle)
     {
-        for (int i = 0; i < roomLights.Length; i++) roomLights[i].enabled = toggle;
+        for (int i = 0; i < roomLights.Length; i++) roomLights[i].gameObject.SetActive(toggle);
     }
 
 
@@ -68,7 +73,7 @@ public class Room : MonoBehaviourPun
 
     public void ActivateRoom(LivingThing activator)
     {
-        if (isActivated) return;
+        
         photonView.RPC("RpcActivateRoom", RpcTarget.All, activator.photonView.ViewID);
     }
 
@@ -76,12 +81,12 @@ public class Room : MonoBehaviourPun
     [PunRPC]
     private void RpcActivateRoom(int activator_id)
     {
-        isActivated = true;
+        
         LivingThing activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<LivingThing>();
         if (!activator.photonView.IsMine) return;
         if (rerollsShopUponEntering) ShopManager.instance.RerollShop();
         if (customMusic != null) Music.Play(customMusic);
-        StartCoroutine(CoroutineElement(activator));
+
         ToggleTheLights(true);
 
         if (customPostProcessProfile != null)
@@ -90,7 +95,9 @@ public class Room : MonoBehaviourPun
         }
 
         Camera.main.GetComponent<AuraCamera>().enabled = enableAuraCamera;
-
+        if (isActivated) return;
+        StartCoroutine(CoroutineElement(activator));
+        isActivated = true;
     }
 
 
