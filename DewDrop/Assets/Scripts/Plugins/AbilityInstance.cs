@@ -70,7 +70,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     {
         if (!isCreated || isDestroyed) return;
         isDestroyed = true;
-        photonView.RPC("RpcDestroySelf", RpcTarget.AllViaServer);
+        photonView.RPC("RpcDestroySelf", RpcTarget.All);
     }
 
     public void DestroySelf(float delay)
@@ -85,7 +85,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     {
         yield return new WaitForSeconds(delay);
         isDestroyed = true;
-        photonView.RPC("RpcDestroySelf", RpcTarget.AllViaServer);
+        photonView.RPC("RpcDestroySelf", RpcTarget.All);
     }
 
 
