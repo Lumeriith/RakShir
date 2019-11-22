@@ -48196,7 +48196,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.6
+      scalar: 1.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -57685,10 +57685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74214c8d560eee459d36e6bd474b6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  channelValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -57702,7 +57698,8 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   radius: 4
-  slowDuration: 3
-  slowAmount: 40
+  slowDuration: 2
+  slowAmount: 30
   rootDuration: 1
-  damage: 90
+  damage: 60
+  secondBlastDelay: 1.5

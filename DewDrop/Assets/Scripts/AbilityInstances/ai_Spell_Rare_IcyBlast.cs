@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class ai_Spell_Rare_IcyBlast : AbilityInstance
 {
-    public SelfValidator channelValidator;
     public TargetValidator targetValidator;
     public float radius = 4f;
 
@@ -13,6 +12,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
     public float slowAmount = 40f;
     public float rootDuration = 1f;
     public float damage = 60f;
+    public float secondBlastDelay = 1.5f;
 
     private ParticleSystem range;
     private ParticleSystem blast;
@@ -27,12 +27,20 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         hit = transform.Find("Hit").gameObject;
         root = transform.Find("Root").gameObject;
 
+        range.Play();
         if (photonView.IsMine)
         {
-            range.Play();
-            
-            info.owner.control.StartChanneling(new Channel(channelValidator, 0.5f, false, false, false, false, ChannelFinished, ChannelCanceled));
+            StartCoroutine(CoroutineIcyBlast());
         }
+    }
+
+    private IEnumerator CoroutineIcyBlast()
+    {
+        Explode();
+        yield return new WaitForSeconds(secondBlastDelay);
+        Explode();
+        DetachChildParticleSystemsAndAutoDelete();
+        DestroySelf();
     }
 
     protected override void AliveUpdate()
@@ -40,12 +48,12 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         transform.position = info.owner.transform.position;
     }
 
-    private void ChannelFinished()
+    private void Explode()
     {
         SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Blast", transform.position);
         photonView.RPC("RpcBlast", RpcTarget.All);
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
-        for(int i = 0; i < targets.Count; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].statusEffect.IsAffectedBy(StatusEffectType.Slow))
             {
@@ -57,10 +65,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Hit", transform.position);
             info.owner.DoMagicDamage(damage, targets[i]);
         }
-        DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
     }
-
 
     [PunRPC]
     private void RpcBlast()
