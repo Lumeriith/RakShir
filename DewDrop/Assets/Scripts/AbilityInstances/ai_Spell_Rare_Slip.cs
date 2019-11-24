@@ -47,6 +47,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
         if (thing == null) return;
         if (!validator.Evaluate(info.owner, thing)) return;
         thing.ApplyStatusEffect(StatusEffect.Stun(info.owner, duration - elapsedTime));
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Slip Hit", other.transform.position);
         info.owner.DoMagicDamage(damage, thing);
     }
 }
