@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    
     public int skillIndex = 1;
 
     private Image image_icon;
@@ -47,7 +48,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         image_icon = transform.Find("Mask/Icon Image").GetComponent<Image>();
         image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
-        image_specialFill = transform.Find("Mask/Special Fill Image").GetComponent<Image>();
+        image_specialFill = transform.Find("Special Fill Image").GetComponent<Image>();
         tmpu_cooldown = transform.Find("Mask/Cooldown Text").GetComponent<TextMeshProUGUI>();
         image_cooldownFill = transform.Find("Mask/Cooldown Fill Image").GetComponent<Image>();
         image_specialIndicator = transform.Find("Special Indicator").GetComponent<Image>();
