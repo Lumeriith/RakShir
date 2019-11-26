@@ -1133,7 +1133,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower)
     {
-        if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
+        if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
         LivingThing from;
 
@@ -1184,7 +1184,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyBasicAttackDamage(int from_id, float random)
     {
-        if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
+        
         
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
 
@@ -1207,6 +1207,8 @@ public class LivingThing : MonoBehaviourPun
         {
             float finalAmount;
             finalAmount = from.stat.finalAttackDamage;
+
+            if (!SelfValidator.CanBeDamaged.Evaluate(this)) finalAmount = 0f;
 
             if (statusEffect.totalShieldAmount > finalAmount)
             {

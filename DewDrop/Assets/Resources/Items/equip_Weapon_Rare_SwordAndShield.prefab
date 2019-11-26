@@ -1,5 +1,92 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1945461148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1945461150}
+  - component: {fileID: 1945461149}
+  m_Layer: 11
+  m_Name: trg_Spell_Rare_RaiseShield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1945461150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945461148}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 248810123448793125}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1945461149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945461148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5b6f65e24ca2c469770c224de729ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: ad0f2ca7dff257e42aaeb1f26670a676, type: 3}
+  abilityName: "\uBC29\uD328 \uC62C\uB9AC\uAE30"
+  abilityDescription: "\uBC29\uD328\uB97C \uB4E4\uC5B4 1.25\uCD08 \uB3D9\uC548 \uC790\uC2E0\uC5D0\uAC8C
+    [\uBCF4\uD638]\uB97C \uBD80\uC5EC\uD558\uB294 \uBC29\uC5B4 \uD0DC\uC138\uB97C
+    \uCDE8\uD569\uB2C8\uB2E4. \uC774 \uB3C4\uC911\uC5D0 \uD53C\uD574\uB97C \uBC1B\uC73C\uBA74
+    \uBC29\uC5B4 \uD0DC\uC138\uAC00 \uC989\uC2DC \uB05D\uB098\uACE0 \uC804\uBC29\uC758
+    \uBAA8\uB4E0 \uC801\uB4E4\uC5D0\uAC8C \uBC18\uACA9\uD558\uC5EC [\uAE30\uBCF8 \uACF5\uACA9
+    \uD53C\uD574]\uB97C \uC8FC\uACE0 0.75\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uD558\uBA70
+    \uBC00\uB824\uB098\uAC8C \uD569\uB2C8\uB2E4.\r\n\r\n\uB0B4 \uAE30\uBCF8 \uACF5\uACA9\uC774
+    10\uBC88 \uC801\uC911\uD560 \uB54C\uB9C8\uB2E4 \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774
+    \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4."
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: 8dbf17b252b709041847d30c0f94ba91, type: 2}
+  animationDuration: 1.25
+  indicator:
+    type: 2
+    range: 0
+    arrowWidth: 3
+    arrowLength: 3.75
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
+  targetingType: 3
+  range: 0
+  manaCost: 30
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  cooldownTime: 10
+  resetBasicAttackCount: 10
 --- !u!1 &248810122902142902
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &248810123261369014
 Transform:
   m_ObjectHideFlags: 0
@@ -151,6 +238,7 @@ Transform:
   - {fileID: 248810123261369014}
   - {fileID: 7545179002005243084}
   - {fileID: 248810122902142900}
+  - {fileID: 1945461150}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -241,7 +329,7 @@ MonoBehaviour:
   type: 3
   skillSetReplacements:
   - {fileID: 1144534734514534532}
-  - {fileID: 0}
+  - {fileID: 1945461149}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -19511,7 +19599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7545179002005243084
 Transform:
   m_ObjectHideFlags: 0
@@ -19688,7 +19776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a6fc02e581ec570408c4622d3ac04bf1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.162
+      value: -0.143
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a6fc02e581ec570408c4622d3ac04bf1, type: 3}
       propertyPath: m_LocalPosition.z
