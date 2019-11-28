@@ -27,7 +27,7 @@ public class trg_Spell_Rare_RaiseShield : AbilityTrigger
 
     public override void AliveUpdate(bool isMine)
     {
-        if (isMine) SetSpecialFillAmount(currentBasicAttackCount / resetBasicAttackCount);
+        if (isMine) SetSpecialFillAmount(1.0f * currentBasicAttackCount / resetBasicAttackCount);
     }
 
     private void BasicAttackHit(InfoBasicAttackHit info)
