@@ -100,6 +100,7 @@ public abstract class Equipment : Item
             attachment.transform.SetParent(transform);
             attachment.transform.gameObject.SetActive(false);
         }
+        owner.outline.UpdateMeshOutlineInfo();
     }
 
     private void UpdateAttachments(LivingThing owner)
@@ -130,6 +131,7 @@ public abstract class Equipment : Item
             attachment.transform.Rotate(attachment.offsetRotation, Space.Self);
             attachment.transform.gameObject.SetActive(true);
         }
+        owner.outline.UpdateMeshOutlineInfo();
     }
 
 

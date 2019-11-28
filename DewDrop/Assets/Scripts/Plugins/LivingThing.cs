@@ -319,6 +319,8 @@ public class LivingThing : MonoBehaviourPun
         aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = aoc;
 
+        outline = gameObject.AddComponent<MeshOutline>();
+        /*
         Renderer renderer = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
         if (renderer != null)
         {
@@ -328,6 +330,7 @@ public class LivingThing : MonoBehaviourPun
         {
             outline = transform.Find("Model").gameObject.AddComponent<MeshOutline>();
         }
+        */
 
         if(type == LivingThingType.Player)
         {
