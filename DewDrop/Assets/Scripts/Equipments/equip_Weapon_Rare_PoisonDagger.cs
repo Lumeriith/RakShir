@@ -10,6 +10,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
     {
         owner.stat.baseAttackDamage = 35f;
         owner.stat.baseAttacksPerSecond = 1.4f;
+        owner.stat.bonusMaximumHealth += 100f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - PoisonDagger Stand");
@@ -22,6 +23,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;
+        owner.stat.bonusMaximumHealth -= 100f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Stand");

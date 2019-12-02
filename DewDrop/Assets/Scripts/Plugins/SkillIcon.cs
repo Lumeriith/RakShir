@@ -69,8 +69,8 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if(target.control.skillSet[skillIndex] == null)
         {
             image_icon.sprite = null;
-            image_icon.color = new Color(0.2f, 0.2f, 0.2f);
-            image_disabled.enabled = true;
+            image_icon.enabled = false;
+            image_disabled.enabled = false;
             image_specialFill.fillAmount = 0f;
             image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
             image_cooldownFill.fillAmount = 0f;
@@ -78,6 +78,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             image_icon.color = new Color(1f, 1f, 1f);
+            image_icon.enabled = true;
             image_icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
             image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].IsReady() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
             if (skillIndex == 0) image_disabled.enabled = false;

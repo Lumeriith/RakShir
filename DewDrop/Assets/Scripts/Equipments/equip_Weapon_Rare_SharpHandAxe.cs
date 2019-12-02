@@ -8,6 +8,7 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
     {
         owner.stat.baseAttackDamage = 80f;
         owner.stat.baseAttacksPerSecond = 1.05f;
+        owner.stat.bonusMaximumHealth += 100f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - SharpHandAxe Stand");
@@ -20,6 +21,7 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;
+        owner.stat.bonusMaximumHealth -= 100f;
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Stand");
