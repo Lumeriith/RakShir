@@ -68,15 +68,18 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
 
 
         photonView.RPC("RpcLanded", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
     }
 
     [PunRPC]
     private void RpcLanded()
     {
-        land.Play();
-        if (isEmpowered) empoweredLand.Play();
-        fly.Stop();
+        ParticleSystem newLand = Instantiate(land.gameObject, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+        newLand.Play();
+        if (isEmpowered)
+        {
+            ParticleSystem newEmpoweredLand = Instantiate(empoweredLand.gameObject, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+            newEmpoweredLand.Play();
+        }
+        //fly.Stop();
     }
 }
