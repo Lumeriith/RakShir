@@ -32,6 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4877100979240223717}
+  - {fileID: 655118058706876280}
   - {fileID: 5424103584340558683}
   - {fileID: 6422224703557182954}
   m_Father: {fileID: 0}
@@ -129,7 +130,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 3307251526938189163}
+  - {fileID: 1262436727591877821}
   attachments: []
 --- !u!1 &3756895863753804117
 GameObject:
@@ -147,7 +148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5424103584340558683
 Transform:
   m_ObjectHideFlags: 0
@@ -160,7 +161,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3307251526938189163
 MonoBehaviour:
@@ -215,6 +216,88 @@ MonoBehaviour:
   healthThreshold: 0.3
   shieldDuration: 6
   shieldAmountManaMultiplier: 1
+--- !u!1 &7644734798852898681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 655118058706876280}
+  - component: {fileID: 1262436727591877821}
+  m_Layer: 11
+  m_Name: trg_Spell_Rare_ArcanePower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &655118058706876280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644734798852898681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2911441332996855065}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1262436727591877821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644734798852898681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb687a9e7897d048804f71f45ff068c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: 8b515b2f32eb2e942b335b1548c6af4f, type: 3}
+  abilityName: "\uC2E0\uBE44\uD55C \uD798"
+  abilityDescription: "[\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC785\uD788\uBA74 \uB300\uC0C1
+    \uC704\uCE58\uC5D0\uC11C \uD3ED\uBC1C\uC774 \uBC1C\uC0DD\uD558\uC5EC \uB300\uC0C1\uACFC
+    \uB300\uC0C1 \uC8FC\uBCC0\uC758 \uC801\uB4E4\uC5D0\uAC8C 20\uC758 [\uB9C8\uBC95
+    \uD53C\uD574]\uB97C \uC785\uD799\uB2C8\uB2E4.\r\n\uC774 \uD3ED\uBC1C\uC5D0 \uC601\uD5A5\uC744
+    \uBC1B\uB294 \uC801 \uD558\uB098\uB2F9 5\uC758 [\uB9C8\uB098\uB97C \uD68C\uBCF5]\uD569\uB2C8\uB2E4.\r\n\r\n\uC774
+    \uD6A8\uACFC\uB294 1.5\uCD08\uC5D0 \uD55C \uBC88\uC529\uB9CC \uBC1C\uB3D9\uD569\uB2C8\uB2E4."
+  soundEffect: []
+  castAnimation: []
+  animationDuration: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  dontCancelBasicCommands: 0
+  targetingType: 0
+  range: 0
+  manaCost: 0
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  cooldownTime: 1.5
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,7 +423,7 @@ PrefabInstance:
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7522208964270845406, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
