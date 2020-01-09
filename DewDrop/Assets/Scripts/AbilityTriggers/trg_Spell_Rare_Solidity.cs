@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class trg_Spell_Rare_Solidity : AbilityTrigger
 {
-    public float shieldDuration = 4f;
-    public float shieldAmountHealthMultiplier = 0.15f;
+    public float healMultiplier = 0.02f;
 
     public override void OnCast(CastInfo info)
     {
@@ -27,8 +26,8 @@ public class trg_Spell_Rare_Solidity : AbilityTrigger
     private void TakeDamage(InfoDamage info)
     {
         if (!isCooledDown) return;
-        owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(owner, shieldDuration, owner.maximumHealth * shieldAmountHealthMultiplier, true));
-        SFXManager.CreateSFXInstance("si_Spell_Rare_Solidity", owner.transform.position);
+        owner.DoHeal(owner.maximumHealth * healMultiplier, owner, true);
+        //SFXManager.CreateSFXInstance("si_Spell_Rare_Solidity", owner.transform.position);
         StartCooldown();
     }
 }
