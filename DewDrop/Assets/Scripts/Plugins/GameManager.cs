@@ -271,8 +271,8 @@ public class GameManager : MonoBehaviour
     private static IEnumerator CoroutineMove(Room room)
     {
         instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(instance.localPlayer, 4f));
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(instance.localPlayer, 4f, (instance.localPlayer.maximumHealth - instance.localPlayer.currentHealth)*0.5f, true));
-        instance.localPlayer.DoManaHeal(instance.localPlayer.stat.finalMaximumMana / 3f, instance.localPlayer, true);
+        instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(instance.localPlayer, 4f, (instance.localPlayer.maximumHealth - instance.localPlayer.currentHealth), true));
+        instance.localPlayer.DoManaHeal(instance.localPlayer.stat.finalMaximumMana / 2f, instance.localPlayer, true);
         for (int i = 0; i < 20; i++)
         {
             instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
