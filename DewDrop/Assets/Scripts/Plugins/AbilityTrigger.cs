@@ -226,6 +226,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
         PurgeInstancesList();
+        if (info.owner == null) info.owner = owner;
         AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
         instances.Add(instance);
     }
