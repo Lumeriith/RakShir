@@ -6,8 +6,8 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
 {
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 80f;
-        owner.stat.baseAttacksPerSecond = 1.05f;
+        owner.stat.baseAttackDamage = 95f;
+        owner.stat.baseAttacksPerSecond = 1.15f;
         owner.stat.bonusMaximumHealth += 100f;
         if (photonView.IsMine)
         {
