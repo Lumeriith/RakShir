@@ -41,6 +41,8 @@ public class StatusEffect
     public float originalDuration;
     public object parameter;
 
+    public System.Action OnExpire = () => { };
+
     public bool isAlive
     {
         get
