@@ -72,8 +72,8 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.uid = uid;
         ce.owner = livingThing;
         statusEffects.Add(ce);
-        StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
         statusEffectCountMap[(int)ce.type] += 1;
+        if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
         photonView.RPC("RpcApplyStatusEffect", RpcTarget.Others, uid, ce.caster.photonView.ViewID, (byte)ce.type, ce.duration, ce.parameter);
     }
 
@@ -295,7 +295,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             }
             if (statusEffects[i].type == StatusEffectType.Slow && statusEffects[i].parameter != null)
             {
-                totalSlowAmount += (float)statusEffects[i].parameter;
+                totalSlowAmount = Mathf.Max(totalSlowAmount, (float)statusEffects[i].parameter);
             }
             if (statusEffects[i].type == StatusEffectType.Speed && statusEffects[i].parameter != null)
             {
@@ -381,7 +381,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         ce.uid = uid;
         statusEffects.Add(ce);
         statusEffectCountMap[(int)ce.type] += 1;
-        StatusEffectParticleEffectManager.instance.CreateParticleEffect(ce);
+        if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
     }
 
     [PunRPC]
@@ -391,6 +391,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         if (se == null) return;
         statusEffectCountMap[(int)se.type] -= 1;
         se.duration = 0;
+        se.OnExpire();
         statusEffects.Remove(se);
     }
 
@@ -424,6 +425,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             if (statusEffects[i].type == (StatusEffectType)type)
             {
                 statusEffects[i].duration = 0;
+                statusEffects[i].OnExpire();
                 statusEffects.RemoveAt(i);
                 statusEffectCountMap[type] -= 1;
             }
@@ -439,6 +441,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             {
                 statusEffectCountMap[(int)statusEffects[i].type] -= 1;
                 statusEffects[i].duration = 0;
+                statusEffects[i].OnExpire();
                 statusEffects.RemoveAt(i);
             }
         }
