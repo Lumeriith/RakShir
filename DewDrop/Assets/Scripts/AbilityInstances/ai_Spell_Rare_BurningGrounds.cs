@@ -9,9 +9,12 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
     public float tickInterval = 0.5f;
     public float damage = 30f;
     public float range = 3f;
+    public float slowDuration = 1.5f;
+    public float slowAmount = 35f;
     public TargetValidator targetValidator;
 
     private SFXInstance loopSFX;
+    private List<LivingThing> affectedTargets = new List<LivingThing>();
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
@@ -33,9 +36,15 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, range, targetValidator);
             for(int j = 0; j < targets.Count; j++)
             {
+                if (!affectedTargets.Contains(targets[j]))
+                {
+                    affectedTargets.Add(targets[j]);
+                    targets[j].ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
+                }
                 info.owner.DoMagicDamage(damage, targets[j]);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
                 SFXManager.CreateSFXInstance("si_Spell_Rare_BurningGrounds Hit", transform.position);
+                
             }
             yield return new WaitForSeconds(tickInterval);
         }
