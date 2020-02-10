@@ -125,7 +125,7 @@ MonoBehaviour:
   skillSetReplacements:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 5538355146824334797}
+  - {fileID: 1900462800711016873}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -140,9 +140,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5424103584340558683}
-  - component: {fileID: 5538355146824334797}
+  - component: {fileID: 1900462800711016873}
   m_Layer: 11
-  m_Name: trg_Spell_Rare_IcyBlast
+  m_Name: trg_Spell_Rare_IceBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ Transform:
   m_Father: {fileID: 2911441332996855065}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5538355146824334797
+--- !u!114 &1900462800711016873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,33 +171,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 3756895863753804117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4715b552283073f45a3a041ad8a49692, type: 3}
+  m_Script: {fileID: 11500000, guid: e5a15ac31eb827e47978f8972239cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: 0e9c3dae701f66849899d7b363cfd58c, type: 3}
-  abilityName: "\uD55C\uAE30 \uD3ED\uBC1C"
-  abilityDescription: "\uC790\uC2E0\uC758 \uC8FC\uBCC0\uC5D0 \uD55C\uAE30\uB97C \uD3ED\uBC1C\uC2DC\uD0A4\uACE0
-    1.5\uCD08 \uD6C4\uC5D0 \uD55C\uBC88 \uB354 \uD3ED\uBC1C\uC2DC\uD0B5\uB2C8\uB2E4.\r\n\r\n\uAC01
-    \uD55C\uAE30 \uD3ED\uBC1C\uC740 \uC790\uC2E0 \uADFC\uCC98\uC758 \uBAA8\uB4E0 \uC801\uB4E4\uC5D0\uAC8C
-    60\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC8FC\uACE0 [\uC774\uB3D9 \uC18D\uB3C4]\uB97C
-    2\uCD08 \uB3D9\uC548 30% \uB290\uB824\uC9C0\uAC8C \uD569\uB2C8\uB2E4. \uC774\uBBF8
-    \uB290\uB824\uC9C4 \uC0C1\uB300\uB294 \uCD94\uAC00\uB85C 1\uCD08 \uB3D9\uC548
-    [\uC774\uB3D9 \uBD88\uAC00] \uC0C1\uD0DC\uB85C \uB9CC\uB4ED\uB2C8\uB2E4."
+  abilityIcon: {fileID: 21300000, guid: 38968517d2b2ff2428b491b2db1cca9c, type: 3}
+  abilityName: "\uC5BC\uC74C \uD654\uC0B4"
+  abilityDescription: "0.75\uCD08\uC5D0 \uAC78\uCCD0 3\uAC1C\uC758 \uC5BC\uC74C \uD654\uC0B4\uC744
+    \uC18C\uD658\uD569\uB2C8\uB2E4. \uC5BC\uC74C \uD654\uC0B4\uC740 \uBE60\uB974\uAC8C
+    \uB0A0\uC544\uAC00\uB2E4 \uCC98\uC74C \uC801\uC911\uD55C \uC801\uC5D0\uAC8C 60\uC758
+    [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC8FC\uACE0 3\uCD08 \uB3D9\uC548 [\uC774\uB3D9
+    \uC18D\uB3C4]\uB97C 40% \uB290\uB824\uC9C0\uAC8C \uD569\uB2C8\uB2E4. \uC774\uBBF8
+    \uB290\uB824\uC9C4 \uB300\uC0C1\uC5D0\uAC8C\uB294 50%\uC758 \uCD94\uAC00 \uD53C\uD574\uB97C
+    \uC90D\uB2C8\uB2E4."
   soundEffect:
-  - {fileID: 1607579122048388727, guid: 1034d0e2170c73748a780776cf5d1bc9, type: 3}
+  - {fileID: 1607579122048388727, guid: 6ef54565f59971146b3982195fa7ba59, type: 3}
   castAnimation: []
   animationDuration: 0
   indicator:
-    type: 1
-    range: 4
-    arrowWidth: 0
-    arrowLength: 0
+    type: 2
+    range: 0
+    arrowWidth: 0.6
+    arrowLength: 12
     enableSecondRangeIndicator: 0
     secondRange: 0.35
-  dontCancelBasicCommands: 1
-  targetingType: 0
+  dontCancelBasicCommands: 0
+  targetingType: 3
   range: 0
-  manaCost: 65
+  manaCost: 0
   targetValidator:
     canTargetSelf: 0
     canTargetOwnSummon: 0
@@ -214,7 +214,11 @@ MonoBehaviour:
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 12
+  cooldownTime: 10
+  offset: {x: 0, y: 1.5, z: 0}
+  iceboltCount: 3
+  preDelay: 0.15
+  delayBetweenBolts: 0.25
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
