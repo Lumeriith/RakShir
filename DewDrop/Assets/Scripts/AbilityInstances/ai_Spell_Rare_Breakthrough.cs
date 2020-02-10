@@ -26,6 +26,7 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
         main.Play();
         if (!isMine) return;
         info.owner.StartDisplacement(new Displacement(info.directionVector * dashDistance, dashDuration, true, true, EasingFunction.Ease.Linear, Finished, Finished));
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Breakthrough Start", transform.position).Follow(this);
     }
 
     protected override void AliveUpdate()
@@ -48,6 +49,7 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
         thing.ApplyStatusEffect(StatusEffect.Slow(info.owner, duration, slowAmount));
         thing.ApplyStatusEffect(StatusEffect.DamageOverTime(info.owner, duration, damage));
         photonView.RPC("RpcSmallFire", RpcTarget.All, thing.photonView.ViewID);
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Breakthrough Hit", thing.transform.position);
     }
 
     [PunRPC]
