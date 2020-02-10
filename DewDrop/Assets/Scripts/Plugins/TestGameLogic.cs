@@ -19,7 +19,7 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 1 });
         }
 
-        Music.Play("PvP");
+        Music.Play("Silence");
     }
 
     public void SpawnAsReptile()
