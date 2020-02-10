@@ -215,6 +215,12 @@ public class DebugCommands : MonoBehaviour
         target.statusEffect.ApplyStatusEffect(StatusEffect.Shield(target, duration, amount));
     }
 
+    [ConsoleMethod("music", "Tunes the jukebox.")]
+    public static void ChangeMusic(string name)
+    {
+        Music.Play(name);
+    }
+
 
 
 
