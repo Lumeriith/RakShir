@@ -33,7 +33,7 @@ public class StatusEffect
 {
     #region Instance Members
 
-    public int uid;
+    public long uid;
     public LivingThing caster;
     public LivingThing owner;
     public StatusEffectType type;

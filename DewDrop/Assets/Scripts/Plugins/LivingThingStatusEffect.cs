@@ -64,11 +64,13 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public void ApplyStatusEffect(StatusEffect ce)
     {
         if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing)) return;
-        int uid = Random.Range(int.MinValue, int.MaxValue);
-        while(GetStatusEffectByUID(uid) != null) // Just in case the uid generation threads the needle:
+        long uid; 
+        do
         {
-            uid = Random.Range(int.MinValue, int.MaxValue); // Reroll.
-        }
+            uid = PhotonNetwork.LocalPlayer.ActorNumber + Random.Range(int.MinValue, int.MaxValue) << 32; // thank you ggsg ✨
+            // it's probably okay to make guids sequentially generated, but better check the code thoroughly before doing it.
+        } while (GetStatusEffectByUID(uid) != null);
+
         ce.uid = uid;
         ce.owner = livingThing;
         statusEffects.Add(ce);
@@ -114,7 +116,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         return statusEffectCountMap[(int)type] > 0;
     }
 
-    public StatusEffect GetStatusEffectByUID(int uid)
+    public StatusEffect GetStatusEffectByUID(long uid)
     {
         for(int i = 0; i < statusEffects.Count; i++)
         {
@@ -371,7 +373,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
 
     [PunRPC]
-    public void RpcApplyStatusEffect(int uid, int casterViewID, byte type, float duration, object parameter)
+    public void RpcApplyStatusEffect(long uid, int casterViewID, byte type, float duration, object parameter)
     {
         LivingThing caster = PhotonNetwork.GetPhotonView(casterViewID).GetComponent<LivingThing>();
         LivingThing owner = livingThing;
@@ -385,7 +387,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void RpcRemoveStatusEffect(int uid)
+    public void RpcRemoveStatusEffect(long uid)
     {
         StatusEffect se = GetStatusEffectByUID(uid);
         if (se == null) return;
@@ -396,21 +398,21 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void RpcAddDurationToStatusEffect(int uid, float duration)
+    public void RpcAddDurationToStatusEffect(long uid, float duration)
     {
         StatusEffect se = GetStatusEffectByUID(uid);
         if(se != null) se.duration += duration;
     }
 
     [PunRPC]
-    public void RpcSetDurationOfStatusEffect(int uid, float duration)
+    public void RpcSetDurationOfStatusEffect(long uid, float duration)
     {
         StatusEffect se = GetStatusEffectByUID(uid);
         if (se != null) se.duration = duration;
     }
 
     [PunRPC]
-    public void RpcSetParameterOfStatusEffect(int uid, object parameter)
+    public void RpcSetParameterOfStatusEffect(long uid, object parameter)
     {
         StatusEffect se = GetStatusEffectByUID(uid);
         if (se != null) se.parameter = parameter;
