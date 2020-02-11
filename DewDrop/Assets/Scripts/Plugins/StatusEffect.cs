@@ -184,6 +184,28 @@ public class StatusEffect
         return new StatusEffect(caster, StatusEffectType.Shield, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
     }
 
+    public static StatusEffect AttackDamageBoost(LivingThing caster, float duration, float amount)
+    {
+        return new StatusEffect(caster, StatusEffectType.AttackDamageBoost, duration, amount);
+    }
+
+    public static StatusEffect AttackDamageReduction(LivingThing caster, float duration, float amount)
+    {
+        return new StatusEffect(caster, StatusEffectType.AttackDamageReduction, duration, amount);
+    }
+
+    public static StatusEffect SpellPowerBoost(LivingThing caster, float duration, float amount)
+    {
+        return new StatusEffect(caster, StatusEffectType.SpellPowerBoost, duration, amount);
+    }
+
+    public static StatusEffect SpellPowerReduction(LivingThing caster, float duration, float amount)
+    {
+        return new StatusEffect(caster, StatusEffectType.SpellPowerReduction, duration, amount);
+    }
+
+
+
     #endregion Static Members
 
 }
