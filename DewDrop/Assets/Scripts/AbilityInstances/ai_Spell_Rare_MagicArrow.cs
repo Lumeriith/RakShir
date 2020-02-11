@@ -44,7 +44,8 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
         if (!photonView.IsMine) return;
         if (Vector3.Distance(startPosition, transform.position) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
+            photonView.RPC("RpcStopFly", RpcTarget.All);
+            DetachChildParticleSystemsAndAutoDelete();
             DestroySelf();
         }
     }
@@ -66,20 +67,27 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow Hit", transform.position);
         }
 
-
-        photonView.RPC("RpcLanded", RpcTarget.All);
+        Vector3 position = other.transform.position;
+        position.y = transform.position.y;
+        photonView.RPC("RpcLanded", RpcTarget.All, position);
     }
 
     [PunRPC]
-    private void RpcLanded()
+    private void RpcLanded(Vector3 position)
     {
-        ParticleSystem newLand = Instantiate(land.gameObject, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+        ParticleSystem newLand = Instantiate(land.gameObject, position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
         newLand.Play();
         if (isEmpowered)
         {
-            ParticleSystem newEmpoweredLand = Instantiate(empoweredLand.gameObject, transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+            ParticleSystem newEmpoweredLand = Instantiate(empoweredLand.gameObject, position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
             newEmpoweredLand.Play();
         }
         //fly.Stop();
+    }
+
+    [PunRPC]
+    private void RpcStopFly()
+    {
+        fly.Stop();
     }
 }
