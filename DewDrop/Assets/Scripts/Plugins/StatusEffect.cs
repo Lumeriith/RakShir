@@ -25,7 +25,11 @@ public enum StatusEffectType : byte
     // Custom
     Custom,
 
-    Shield
+    Shield,
+
+    SpellPowerBoost, SpellPowerReduction,
+
+    AttackDamageBoost, AttackDamageReduction
 }
 
 [System.Serializable]
