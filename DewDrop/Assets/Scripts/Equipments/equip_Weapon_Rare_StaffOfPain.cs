@@ -13,7 +13,6 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
         {
             owner.ChangeStandAnimation("Rare - MagicBow Stand");
             owner.ChangeWalkAnimation("Rare - MagicBow Walk");
-            owner.OnDealMagicDamage += DealMagicDamage;
         }
     }
 
@@ -25,20 +24,6 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
         {
             owner.ChangeStandAnimation("Stand");
             owner.ChangeWalkAnimation("Walk");
-            owner.OnDealMagicDamage -= DealMagicDamage;
-        }
-    }
-
-    private void DealMagicDamage(InfoMagicDamage info)
-    {
-        List<StatusEffect> pains = info.to.statusEffect.GetCustomStatusEffectsByName("고통");
-        if (pains.Count == 0)
-        {
-            info.to.ApplyStatusEffect(StatusEffect.Custom(info.from, "고통", painDuration));
-        }
-        else
-        {
-            pains[0].SetDuration(painDuration);
         }
     }
 }
