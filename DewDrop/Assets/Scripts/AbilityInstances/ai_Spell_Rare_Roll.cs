@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ai_Spell_Rare_Roll : AbilityInstance
 {
@@ -12,8 +13,16 @@ public class ai_Spell_Rare_Roll : AbilityInstance
 
     private StatusEffect damageBoost;
 
+    private ParticleSystem start;
+    private ParticleSystem hit;
+
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
+        start = transform.Find<ParticleSystem>("Start");
+        hit = transform.Find<ParticleSystem>("Hit");
+
+        start.Play();
+
         if (photonView.IsMine)
         {
             info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true));
@@ -43,8 +52,18 @@ public class ai_Spell_Rare_Roll : AbilityInstance
         damageBoost.OnExpire -= EffectExpired;
         this.info.owner.OnDoBasicAttackHit -= EffectUsed;
         damageBoost.Remove();
+        photonView.RPC("RpcHit", RpcTarget.All, info.to.photonView.ViewID);
+        SFXManager.CreateSFXInstance("si_Spell_Rare_Roll Hit", info.to.transform.position);
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
+    }
+
+    [PunRPC]
+    private void RpcHit(int id)
+    {
+        LivingThing thing = PhotonNetwork.GetPhotonView(id).GetComponent<LivingThing>();
+        hit.transform.position = thing.transform.position + thing.GetCenterOffset();
+        hit.Play();
     }
 
 
