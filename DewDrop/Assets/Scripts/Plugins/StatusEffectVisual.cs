@@ -35,7 +35,6 @@ public class StatusEffectVisual : MonoBehaviour
     {
         if(_target == null || _target.IsDead() || !_target.IsAffectedBy(type))
         {
-            Debug.Log("Destroyed");
             Destroy(gameObject);
         }
     }
