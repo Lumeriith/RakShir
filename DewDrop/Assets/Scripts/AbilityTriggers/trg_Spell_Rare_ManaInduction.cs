@@ -47,7 +47,7 @@ public class trg_Spell_Rare_ManaInduction : AbilityTrigger
         float shieldAmount = info.finalDamage * shieldAmountMultiplier;
         if(shield == null || !shield.isAlive)
         {
-            shield = StatusEffect.Shield(owner, shieldDuration, shieldAmount, true);
+            shield = StatusEffect.Shield(source, shieldDuration, shieldAmount, true);
             owner.statusEffect.ApplyStatusEffect(shield);
         }
         else

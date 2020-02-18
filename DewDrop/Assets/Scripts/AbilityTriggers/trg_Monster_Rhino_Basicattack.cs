@@ -12,6 +12,6 @@ public class trg_Monster_Rhino_Basicattack : AbilityTrigger
 
     void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Rhino_Basicattack", info.owner.transform.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_Monster_Rhino_Basicattack", info.owner.transform.position, Quaternion.identity, info);
     }
 }

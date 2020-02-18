@@ -27,7 +27,7 @@ public class trg_Spell_Rare_EmergencyShield : AbilityTrigger
         if (!isCooledDown) return;
         if(owner.currentHealth <= owner.maximumHealth * healthThreshold)
         {
-            owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(owner, shieldDuration, owner.stat.finalMaximumMana * shieldAmountManaMultiplier, true));
+            owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(source, shieldDuration, owner.stat.finalMaximumMana * shieldAmountManaMultiplier, true));
             SFXManager.CreateSFXInstance("si_Spell_Rare_EmergencyShield", owner.transform.position);
             StartCooldown();
         }

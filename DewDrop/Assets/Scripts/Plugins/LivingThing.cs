@@ -23,6 +23,7 @@ public enum Relation { Own, Enemy, Ally }
 #region Action Info Structs
 public struct InfoManaSpent
 {
+    public SourceInfo source;
     public LivingThing livingThing;
     public float amount;
 }
@@ -35,6 +36,7 @@ public struct InfoDeath
 
 public struct InfoDamage
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
     public float damage;
@@ -43,6 +45,7 @@ public struct InfoDamage
 
 public struct InfoMagicDamage
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
     public float originalDamage;
@@ -51,6 +54,7 @@ public struct InfoMagicDamage
 
 public struct InfoHeal
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
     public float originalHeal;
@@ -58,6 +62,7 @@ public struct InfoHeal
 }
 public struct InfoManaHeal
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
     public float originalManaHeal;
@@ -67,6 +72,7 @@ public struct InfoManaHeal
 
 public struct InfoBasicAttackHit
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
     public float damage;
@@ -74,6 +80,7 @@ public struct InfoBasicAttackHit
 
 public struct InfoMiss
 {
+    public SourceInfo source;
     public LivingThing to;
     public LivingThing from;
 }
@@ -601,7 +608,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
 
-    public bool SpendMana(float amount)
+    public bool SpendMana(float amount, SourceInfo source)
     {
         if (amount == 0) return true;
         if (amount < 0)
@@ -611,7 +618,7 @@ public class LivingThing : MonoBehaviourPun
         }
         if (stat.currentMana >= amount)
         {
-            photonView.RPC("RpcSpendMana", RpcTarget.All, amount);
+            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, source);
             return true;
         }
         else
@@ -854,7 +861,7 @@ public class LivingThing : MonoBehaviourPun
     {
         photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
-    public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
+    public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -862,10 +869,10 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
     }
 
-    public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower = false)
+    public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -873,15 +880,15 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
     }
 
-    public void DoBasicAttackImmediately(LivingThing to)
+    public void DoBasicAttackImmediately(LivingThing to, SourceInfo source)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value);
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, source);
     }
 
-    public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower = false)
+    public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -889,10 +896,10 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower);
+        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
     }
 
-    public void DoPureDamage(float amount, LivingThing to)
+    public void DoPureDamage(float amount, LivingThing to, SourceInfo source)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -900,7 +907,7 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID);
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, source);
     }
 
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
@@ -1122,19 +1129,20 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcSpendMana(float amount)
+    protected void RpcSpendMana(float amount, SourceInfo source)
     {
         stat.currentMana -= amount;
         stat.ValidateMana();
 
         InfoManaSpent info;
+        info.source = source;
         info.livingThing = this;
         info.amount = amount;
         OnSpendMana.Invoke(info);
     }
 
     [PunRPC]
-    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower)
+    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
@@ -1162,6 +1170,7 @@ public class LivingThing : MonoBehaviourPun
         }
 
         InfoMagicDamage info;
+        info.source = source;
         info.to = this;
         info.from = from;
         info.originalDamage = amount;
@@ -1170,6 +1179,7 @@ public class LivingThing : MonoBehaviourPun
         info.from.OnDealMagicDamage.Invoke(info);
 
         InfoDamage info2;
+        info2.source = source;
         info2.damage = amount;
         info2.from = from;
         info2.to = this;
@@ -1185,7 +1195,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcApplyBasicAttackDamage(int from_id, float random)
+    protected void RpcApplyBasicAttackDamage(int from_id, float random, SourceInfo source)
     {
         
         
@@ -1194,6 +1204,7 @@ public class LivingThing : MonoBehaviourPun
         if (from.statusEffect.IsAffectedBy(StatusEffectType.Blind))
         {
             InfoMiss info;
+            info.source = source;
             info.from = from;
             info.to = this;
             from.OnMiss.Invoke(info);
@@ -1201,6 +1212,7 @@ public class LivingThing : MonoBehaviourPun
         else if (random < stat.finalDodgeChance / 100f)
         {
             InfoMiss info;
+            info.source = source;
             info.from = from;
             info.to = this;
             from.OnMiss.Invoke(info);
@@ -1232,6 +1244,7 @@ public class LivingThing : MonoBehaviourPun
             }
 
             InfoBasicAttackHit info;
+            info.source = source;
             info.damage = finalAmount;
             info.from = from;
             info.to = this;
@@ -1239,6 +1252,7 @@ public class LivingThing : MonoBehaviourPun
             from.OnDoBasicAttackHit.Invoke(info);
 
             InfoDamage info2;
+            info2.source = source;
             info2.damage = finalAmount;
             info2.from = from;
             info2.to = this;
@@ -1284,7 +1298,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyPureDamage(float amount, int from_id)
+    protected void RpcApplyPureDamage(float amount, int from_id, SourceInfo source)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1297,6 +1311,7 @@ public class LivingThing : MonoBehaviourPun
         }
 
         InfoDamage info2;
+        info2.source = source;
         info2.damage = amount;
         info2.from = from;
         info2.to = this;
@@ -1335,7 +1350,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower)
+    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1354,6 +1369,7 @@ public class LivingThing : MonoBehaviourPun
         if (finalAmount <= 0) return;
 
         InfoHeal info;
+        info.source = source;
         info.from = from;
         info.to = this;
         info.originalHeal = amount;
@@ -1363,7 +1379,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower)
+    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1374,6 +1390,7 @@ public class LivingThing : MonoBehaviourPun
         stat.ValidateMana();
 
         InfoManaHeal info;
+        info.source = source;
         info.from = from;
         info.to = this;
         info.originalManaHeal = amount;

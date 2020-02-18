@@ -57,13 +57,13 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         {
             if (targets[i].statusEffect.IsAffectedBy(StatusEffectType.Slow))
             {
-                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Root(info.owner, rootDuration));
+                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
                 photonView.RPC("RpcRoot", RpcTarget.All, targets[i].photonView.ViewID);
             }
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
-            targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
+            targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
             SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Hit", transform.position);
-            info.owner.DoMagicDamage(damage, targets[i]);
+            info.owner.DoMagicDamage(damage, targets[i], false, source);
         }
     }
 

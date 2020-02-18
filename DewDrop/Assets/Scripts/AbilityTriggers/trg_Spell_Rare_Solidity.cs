@@ -26,7 +26,7 @@ public class trg_Spell_Rare_Solidity : AbilityTrigger
     private void TakeDamage(InfoDamage info)
     {
         if (!isCooledDown) return;
-        owner.DoHeal(owner.maximumHealth * healMultiplier, owner, true);
+        owner.DoHeal(owner.maximumHealth * healMultiplier, owner, true, source);
         //SFXManager.CreateSFXInstance("si_Spell_Rare_Solidity", owner.transform.position);
         StartCooldown();
     }

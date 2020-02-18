@@ -14,7 +14,7 @@ public class trg_Monster_Mage_Basicattack : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Mage_Basicattack", info.owner.transform.position + info.owner.GetCenterOffset(), shootDir, info);
+        CreateAbilityInstance("ai_Monster_Mage_Basicattack", info.owner.transform.position + info.owner.GetCenterOffset(), shootDir, info);
         info.owner.control.StartChanneling(new Channel(selfValidator, 0.45f, false, false, false, false, null, null, true));
     }
 }

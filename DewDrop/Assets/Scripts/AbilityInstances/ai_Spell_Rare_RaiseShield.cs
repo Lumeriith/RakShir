@@ -39,7 +39,7 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
 
         start.Play();
         if (!photonView.IsMine) return;
-        protection = StatusEffect.Protected(info.owner, duration);
+        protection = StatusEffect.Protected(source, duration);
         info.owner.ApplyStatusEffect(protection);
         channel = new Channel(channelValidator, duration, false, false, false, false, Stop, Stop);
         info.owner.control.StartChanneling(channel);
@@ -69,9 +69,9 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
         if (!isActivated || !photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        info.owner.DoBasicAttackImmediately(thing);
+        info.owner.DoBasicAttackImmediately(thing, source);
         thing.StartDisplacement(new Displacement(info.directionVector * pushDistance, pushDuration, false, false, EasingFunction.Ease.EaseOutQuad, null, null));
-        thing.ApplyStatusEffect(StatusEffect.Stun(info.owner, stunDuration));
+        thing.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
     }
     protected override void AliveUpdate()

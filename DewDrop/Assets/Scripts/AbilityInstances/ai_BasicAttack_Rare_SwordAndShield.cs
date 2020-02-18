@@ -18,7 +18,7 @@ public class ai_BasicAttack_Rare_SwordAndShield : AbilityInstance
         {
             if (targets.Count <= i) break;
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
-            info.owner.DoBasicAttackImmediately(targets[i]);
+            info.owner.DoBasicAttackImmediately(targets[i], source);
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_SwordAndShield " + Random.Range(0, 3), targets[i].transform.position);
         }
         DetachChildParticleSystemsAndAutoDelete();

@@ -18,7 +18,7 @@ public class trg_Spell_Elemental_DoubleKick : AbilityTrigger
         object[] data = { targets[0].photonView.ViewID };
         StartCooldown();
         SpendMana();
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Elemental_DoubleKick", owner.transform.position, Quaternion.identity, info, data);
+        CreateAbilityInstance("ai_Spell_Elemental_DoubleKick", owner.transform.position, Quaternion.identity, info, data);
     }
 
     private float lastCheckTime;

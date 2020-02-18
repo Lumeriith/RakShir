@@ -14,8 +14,8 @@ public class ai_Monster_Rhino_Basicattack : AbilityInstance
         if (!photonView.IsMine) return;
 
         info.owner.StartDisplacement(new Displacement((info.target.transform.position - info.owner.transform.position).normalized * chargeDistance, duration, true, true));
-        info.target.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
-        castInfo.owner.DoBasicAttackImmediately(castInfo.target);
+        info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+        castInfo.owner.DoBasicAttackImmediately(castInfo.target, source);
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }

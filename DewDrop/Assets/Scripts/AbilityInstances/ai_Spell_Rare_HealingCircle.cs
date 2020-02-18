@@ -35,7 +35,7 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
             for(int j = 0; j < targets.Count; j++)
             {
-                info.owner.DoHeal(healAmount, targets[j]);
+                info.owner.DoHeal(healAmount, targets[j], false, source);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
             }
         }

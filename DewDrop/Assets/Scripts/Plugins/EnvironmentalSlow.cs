@@ -31,7 +31,7 @@ public class EnvironmentalSlow : MonoBehaviour
         else
         {
             affectedLivingThings.Add(thing);
-            statusEffects.Add(StatusEffect.Slow(thing, duration, amount));
+            statusEffects.Add(StatusEffect.Slow(SourceInfo.Empty(), duration, amount));
             thing.ApplyStatusEffect(statusEffects[statusEffects.Count - 1]);
             lastUpdateTime.Add(Time.time);
         }

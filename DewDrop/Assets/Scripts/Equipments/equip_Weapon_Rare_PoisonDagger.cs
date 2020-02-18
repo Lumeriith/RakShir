@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class equip_Weapon_Rare_PoisonDagger : Equipment
 {
-    public float poisonAmount = 20f;
-    public float poisonDuration = 5f;
+    public float bonusDamageToPoisoned = 45f;
+    
     public override void OnEquip(LivingThing owner)
     {
-        owner.stat.baseAttackDamage = 35f;
+        owner.stat.baseAttackDamage = 40f;
         owner.stat.baseAttacksPerSecond = 1.4f;
         owner.stat.bonusMaximumHealth += 100f;
         if (photonView.IsMine)
@@ -34,6 +34,6 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
 
     private void BasicAttackHit(InfoBasicAttackHit info)
     {
-        info.to.ApplyStatusEffect(StatusEffect.DamageOverTime(info.from, poisonDuration, poisonAmount));
+        if (info.to.IsAffectedBy(StatusEffectType.DamageOverTime)) info.source.thing.DoMagicDamage(45f, info.to, false, SourceInfo.CasterOnly(info.source.thing));
     }
 }

@@ -12,6 +12,6 @@ public class trg_Monster_Archer_Basicattack : AbilityTrigger
 
     private void ChannelFinished()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Archer_Basicattack", info.owner.leftHand.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_Monster_Archer_Basicattack", info.owner.leftHand.position, Quaternion.identity, info);
     }
 }

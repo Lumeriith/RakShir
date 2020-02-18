@@ -78,8 +78,8 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         if (!photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Slow(info.owner, slowDuration, slowAmount));
-        info.owner.DoMagicDamage(damage, thing);
+        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+        info.owner.DoMagicDamage(damage, thing, false, source);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Hit", transform.position);
     }

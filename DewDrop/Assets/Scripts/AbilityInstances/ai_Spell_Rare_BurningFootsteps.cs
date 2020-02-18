@@ -32,7 +32,7 @@ public class ai_Spell_Rare_BurningFootsteps : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
             for(int j = 0; j < targets.Count; j++)
             {
-                info.owner.DoMagicDamage(damage, targets[j]);
+                info.owner.DoMagicDamage(damage, targets[j], false, source);
                 SFXManager.CreateSFXInstance("si_Spell_Rare_BurningFootsteps Hit", targets[j].transform.position);
             }
         }

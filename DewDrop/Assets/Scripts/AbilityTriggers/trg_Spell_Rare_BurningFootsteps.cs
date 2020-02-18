@@ -15,7 +15,7 @@ public class trg_Spell_Rare_BurningFootsteps : AbilityTrigger
         StartCoroutine(CoroutineMakeFire(info));
         StartCooldown();
         SpendMana();
-        info.owner.ApplyStatusEffect(StatusEffect.Speed(info.owner, duration, speedAmount));
+        info.owner.ApplyStatusEffect(StatusEffect.Speed(source, duration, speedAmount));
         isCoroutineRunning = true;
     }
 

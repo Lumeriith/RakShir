@@ -20,21 +20,19 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
     private LivingThing target;
 
-    private void Awake()
-    {
-        hitEffect = transform.Find("HitEffect").gameObject;
-    }
+
 
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
+        hitEffect = transform.Find("HitEffect").gameObject;
         if (!photonView.IsMine) return;
 
         target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<LivingThing>();
 
         info.owner.StartDisplacement(new Displacement(target, marginToTarget, dashSpeed, true, true, DashFinished, DashCanceled));
-
     }
+
     private void DashFinished()
     {
         StartCoroutine(CoroutineKicks());
@@ -89,8 +87,8 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
     private void Kick()
     {
-        info.owner.DoBasicAttackImmediately(target);
-        info.owner.DoMagicDamage(bonusDamage, target);
+        info.owner.DoBasicAttackImmediately(target, source);
+        info.owner.DoMagicDamage(bonusDamage, target, false, source);
         info.owner.LookAt(target.transform.position, true);
     }
 

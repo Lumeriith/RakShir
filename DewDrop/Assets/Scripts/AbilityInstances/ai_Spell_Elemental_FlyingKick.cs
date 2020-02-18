@@ -61,8 +61,8 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         displacement.Cancel();
         if(flyingSound != null) flyingSound.Stop();
         photonView.RPC("RpcHit", RpcTarget.All, other.ClosestPoint(transform.position));
-        info.owner.DoBasicAttackImmediately(lv);
-        info.owner.DoMagicDamage(bonusDamage, lv);
+        info.owner.DoBasicAttackImmediately(lv, source);
+        info.owner.DoMagicDamage(bonusDamage, lv, false, source);
         SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick Hit", transform.position);
         lv.StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneTime, false, false, EasingFunction.Ease.EaseOutSine));
 

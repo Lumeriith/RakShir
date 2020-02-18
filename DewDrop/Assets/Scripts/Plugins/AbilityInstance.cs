@@ -19,44 +19,72 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     public CastInfo info;
 
+    public SourceInfo source;
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
-        CastInfo castInfo;
+        this.info = new CastInfo();
+        this.source = new SourceInfo();
+
         if(initData == null)
         {
             print("AbilityInstance must be instantiated by AbilityInstanceManager!");
             return;
         }
+
         if ((int)initData[0] != -1)
         {
-            castInfo.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
+            this.info.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
         }
         else
         {
-            castInfo.owner = null;
+            this.info.owner = null;
+            Debug.LogWarning("This AbilityInstance does not have an owner!\n" + this.name);
         }
-        castInfo.point = (Vector3)initData[1];
-        castInfo.directionVector = ((Vector3)initData[2]).normalized;
+
+        this.info.point = (Vector3)initData[1];
+        this.info.directionVector = ((Vector3)initData[2]).normalized;
 
         if ((int)initData[3] != -1)
         {
-            castInfo.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<LivingThing>();
+            this.info.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<LivingThing>();
         }
         else
         {
-            castInfo.target = null;
+            this.info.target = null;
         }
 
-        object[] data = new object[initData.Length - 4];
+        if ((string)initData[4] != "" && this.info.owner != null)
+        {
+            foreach(Transform t in this.info.owner.transform)
+            {
+                if(t.name == (string)initData[4])
+                {
+                    source.trigger = t.GetComponent<AbilityTrigger>();
+                    break;
+                }
+            }
+        }
+
+        if((int)initData[5] != -1)
+        {
+            source.gem = PhotonNetwork.GetPhotonView((int)initData[5]).GetComponent<Gem>();
+        }
+
+        source.instance = this;
+        source.thing = this.info.owner;
+
+        object[] data = new object[initData.Length - 6];
         for(int i = 0; i < data.Length; i++)
         {
-            data[i] = initData[i + 4];
+            data[i] = initData[i + 6];
         }
 
         isCreated = true;
-        this.info = castInfo;
-        OnCreate(castInfo, data);
+        OnCreate(this.info, data);
+
+        //Debug.Log(string.Format("AbilityInstance - {0}\nSource Trigger: {1}\nSource Gem: {2}\nSource Instance: {3}", this, source.trigger, source.gem, source.instance));
     }
 
     protected abstract void OnCreate(CastInfo info, object[] data);

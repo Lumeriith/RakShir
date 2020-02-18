@@ -38,7 +38,7 @@ public class StatusEffect
     #region Instance Members
 
     public long uid;
-    public LivingThing caster;
+    public SourceInfo source;
     public LivingThing owner;
     public StatusEffectType type;
     public float duration;
@@ -55,9 +55,9 @@ public class StatusEffect
         }
     }
 
-    public StatusEffect(LivingThing caster, StatusEffectType type, float duration, object parameter = null)
+    public StatusEffect(SourceInfo source, StatusEffectType type, float duration, object parameter = null)
     {
-        this.caster = caster;
+        this.source = source;
         this.type = type;
         this.duration = duration;
         this.parameter = parameter;
@@ -115,93 +115,93 @@ public class StatusEffect
         StatusEffectType.Blind,
         StatusEffectType.DamageOverTime
     };
-    public static StatusEffect Stasis(LivingThing caster, float duration)
+    public static StatusEffect Stasis(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Stasis, duration);
+        return new StatusEffect(source, StatusEffectType.Stasis, duration);
     }
-    public static StatusEffect Invulnerable(LivingThing caster, float duration)
+    public static StatusEffect Invulnerable(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Invulnerable, duration);
+        return new StatusEffect(source, StatusEffectType.Invulnerable, duration);
     }
-    public static StatusEffect Untargetable(LivingThing caster, float duration)
+    public static StatusEffect Untargetable(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Untargetable, duration);
+        return new StatusEffect(source, StatusEffectType.Untargetable, duration);
     }
-    public static StatusEffect Unstoppable(LivingThing caster, float duration)
+    public static StatusEffect Unstoppable(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Unstoppable, duration);
+        return new StatusEffect(source, StatusEffectType.Unstoppable, duration);
     }
-    public static StatusEffect Protected(LivingThing caster, float duration)
+    public static StatusEffect Protected(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Protected, duration);
+        return new StatusEffect(source, StatusEffectType.Protected, duration);
     }
-    public static StatusEffect Speed(LivingThing caster, float duration, float amount)
+    public static StatusEffect Speed(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.Speed, duration, amount);
+        return new StatusEffect(source, StatusEffectType.Speed, duration, amount);
     }
-    public static StatusEffect Haste(LivingThing caster, float duration, float amount)
+    public static StatusEffect Haste(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.Haste, duration, amount);
+        return new StatusEffect(source, StatusEffectType.Haste, duration, amount);
     }
-    public static StatusEffect HealOverTime(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
+    public static StatusEffect HealOverTime(SourceInfo source, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.HealOverTime, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
+        return new StatusEffect(source, StatusEffectType.HealOverTime, duration, ignoreSpellPower ? amount : amount * source.thing.stat.finalSpellPower / 100f);
     }
-    public static StatusEffect Stun(LivingThing caster, float duration)
+    public static StatusEffect Stun(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Stun, duration);
+        return new StatusEffect(source, StatusEffectType.Stun, duration);
     }
-    public static StatusEffect Root(LivingThing caster, float duration)
+    public static StatusEffect Root(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Root, duration);
+        return new StatusEffect(source, StatusEffectType.Root, duration);
     }
-    public static StatusEffect Slow(LivingThing caster, float duration, float amount)
+    public static StatusEffect Slow(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.Slow, duration, amount);
+        return new StatusEffect(source, StatusEffectType.Slow, duration, amount);
     }
-    public static StatusEffect Silence(LivingThing caster, float duration)
+    public static StatusEffect Silence(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.Silence, duration);
-    }
-
-    public static StatusEffect Blind(LivingThing caster, float duration)
-    {
-        return new StatusEffect(caster, StatusEffectType.Blind, duration);
+        return new StatusEffect(source, StatusEffectType.Silence, duration);
     }
 
-
-    public static StatusEffect DamageOverTime(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
+    public static StatusEffect Blind(SourceInfo source, float duration)
     {
-        return new StatusEffect(caster, StatusEffectType.DamageOverTime, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
-    }
-    public static StatusEffect Custom(LivingThing caster, string name, float duration)
-    {
-        return new StatusEffect(caster, StatusEffectType.Custom, duration, name);
+        return new StatusEffect(source, StatusEffectType.Blind, duration);
     }
 
-    public static StatusEffect Shield(LivingThing caster, float duration, float amount, bool ignoreSpellPower = false)
+
+    public static StatusEffect DamageOverTime(SourceInfo source, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.Shield, duration, ignoreSpellPower ? amount : amount * caster.stat.finalSpellPower / 100f);
+        return new StatusEffect(source, StatusEffectType.DamageOverTime, duration, (ignoreSpellPower || source.thing == null) ? amount : amount * source.thing.stat.finalSpellPower / 100f);
+    }
+    public static StatusEffect Custom(SourceInfo source, string name, float duration)
+    {
+        return new StatusEffect(source, StatusEffectType.Custom, duration, name);
     }
 
-    public static StatusEffect AttackDamageBoost(LivingThing caster, float duration, float amount)
+    public static StatusEffect Shield(SourceInfo source, float duration, float amount, bool ignoreSpellPower = false)
     {
-        return new StatusEffect(caster, StatusEffectType.AttackDamageBoost, duration, amount);
+        return new StatusEffect(source, StatusEffectType.Shield, duration, (ignoreSpellPower || source.thing == null) ? amount : amount * source.thing.stat.finalSpellPower / 100f);
     }
 
-    public static StatusEffect AttackDamageReduction(LivingThing caster, float duration, float amount)
+    public static StatusEffect AttackDamageBoost(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.AttackDamageReduction, duration, amount);
+        return new StatusEffect(source, StatusEffectType.AttackDamageBoost, duration, amount);
     }
 
-    public static StatusEffect SpellPowerBoost(LivingThing caster, float duration, float amount)
+    public static StatusEffect AttackDamageReduction(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.SpellPowerBoost, duration, amount);
+        return new StatusEffect(source, StatusEffectType.AttackDamageReduction, duration, amount);
     }
 
-    public static StatusEffect SpellPowerReduction(LivingThing caster, float duration, float amount)
+    public static StatusEffect SpellPowerBoost(SourceInfo source, float duration, float amount)
     {
-        return new StatusEffect(caster, StatusEffectType.SpellPowerReduction, duration, amount);
+        return new StatusEffect(source, StatusEffectType.SpellPowerBoost, duration, amount);
+    }
+
+    public static StatusEffect SpellPowerReduction(SourceInfo source, float duration, float amount)
+    {
+        return new StatusEffect(source, StatusEffectType.SpellPowerReduction, duration, amount);
     }
 
 

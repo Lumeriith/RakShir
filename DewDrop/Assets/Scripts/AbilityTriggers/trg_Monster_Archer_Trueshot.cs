@@ -24,7 +24,7 @@ public class trg_Monster_Archer_Trueshot : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Archer_Trueshot", info.owner.transform.position + info.owner.GetCenterOffset(), info.owner.transform.rotation, info);
+        CreateAbilityInstance("ai_Monster_Archer_Trueshot", info.owner.transform.position + info.owner.GetCenterOffset(), info.owner.transform.rotation, info);
         info.owner.control.StartChanneling(new Channel(selfValidator, 0.5f, false, false, false, false, null, null));
     }
 }

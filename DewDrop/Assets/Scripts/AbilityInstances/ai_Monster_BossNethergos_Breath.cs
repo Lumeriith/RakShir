@@ -58,7 +58,7 @@ public class ai_Monster_BossNethergos_Breath : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
-        info.owner.DoMagicDamage(damage, thing);
-        thing.ApplyStatusEffect(StatusEffect.Silence(info.owner, silenceDuration));
+        info.owner.DoMagicDamage(damage, thing, false, source);
+        thing.ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
     }
 }

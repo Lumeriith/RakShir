@@ -8,7 +8,7 @@ public class ai_cons_ManaHeal : AbilityInstance
     {
         if (!photonView.IsMine) return;
 
-        info.owner.DoManaHeal((float)data[0], info.owner, true);
+        info.owner.DoManaHeal((float)data[0], info.owner, true, source);
         StartCoroutine(CoroutineDestroy());
     }
 

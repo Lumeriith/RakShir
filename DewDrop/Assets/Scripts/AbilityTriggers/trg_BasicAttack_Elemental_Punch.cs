@@ -13,7 +13,7 @@ public class trg_BasicAttack_Elemental_Punch : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_BasicAttack_Elemental_Punch", info.target.GetRandomOffset() + info.target.transform.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_BasicAttack_Elemental_Punch", info.target.GetRandomOffset() + info.target.transform.position, Quaternion.identity, info);
     }
 
     

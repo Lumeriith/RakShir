@@ -14,7 +14,7 @@ public class trg_Monster_Mage_Lightning : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Mage_Lightning", castPos, Quaternion.identity, info, null);
+        CreateAbilityInstance("ai_Monster_Mage_Lightning", castPos, Quaternion.identity, info);
         info.owner.control.StartChanneling(new Channel(selfValidator, 0.75f, false, false, false, false, null, null));
     }
 }

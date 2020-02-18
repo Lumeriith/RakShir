@@ -18,7 +18,7 @@ public class trg_BasicAttack_Universal : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance(abilityInstance, info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
+        CreateAbilityInstance(abilityInstance, info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
         if(channelFinishedSoundEffects != null && channelFinishedSoundEffects.Count != 0)
         {
             SFXManager.CreateSFXInstance(channelFinishedSoundEffects[Random.Range(0, channelFinishedSoundEffects.Count)].name, owner.transform.position);

@@ -14,7 +14,7 @@ public class trg_BasicAttack_SmallFireball : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_BasicAttack_SmallFireball", owner.rightHand.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_BasicAttack_SmallFireball", owner.rightHand.position, Quaternion.identity, info);
     }
 
 }

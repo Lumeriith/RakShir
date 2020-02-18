@@ -21,13 +21,13 @@ public class trg_Spell_Huntress_Ambush : AbilityTrigger
             info.target = huntressMarkTarget;
             dashTarget = huntressMarkTarget;
             dashStartTime = Time.time;
-            AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Huntress_Ambush", transform.position, Quaternion.identity, info);
+            CreateAbilityInstance("ai_Spell_Huntress_Ambush", transform.position, Quaternion.identity, info);
             SpendMana();
         }
         else
         {
             info.target = dashTarget;
-            AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Huntress_Ambush_Backoff", transform.position, Quaternion.identity, info);
+            CreateAbilityInstance("ai_Spell_Huntress_Ambush_Backoff", transform.position, Quaternion.identity, info);
             dashTarget = null;
             StartCooldown();
         }

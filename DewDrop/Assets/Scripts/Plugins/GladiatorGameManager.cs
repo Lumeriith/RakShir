@@ -144,11 +144,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
                 {
                     if(thing.currentHealth > damage)
                     {
-                        thing.DoPureDamage(damage, thing);
+                        thing.DoPureDamage(damage, thing, new SourceInfo());
                     }
                     else if (thing.currentHealth > 1f)
                     {
-                        thing.DoPureDamage(thing.currentHealth - 1f, thing);
+                        thing.DoPureDamage(thing.currentHealth - 1f, thing, new SourceInfo());
                     }
                 }
                 damage += 1f;
@@ -245,7 +245,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
         {
-            if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(thing, .5f));
+            if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(SourceInfo.Empty(), .5f));
             Instantiate(monsterSpawnEffect, thing.transform.position, Quaternion.identity);
             thing.RpcScaleForDuration(0f, 0.5f);
             for (float t = 0.5f; t < 1f; t += 0.05f)
@@ -344,8 +344,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             didRedTeamWin[roundIndex] = info.victim.team == Team.Blue;
             roundIndex++;
             photonView.RPC("RpcSyncRoundResult", RpcTarget.Others, didRedTeamWin, roundIndex);
-            info.killer.ApplyStatusEffect(StatusEffect.Invulnerable(info.killer, 5f));
-            info.killer.ApplyStatusEffect(StatusEffect.HealOverTime(info.killer, 5f, info.killer.maximumHealth - info.killer.currentHealth, true));
+            info.killer.ApplyStatusEffect(StatusEffect.Invulnerable(SourceInfo.Empty(), 5f));
+            info.killer.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 5f, info.killer.maximumHealth - info.killer.currentHealth, true));
             photonView.RPC("RpcShowDefeatEffect", info.victim.photonView.Owner);
             photonView.RPC("RpcShowVictoryEffect", info.killer.photonView.Owner);
             photonView.RPC("RpcStopRoundTimer", RpcTarget.All);
@@ -435,8 +435,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         
         for (int i = 0; i < players.Length; i++)
         {
-            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.Invulnerable(gamePlayers[players[i]], 5f));
-            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.HealOverTime(gamePlayers[players[i]], 5f, gamePlayers[players[i]].maximumHealth - gamePlayers[players[i]].currentHealth, true));
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.Invulnerable(SourceInfo.Empty(), 5f));
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 5f, gamePlayers[players[i]].maximumHealth - gamePlayers[players[i]].currentHealth, true));
         }
 
         photonView.RPC("RpcStartRoundTimer", RpcTarget.All);
@@ -462,9 +462,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
         
         player.Revive();
-        player.DoHeal(player.maximumHealth, player, true);
-        player.DoManaHeal(player.stat.finalMaximumMana, player, true);
-        player.statusEffect.ApplyStatusEffect(StatusEffect.Protected(player, 5f));
+        player.DoHeal(player.maximumHealth, player, true, new SourceInfo());
+        player.DoManaHeal(player.stat.finalMaximumMana, player, true, new SourceInfo());
+        player.statusEffect.ApplyStatusEffect(StatusEffect.Protected(SourceInfo.Empty(), 5f));
     }
 
     private void SetPhase(GladiatorGamePhase phase)

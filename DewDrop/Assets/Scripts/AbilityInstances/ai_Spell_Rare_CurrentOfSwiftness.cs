@@ -16,9 +16,9 @@ public class ai_Spell_Rare_CurrentOfSwiftness : AbilityInstance
     {
         transform.parent = info.owner.transform;
         if (!photonView.IsMine) return;
-        shield = StatusEffect.Shield(info.owner, shieldDuration, shieldAmount);
-        speed = StatusEffect.Speed(info.owner, shieldDuration, speedAmount);
-        haste = StatusEffect.Haste(info.owner, shieldDuration, hasteAmount);
+        shield = StatusEffect.Shield(source, shieldDuration, shieldAmount);
+        speed = StatusEffect.Speed(source, shieldDuration, speedAmount);
+        haste = StatusEffect.Haste(source, shieldDuration, hasteAmount);
         info.owner.statusEffect.ApplyStatusEffect(shield);
         info.owner.statusEffect.ApplyStatusEffect(speed);
         info.owner.statusEffect.ApplyStatusEffect(haste);

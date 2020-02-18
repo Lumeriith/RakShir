@@ -13,7 +13,9 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
     public float speed = 14f;
     public float distance = 7f;
     public float modelAngularSpeed = 1200f;
-    public float damage = 30f;
+    public float initialDamage = 30f;
+    public float dotAmount = 70f;
+    public float dotDuration = 4f;
     public float cooldownReductionAmount = 4f;
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
@@ -45,8 +47,8 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowDagger Hit", transform.position);
-        info.owner.DoBasicAttackImmediately(lv);
-        info.owner.DoMagicDamage(30f, lv);
+        info.owner.DoMagicDamage(initialDamage, lv, false, source);
+        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(source, dotDuration, dotAmount));
         photonView.RPC("RpcLand", RpcTarget.All, transform.position);
         photonView.RPC("RpcDestroyModel", RpcTarget.All);
         if (info.owner.control.skillSet[1] != null && info.owner.control.skillSet[1] as trg_Spell_Rare_ThrowDagger != null)
@@ -54,7 +56,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
             info.owner.control.skillSet[1].ApplyCooldownReduction(cooldownReductionAmount);
             
         }
-        info.owner.DoManaHeal(20f, info.owner, true);
+        info.owner.DoManaHeal(20f, info.owner, true, source);
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
     }

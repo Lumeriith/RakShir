@@ -12,6 +12,6 @@ public class trg_Monster_Firespawn_Basicattack : AbilityTrigger
 
     private void ChannelFinished()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Firespawn_Basicattack", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
+        CreateAbilityInstance("ai_Monster_Firespawn_Basicattack", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info);
     }
 }

@@ -14,6 +14,6 @@ public class trg_Spell_Elemental_FrontKick : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Elemental_FrontKick", owner.transform.position + owner.GetCenterOffset(), info.directionQuaternion, info);
+        CreateAbilityInstance("ai_Spell_Elemental_FrontKick", owner.transform.position + owner.GetCenterOffset(), info.directionQuaternion, info);
     }
 }

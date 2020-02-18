@@ -46,10 +46,10 @@ public class BossNethergosBehaviour : MonoBehaviourPun
         if (!shouldRevive) return;
         livingThing.Revive();
         livingThing.PlayCustomAnimation("BossNethergos - Shout", 5f);
-        StatusEffect hot = new StatusEffect(livingThing, StatusEffectType.HealOverTime, 5, livingThing.maximumHealth);
+        StatusEffect hot = new StatusEffect(SourceInfo.CasterOnly(livingThing), StatusEffectType.HealOverTime, 5, livingThing.maximumHealth);
         livingThing.statusEffect.ApplyStatusEffect(hot);
 
-        StatusEffect invul = new StatusEffect(livingThing, StatusEffectType.Invulnerable, 5);
+        StatusEffect invul = new StatusEffect(SourceInfo.CasterOnly(livingThing), StatusEffectType.Invulnerable, 5);
         livingThing.statusEffect.ApplyStatusEffect(invul);
     }
 

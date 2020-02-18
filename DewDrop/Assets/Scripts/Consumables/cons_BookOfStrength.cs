@@ -7,7 +7,7 @@ public class cons_BookOfStrength : Consumable
 
     public override bool OnUse(CastInfo info)
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_cons_BookOfStrength", info.owner.transform.position, Quaternion.identity, info);
+        AbilityInstanceManager.CreateAbilityInstance("ai_cons_BookOfStrength", info.owner.transform.position, Quaternion.identity, info, new SourceInfo());
         SFXManager.CreateSFXInstance("si_cons_BookOfStrength", info.owner.transform.position);
         DestroySelf();
         return true;

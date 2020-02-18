@@ -6,7 +6,7 @@ public class trg_Spell_Rare_IcyBlast : AbilityTrigger
 {
     public override void OnCast(CastInfo info)
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Spell_Rare_IcyBlast", transform.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_Spell_Rare_IcyBlast", transform.position, Quaternion.identity, info);
         StartCooldown();
         SpendMana();
     }

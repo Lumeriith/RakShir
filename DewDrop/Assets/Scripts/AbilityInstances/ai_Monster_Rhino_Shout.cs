@@ -19,7 +19,7 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
         for(int i = 0; i < lvs.Count; i++)
         {
             lvs[i].StartDisplacement(new Displacement((lvs[i].transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutSine));
-            info.owner.DoMagicDamage(damage, lvs[i]);
+            info.owner.DoMagicDamage(damage, lvs[i], false, source);
         }
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();

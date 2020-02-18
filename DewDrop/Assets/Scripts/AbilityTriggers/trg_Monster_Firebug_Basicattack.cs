@@ -15,7 +15,7 @@ public class trg_Monster_Firebug_Basicattack : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_Firebug_Basicattack", info.owner.transform.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_Monster_Firebug_Basicattack", info.owner.transform.position, Quaternion.identity, info);
         Channel channel = new Channel(selfValidator, channelDurationRatio, false, false, false, false, null, null, true);
         info.owner.control.StartChanneling(channel);
     }

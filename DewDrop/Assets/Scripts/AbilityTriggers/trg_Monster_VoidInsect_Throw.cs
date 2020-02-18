@@ -17,11 +17,11 @@ public class trg_Monster_VoidInsect_Throw : AbilityTrigger
     {
         Vector3 left = Vector3.Cross(modifiedInfo.directionVector, Vector3.up);
         Vector3 original = modifiedInfo.directionVector;
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
+        CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
         modifiedInfo.directionVector = (original + left*0.25f).normalized;
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
+        CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
         modifiedInfo.directionVector = (original - left*0.25f).normalized;
-        AbilityInstanceManager.CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
+        CreateAbilityInstance("ai_Monster_VoidInsect_Throw", info.owner.bottom.position, modifiedInfo.directionQuaternion, modifiedInfo);
 
         info.owner.control.StartChanneling(new Channel(selfValidator, 0.3f, false, true, false, false, null, null));
     }

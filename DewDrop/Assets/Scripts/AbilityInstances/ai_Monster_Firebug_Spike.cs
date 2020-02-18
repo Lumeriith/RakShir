@@ -37,6 +37,6 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
-        info.owner.DoMagicDamage(damage, lv);
+        info.owner.DoMagicDamage(damage, lv, false, source);
     }
 }

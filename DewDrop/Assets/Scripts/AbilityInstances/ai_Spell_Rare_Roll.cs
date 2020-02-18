@@ -34,7 +34,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     private IEnumerator CoroutineApplyDamageBoost()
     {
         yield return new WaitForSeconds(duration);
-        damageBoost = StatusEffect.AttackDamageBoost(info.owner, attackDamageBoostDuration, attackDamageBoostAmount);
+        damageBoost = StatusEffect.AttackDamageBoost(source, attackDamageBoostDuration, attackDamageBoostAmount);
         info.owner.ApplyStatusEffect(damageBoost);
         damageBoost.OnExpire += EffectExpired;
         info.owner.OnDoBasicAttackHit += EffectUsed;

@@ -29,14 +29,14 @@ public class ai_BasicAttack_Rare_LeechingOrb : AbilityInstance
         transform.position = Vector3.MoveTowards(transform.position, info.target.transform.position + targetOffset, travelSpeed * Time.deltaTime);
         if(isMine && Vector3.Distance(transform.position, info.target.transform.position + targetOffset) < 0.5f)
         {
-            info.owner.DoBasicAttackImmediately(info.target);
+            info.owner.DoBasicAttackImmediately(info.target, source);
             if (info.target.currentHealth <= info.target.maximumHealth / 2f)
             {
-                info.owner.DoManaHeal(empoweredManaHealPercentage / 100f * info.owner.stat.finalMaximumMana, info.owner, true);
+                info.owner.DoManaHeal(empoweredManaHealPercentage / 100f * info.owner.stat.finalMaximumMana, info.owner, true, source);
             }
             else
             {
-                info.owner.DoManaHeal(manaHealPercentage / 100f * info.owner.stat.finalMaximumMana, info.owner, true);
+                info.owner.DoManaHeal(manaHealPercentage / 100f * info.owner.stat.finalMaximumMana, info.owner, true, source);
             }
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_LeechingOrb Hit", transform.position);
 

@@ -73,6 +73,14 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public float cooldownTime;
 
+    protected SourceInfo source
+    {
+        get
+        {
+            return new SourceInfo { trigger = this, thing = owner };
+        }
+    }
+
     public int skillIndex
     {
         get
@@ -203,7 +211,8 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public bool SpendMana()
     {
-        return owner.SpendMana(manaCost);
+        SourceInfo source = new SourceInfo { trigger = this, thing = owner };
+        return owner.SpendMana(manaCost, source);
     }
 
     public void RefundMana()
@@ -225,16 +234,18 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
+        SourceInfo source = new SourceInfo() { trigger = this, thing = owner };
         PurgeInstancesList();
         if (info.owner == null) info.owner = owner;
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
         instances.Add(instance);
     }
 
     public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
     {
+        SourceInfo source = new SourceInfo() { trigger = this, thing = owner };
         PurgeInstancesList();
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
         instances.Add(instance);
     }
 
@@ -293,7 +304,5 @@ public abstract class AbilityTrigger : MonoBehaviour
                 instances[instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
         }
-
-
     }
 }

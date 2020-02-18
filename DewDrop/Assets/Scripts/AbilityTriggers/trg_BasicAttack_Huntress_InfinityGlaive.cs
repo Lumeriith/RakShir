@@ -15,7 +15,7 @@ public class trg_BasicAttack_Huntress_InfinityGlaive : AbilityTrigger
 
     private void ChannelSuccess()
     {
-        AbilityInstanceManager.CreateAbilityInstance("ai_BasicAttack_Huntress_InfinityGlaive", info.owner.rightHand.position, Quaternion.identity, info);
+        CreateAbilityInstance("ai_BasicAttack_Huntress_InfinityGlaive", info.owner.rightHand.position, Quaternion.identity, info);
     }
 
 }

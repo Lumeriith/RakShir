@@ -30,7 +30,7 @@ public class EnvironmentalInvulnerable : MonoBehaviour
         else
         {
             affectedLivingThings.Add(thing);
-            statusEffects.Add(StatusEffect.Invulnerable(thing, duration));
+            statusEffects.Add(StatusEffect.Invulnerable(SourceInfo.CasterOnly(thing), duration));
             thing.ApplyStatusEffect(statusEffects[statusEffects.Count - 1]);
             lastUpdateTime.Add(Time.time);
         }

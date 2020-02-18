@@ -27,7 +27,7 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
         transform.LookAt(info.target.transform.position + offset);
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target);
+            info.owner.DoBasicAttackImmediately(info.target, source);
             photonView.RPC("RpcLanded", RpcTarget.All);
             if(fly != null) fly.Stop();
 

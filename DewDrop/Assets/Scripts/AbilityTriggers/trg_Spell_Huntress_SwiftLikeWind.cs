@@ -33,6 +33,6 @@ public class trg_Spell_Huntress_SwiftLikeWind : AbilityTrigger
             if (owner.control.skillSet[i] != null) owner.control.skillSet[i].ApplyCooldownReduction(cooldownReductionAmount);
         }
         StartCooldown();
-        owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(owner, speedDuration, speedAmount));
+        owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(source, speedDuration, speedAmount));
     }
 }

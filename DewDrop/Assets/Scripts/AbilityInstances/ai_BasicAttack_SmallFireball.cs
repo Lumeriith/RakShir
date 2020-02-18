@@ -40,7 +40,7 @@ public class ai_BasicAttack_SmallFireball : AbilityInstance
             {
                 photonView.RPC("Landed", RpcTarget.All);
                 DetachChildParticleSystemsAndAutoDelete();
-                owner.DoBasicAttackImmediately(target);
+                owner.DoBasicAttackImmediately(target, source);
                 DestroySelf();
             }
         }

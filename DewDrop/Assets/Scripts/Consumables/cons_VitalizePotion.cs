@@ -10,7 +10,7 @@ public class cons_VitalizePotion : Consumable
     public override bool OnUse(CastInfo info)
     {
         SFXManager.CreateSFXInstance("si_cons_AnyPotion", info.owner.transform.position);
-        AbilityInstanceManager.CreateAbilityInstance("ai_cons_HealOverTime", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info, new object[] { (info.owner.maximumHealth - info.owner.currentHealth) * missingHealthHealMultiplier, healDuration });
+        AbilityInstanceManager.CreateAbilityInstance("ai_cons_HealOverTime", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info, new SourceInfo(), new object[] { (info.owner.maximumHealth - info.owner.currentHealth) * missingHealthHealMultiplier, healDuration });
         DestroySelf();
         return true;
     }

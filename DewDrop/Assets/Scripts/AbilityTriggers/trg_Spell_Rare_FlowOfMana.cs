@@ -25,7 +25,7 @@ public class trg_Spell_Rare_FlowOfMana : AbilityTrigger
     {
         if (!isCooledDown) return;
 
-        owner.DoManaHeal(manaHealAmount, owner);
+        owner.DoManaHeal(manaHealAmount, owner, false, source);
         SFXManager.CreateSFXInstance("si_Spell_Rare_FlowOfMana", owner.transform.position, true);
         for(int i = 1; i < owner.control.cooldownTime.Length; i++)
         {

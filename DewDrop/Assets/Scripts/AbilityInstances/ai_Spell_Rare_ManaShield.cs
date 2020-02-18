@@ -33,7 +33,7 @@ public class ai_Spell_Rare_ManaShield : AbilityInstance
         {
             if (shield == null || !shield.isAlive)
             {
-                shield = StatusEffect.Shield(info.owner, 2f, shieldChargeAmount);
+                shield = StatusEffect.Shield(source, 2f, shieldChargeAmount);
                 info.owner.ApplyStatusEffect(shield);
             }
             else

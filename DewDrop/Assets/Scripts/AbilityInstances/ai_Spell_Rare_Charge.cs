@@ -62,9 +62,9 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         for (int i = 0; i < targets.Count; i++)
         {
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
-            info.owner.DoMagicDamage(damage, targets[i]);
+            info.owner.DoMagicDamage(damage, targets[i], false, source);
             targets[i].StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutQuad));
-            targets[i].ApplyStatusEffect(StatusEffect.Stun(info.owner, stunDuration));
+            targets[i].ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
         }
 
 

@@ -46,8 +46,8 @@ public class ai_Spell_Rare_Slip : AbilityInstance
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
         if (!validator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Stun(info.owner, duration - elapsedTime));
+        thing.ApplyStatusEffect(StatusEffect.Stun(source, duration - elapsedTime));
         SFXManager.CreateSFXInstance("si_Spell_Rare_Slip Hit", other.transform.position);
-        info.owner.DoMagicDamage(damage, thing);
+        info.owner.DoMagicDamage(damage, thing, false, source);
     }
 }

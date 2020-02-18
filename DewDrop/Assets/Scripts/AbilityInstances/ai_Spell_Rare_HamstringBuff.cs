@@ -15,8 +15,8 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         transform.parent = info.owner.transform;
         if (photonView.IsMine)
         {
-            speed = StatusEffect.Speed(info.owner, duration, speedAmount);
-            haste = StatusEffect.Haste(info.owner, duration, hasteAmount);
+            speed = StatusEffect.Speed(source, duration, speedAmount);
+            haste = StatusEffect.Haste(source, duration, hasteAmount);
             info.owner.ApplyStatusEffect(speed);
             info.owner.ApplyStatusEffect(haste);
             info.owner.control.skillSet[0].ResetCooldown();

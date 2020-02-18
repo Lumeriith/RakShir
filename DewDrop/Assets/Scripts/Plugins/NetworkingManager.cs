@@ -26,6 +26,21 @@ public class NetworkingManager : MonoBehaviourPunCallbacks
     private RaiseEventOptions raiseToAll = new RaiseEventOptions { Receivers = ReceiverGroup.All };
     private SendOptions sendReliably = new SendOptions { Reliability = true };
 
+    private static bool registeredCustomTypes = false;
+
+    private void Start()
+    {
+        if (!registeredCustomTypes)
+        {
+            PhotonPeer.RegisterType(typeof(SourceInfo), 255, SourceInfo.SerializeSourceInfo, SourceInfo.DeserializeSourceInfo);
+            registeredCustomTypes = true;
+        }
+    }
+
+
+
+    
+
     void Update()
     {
         if(!PhotonNetwork.InRoom || !PhotonNetwork.IsMasterClient) return;
