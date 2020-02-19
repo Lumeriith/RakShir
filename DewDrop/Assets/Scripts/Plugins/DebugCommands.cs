@@ -170,7 +170,7 @@ public class DebugCommands : MonoBehaviour
             GameObject gobj = obj as GameObject;
             if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                if(gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_"))
+                if(gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_") || gobj.name.StartsWith("gem_"))
                 {
                     targets.Add(gobj);
                 }
@@ -183,7 +183,7 @@ public class DebugCommands : MonoBehaviour
             if(target.name.StartsWith("player_") || target.name.StartsWith("monster_"))
             {
                 GameManager.SpawnLivingThing(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
-            } else if (target.name.StartsWith("cons_") || target.name.StartsWith("equip_"))
+            } else if (target.name.StartsWith("cons_") || target.name.StartsWith("equip_") || target.name.StartsWith("gem_"))
             {
                 GameManager.SpawnItem(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
             }
@@ -220,6 +220,36 @@ public class DebugCommands : MonoBehaviour
     {
         Music.Play(name);
     }
+
+    [ConsoleMethod("equipgem", "Equips first gem found in the inventory to the AbilityTrigger at the index specified")]
+    public static void EquipGem(int index)
+    {
+        PlayerInventory inventory = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
+        Gem gem;
+        for (int i = 0; i < inventory.inventory.Count; i++)
+        {
+            gem = inventory.inventory[i] as Gem;
+            if (gem != null)
+            {
+                inventory.EquipGemFromInventory(i, GameManager.instance.localPlayer.control.skillSet[index]);
+                return;
+            }
+        }
+    }
+
+    [ConsoleMethod("unequipgem", "Unequips all gems attached to the AbilityTrigger at the index specified")]
+    public static void UnequipGem(int index)
+    {
+        PlayerInventory inventory = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
+
+        for (int i = 0; i < GameManager.instance.localPlayer.control.skillSet[index].connectedGems.Count; i++)
+        {
+            inventory.UnequipGem(GameManager.instance.localPlayer.control.skillSet[index].connectedGems[i], true);
+        }
+    }
+
+
+
 
 
 

@@ -73,6 +73,10 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public float cooldownTime;
 
+    public List<Gem> connectedGems;
+    public int maxGems = 3;
+
+
     protected SourceInfo source
     {
         get
@@ -148,9 +152,14 @@ public abstract class AbilityTrigger : MonoBehaviour
             owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier);
         }
         this.info = info;
+        for(int i = 0; i < connectedGems.Count; i++)
+        {
+            connectedGems[i].photonView.RPC("RpcOnTriggerCast", RpcTarget.Others);
+            connectedGems[i].OnTriggerCast(true);
+        }
         OnCast(info);
-
     }
+
 
     public abstract void OnCast(CastInfo info);
 
