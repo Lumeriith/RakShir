@@ -11,7 +11,7 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private Image image_disabled;
 
 
-    private PlayerItemBelt belt;
+    private PlayerInventory belt;
 
     private PointerEventData hover = null;
     public void OnPointerEnter(PointerEventData data)
@@ -50,7 +50,7 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void Update()
     {
         if (UnitControlManager.instance.selectedUnit == null) return;
-        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>();
+        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
         
         if (belt == null || !GameManager.instance.localPlayer.photonView.IsMine)
         {

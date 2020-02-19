@@ -11,7 +11,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
     private new Text name;
     private Text subtitle;
 
-    private PlayerItemBelt belt;
+    private PlayerInventory belt;
 
     private CanvasGroup canvasGroup;
 
@@ -81,7 +81,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public void OnPointerEnter(PointerEventData data)
     {
         if (GameManager.instance.localPlayer == null) return;
-        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>();
+        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
         if (belt.inventory.Count <= index || belt.inventory[index] == null) return;
 
         if (belt.inventory[index] as Equipment != null)
@@ -137,7 +137,7 @@ public class ItemInInventory : MonoBehaviour, IPointerClickHandler, IPointerEnte
     void Update()
     {
         if (GameManager.instance.localPlayer == null) return;
-        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>();
+        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
         if (belt.inventory.Count <= index || belt.inventory[index] == null)
         {
             HideItem();

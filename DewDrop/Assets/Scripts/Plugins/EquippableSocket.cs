@@ -21,7 +21,7 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         LivingThing target = GameManager.instance.localPlayer;
         if (target == null || !target.photonView.IsMine) return;
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null) return;
         if (belt.equipped[(int)equipmentType] == null) return;
 
@@ -51,7 +51,7 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         LivingThing target = GameManager.instance.localPlayer;
         if (target == null || !target.photonView.IsMine) return;
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null) return;
         if (belt.equipped[(int)equipmentType] == null) return;
         DescriptionBox.ShowDescription(belt.equipped[(int)equipmentType]);
@@ -89,7 +89,7 @@ public class EquippableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
             ResetSocket();
             return;
         }
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null)
         {
             ResetSocket();

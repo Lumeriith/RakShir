@@ -9,7 +9,7 @@ public class ConsumableDetailBox : MonoBehaviour
     private new Text name;
     private Text description;
 
-    private PlayerItemBelt belt;
+    private PlayerInventory belt;
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class ConsumableDetailBox : MonoBehaviour
     private void UpdateText()
     {
         if (UnitControlManager.instance.selectedUnit == null) return;
-        if(belt ==  null) belt = UnitControlManager.instance.selectedUnit.GetComponent<PlayerItemBelt>();
+        if(belt ==  null) belt = UnitControlManager.instance.selectedUnit.GetComponent<PlayerInventory>();
 
         if (belt == null || !UnitControlManager.instance.selectedUnit.photonView.IsMine || belt.consumableBelt[parent.consumableIndex] == null)
         {

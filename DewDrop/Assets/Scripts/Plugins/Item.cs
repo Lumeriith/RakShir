@@ -83,7 +83,7 @@ public abstract class Item : Activatable
     {
         if (activator.photonView.IsMine)
         {
-            activator.GetComponent<PlayerItemBelt>().Pickup(this);
+            activator.GetComponent<PlayerInventory>().Pickup(this);
         }
     }
 

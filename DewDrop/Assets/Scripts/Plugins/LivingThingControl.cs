@@ -127,7 +127,7 @@ public class Command
     {
         if (self.control.IsAbilityProhibitedByChannel()) return false;
         if (!consumable.selfValidator.Evaluate(self) || !consumable.IsReady()) return true;
-        PlayerItemBelt belt = self.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = self.GetComponent<PlayerInventory>();
 
         switch (consumable.targetingType)
         {

@@ -68,7 +68,7 @@ public class ShopManager : MonoBehaviour
 
         if (GameManager.instance.localPlayer.HasGold(currentStock[index].value))
         {
-            if (GameManager.instance.localPlayer.GetComponent<PlayerItemBelt>().HasSpaceFor(currentStock[index]))
+            if (GameManager.instance.localPlayer.GetComponent<PlayerInventory>().HasSpaceFor(currentStock[index]))
             {
                 SFXManager.CreateSFXInstance("si_local_ShopBuy", GameManager.instance.localPlayer.transform.position, true);
                 GameManager.instance.localPlayer.SpendGold(currentStock[index].value);

@@ -19,7 +19,7 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         LivingThing target = GameManager.instance.localPlayer;
         if (target == null || !target.photonView.IsMine) return;
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null) return;
         if (belt.consumableBelt[consumableIndex] == null) return;
 
@@ -50,7 +50,7 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
     {
         LivingThing target = GameManager.instance.localPlayer;
         if (target == null || !target.photonView.IsMine) return;
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null) return;
         if (belt.consumableBelt[consumableIndex] == null) return;
         DescriptionBox.ShowDescription(belt.consumableBelt[consumableIndex]);
@@ -88,7 +88,7 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
             ResetSocket();
             return;
         }
-        PlayerItemBelt belt = target.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = target.GetComponent<PlayerInventory>();
         if (belt == null)
         {
             ResetSocket();

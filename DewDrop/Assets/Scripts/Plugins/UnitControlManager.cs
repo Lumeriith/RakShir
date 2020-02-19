@@ -512,7 +512,7 @@ public class UnitControlManager : MonoBehaviour
 
     private void ItemButtonPressed(int itemIndex, AbilityCastMethod method, KeyCode button)
     {
-        PlayerItemBelt belt = selectedUnit.GetComponent<PlayerItemBelt>();
+        PlayerInventory belt = selectedUnit.GetComponent<PlayerInventory>();
 
         if (belt == null) return;
         if (belt.consumableBelt[itemIndex - 1] == null) return;
