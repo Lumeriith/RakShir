@@ -233,6 +233,14 @@ public class LivingThing : MonoBehaviourPun
 
     }
 
+    public bool isMine
+    {
+        get
+        {
+            return photonView.IsMine;
+        }
+    }
+
     private Room _currentRoom;
 
     private GameObject unitBase;

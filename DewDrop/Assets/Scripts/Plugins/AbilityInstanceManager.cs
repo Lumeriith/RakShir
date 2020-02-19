@@ -18,7 +18,17 @@ public struct CastInfo
             return Quaternion.LookRotation(directionVector, Vector3.up);
         }
     }
+
+    public static CastInfo OwnerOnly(LivingThing owner)
+    {
+        return new CastInfo { owner = owner };
+    }
+
+    public static CastInfo OwnerAndTarget(LivingThing owner, LivingThing target) {
+        return new CastInfo { owner = owner, target = target };
+    }
 }
+
 
 public struct SourceInfo
 {
