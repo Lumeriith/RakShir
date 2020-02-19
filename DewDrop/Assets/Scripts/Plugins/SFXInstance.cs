@@ -41,7 +41,7 @@ public class SFXInstance : MonoBehaviourPun
     private void RpcFollow(int viewID)
     {
         PhotonView view = PhotonNetwork.GetPhotonView(viewID);
-        if (view = null) return;
+        if (view == null) return;
         followTarget = view.transform;
     }
 
