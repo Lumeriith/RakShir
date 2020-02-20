@@ -12,6 +12,9 @@ public abstract class Gem : Item
 
     private List<AbilityInstance> instances = new List<AbilityInstance>();
 
+    private GameObject deactivatedModel;
+    private List<Component> deactivatedComponents = new List<Component>();
+
     protected SourceInfo source
     {
         get
@@ -110,8 +113,73 @@ public abstract class Gem : Item
         photonView.RPC("RpcSetLevel", RpcTarget.All, level);
     }
 
+    public void Equip(string triggerName)
+    {
+        photonView.RPC("RpcEquip", RpcTarget.All, triggerName);
+    }
+
+    public void Unequip()
+    {
+        photonView.RPC("RpcUnequip", RpcTarget.All);
+    }
+
     [PunRPC]
-    protected virtual void RpcSetLevel(int level)
+    protected void RpcEquip(string triggerName)
+    {
+        trigger = owner.transform.Find(triggerName).GetComponent<AbilityTrigger>();
+        trigger.connectedGems.Add(this);
+
+        Transform t = transform.Find("Model");
+        if (t != null)
+        {
+            deactivatedModel = t.gameObject;
+            deactivatedModel.SetActive(false);
+        }
+
+        deactivatedComponents.AddRange(GetComponents<Rigidbody>());
+        deactivatedComponents.AddRange(GetComponents<Collider>());
+        Behaviour b;
+        for(int i = deactivatedComponents.Count - 1; i >= 0; i--)
+        {
+            b = deactivatedComponents[i] as Behaviour;
+            if (b == null || !b.enabled)
+            {
+                deactivatedComponents.RemoveAt(i);
+            }
+            else
+            {
+                b.enabled = false;
+            }
+        }
+
+        gameObject.SetActive(true);
+
+        OnEquip(owner, trigger);
+    }
+
+    [PunRPC]
+    protected void RpcUnequip()
+    {
+        OnUnequip(owner, trigger);
+        trigger.connectedGems.Remove(this);
+        trigger = null;
+
+        for(int i = 0; i < deactivatedComponents.Count; i++)
+        {
+            (deactivatedComponents[i] as Behaviour).enabled = true;
+        }
+
+        if (deactivatedModel != null) deactivatedModel.gameObject.SetActive(true);
+
+        deactivatedComponents.Clear();
+        deactivatedModel = null;
+
+        gameObject.SetActive(false);
+    }
+
+
+    [PunRPC]
+    protected void RpcSetLevel(int level)
     {
         this.level = level;
     }
@@ -121,4 +189,6 @@ public abstract class Gem : Item
     {
         OnTriggerCast(false);
     }
+
+   
 }

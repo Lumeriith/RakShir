@@ -196,17 +196,15 @@ public class PlayerInventory : MonoBehaviour
         
         inventory.RemoveAt(from);
 
-        gem.trigger = trigger;
-        trigger.connectedGems.Add(gem);
-        gem.OnEquip(livingThing, trigger);
+        gem.Equip(trigger.name);
+        //gem.OnEquip(livingThing, trigger);
     }
 
     public void UnequipGem(Gem gem, bool ignoreInventoryCapacity = false)
     {
         if (gem.trigger == null || (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity)) return;
-        gem.OnUnequip(livingThing, gem.trigger);
-        gem.trigger.connectedGems.Remove(gem);
-        gem.trigger = null;
+        gem.Unequip();
+        //gem.OnUnequip(livingThing, gem.trigger);
         inventory.Add(gem);
     }
 
