@@ -75,12 +75,14 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
     [PunRPC]
     private void RpcLanded(Vector3 position)
     {
-        ParticleSystem newLand = Instantiate(land.gameObject, position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+        ParticleSystem newLand = Instantiate(land.gameObject, position, transform.rotation, null).GetComponent<ParticleSystem>();
         newLand.Play();
+        newLand.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         if (isEmpowered)
         {
-            ParticleSystem newEmpoweredLand = Instantiate(empoweredLand.gameObject, position, Quaternion.identity, transform).GetComponent<ParticleSystem>();
+            ParticleSystem newEmpoweredLand = Instantiate(empoweredLand.gameObject, position, transform.rotation, null).GetComponent<ParticleSystem>();
             newEmpoweredLand.Play();
+            newEmpoweredLand.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         }
         //fly.Stop();
     }
