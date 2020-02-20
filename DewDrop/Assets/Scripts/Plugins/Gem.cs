@@ -105,6 +105,17 @@ public abstract class Gem : Item
         if (owner != null && trigger != null) AliveUpdate(owner.photonView.IsMine);
     }
 
+    public void SetLevel(int level)
+    {
+        photonView.RPC("RpcSetLevel", RpcTarget.All, level);
+    }
+
+    [PunRPC]
+    protected virtual void RpcSetLevel(int level)
+    {
+        this.level = level;
+    }
+
     [PunRPC]
     protected virtual void RpcOnTriggerCast()
     {
