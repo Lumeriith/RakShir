@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2911441332996855067}
   - component: {fileID: 2911441332996855066}
   - component: {fileID: 2911441332996855070}
-  - component: {fileID: 3496864089459578067}
+  - component: {fileID: 5556825213744923689}
   m_Layer: 11
-  m_Name: gem_Common_Aftertaste
+  m_Name: gem_Common_Contempt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3496864089459578067
+--- !u!114 &5556825213744923689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2911441332996855045}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad4f63c7e842ad047a9f4e9fb44e9801, type: 3}
+  m_Script: {fileID: 11500000, guid: f80ecb41ecee1fb4f95fc5a0550e8aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activationRange: 2.5
@@ -112,30 +112,25 @@ MonoBehaviour:
     canBeCanceledByCaster: 0
     isBasicAttack: 0
   isInterruptedByDamage: 1
-  itemIcon: {fileID: 21300000, guid: d1c5a6c4b0d4f324db126b02f568b155, type: 3}
-  itemName: "\uC5EC\uC6B4"
+  itemIcon: {fileID: 21300000, guid: a64e0ea6edef342409ee3e31b950d39f, type: 3}
+  itemName: "\uACBD\uBA78"
   itemTier: 0
   value: 100
-  itemDescription: "\uC774 \uAE30\uC220\uB85C [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC900
-    \uD6C4 1\uCD08 \uD6C4\uC5D0 {bonusMagicDamagePercentage}% \uB9CC\uD07C\uC744 \uCD94\uAC00\uB85C
-    \uC8FC\uACE0, [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uC2DC\uD0A8 \uD6C4 1\uCD08 \uD6C4\uC5D0
-    {bonusHealPercentage}% \uB9CC\uD07C\uC744 \uCD94\uAC00\uB85C \uD68C\uBCF5\uC2DC\uD0B5\uB2C8\uB2E4."
+  itemDescription: "[\uC774\uB3D9 \uC18D\uB3C4]\uAC00 \uB290\uB824\uC9C0\uAC70\uB098,
+    [\uAE30\uC808], [\uC774\uB3D9 \uBD88\uAC00], [\uCE68\uBB35] \uD639\uC740 [\uC2E4\uBA85]\uB41C
+    \uB300\uC0C1\uC5D0\uAC8C \uC774 \uAE30\uC220\uB85C [\uB9C8\uBC95 \uD53C\uD574]\uB97C
+    \uC8FC\uBA74 \uD53C\uD574\uB7C9\uC758 {bonusPercentage}%\uB9CC\uD07C [\uB9C8\uBC95
+    \uD53C\uD574]\uB97C \uCD94\uAC00\uB85C \uC90D\uB2C8\uB2E4."
   owner: {fileID: 0}
   trigger: {fileID: 0}
   level: 0
   maxLevel: 4
-  bonusMagicDamagePercentage:
-  - 15
+  bonusPercentage:
   - 20
   - 25
   - 30
   - 35
-  bonusHealPercentage:
-  - 25
-  - 30
-  - 35
   - 40
-  - 45
 --- !u!1001 &5778138197708008987
 PrefabInstance:
   m_ObjectHideFlags: 0
