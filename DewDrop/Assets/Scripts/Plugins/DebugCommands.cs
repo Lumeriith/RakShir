@@ -249,6 +249,15 @@ public class DebugCommands : MonoBehaviour
     }
 
 
+    [ConsoleMethod("select", "Select the unit on the cursor. Expect an unexpected behaviour that isn't local.")]
+    public static void Select()
+    {
+        LivingThing target = GetFirstValidTarget();
+        if (target == null) target = GameManager.instance.localPlayer;
+        UnitControlManager.instance.selectedUnit = target;
+    }
+
+
 
 
 
