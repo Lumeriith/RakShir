@@ -8,7 +8,9 @@ public class ai_Gem_Common_Aftertaste : AbilityInstance
 
     private bool isDamage;
     private float amount;
-    
+
+    private SFXInstance start;
+
     protected override void OnCreate(CastInfo info, object[] data)
     {
         isDamage = (bool)data[0];
@@ -23,7 +25,11 @@ public class ai_Gem_Common_Aftertaste : AbilityInstance
 
     private IEnumerator CoroutineAftertaste()
     {
+        start = SFXManager.CreateSFXInstance("si_Gem_Common_Aftertaste Start", transform.position);
+        start.Follow(this);
         yield return new WaitForSeconds(delay);
+        start.Stop();
+        SFXManager.CreateSFXInstance("si_Gem_Common_Aftertaste Hit", transform.position);
         if (isDamage)
         {
             info.owner.DoMagicDamage(amount * ((gem_Common_Aftertaste)source.gem).bonusMagicDamagePercentage[source.gem.level] / 100f, info.target, false, source);
