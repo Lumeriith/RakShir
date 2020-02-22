@@ -178,7 +178,7 @@ MonoBehaviour:
   abilityName: "\uBD88\uD0C0\uB294 \uB300\uC9C0"
   abilityDescription: "\uB300\uC0C1 \uC9C0\uC5ED\uC5D0 4\uCD08 \uB3D9\uC548 \uC9C0\uC18D\uB418\uB294
     \uD654\uC5FC \uC9C0\uB300\uB97C \uD615\uC131\uD569\uB2C8\uB2E4. \uD654\uC5FC \uC9C0\uB300\uC5D0
-    \uC11C\uC788\uB294 \uC801\uB4E4\uC740 0.25\uCD08\uB2F9 12\uC758 [\uB9C8\uBC95
+    \uC11C\uC788\uB294 \uC801\uB4E4\uC740 0.5\uCD08\uB9C8\uB2E4 25\uC758 [\uB9C8\uBC95
     \uD53C\uD574]\uB97C \uC785\uC2B5\uB2C8\uB2E4. \uCC98\uC74C \uC601\uD5A5\uC744
     \uBC1B\uB294 \uC801\uB4E4\uC740 [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 1.5\uCD08 \uB3D9\uC548
     35% \uB290\uB824\uC9D1\uB2C8\uB2E4."
@@ -215,6 +215,8 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 12
+  connectedGems: []
+  maxGems: 3
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -375,6 +377,11 @@ PrefabInstance:
     - target: {fileID: 8904890338037710308, guid: c417f27cec461a343a1c9f6cc6f0e98a,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2195079249963923425, guid: c417f27cec461a343a1c9f6cc6f0e98a,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
