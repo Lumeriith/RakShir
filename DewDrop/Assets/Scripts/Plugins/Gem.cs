@@ -13,7 +13,9 @@ public abstract class Gem : Item
     private List<AbilityInstance> instances = new List<AbilityInstance>();
 
     private GameObject deactivatedModel;
-    private List<Component> deactivatedComponents = new List<Component>();
+    private List<Collider> deactivatedColliders = new List<Collider>();
+    private List<Rigidbody> deactivatedRigidbodies = new List<Rigidbody>();
+
 
     protected SourceInfo source
     {
@@ -136,21 +138,23 @@ public abstract class Gem : Item
             deactivatedModel.SetActive(false);
         }
 
-        deactivatedComponents.AddRange(GetComponents<Rigidbody>());
-        deactivatedComponents.AddRange(GetComponents<Collider>());
-        Behaviour b;
-        for(int i = deactivatedComponents.Count - 1; i >= 0; i--)
+        deactivatedColliders.AddRange(GetComponents<Collider>());
+        deactivatedRigidbodies.AddRange(GetComponents<Rigidbody>());
+        for (int i = deactivatedColliders.Count - 1; i >= 0; i--)
         {
-            b = deactivatedComponents[i] as Behaviour;
-            if (b == null || !b.enabled)
-            {
-                deactivatedComponents.RemoveAt(i);
-            }
+            if (!deactivatedColliders[i].enabled) deactivatedColliders.RemoveAt(i);
+            else deactivatedColliders[i].enabled = false;
+        }
+        for (int i = deactivatedRigidbodies.Count - 1; i >= 0; i--)
+        {
+            if (deactivatedRigidbodies[i].isKinematic) deactivatedRigidbodies.RemoveAt(i);
             else
             {
-                b.enabled = false;
+                deactivatedRigidbodies[i].isKinematic = true;
+                deactivatedRigidbodies[i].detectCollisions = false;
             }
         }
+
 
         gameObject.SetActive(true);
 
@@ -164,14 +168,20 @@ public abstract class Gem : Item
         trigger.connectedGems.Remove(this);
         trigger = null;
 
-        for(int i = 0; i < deactivatedComponents.Count; i++)
+        for (int i = 0; i < deactivatedColliders.Count; i++)
         {
-            (deactivatedComponents[i] as Behaviour).enabled = true;
+            deactivatedColliders[i].enabled = true;
         }
+        for (int i = 0; i < deactivatedRigidbodies.Count; i++)
+        {
+            deactivatedRigidbodies[i].isKinematic = false;
+            deactivatedRigidbodies[i].detectCollisions = true;
+        }
+
 
         if (deactivatedModel != null) deactivatedModel.gameObject.SetActive(true);
 
-        deactivatedComponents.Clear();
+        deactivatedColliders.Clear();
         deactivatedModel = null;
 
         gameObject.SetActive(false);
