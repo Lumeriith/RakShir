@@ -21,6 +21,8 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     public SourceInfo source;
 
+    public float creationTime { private set; get; }
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
@@ -82,6 +84,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         }
 
         isCreated = true;
+        creationTime = Time.time;
         OnCreate(this.info, data);
 
         //Debug.Log(string.Format("AbilityInstance - {0}\nSource Trigger: {1}\nSource Gem: {2}\nSource Instance: {3}", this, source.trigger, source.gem, source.instance));
