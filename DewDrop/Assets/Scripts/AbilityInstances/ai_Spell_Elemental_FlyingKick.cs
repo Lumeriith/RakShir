@@ -58,7 +58,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 
-        displacement.Cancel();
+     
         if(flyingSound != null) flyingSound.Stop();
         photonView.RPC("RpcHit", RpcTarget.All, other.ClosestPoint(transform.position));
         info.owner.DoBasicAttackImmediately(lv, source);
@@ -68,6 +68,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
 
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();
+        displacement.Cancel();
     }
 
 
@@ -76,19 +77,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     {
         fly.Stop();
         hit.transform.position = position;
+        hit.transform.rotation = info.owner.transform.rotation;
         hit.Play();
-    }
-
-
-
-
-
-    IEnumerator CoroutineEndAfterFullDistance(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        if (!isAlive) yield break;
-        DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
-
     }
 }

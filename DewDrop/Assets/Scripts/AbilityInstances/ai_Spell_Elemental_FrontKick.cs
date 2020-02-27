@@ -78,7 +78,9 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     [PunRPC]
     private void CreateFlash(Vector3 location)
     {
-        Instantiate(flash, location, Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
+        Quaternion rotation = Quaternion.LookRotation(location - info.owner.transform.position - info.owner.GetCenterOffset(), Vector3.up);
+        
+        Instantiate(flash, location, rotation, transform).GetComponent<ParticleSystem>().Play();
     }
 
 

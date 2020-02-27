@@ -95,7 +95,7 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
     [PunRPC]
     private void CreateHitEffect(Vector3 position)
     {
-        Instantiate(hitEffect, position, Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
+        Instantiate(hitEffect, position, Quaternion.LookRotation(target.transform.position - info.owner.transform.position, Vector3.up), transform).GetComponent<ParticleSystem>().Play();
     }
 
     private void NoTarget()
