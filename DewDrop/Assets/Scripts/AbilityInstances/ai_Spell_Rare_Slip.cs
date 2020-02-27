@@ -10,6 +10,8 @@ public class ai_Spell_Rare_Slip : AbilityInstance
     public float damage = 60f;
     public TargetValidator validator;
     private float elapsedTime = 0f;
+
+    public float rootDuration = 1.5f;
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         transform.rotation = castInfo.directionQuaternion;
@@ -21,7 +23,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
         if (photonView.IsMine)
         {
-            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true, EasingFunction.Ease.EaseOutQuad, StopSlip, StopSlip));
+            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true, EasingFunction.Ease.Linear, StopSlip, StopSlip));
         }
     }
 
@@ -46,7 +48,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
         if (!validator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Stun(source, duration - elapsedTime));
+        thing.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
         SFXManager.CreateSFXInstance("si_Spell_Rare_Slip Hit", other.transform.position);
         info.owner.DoMagicDamage(damage, thing, false, source);
     }
