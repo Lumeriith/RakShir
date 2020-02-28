@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1945461150}
-  - component: {fileID: 7326545305279436445}
+  - component: {fileID: 1945461149}
   m_Layer: 11
-  m_Name: trg_Spell_Rare_ShieldBash
+  m_Name: trg_Spell_Rare_RaiseShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 248810123448793125}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7326545305279436445
+--- !u!114 &1945461149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,25 +40,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1945461148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6a5f2cf095d904e8ac77fbe0bbc020, type: 3}
+  m_Script: {fileID: 11500000, guid: fe5b6f65e24ca2c469770c224de729ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 21300000, guid: ad0f2ca7dff257e42aaeb1f26670a676, type: 3}
-  abilityName: "\uBC29\uD328 \uBC00\uCCD0\uB0B4\uAE30"
-  abilityDescription: "\uC790\uC2E0\uC774 1\uCD08 \uB3D9\uC548 [\uBCF4\uD638]\uB97C
-    \uC5BB\uACE0 \uC804\uBC29\uC758 \uC801\uB4E4\uC744 \uBC29\uD328\uB85C \uBC00\uCCD0\uB0B4
-    30\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC90D\uB2C8\uB2E4. \uBC00\uCCD0\uB09C
-    \uC801\uB4E4\uC740 0.75\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uD558\uBA70 \uC774\uD6C4
-    [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 2\uCD08 \uB3D9\uC548 60% \uB290\uB824\uC9D1\uB2C8\uB2E4."
+  abilityName: "\uBC29\uD328 \uC62C\uB9AC\uAE30"
+  abilityDescription: "\uBC29\uD328\uB97C \uB4E4\uC5B4 1.25\uCD08 \uB3D9\uC548 \uC790\uC2E0\uC5D0\uAC8C
+    [\uBCF4\uD638]\uB97C \uBD80\uC5EC\uD558\uB294 \uBC29\uC5B4 \uD0DC\uC138\uB97C
+    \uCDE8\uD569\uB2C8\uB2E4. \uC774 \uB3C4\uC911\uC5D0 \uD53C\uD574\uB97C \uBC1B\uC73C\uBA74
+    \uBC29\uC5B4 \uD0DC\uC138\uAC00 \uC989\uC2DC \uB05D\uB098\uACE0 \uC804\uBC29\uC758
+    \uBAA8\uB4E0 \uC801\uB4E4\uC5D0\uAC8C \uBC18\uACA9\uD558\uC5EC [\uAE30\uBCF8 \uACF5\uACA9
+    \uD53C\uD574]\uB97C \uC8FC\uACE0 0.75\uCD08 \uB3D9\uC548 [\uAE30\uC808]\uD558\uBA70
+    \uBC00\uB824\uB098\uAC8C \uD569\uB2C8\uB2E4.\r\n\r\n\uB0B4 \uAE30\uBCF8 \uACF5\uACA9\uC774
+    10\uBC88 \uC801\uC911\uD560 \uB54C\uB9C8\uB2E4 \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774
+    \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4."
   soundEffect: []
   castAnimation:
-  - {fileID: 7400000, guid: d5871870768f8094786f9e25e66ec668, type: 2}
-  animationDuration: 0.5
+  - {fileID: 7400000, guid: 8dbf17b252b709041847d30c0f94ba91, type: 2}
+  animationDuration: 1.25
   indicator:
     type: 2
     range: 0
-    arrowWidth: 3.75
-    arrowLength: 3
+    arrowWidth: 3
+    arrowLength: 3.75
     enableSecondRangeIndicator: 0
     secondRange: 0.35
   dontCancelBasicCommands: 0
@@ -84,7 +88,7 @@ MonoBehaviour:
   cooldownTime: 10
   connectedGems: []
   maxGems: 3
-  channelDuration: 0.1
+  resetBasicAttackCount: 10
 --- !u!1 &248810122902142902
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,13 +135,13 @@ MonoBehaviour:
   abilityIcon: {fileID: 21300000, guid: 0e7fcb8cb0320684b9d0f8bdc70ab0f9, type: 3}
   abilityName: "\uB0A0\uC120 \uD55C\uC190\uAC80"
   abilityDescription: "\uD55C\uC190\uAC80\uC744 \uD718\uB458\uB7EC \uD55C\uBC88\uC5D0
-    \uB450 \uBA85\uC758 \uC801\uC744 \uBCB1\uB2C8\uB2E4."
+    \uCD5C\uB300 \uB450 \uBA85\uC758 \uB300\uC0C1\uC744 \uBCB1\uB2C8\uB2E4."
   soundEffect:
   - {fileID: 1607579122048388727, guid: fb8fe4cdb12ab3c44be56cb2bb393fd4, type: 3}
   castAnimation:
   - {fileID: 7400000, guid: 023103bd856573a44add9dd2b7093539, type: 2}
   - {fileID: 7400000, guid: 6a7e0e9c00b701f419b56a9e5b898d4a, type: 2}
-  animationDuration: 0.75
+  animationDuration: 1
   indicator:
     type: 1
     range: 2.7
@@ -168,7 +172,7 @@ MonoBehaviour:
   cooldownTime: 1
   connectedGems: []
   maxGems: 3
-  channelDuration: 0.25
+  channelDuration: 0.3
   abilityInstance: ai_BasicAttack_Rare_SwordAndShield
   channelFinishedSoundEffects: []
 --- !u!1 &248810123261368969
@@ -329,7 +333,7 @@ MonoBehaviour:
   type: 3
   skillSetReplacements:
   - {fileID: 1144534734514534532}
-  - {fileID: 0}
+  - {fileID: 1945461149}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
