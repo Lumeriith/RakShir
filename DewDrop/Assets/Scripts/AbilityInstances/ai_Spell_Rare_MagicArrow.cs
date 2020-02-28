@@ -91,5 +91,6 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
     private void RpcStopFly()
     {
         fly.Stop();
+        empoweredFly.Stop();
     }
 }
