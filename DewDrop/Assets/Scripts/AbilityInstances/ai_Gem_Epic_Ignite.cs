@@ -53,6 +53,8 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         distanceEmitter.Play();
 
         hit.transform.position = thing.transform.position + thing.GetCenterOffset();
+        hit.transform.parent = thing.transform;
+        hit.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         hit.Play();
         ready.Stop();
         StartCoroutine(CoroutineMoveDistanceEmitter(thing));
@@ -66,9 +68,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         distanceEmitter.transform.position = thing.transform.position + thing.GetCenterOffset();
         yield return null;
         distanceEmitter.Stop();
-        hit.transform.parent = thing.transform.parent;
-        hit.transform.position = thing.transform.position + thing.GetCenterOffset();
-        hit.gameObject.AddComponent<ParticleSystemAutoDestroy>();
+        
         if (isMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
