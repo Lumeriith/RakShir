@@ -59,7 +59,7 @@ public class InventoryView : MonoBehaviour
             Equipment equipment = socket.item as Equipment;
             Gem gem = socket.item as Gem;
             if (equipment == null && gem == null) to.status = ItemSocket.HighlightStatus.InvalidDrop;
-            else if (gem != null && to.index != 0) to.status = ItemSocket.HighlightStatus.ValidDrop;
+            else if (gem != null && to.index != 0 && to.item != null) to.status = ItemSocket.HighlightStatus.ValidDrop;
             else if (equipment != null && (int)equipment.type == to.index) to.status = ItemSocket.HighlightStatus.ValidDrop;
             else to.status = ItemSocket.HighlightStatus.InvalidDrop;
         }

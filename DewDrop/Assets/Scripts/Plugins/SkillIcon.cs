@@ -16,6 +16,11 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private Image image_specialFill;
     private Image image_specialIndicator;
 
+    private CanvasGroup canvasgroup_mask;
+
+    public float disabledAlpha = .2f;
+    public float enabledAlpha = 1f;
+
     private PointerEventData hover;
     public void OnPointerEnter(PointerEventData data)
     {
@@ -49,9 +54,10 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         image_icon = transform.Find("Mask/Icon Image").GetComponent<Image>();
         image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
         image_specialFill = transform.Find("Special Fill Image").GetComponent<Image>();
-        tmpu_cooldown = transform.Find("Mask/Cooldown Text").GetComponent<TextMeshProUGUI>();
-        image_cooldownFill = transform.Find("Mask/Cooldown Fill Image").GetComponent<Image>();
+        tmpu_cooldown = transform.Find("Cooldown Text").GetComponent<TextMeshProUGUI>();
+        image_cooldownFill = transform.Find("Cooldown Fill Image").GetComponent<Image>();
         image_specialIndicator = transform.Find("Special Indicator").GetComponent<Image>();
+        canvasgroup_mask = transform.Find<CanvasGroup>("Mask");
     }
     private void Update()
     {
@@ -63,6 +69,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_disabled.enabled = true;
             tmpu_cooldown.text = "";
             image_cooldownFill.fillAmount = 0f;
+            canvasgroup_mask.alpha = disabledAlpha;
             return;
         }
 
@@ -74,6 +81,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_specialFill.fillAmount = 0f;
             image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
             image_cooldownFill.fillAmount = 0f;
+            canvasgroup_mask.alpha = disabledAlpha;
         }
         else
         {
@@ -81,6 +89,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_icon.enabled = true;
             image_icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
             image_disabled.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].IsReady() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
+            canvasgroup_mask.alpha = image_disabled.enabled ? disabledAlpha : enabledAlpha;
             if (skillIndex == 0) image_disabled.enabled = false;
             image_specialFill.fillAmount = target.control.skillSet[skillIndex].GetSpecialFillAmount();
             if(skillIndex == 0)

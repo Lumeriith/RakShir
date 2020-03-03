@@ -36,9 +36,6 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode Item1Key = KeyCode.Alpha1;
     public KeyCode Item2Key = KeyCode.Alpha2;
     public KeyCode Item3Key = KeyCode.Alpha3;
-    public KeyCode Item4Key = KeyCode.Alpha4;
-    public KeyCode Item5Key = KeyCode.Alpha5;
-    public KeyCode Item6Key = KeyCode.Alpha6;
 
     public AbilityCastMethod ItemUseMethod = AbilityCastMethod.OnRelease;
 
@@ -488,18 +485,6 @@ public class UnitControlManager : MonoBehaviour
         if (Input.GetKeyDown(Item3Key))
         {
             ItemButtonPressed(3, ItemUseMethod, Item3Key);
-        }
-        if (Input.GetKeyDown(Item4Key))
-        {
-            ItemButtonPressed(4, ItemUseMethod, Item4Key);
-        }
-        if (Input.GetKeyDown(Item5Key))
-        {
-            ItemButtonPressed(5, ItemUseMethod, Item5Key);
-        }
-        if (Input.GetKeyDown(Item6Key))
-        {
-            ItemButtonPressed(6, ItemUseMethod, Item6Key);
         }
     }
 

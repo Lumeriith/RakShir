@@ -5,7 +5,7 @@ public class PlayerInventory : MonoBehaviour
 {
     public LivingThing livingThing { private set; get; }
 
-    public Consumable[] consumableBelt = new Consumable[5];
+    public Consumable[] consumableBelt = new Consumable[3];
     public Equipment[] equipped = new Equipment[5];
 
     [HideInInspector]
