@@ -20,6 +20,7 @@ public enum AbilityInstanceEventTargetType { EveryInstance, FirstInstance, LastI
 
 public abstract class AbilityTrigger : MonoBehaviour
 {
+    public const int maxGemPerTrigger = 3;
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
 
 #if UNITY_EDITOR
@@ -74,7 +75,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public float cooldownTime;
 
     public List<Gem> connectedGems;
-    public int maxGems = 3;
+
 
 
     protected SourceInfo source

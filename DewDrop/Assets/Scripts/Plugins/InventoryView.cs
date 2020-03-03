@@ -17,6 +17,8 @@ public class InventoryView : MonoBehaviour
 
     public List<Color> socketStatusOverlayColors;
 
+    public ContextualMenu contextualMenuPrefab;
+
     private Image floatingItem;
 
     private PlayerInventory inventory
@@ -154,5 +156,98 @@ public class InventoryView : MonoBehaviour
         else if (socket.type == ItemSocket.SocketType.Inventory) inventory.DropItemFromInventory(socket.index);
     }
 
+    public void SocketContextMenuCalled(ItemSocket socket)
+    {
+        ContextualMenu menu = Instantiate(contextualMenuPrefab, socket.transform.position, Quaternion.identity, transform);
+        if(socket.type == ItemSocket.SocketType.Equipped)
+        {
+            Equipment equipment = socket.item as Equipment;
+            List<string> selections = new List<string>();
+            List<System.Action> callbacks = new List<System.Action>();
+            
+            selections.Add("착용 해제");
+            callbacks.Add(() => { SocketDefaultActionCalled(socket); });
+
+            for(int i = 0; i < equipment.skillSetReplacements.Length; i++)
+            {
+                if(equipment.skillSetReplacements[i] != null && equipment.skillSetReplacements[i].connectedGems.Count > 0)
+                {
+                    AbilityTrigger trigger = equipment.skillSetReplacements[i];
+                    selections.Add("보석 제거 (" + "?QWERDP"[i] + ")");
+                    callbacks.Add(() => { inventory.UnequipAllGemsInTrigger(trigger); });
+                }
+            }
+
+            selections.Add("버리기");
+            callbacks.Add(() => { SocketDropActionCalled(socket); });
+
+            menu.SetSelections(selections.ToArray());
+            menu.SetCallbacks(callbacks.ToArray());
+        }
+        else if (socket.type == ItemSocket.SocketType.Belt)
+        {
+            menu.SetSelections("착용 해제", "버리기");
+            menu.SetCallbacks(
+                () => { SocketDefaultActionCalled(socket); },
+                () => { SocketDropActionCalled(socket); }
+                );
+        }
+        else if (socket.type == ItemSocket.SocketType.Inventory)
+        {
+            if (socket.item as Equipment != null)
+            {
+                Equipment equipment = socket.item as Equipment;
+                List<string> selections = new List<string>();
+                List<System.Action> callbacks = new List<System.Action>();
+
+                selections.Add("착용");
+                callbacks.Add(() => { SocketDefaultActionCalled(socket); });
+
+                for (int i = 0; i < equipment.skillSetReplacements.Length; i++)
+                {
+                    if (equipment.skillSetReplacements[i] != null && equipment.skillSetReplacements[i].connectedGems.Count > 0)
+                    {
+                        AbilityTrigger trigger = equipment.skillSetReplacements[i];
+                        selections.Add("보석 제거 (" + "?QWERDP"[i] + ")");
+                        callbacks.Add(() => { inventory.UnequipAllGemsInTrigger(trigger); });
+                    }
+                }
+
+                selections.Add("버리기");
+                callbacks.Add(() => { SocketDropActionCalled(socket); });
+
+                menu.SetSelections(selections.ToArray());
+                menu.SetCallbacks(callbacks.ToArray());
+            }
+            else if (socket.item as Consumable != null)
+            {
+                menu.SetSelections("착용", "버리기");
+                menu.SetCallbacks(
+                    () => { SocketDefaultActionCalled(socket); },
+                    () => { SocketDropActionCalled(socket); }
+                    );
+            }
+            else if (socket.item as Gem != null)
+            {
+                List<string> selections = new List<string>();
+                List<System.Action> callbacks = new List<System.Action>();
+                string[] candidates = { "무기(기본 공격)에 장착", "무기(Q)에 장착", "갑옷(W)에 장착", "장화(E)에 장착", "무기(R)에 장착", "반지(D)에 장착", "헬멧(P)에 장착" };
+                for(int i = 1; i < 6; i++)
+                {
+                    if(inventory.livingThing.control.skillSet[i] != null && inventory.livingThing.control.skillSet[i].connectedGems.Count < AbilityTrigger.maxGemPerTrigger)
+                    {
+                        AbilityTrigger trigger = inventory.livingThing.control.skillSet[i];
+                        selections.Add(candidates[i]);
+                        callbacks.Add(() => { inventory.EquipGemFromInventory(socket.index, trigger); });
+                    }
+                }
+                selections.Add("버리기");
+                callbacks.Add(() => { SocketDropActionCalled(socket); });
+                menu.SetSelections(selections.ToArray());
+                menu.SetCallbacks(callbacks.ToArray());
+            }
+        }
+
+    }
 
 }

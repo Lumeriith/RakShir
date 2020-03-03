@@ -42,6 +42,9 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
 
     private bool firstUpdate = true;
 
+    private Image[] gemSprites;
+    private bool shouldUpdateGems = true;
+
     private void Awake()
     {
         Transform backgroundIconTransform = transform.Find("Background Icon");
@@ -51,6 +54,14 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
         itemIcon = transform.Find<Image>("Fill/Item Icon");
         rarity = transform.Find<Image>("Fill/Rarity");
         overlay = transform.Find<Image>("Overlay");
+        gemSprites = new Image[] {
+            transform.Find<Image>("Fill/Gem 0"),
+            transform.Find<Image>("Fill/Gem 1"),
+            transform.Find<Image>("Fill/Gem 2"),
+            transform.Find<Image>("Fill/Gem 3"),
+            transform.Find<Image>("Fill/Gem 4"),
+            transform.Find<Image>("Fill/Gem 5")
+        };
     }
 
     private void Update()
@@ -90,6 +101,48 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
                 fill.SetActive(true);
                 itemIcon.sprite = foundItem.itemIcon;
             }
+
+            if(foundItem as Equipment != null)
+            {
+                shouldUpdateGems = true;
+                for (int i = 0; i < gemSprites.Length; i++)
+                {
+                    gemSprites[i].enabled = true;
+                }
+            }
+            else
+            {
+                shouldUpdateGems = false;
+                for(int i = 0; i < gemSprites.Length; i++)
+                {
+                    gemSprites[i].enabled = false;
+                }
+            }
+        }
+
+        if (shouldUpdateGems)
+        {
+            Equipment equipment = item as Equipment;
+            int index;
+            for(int i = 0; i < gemSprites.Length; i++)
+            {
+                gemSprites[i].enabled = false; // TODO: Fix this following horrendously inefficient-looking part of the code
+                // Enabling and disabling image every frame can only be so efficient!
+            }
+
+            for(int i = 0;i< equipment.skillSetReplacements.Length; i++)
+            {
+                if (equipment.skillSetReplacements[i] == null || equipment.skillSetReplacements[i].connectedGems.Count == 0) continue;
+                for(int j = 0; j < equipment.skillSetReplacements[i].connectedGems.Count; j++)
+                {
+                    index = i == 4 ? 3 + j : j;
+                    if (index >= 0 && index < gemSprites.Length)
+                    {
+                        gemSprites[index].sprite = equipment.skillSetReplacements[i].connectedGems[j].itemIcon;
+                        gemSprites[index].enabled = true;
+                    }
+                }
+            }
         }
 
         if(item != null && RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition))
@@ -104,7 +157,7 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
         }
     }
 
-    
+
 
 
     public void OnPointerDown(PointerEventData eventData)
@@ -186,9 +239,13 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         if (item == null) return;
-        if(eventData.clickCount == 2)
+        if(eventData.button == PointerEventData.InputButton.Left && eventData.clickCount == 2)
         {
             InventoryView.instance.SocketDefaultActionCalled(this);
+        }
+        else if (eventData.button== PointerEventData.InputButton.Right)
+        {
+            InventoryView.instance.SocketContextMenuCalled(this);
         }
     }
 }

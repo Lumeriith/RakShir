@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
+
+
     public LivingThing livingThing { private set; get; }
 
     public Consumable[] consumableBelt = new Consumable[3];
@@ -284,7 +286,7 @@ public class PlayerInventory : MonoBehaviour
     public void EquipGemFromInventory(int from, AbilityTrigger trigger)
     {
         Gem gem = inventory[from] as Gem;
-        if (gem == null || gem.trigger != null || trigger.connectedGems.Count >= trigger.maxGems) return;
+        if (gem == null || gem.trigger != null || trigger.connectedGems.Count >= AbilityTrigger.maxGemPerTrigger) return;
         
         inventory[from] = null;
 
@@ -298,6 +300,18 @@ public class PlayerInventory : MonoBehaviour
         gem.Unequip();
         //gem.OnUnequip(livingThing, gem.trigger);
         inventory[inventoryFirstEmptyIndex] = gem;
+    }
+
+    public void UnequipAllGemsInTrigger(AbilityTrigger trigger)
+    {
+        Gem gem;
+        for(int i = trigger.connectedGems.Count - 1; i >=0; i--)
+        {
+            if (isInventoryFull) break;
+            gem = trigger.connectedGems[i];
+            gem.Unequip();
+            inventory[inventoryFirstEmptyIndex] = gem;
+        }
     }
 
 
