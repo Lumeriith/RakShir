@@ -38,9 +38,6 @@ public abstract class Item : Activatable
 
         if(transform.position.y < startPosition.y - 15f)
         {
-            print("dumb");
-            print(transform.position.y);
-            print(startPosition.y);
             GetComponent<Rigidbody>().velocity = Vector3.up * 2f; // QoL change. Fallen items will come back.
             transform.position = startPosition + Vector3.up;
         }

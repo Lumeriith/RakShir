@@ -125,11 +125,36 @@ public abstract class Gem : Item
         photonView.RPC("RpcUnequip", RpcTarget.All);
     }
 
+    // Reactivates gem that has been deactivated due to the connected equipment being unequipped.
+    public void Reactivate()
+    {
+        photonView.RPC("RpcReactivate", RpcTarget.All);
+    }
+
+    // Deactivates gem due to the connected equipment being unequipped.
+    public void Deactivate()
+    {
+        photonView.RPC("RpcDeactivate", RpcTarget.All);
+    }
+
+    [PunRPC]
+    protected void RpcReactivate()
+    {
+        OnEquip(owner, trigger);
+    }
+
+    [PunRPC]
+    protected void RpcDeactivate()
+    {
+        OnUnequip(owner, trigger);
+    }
+
     [PunRPC]
     protected void RpcEquip(string triggerName)
     {
         trigger = owner.transform.Find(triggerName).GetComponent<AbilityTrigger>();
         trigger.connectedGems.Add(this);
+        transform.parent = trigger.transform;
 
         Transform t = transform.Find("Model");
         if (t != null)
@@ -167,6 +192,7 @@ public abstract class Gem : Item
         OnUnequip(owner, trigger);
         trigger.connectedGems.Remove(this);
         trigger = null;
+        transform.parent = owner.transform;
 
         for (int i = 0; i < deactivatedColliders.Count; i++)
         {

@@ -226,7 +226,7 @@ public class DebugCommands : MonoBehaviour
     {
         PlayerInventory inventory = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
         Gem gem;
-        for (int i = 0; i < inventory.inventory.Count; i++)
+        for (int i = 0; i < inventory.inventory.Length; i++)
         {
             gem = inventory.inventory[i] as Gem;
             if (gem != null)

@@ -41,11 +41,27 @@ public abstract class Equipment : Item
 
     public void Equip()
     {
+        for(int i = 0; i < skillSetReplacements.Length; i++)
+        {
+            if (skillSetReplacements[i] == null) continue;
+            for(int j = 0; j < skillSetReplacements[i].connectedGems.Count; j++)
+            {
+                skillSetReplacements[i].connectedGems[j].Reactivate();
+            }
+        }
         photonView.RPC("RpcEquip", RpcTarget.All);
     }
 
     public void Unequip()
     {
+        for (int i = 0; i < skillSetReplacements.Length; i++)
+        {
+            if (skillSetReplacements[i] == null) continue;
+            for (int j = 0; j < skillSetReplacements[i].connectedGems.Count; j++)
+            {
+                skillSetReplacements[i].connectedGems[j].Deactivate();
+            }
+        }
         photonView.RPC("RpcUnequip", RpcTarget.All);
     }
 

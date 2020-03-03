@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/*
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -111,4 +113,6 @@ public class ConsumableSocket : MonoBehaviour, IPointerClickHandler, IPointerEnt
         icon.enabled = false;
         socket.color = emptySocketColor;
     }
+
 }
+*/

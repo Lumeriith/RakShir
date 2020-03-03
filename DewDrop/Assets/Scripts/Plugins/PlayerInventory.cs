@@ -3,18 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
-    private LivingThing livingThing;
+    public LivingThing livingThing { private set; get; }
 
     public Consumable[] consumableBelt = new Consumable[5];
     public Equipment[] equipped = new Equipment[5];
 
-    public List<Item> inventory = new List<Item>();
-    public int inventoryCapacity = 6;
+    [HideInInspector]
+    public Item[] inventory;
+    public int inventoryCapacity = 12;
 
+    private int inventoryFirstEmptyIndex
+    {
+        get
+        {
+            for(int i = 0; i < inventory.Length; i++)
+            {
+                if (inventory[i] == null) return i;
+            }
+            return -1;
+        }
+    }
+
+    private bool isInventoryFull
+    {
+        get
+        {
+            for(int i = 0; i < inventoryCapacity; i++)
+            {
+                if (inventory[i] == null) return false;
+            }
+            return true;
+        }
+    }
 
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
+        inventory = new Item[inventoryCapacity + 1];
     }
 
     public bool HasSpaceFor(Item item)
@@ -42,14 +67,7 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        if (inventory.Count < inventoryCapacity)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !isInventoryFull;
     }
 
     public bool Pickup(Item item)
@@ -57,9 +75,10 @@ public class PlayerInventory : MonoBehaviour
         Equipment equipment = item as Equipment;
         if (equipment != null && equipped[(int)equipment.type] == null)
         {
-            inventory.Add(item);
+            int index = inventoryFirstEmptyIndex;
+            inventory[inventoryFirstEmptyIndex] = item;
             item.TransferOwnership(livingThing);
-            EquipEquipmentFromInventory(inventory.Count - 1);
+            EquipEquipmentFromInventory(index);
             SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
         }
@@ -79,18 +98,19 @@ public class PlayerInventory : MonoBehaviour
             {
                 if(consumableBelt[i] == null)
                 {
-                    inventory.Add(item);
+                    int index = inventoryFirstEmptyIndex;
+                    inventory[index] = item;
                     item.TransferOwnership(livingThing);
-                    MoveConsumableFromInventoryToBelt(inventory.Count - 1,i);
+                    MoveConsumableFromInventoryToBelt(index, i);
                     SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
                     return true;
                 }
             }
         }
 
-        if (inventory.Count < inventoryCapacity)
+        if (!isInventoryFull)
         {
-            inventory.Add(item);
+            inventory[inventoryFirstEmptyIndex] = item;
             item.TransferOwnership(livingThing);
             SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
@@ -118,13 +138,85 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
+    public void SwapBeltAndBelt(int from, int to)
+    {
+        Consumable cfrom = consumableBelt[from] as Consumable;
+        Consumable cto = consumableBelt[to] as Consumable;
+
+        consumableBelt[from] = cto;
+        consumableBelt[to] = cfrom;
+    }
+
+    public void SwapInventoryAndBelt(int from, int to)
+    {
+        Consumable fromInventory = inventory[from] as Consumable;
+        Consumable fromBelt = consumableBelt[to] as Consumable;
+
+        if (inventory[from] != null && fromInventory == null) return; // Invalid action
+
+        inventory[from] = fromBelt;
+        consumableBelt[to] = fromInventory;
+    }
+
+    public void SwapInventoryAndEquipped(int from, int to)
+    {
+        Equipment fromInventory = inventory[from] as Equipment;
+        Equipment fromEquipped = equipped[to];
+
+        if (inventory[from] != null && fromInventory == null) return; // Invalid action (Inventory item is not an equipment)
+        if (fromInventory != null && (int)fromInventory.type != to) return; // Invalid action (Equipment type mismatch)
+
+        if(fromEquipped != null)
+        {
+            fromEquipped.Unequip();
+        }
+
+        if(fromInventory != null)
+        {
+            fromInventory.Equip();
+        }
+
+        inventory[from] = fromEquipped;
+        equipped[to] = fromInventory;
+    }
+
+    public void SwapInventoryAndInventory(int from, int to)
+    {
+        Item temp = inventory[from];
+        inventory[from] = inventory[to];
+        inventory[to] = temp;
+    }
+
+    public void DropItemFromInventory(int from)
+    {
+        if (inventory[from] == null) return;
+        inventory[from].Disown();
+        inventory[from] = null;
+    }
+
+    public void DropItemFromBelt(int from)
+    {
+        if (consumableBelt[from] == null) return;
+        consumableBelt[from].Disown();
+        consumableBelt[from] = null;
+    }
+
+    public void DropItemFromEquipped(int from)
+    {
+        if (equipped[from] == null) return;
+        equipped[from].Unequip();
+        equipped[from].Disown();
+        equipped[from] = null;
+    }
+
+
     public void MoveConsumableFromBeltToInventory(int from, bool ignoreInventoryCapacity = false)
     {
         Consumable target = consumableBelt[from] as Consumable;
         if (target == null) return;
-        if (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity) return;
+        if (!ignoreInventoryCapacity && isInventoryFull) return;
         SFXManager.CreateSFXInstance("si_local_ItemUnequip", transform.position, true);
-        inventory.Add(consumableBelt[from]);
+        inventory[inventoryFirstEmptyIndex] = consumableBelt[from];
         consumableBelt[from] = null;
     }
 
@@ -139,7 +231,7 @@ public class PlayerInventory : MonoBehaviour
                 if (consumableBelt[i] == null)
                 {
                     consumableBelt[i] = target;
-                    inventory.RemoveAt(from);
+                    inventory[from] = null;
                     SFXManager.CreateSFXInstance("si_local_ItemEquip", transform.position, true);
                     return true;
                 }
@@ -148,10 +240,10 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            inventory.RemoveAt(from);
+            inventory[from] = null;
             if (consumableBelt[to] != null)
             {
-                inventory.Add(consumableBelt[to]);
+                inventory[inventoryFirstEmptyIndex] = consumableBelt[to];
             }
             consumableBelt[to] = target;
             SFXManager.CreateSFXInstance("si_local_ItemEquip", transform.position, true);
@@ -163,12 +255,12 @@ public class PlayerInventory : MonoBehaviour
         Equipment target = inventory[from] as Equipment;
         if (target == null) return false;
 
-        inventory.RemoveAt(from);
+        inventory[from] = null;
 
         if(equipped[(int)target.type] != null)
         {
             equipped[(int)target.type].Unequip();
-            inventory.Add(equipped[(int)target.type]);
+            inventory[inventoryFirstEmptyIndex] = equipped[(int)target.type];
         }
 
         equipped[(int)target.type] = target;
@@ -181,9 +273,9 @@ public class PlayerInventory : MonoBehaviour
     {
         Equipment target = equipped[index] as Equipment;
         if (target == null) return;
-        if (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity) return;
+        if (!ignoreInventoryCapacity && isInventoryFull) return;
         if (equipped[index] == null) return;
-        inventory.Add(target);
+        inventory[inventoryFirstEmptyIndex] = target;
         target.Unequip();
         equipped[index] = null;
         SFXManager.CreateSFXInstance("si_local_ItemUnequip", transform.position, true);
@@ -194,7 +286,7 @@ public class PlayerInventory : MonoBehaviour
         Gem gem = inventory[from] as Gem;
         if (gem == null || gem.trigger != null || trigger.connectedGems.Count >= trigger.maxGems) return;
         
-        inventory.RemoveAt(from);
+        inventory[from] = null;
 
         gem.Equip(trigger.name);
         //gem.OnEquip(livingThing, trigger);
@@ -202,10 +294,10 @@ public class PlayerInventory : MonoBehaviour
 
     public void UnequipGem(Gem gem, bool ignoreInventoryCapacity = false)
     {
-        if (gem.trigger == null || (!ignoreInventoryCapacity && inventory.Count >= inventoryCapacity)) return;
+        if (gem.trigger == null || (!ignoreInventoryCapacity && isInventoryFull)) return;
         gem.Unequip();
         //gem.OnUnequip(livingThing, gem.trigger);
-        inventory.Add(gem);
+        inventory[inventoryFirstEmptyIndex] = gem;
     }
 
 
