@@ -21,6 +21,8 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public float disabledAlpha = .2f;
     public float enabledAlpha = 1f;
 
+    private Image[] gemSprites;
+
     private PointerEventData hover;
     public void OnPointerEnter(PointerEventData data)
     {
@@ -58,6 +60,15 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         image_cooldownFill = transform.Find("Cooldown Fill Image").GetComponent<Image>();
         image_specialIndicator = transform.Find("Special Indicator").GetComponent<Image>();
         canvasgroup_mask = transform.Find<CanvasGroup>("Mask");
+
+        gemSprites = new Image[] {
+            transform.Find<Image>("Gem 0"),
+            transform.Find<Image>("Gem 1"),
+            transform.Find<Image>("Gem 2")};
+        for (int i = 0; i < gemSprites.Length; i++)
+        {
+            gemSprites[i].enabled = false;
+        }
     }
     private void Update()
     {
@@ -70,6 +81,10 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             tmpu_cooldown.text = "";
             image_cooldownFill.fillAmount = 0f;
             canvasgroup_mask.alpha = disabledAlpha;
+            for(int i = 0; i < gemSprites.Length; i++)
+            {
+                gemSprites[i].enabled = false;
+            }
             return;
         }
 
@@ -82,6 +97,10 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             image_specialIndicator.enabled = image_specialFill.fillAmount != 0;
             image_cooldownFill.fillAmount = 0f;
             canvasgroup_mask.alpha = disabledAlpha;
+            for (int i = 0; i < gemSprites.Length; i++)
+            {
+                gemSprites[i].enabled = false;
+            }
         }
         else
         {
@@ -102,6 +121,16 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             }
             
             image_specialIndicator.enabled = image_specialFill.fillAmount != 0 && !image_disabled.enabled;
+
+            for (int i = 0; i < gemSprites.Length; i++)
+            {
+                if(target.control.skillSet[skillIndex].connectedGems.Count <= i) gemSprites[i].enabled = false;
+                else
+                {
+                    gemSprites[i].enabled = true;
+                    gemSprites[i].sprite = target.control.skillSet[skillIndex].connectedGems[i].itemIcon;
+                }
+            }
         }
 
         if(target.control.cooldownTime[skillIndex] == 0f || skillIndex == 0)
