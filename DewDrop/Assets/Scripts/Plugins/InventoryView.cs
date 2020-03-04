@@ -61,7 +61,21 @@ public class InventoryView : MonoBehaviour
             Equipment equipment = socket.item as Equipment;
             Gem gem = socket.item as Gem;
             if (equipment == null && gem == null) to.status = ItemSocket.HighlightStatus.InvalidDrop;
-            else if (gem != null && to.index != 0 && to.item != null) to.status = ItemSocket.HighlightStatus.ValidDrop;
+            else if (gem != null && to.index != 0 && to.item != null)
+            {
+                Equipment toEquip = to.item as Equipment;
+                bool found = false;
+                for (int i = 1; i < toEquip.skillSetReplacements.Length; i++)
+                {
+                    if(toEquip.skillSetReplacements[i] != null && toEquip.skillSetReplacements[i].connectedGems.Count < AbilityTrigger.maxGemPerTrigger)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if(found) to.status = ItemSocket.HighlightStatus.ValidDrop;
+                else to.status = ItemSocket.HighlightStatus.InvalidDrop;
+            }
             else if (equipment != null && (int)equipment.type == to.index) to.status = ItemSocket.HighlightStatus.ValidDrop;
             else to.status = ItemSocket.HighlightStatus.InvalidDrop;
         }
@@ -102,7 +116,38 @@ public class InventoryView : MonoBehaviour
             inventory.SwapInventoryAndBelt(to.index, socket.index);
         } else if (socket.type == ItemSocket.SocketType.Inventory && to.type == ItemSocket.SocketType.Equipped)
         {
-            inventory.SwapInventoryAndEquipped(socket.index, to.index);
+            if(socket.item as Gem != null && to.item != null)
+            {
+                // Attempt to attach gem
+                Equipment toEquip = to.item as Equipment;
+                List<string> selections = new List<string>();
+                List<System.Action> callbacks = new List<System.Action>();
+                string[] candidates = new string[] { "무기(기본 공격)에 장착", "무기(Q)에 장착", "갑옷(W)에 장착", "장화(E)에 장착", "무기(R)에 장착", "반지(D)에 장착", "헬멧(P)에 장착" };
+                for(int i = 1; i < 6; i++)
+                {
+                    if (toEquip.skillSetReplacements[i] != null && toEquip.skillSetReplacements[i].connectedGems.Count < AbilityTrigger.maxGemPerTrigger)
+                    {
+                        AbilityTrigger trigger = toEquip.skillSetReplacements[i];
+                        selections.Add(candidates[i]);
+                        callbacks.Add(() => { inventory.EquipGemFromInventory(socket.index, trigger); });
+                    }
+                }
+                if(callbacks.Count == 1)
+                {
+                    callbacks[0]();
+                } else if (callbacks.Count > 1)
+                {
+                    ContextualMenu menu = Instantiate(contextualMenuPrefab, to.transform.position, Quaternion.identity, transform);
+                    menu.SetSelections(selections.ToArray());
+                    menu.SetCallbacks(callbacks.ToArray());
+                }
+            }
+            else
+            {
+                // Attempt to equip the item
+                inventory.SwapInventoryAndEquipped(socket.index, to.index);
+            }
+
         } else if (socket.type == ItemSocket.SocketType.Equipped && to.type == ItemSocket.SocketType.Inventory)
         {
             inventory.SwapInventoryAndEquipped(to.index, socket.index);
