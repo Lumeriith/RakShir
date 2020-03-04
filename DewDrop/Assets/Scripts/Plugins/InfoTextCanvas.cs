@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InfoTextCanvas : MonoBehaviour
 {
@@ -8,6 +6,7 @@ public class InfoTextCanvas : MonoBehaviour
     public InfoText equipmentInfoText;
     public InfoText obeliskInfoText;
     public InfoText moonPortalInfoText;
+    public InfoText gemInfoText;
 
     private void Start()
     {
@@ -15,6 +14,7 @@ public class InfoTextCanvas : MonoBehaviour
         {
             Consumable cons = activatable as Consumable;
             Equipment equip = activatable as Equipment;
+            Gem gem = activatable as Gem;
             if (cons != null)
             {
                 InfoText text = Instantiate(consumableInfoText, transform).GetComponent<InfoText>();
@@ -35,6 +35,17 @@ public class InfoTextCanvas : MonoBehaviour
                 {
                     UnitControlManager.instance.selectedUnit.control.CommandActivate(equip, Input.GetKey(UnitControlManager.instance.reservationModifier));
                     Instantiate(UnitControlManager.instance.commandMarkerInterest, equip.transform.position, Quaternion.identity, equip.transform);
+                };
+            }
+            else if (gem != null)
+            {
+                InfoText text = Instantiate(gemInfoText, transform).GetComponent<InfoText>();
+                text.text = gem.itemName;
+                text.follow = gem.transform;
+                text.OnClick += () =>
+                {
+                    UnitControlManager.instance.selectedUnit.control.CommandActivate(gem, Input.GetKey(UnitControlManager.instance.reservationModifier));
+                    Instantiate(UnitControlManager.instance.commandMarkerInterest, gem.transform.position, Quaternion.identity, equip.transform);
                 };
             }
             else if (activatable as MoonPortal != null)

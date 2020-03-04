@@ -21,6 +21,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
 
     public Transform follow;
     public Vector3 offsetUI;
+    public Vector3 offsetWorld;
 
     public System.Action OnClick = () => { };
 
@@ -32,6 +33,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
     public Sprite consumableIcon;
     public Sprite moneyIcon;
     public Sprite bookIcon;
+    public Sprite gemIcon;
 
     private float creationTime;
     private void Awake()
@@ -79,6 +81,10 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
                     break;
             }
         }
+        if(follow.GetComponent<Gem>() != null)
+        {
+            image_icon.sprite = gemIcon;
+        }
     }
 
     private void Update()
@@ -109,7 +115,7 @@ public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             canvasGroup.interactable = true;
-            transform.position = main.WorldToScreenPoint(follow.transform.position) + offsetUI;
+            transform.position = main.WorldToScreenPoint(follow.transform.position + offsetWorld) + offsetUI;
             Rect myRect = new Rect((Vector2)transform.position - rectTransform.sizeDelta/2f, rectTransform.sizeDelta);
             for (int i = 0; i < drawnInfoTextRects.Count; i++)
             {
