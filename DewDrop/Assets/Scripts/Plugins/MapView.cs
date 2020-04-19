@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
-using NaughtyAttributes;
 using System;
 using Doozy.Engine;
 
@@ -144,7 +143,6 @@ public class MapView : MonoBehaviour
         }
     }
 
-    [Button("Update Map")]
     private void UpdateMap()
     {
         print("Update Map");

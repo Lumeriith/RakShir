@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 public class CustomAnimationBox : MonoBehaviour
 {
     private static CustomAnimationBox _instance;

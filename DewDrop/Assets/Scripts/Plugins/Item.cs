@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using Photon.Pun;
 using Photon.Realtime;
+using Sirenix.OdinInspector;
 
 public abstract class Item : Activatable
 {
@@ -12,7 +12,7 @@ public abstract class Item : Activatable
     public string itemName;
     public ItemTier itemTier;
     public float value;
-    [ResizableTextArea]
+    [MultiLineProperty]
     public string itemDescription;
 
     [HideInInspector]

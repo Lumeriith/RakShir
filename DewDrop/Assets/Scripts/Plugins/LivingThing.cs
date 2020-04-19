@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
-using NaughtyAttributes;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 #region Enums
 public enum Team { None, Red, Blue, Creep }

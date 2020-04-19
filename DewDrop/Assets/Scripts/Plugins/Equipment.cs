@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using NaughtyAttributes;
 using Photon.Realtime;
 
 public enum ItemTier { Common, Rare, Epic, Legendary }

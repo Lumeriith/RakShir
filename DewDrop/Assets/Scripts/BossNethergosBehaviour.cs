@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using NaughtyAttributes;
 public class BossNethergosBehaviour : MonoBehaviourPun
 {
 
@@ -53,7 +52,6 @@ public class BossNethergosBehaviour : MonoBehaviourPun
         livingThing.statusEffect.ApplyStatusEffect(invul);
     }
 
-    [Button("Disappear")]
     public void Disappear()
     {
         if (!shouldRevive) return;

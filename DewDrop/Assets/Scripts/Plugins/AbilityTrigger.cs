@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 
 public enum IndicatorType { None, Range, Arrow }
 [System.Serializable]
@@ -51,7 +51,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     [Header("Metadata Settings")]
     public Sprite abilityIcon;
     public string abilityName;
-    [ResizableTextArea]
+    [MultiLineProperty]
     public string abilityDescription;
     [Header("Effect Settings")]
     public GameObject[] soundEffect;

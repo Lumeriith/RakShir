@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using Photon.Pun;
 using UnityEngine.AI;
 using UnityEngine.Rendering.PostProcessing;
 using Aura2API;
+using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(NavMeshSurface))]
@@ -24,7 +24,6 @@ public class Room : MonoBehaviourPun
     public bool rerollsShopUponEntering = true;
     [Header("Dynamic Map Elements Settings")]
     public float iterationDelay = 0.5f;
-    [ReorderableList]
     //[InfoBox("Null element will delay the next element until all previous elements are marked finished.")]
     public List<MapElement> mapElements;
 

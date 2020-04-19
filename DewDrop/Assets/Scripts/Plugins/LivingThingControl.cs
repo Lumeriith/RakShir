@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using NaughtyAttributes;
 using Photon.Pun;
 using UnityEngine.Events;
 

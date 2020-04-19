@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Sirenix.OdinInspector;
 
 
 public class LivingThingStat : MonoBehaviourPun, IOnEventCallback

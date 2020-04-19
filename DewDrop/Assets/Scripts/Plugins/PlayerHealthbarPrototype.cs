@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using NaughtyAttributes;
 public class PlayerHealthbarPrototype : MonoBehaviour
 {
     public LivingThing targetPlayer;
@@ -16,7 +15,6 @@ public class PlayerHealthbarPrototype : MonoBehaviour
     public Vector3 worldOffset;
     public Vector3 UIOffset;
 
-    [ReorderableList]
     public List<StatusEffectType> displayCCOrder;
     public List<string> displayCCText;
     private void Awake()

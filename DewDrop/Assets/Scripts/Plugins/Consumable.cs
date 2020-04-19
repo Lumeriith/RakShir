@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using Photon.Pun;
+using Sirenix.OdinInspector;
 public abstract class Consumable : Item
 {
     [Header("Consumable Settings")]

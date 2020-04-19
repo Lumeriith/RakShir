@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using NaughtyAttributes;
 using System.Text.RegularExpressions;
 using DecalSystem;
 using Doozy.Engine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 public enum GladiatorGamePhase { Waiting, PvE, PvP, End };
 [System.Serializable]
 public class RoomListWrapper
