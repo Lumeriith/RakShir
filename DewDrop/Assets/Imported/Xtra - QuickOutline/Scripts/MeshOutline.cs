@@ -95,7 +95,7 @@ public class MeshOutline : MonoBehaviour
         UpdateMeshOutlineInfo();
 
     }
-    [NaughtyAttributes.Button("Update Info")]
+
     public void UpdateMeshOutlineInfo()
     {
         if(renderers != null)
