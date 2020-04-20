@@ -25,7 +25,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
 
         if (photonView.IsMine)
         {
-            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true));
+            info.owner.StartDisplacement(Displacement.ByVector(info.directionVector * distance, duration, true, true, false));
             info.owner.LookAt(transform.position + info.directionVector, true);
             StartCoroutine("CoroutineApplyDamageBoost");
         }

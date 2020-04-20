@@ -45,56 +45,58 @@
  * Below is an example of how to use the easing functions in the file. There is a getting function that will return the function
  * from an enum. This is useful since the enum can be exposed in the editor and then the function queried during Start().
  * 
- * EasingFunction.Ease ease = EasingFunction.Ease.EaseInOutQuad;
+ * Ease ease = Ease.EaseInOutQuad;
  * EasingFunction.EasingFunc func = GetEasingFunction(ease;
  * 
  * float value = func(0, 10, 0.67f);
  * 
- * EasingFunction.EaseingFunc derivativeFunc = GetEasingFunctionDerivative(ease);
+ * EaseingFunc derivativeFunc = GetEasingFunctionDerivative(ease);
  * 
  * float derivativeValue = derivativeFunc(0, 10, 0.67f);
  */
 
 using UnityEngine;
 
+public enum Ease : byte
+{
+    EaseInQuad = 0,
+    EaseOutQuad,
+    EaseInOutQuad,
+    EaseInCubic,
+    EaseOutCubic,
+    EaseInOutCubic,
+    EaseInQuart,
+    EaseOutQuart,
+    EaseInOutQuart,
+    EaseInQuint,
+    EaseOutQuint,
+    EaseInOutQuint,
+    EaseInSine,
+    EaseOutSine,
+    EaseInOutSine,
+    EaseInExpo,
+    EaseOutExpo,
+    EaseInOutExpo,
+    EaseInCirc,
+    EaseOutCirc,
+    EaseInOutCirc,
+    Linear,
+    Spring,
+    EaseInBounce,
+    EaseOutBounce,
+    EaseInOutBounce,
+    EaseInBack,
+    EaseOutBack,
+    EaseInOutBack,
+    EaseInElastic,
+    EaseOutElastic,
+    EaseInOutElastic,
+}
+
+public delegate float EaseFunction(float s, float e, float v);
+
 public static class EasingFunction
 {
-    public enum Ease
-    {
-        EaseInQuad = 0,
-        EaseOutQuad,
-        EaseInOutQuad,
-        EaseInCubic,
-        EaseOutCubic,
-        EaseInOutCubic,
-        EaseInQuart,
-        EaseOutQuart,
-        EaseInOutQuart,
-        EaseInQuint,
-        EaseOutQuint,
-        EaseInOutQuint,
-        EaseInSine,
-        EaseOutSine,
-        EaseInOutSine,
-        EaseInExpo,
-        EaseOutExpo,
-        EaseInOutExpo,
-        EaseInCirc,
-        EaseOutCirc,
-        EaseInOutCirc,
-        Linear,
-        Spring,
-        EaseInBounce,
-        EaseOutBounce,
-        EaseInOutBounce,
-        EaseInBack,
-        EaseOutBack,
-        EaseInOutBack,
-        EaseInElastic,
-        EaseOutElastic,
-        EaseInOutElastic,
-    }
-
     private const float NATURAL_LOG_OF_2 = 0.693147181f;
 
     //
@@ -761,7 +763,7 @@ public static class EasingFunction
 
     }
 
-    public delegate float Function(float s, float e, float v);
+    
 
     /// <summary>
     /// Returns the function associated to the easingFunction enum. This value returned should be cached as it allocates memory
@@ -769,7 +771,7 @@ public static class EasingFunction
     /// </summary>
     /// <param name="easingFunction">The enum associated with the easing function.</param>
     /// <returns>The easing function</returns>
-    public static Function GetEasingFunction(Ease easingFunction)
+    public static EaseFunction GetEasingFunction(Ease easingFunction)
     {
         if (easingFunction == Ease.EaseInQuad)
         {
@@ -940,7 +942,7 @@ public static class EasingFunction
     /// </summary>
     /// <param name="easingFunction"></param>
     /// <returns>The derivative function</returns>
-    public static Function GetEasingFunctionDerivative(Ease easingFunction)
+    public static EaseFunction GetEasingFunctionDerivative(Ease easingFunction)
     {
         if (easingFunction == Ease.EaseInQuad)
         {

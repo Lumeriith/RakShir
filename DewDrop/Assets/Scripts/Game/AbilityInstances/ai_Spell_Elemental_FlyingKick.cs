@@ -34,7 +34,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         if (!photonView.IsMine) return;
         flyingSound = SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick", transform.position);
         flyingSound.Follow(this);
-        displacement = new Displacement(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, EasingFunction.Ease.EaseOutSine, Stopped, Stopped);
+        displacement = Displacement.ByVector(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, false, Ease.EaseOutSine, Stopped, Stopped);
         info.owner.StartDisplacement(displacement);
     }
 
@@ -64,7 +64,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         info.owner.DoBasicAttackImmediately(lv, source);
         info.owner.DoMagicDamage(bonusDamage, lv, false, source);
         SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick Hit", transform.position);
-        lv.StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneTime, false, false, EasingFunction.Ease.EaseOutSine));
+        lv.StartDisplacement(Displacement.ByVector(info.owner.transform.forward * airborneDistance, airborneTime, false, false, true, Ease.EaseOutSine));
 
         DetachChildParticleSystemsAndAutoDelete();
         DestroySelf();

@@ -70,7 +70,7 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         info.owner.DoBasicAttackImmediately(thing, source);
-        thing.StartDisplacement(new Displacement(info.directionVector * pushDistance, pushDuration, false, false, EasingFunction.Ease.EaseOutQuad, null, null));
+        thing.StartDisplacement(Displacement.ByVector(info.directionVector * pushDistance, pushDuration, false, false, false, Ease.EaseOutQuad, null, null));
         thing.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
     }

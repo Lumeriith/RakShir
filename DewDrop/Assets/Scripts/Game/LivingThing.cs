@@ -975,12 +975,8 @@ public class LivingThing : MonoBehaviourPun
     {
         if(!displacement.isFriendly && !SelfValidator.CanBePushed.Evaluate(this))
         {
-            if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
-
-            
-            displacement.self = this;
+            displacement.SetSelf(this);
             displacement.Cancel();
-
         }
         else
         {
@@ -990,40 +986,28 @@ public class LivingThing : MonoBehaviourPun
                 ongoingDisplacement = null;
             }
 
-            if (!displacement.isTargetDisplacement) displacement.SetStartPosition(transform.position);
+            displacement.SetSelf(this);
 
             ongoingDisplacement = displacement;
-            ongoingDisplacement.self = this;
 
-            photonView.RPC("RpcStartDisplacement", RpcTarget.Others,
-        displacement.isTargetDisplacement,
-        displacement.vector1,
-        displacement.vector2,
-        displacement.duration,
-        displacement.isFriendly,
-        displacement.lookForward,
-        (int)displacement.ease);
+            if (displacement.type == Displacement.DisplacementType.ByVector)
+            {
+                photonView.RPC("RpcStartDisplacementByVector", RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.vector, displacement.duration, displacement.ignoreCollision, (byte)displacement.ease);
+            }
+            else if (displacement.type == Displacement.DisplacementType.TowardsTarget)
+            {
+                photonView.RPC("RpcStartDisplacementTowardsTarget", RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.to.photonView.ViewID, displacement.gap, displacement.speed);
+            }
         }
-
-
     }
 
     #endregion Functions For Everyone
 
     #region RPCs
     [PunRPC]
-    private void RpcStartDisplacement(bool isTargetDisplacement, Vector3 vector1, Vector3 vector2, float duration, bool isFriendly, bool lookForward, int ease)
+    private void RpcStartDisplacementByVector(bool isFriendly, bool lookForward, Vector3 vector, float duration, bool ignoreCollision, byte ease)
     {
-        Displacement displacement = new Displacement
-        {
-            isTargetDisplacement = isTargetDisplacement,
-            vector1 = vector1,
-            vector2 = vector2,
-            duration = duration,
-            isFriendly = isFriendly,
-            lookForward = lookForward,
-            ease = (EasingFunction.Ease)ease
-        };
+        Displacement displacement = Displacement.ByVector(vector, duration, isFriendly, lookForward, ignoreCollision, (Ease)ease);
 
         if (ongoingDisplacement != null)
         {
@@ -1031,10 +1015,23 @@ public class LivingThing : MonoBehaviourPun
             ongoingDisplacement = null;
         }
 
+        ongoingDisplacement = displacement;
+    }
+
+    [PunRPC]
+    private void RpcStartDisplacementTowardsTarget(bool isFriendly, bool lookForward, int toViewID, float gap, float speed)
+    {
+        Displacement displacement = Displacement.TowardsTarget(PhotonNetwork.GetPhotonView(toViewID).GetComponent<LivingThing>(), gap, speed, isFriendly, lookForward);
+
+        if (ongoingDisplacement != null)
+        {
+            ongoingDisplacement.Cancel();
+            ongoingDisplacement = null;
+        }
 
         ongoingDisplacement = displacement;
-        ongoingDisplacement.self = this;
     }
+
 
 
     [PunRPC]
@@ -1447,7 +1444,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcTeleport(Vector3 location)
     {
-        if(ongoingDisplacement != null && (!ongoingDisplacement.isFriendly || ongoingDisplacement.isTargetDisplacement))
+        if(ongoingDisplacement != null && (!ongoingDisplacement.isFriendly || ongoingDisplacement.type == Displacement.DisplacementType.TowardsTarget))
         {
             ongoingDisplacement.Cancel();
             ongoingDisplacement = null;

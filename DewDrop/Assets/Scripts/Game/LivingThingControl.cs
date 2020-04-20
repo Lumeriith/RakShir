@@ -710,16 +710,14 @@ public class LivingThingControl : MonoBehaviourPun
     private void Update()
     {
         bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
-        if (livingThing.statusEffect.IsAffectedBy(StatusEffectType.Airborne) ||
-    livingThing.statusEffect.IsAffectedBy(StatusEffectType.Dash) ||
-    livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis))
+        if ((livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.type == Displacement.DisplacementType.TowardsTarget) ||
+            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis) ||
+            livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.type == Displacement.DisplacementType.ByVector && livingThing.ongoingDisplacement.ignoreCollision)
         {
             agent.enabled = false;
         }
-        else
-        {
-            agent.enabled = true;
-        }
+        else agent.enabled = true;
+
 
         if (!photonView.IsMine) return;
 

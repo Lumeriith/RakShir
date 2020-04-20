@@ -30,7 +30,7 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
         target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<LivingThing>();
 
-        info.owner.StartDisplacement(new Displacement(target, marginToTarget, dashSpeed, true, true, DashFinished, DashCanceled));
+        info.owner.StartDisplacement(Displacement.TowardsTarget(target, marginToTarget, dashSpeed, true, true, DashFinished, DashCanceled));
     }
 
     private void DashFinished()

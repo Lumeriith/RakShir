@@ -18,7 +18,7 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
         List<LivingThing> lvs = info.owner.GetAllTargetsInRange(info.owner.transform.position, range, targetValidator);
         for(int i = 0; i < lvs.Count; i++)
         {
-            lvs[i].StartDisplacement(new Displacement((lvs[i].transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutSine));
+            lvs[i].StartDisplacement(Displacement.ByVector((lvs[i].transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutSine));
             info.owner.DoMagicDamage(damage, lvs[i], false, source);
         }
         DetachChildParticleSystemsAndAutoDelete();

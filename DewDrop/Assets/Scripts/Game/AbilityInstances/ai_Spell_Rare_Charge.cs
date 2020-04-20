@@ -34,7 +34,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         photonView.RPC("RpcCharge", RpcTarget.All);
         chargeSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_Charge", transform.position);
         chargeSFX.Follow(this);
-        displacement = new Displacement(info.target, 0.5f, chargeSpeed, true, true, ChargeFinished, StopCharge);
+        displacement = Displacement.TowardsTarget(info.target, 0.5f, chargeSpeed, true, true, ChargeFinished, StopCharge);
         info.owner.StartDisplacement(displacement);
         collider.enabled = true;
         info.owner.PlayCustomAnimation("Rare - Charge");
@@ -63,7 +63,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         {
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
             info.owner.DoMagicDamage(damage, targets[i], false, source);
-            targets[i].StartDisplacement(new Displacement(info.owner.transform.forward * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutQuad));
+            targets[i].StartDisplacement(Displacement.ByVector(info.owner.transform.forward * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutQuad));
             targets[i].ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
         }
 

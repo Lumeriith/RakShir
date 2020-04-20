@@ -25,7 +25,7 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
         smallFire = transform.Find("SmallFire").gameObject;
         main.Play();
         if (!isMine) return;
-        info.owner.StartDisplacement(new Displacement(info.directionVector * dashDistance, dashDuration, true, true, EasingFunction.Ease.Linear, Finished, Finished));
+        info.owner.StartDisplacement(Displacement.ByVector(info.directionVector * dashDistance, dashDuration, true, true, true, Ease.Linear, Finished, Finished));
         SFXManager.CreateSFXInstance("si_Spell_Rare_Breakthrough Start", transform.position).Follow(this);
     }
 

@@ -23,7 +23,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
         if (photonView.IsMine)
         {
-            info.owner.StartDisplacement(new Displacement(info.directionVector * distance, duration, true, true, EasingFunction.Ease.Linear, StopSlip, StopSlip));
+            info.owner.StartDisplacement(Displacement.ByVector(info.directionVector * distance, duration, true, true, true, Ease.Linear, StopSlip, StopSlip));
         }
     }
 

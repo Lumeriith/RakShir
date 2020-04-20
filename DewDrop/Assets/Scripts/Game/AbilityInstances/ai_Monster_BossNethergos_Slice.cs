@@ -54,7 +54,7 @@ public class ai_Monster_BossNethergos_Slice : AbilityInstance
         if (thing == null) return;
         info.owner.DoMagicDamage(damage, thing, false, source);
         thing.ApplyStatusEffect(StatusEffect.Slow(source, slowTime, slowAmount));
-        thing.StartDisplacement(new Displacement((thing.transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, EasingFunction.Ease.EaseOutSine));
+        thing.StartDisplacement(Displacement.ByVector((thing.transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutSine));
 
     }
 }

@@ -13,7 +13,7 @@ public class ai_Spell_Huntress_Ambush : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info.owner.StartDisplacement(new Displacement(info.target, marginToTarget, dashSpeed, true, true, Slice, Canceled));
+        info.owner.StartDisplacement(Displacement.TowardsTarget(info.target, marginToTarget, dashSpeed, true, true, Slice, Canceled));
         info.owner.PlayCustomAnimation("Huntress - Ambush - Dash", dashAnimationDuration);
     }
 
