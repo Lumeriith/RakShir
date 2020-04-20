@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Photon.Pun;
-using UnityEngine.AI;
-using System.Linq;
+﻿using Photon.Pun;
 using Sirenix.OdinInspector;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.AI;
 
 #region Enums
 public enum Team { None, Red, Blue, Creep }
@@ -707,29 +707,11 @@ public class LivingThing : MonoBehaviourPun
 
     public void ChangeWalkAnimation(string animationName)
     {
-        for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
-        {
-            if (CustomAnimationBox.instance.animations[i].name == animationName)
-            {
-                photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, i);
-
-                return;
-            }
-        }
-        Debug.LogError(name + ": Custom Walk animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, animationName);
     }
     public void ChangeStandAnimation(string animationName)
     {
-        for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
-        {
-            if (CustomAnimationBox.instance.animations[i].name == animationName)
-            {
-                photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, i);
-
-                return;
-            }
-        }
-        Debug.LogError(name + ": Custom Stand animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, animationName);
     }
 
 
@@ -920,23 +902,7 @@ public class LivingThing : MonoBehaviourPun
 
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
-        if (duration == 0) return;
-        if (duration < 0 && duration != -1)
-        {
-            Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
-            return;
-        }
-        if (animation == null) return;
-        for(int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
-        {
-            if(CustomAnimationBox.instance.animations[i] == animation)
-            {
-                photonView.RPC("RpcPlayCustomAnimation", RpcTarget.All, i, duration);
-                
-                return;   
-            }
-        }
-        Debug.LogError(name + ": Custom animation '" + animation.name + "' must be put in Custom Animation Box before usage!");
+        PlayCustomAnimation(animation.name, duration);
     }
 
     public void PlayCustomAnimation(string animationName, float duration = -1)
@@ -947,16 +913,7 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
             return;
         }
-        for (int i = 0; i < CustomAnimationBox.instance.animations.Count; i++)
-        {
-            if (CustomAnimationBox.instance.animations[i].name == animationName)
-            {
-                photonView.RPC("RpcPlayCustomAnimation", RpcTarget.All, i, duration);
-                
-                return;
-            }
-        }
-        Debug.LogError(name + ": Custom animation '" + animationName + "' must be put in Custom Animation Box before usage!");
+        photonView.RPC("RpcPlayCustomAnimation", RpcTarget.All, animationName, duration);
     }
 
     public void Kill()
@@ -1437,9 +1394,9 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void RpcChangeWalkAnimation(int index)
+    private void RpcChangeWalkAnimation(string name)
     {
-        AnimationClip newClip = CustomAnimationBox.instance.animations[index];
+        AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         foreach (AnimationClip oldClip in defaultClips)
         {
@@ -1453,9 +1410,9 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void RpcChangeStandAnimation(int index)
+    private void RpcChangeStandAnimation(string name)
     {
-        AnimationClip newClip = CustomAnimationBox.instance.animations[index];
+        AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         foreach (AnimationClip oldClip in defaultClips)
         {
@@ -1470,9 +1427,9 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    private void RpcPlayCustomAnimation(int index, float duration)
+    private void RpcPlayCustomAnimation(string name, float duration)
     {
-        AnimationClip newClip = CustomAnimationBox.instance.animations[index];
+        AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         foreach(AnimationClip oldClip in defaultClips)
         {
