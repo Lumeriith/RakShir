@@ -82,6 +82,7 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 6
+  connectedGems: []
 --- !u!1 &2911441332996855045
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +97,7 @@ GameObject:
   - component: {fileID: 2911441332996855066}
   - component: {fileID: 2911441332996855070}
   m_Layer: 11
-  m_Name: equip_Weapon_Huntress_InfinityGlaive
+  m_Name: deprecated_equip_Weapon_Huntress_InfinityGlaive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +229,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2911441333179037578}
-  - component: {fileID: 2911441333179037579}
   m_Layer: 0
   m_Name: Attachment1
   m_TagString: Untagged
@@ -252,19 +252,6 @@ Transform:
   m_Father: {fileID: 2911441332996855065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2911441333179037579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911441333179037621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2529c190769547848ae0ac8d5cb7590d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angularSpeed: 400
 --- !u!1 &2911441333524566666
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +334,7 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f01
     invertResult: 0
   cooldownTime: 0
+  connectedGems: []
 --- !u!1 &2911441333827877127
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +450,7 @@ MonoBehaviour:
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   cooldownTime: 80
+  connectedGems: []
 --- !u!1001 &820476846516798787
 PrefabInstance:
   m_ObjectHideFlags: 0
