@@ -60,7 +60,7 @@ public class MonsterInfoHUD : MonoBehaviour
             text_name.text = target.readableName;
             tmpu_health.text = string.Format("{0:n0}/{1:n0}", (int)target.currentHealth, (int)target.maximumHealth);
             rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Clamp(target.maximumHealth, minimumWidth, maximumWidth));
-            string statuses = GameManager.GetImportantStatusEffectNames(target);
+            string statuses = StatusEffect.GetImportantStatusEffectNames(target);
             if(statuses == "")
             {
                 image_statusEffectsBackdrop.enabled = false;

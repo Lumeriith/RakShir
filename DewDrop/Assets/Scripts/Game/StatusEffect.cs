@@ -115,6 +115,72 @@ public class StatusEffect
         StatusEffectType.Blind,
         StatusEffectType.DamageOverTime
     };
+
+    private static StatusEffectType[] statusEffectsToDisplay =
+{
+        StatusEffectType.Stasis,
+        StatusEffectType.Invulnerable,
+        StatusEffectType.Protected,
+        StatusEffectType.Untargetable,
+        StatusEffectType.Unstoppable,
+        StatusEffectType.MindControl,
+        StatusEffectType.Polymorph,
+        StatusEffectType.Stun,
+        StatusEffectType.Sleep,
+        StatusEffectType.Charm,
+        StatusEffectType.Fear,
+        StatusEffectType.Silence,
+        StatusEffectType.Root,
+        StatusEffectType.Blind,
+        StatusEffectType.Custom
+    };
+
+    private static string[] statusEffectNamesToDisplay =
+    {
+        "정지", "무적", "보호", "지정불가", "저지불가", "정신조종", "변이", "기절", "수면", "매혹", "공포", "침묵", "이동불가", "실명", ""
+    };
+
+    public static string GetImportantStatusEffectName(LivingThing thing)
+    {
+        List<StatusEffectType> existingTypes = new List<StatusEffectType>();
+        for (int i = 0; i < thing.statusEffect.statusEffects.Count; i++)
+        {
+            if (!existingTypes.Contains(thing.statusEffect.statusEffects[i].type)) existingTypes.Add(thing.statusEffect.statusEffects[i].type);
+        }
+        if (existingTypes.Count == 0) return "";
+        for (int i = 0; i < statusEffectsToDisplay.Length; i++)
+        {
+            if (existingTypes.Contains(statusEffectsToDisplay[i]))
+            {
+                if (statusEffectsToDisplay[i] == StatusEffectType.Custom) return (string)thing.statusEffect.statusEffects.Find(x => x.type == StatusEffectType.Custom).parameter;
+                return statusEffectNamesToDisplay[i];
+            }
+        }
+        return "";
+    }
+
+    public static string GetImportantStatusEffectNames(LivingThing thing)
+    {
+        string result = "";
+        List<StatusEffectType> existingTypes = new List<StatusEffectType>();
+        for (int i = 0; i < thing.statusEffect.statusEffects.Count; i++)
+        {
+            if (!existingTypes.Contains(thing.statusEffect.statusEffects[i].type)) existingTypes.Add(thing.statusEffect.statusEffects[i].type);
+        }
+        if (existingTypes.Count == 0) return "";
+        for (int i = 0; i < statusEffectsToDisplay.Length; i++)
+        {
+            if (existingTypes.Contains(statusEffectsToDisplay[i]))
+            {
+                if (statusEffectsToDisplay[i] == StatusEffectType.Custom) result += (string)thing.statusEffect.statusEffects.Find(x => x.type == StatusEffectType.Custom).parameter + " ";
+                else result += statusEffectNamesToDisplay[i] + " ";
+            }
+        }
+        if (result.EndsWith(" ")) result = result.Substring(0, result.Length - 1);
+        return result;
+    }
+
+
     public static StatusEffect Stasis(SourceInfo source, float duration)
     {
         return new StatusEffect(source, StatusEffectType.Stasis, duration);

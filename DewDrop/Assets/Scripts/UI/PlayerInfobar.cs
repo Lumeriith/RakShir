@@ -63,7 +63,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
             canvasGroup.alpha = 1;
             universalHealthbar.enabled = true;
         }
-        string statusEffectName = GameManager.GetImportantStatusEffectName(target);
+        string statusEffectName = StatusEffect.GetImportantStatusEffectName(target);
         if(statusEffectName == "")
         {
             text_name.text = target.readableName;

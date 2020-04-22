@@ -193,7 +193,7 @@ public class MapView : MonoBehaviour
 
     public void Move()
     {
-        GameManager.DoObeliskTeleportation(rooms[selectedNode]);
+        GladiatorGameManager.DoObeliskTeleportation(rooms[selectedNode]);
 
     }
 

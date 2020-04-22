@@ -10,31 +10,6 @@ public enum PlayerType { Elemental, Reptile }
 public enum IngameNodeType { Unknown, Ingame, Menu, Inventory, Shop, Map, MapObelisk, Moving }
 public class GameManager : MonoBehaviour
 {
-    private static StatusEffectType[] statusEffectsToDisplay =
-    {
-        StatusEffectType.Stasis,
-        StatusEffectType.Invulnerable,
-        StatusEffectType.Protected,
-        StatusEffectType.Untargetable,
-        StatusEffectType.Unstoppable,
-        StatusEffectType.MindControl,
-        StatusEffectType.Polymorph,
-        StatusEffectType.Stun,
-        StatusEffectType.Sleep,
-        StatusEffectType.Charm,
-        StatusEffectType.Fear,
-        StatusEffectType.Silence,
-        StatusEffectType.Root,
-        StatusEffectType.Blind,
-        StatusEffectType.Custom
-    };
-
-    private static string[] statusEffectNamesToDisplay =
-    {
-        "정지", "무적", "보호", "지정불가", "저지불가", "정신조종", "변이", "기절", "수면", "매혹", "공포", "침묵", "이동불가", "실명", ""
-    };
-
-
     public Texture2D normalCursor;
     public Vector2 normalCursorHotspot;
     public Texture2D attackCursor;
@@ -170,6 +145,12 @@ public class GameManager : MonoBehaviour
         localPlayer.SetReadableName(PlayerPrefs.GetString("characterName", "이름없는 영웅"));
         return localPlayer;
     }
+
+    private void Awake()
+    {
+        DewResources.Initialize();
+    }
+
     private void Start()
     {
         OnLivingThingInstantiate += (LivingThing thing) =>
@@ -182,6 +163,7 @@ public class GameManager : MonoBehaviour
             everyLivingThings.Remove(thing);
         };
     }
+
     public static void DropLoot(string name, Vector3 position)
     {
         GameObject gobj = SpawnItem(name, position + Vector3.up * 2f + Random.insideUnitSphere * 0.8f, Random.rotation).gameObject;
@@ -220,93 +202,4 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    public static string GetImportantStatusEffectName(LivingThing thing)
-    {
-        List<StatusEffectType> existingTypes = new List<StatusEffectType>();
-        for (int i = 0; i < thing.statusEffect.statusEffects.Count; i++)
-        {
-            if (!existingTypes.Contains(thing.statusEffect.statusEffects[i].type)) existingTypes.Add(thing.statusEffect.statusEffects[i].type);
-        }
-        if (existingTypes.Count == 0) return "";
-        for (int i = 0; i < statusEffectsToDisplay.Length; i++)
-        {
-            if (existingTypes.Contains(statusEffectsToDisplay[i]))
-            {
-                if (statusEffectsToDisplay[i] == StatusEffectType.Custom) return (string)thing.statusEffect.statusEffects.Find(x => x.type == StatusEffectType.Custom).parameter;
-                return statusEffectNamesToDisplay[i];
-            }
-        }
-        return "";
-    }
-
-    public static string GetImportantStatusEffectNames(LivingThing thing)
-    {
-        string result = "";
-        List<StatusEffectType> existingTypes = new List<StatusEffectType>();
-        for (int i = 0; i < thing.statusEffect.statusEffects.Count; i++)
-        {
-            if (!existingTypes.Contains(thing.statusEffect.statusEffects[i].type)) existingTypes.Add(thing.statusEffect.statusEffects[i].type);
-        }
-        if (existingTypes.Count == 0) return "";
-        for (int i = 0; i < statusEffectsToDisplay.Length; i++)
-        {
-            if (existingTypes.Contains(statusEffectsToDisplay[i]))
-            {
-                if (statusEffectsToDisplay[i] == StatusEffectType.Custom) result += (string)thing.statusEffect.statusEffects.Find(x => x.type == StatusEffectType.Custom).parameter + " ";
-                else result += statusEffectNamesToDisplay[i] + " ";
-            }
-        }
-        if (result.EndsWith(" ")) result = result.Substring(0, result.Length - 1);
-        return result;
-    }
-
-    public static void DoObeliskTeleportation(Room room)
-    {
-        instance.StartCoroutine(CoroutineMove(room));
-        GameEventMessage.SendEvent("Move Started");
-    }
-
-
-    private static IEnumerator CoroutineMove(Room room)
-    {
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(SourceInfo.Empty(), 4f));
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 4f, (instance.localPlayer.maximumHealth - instance.localPlayer.currentHealth), true));
-        instance.localPlayer.DoManaHeal(instance.localPlayer.stat.finalMaximumMana / 2f, instance.localPlayer, true, new SourceInfo());
-        for (int i = 0; i < 20; i++)
-        {
-            instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
-            yield return new WaitForSeconds(0.03f);
-        }
-        instance.localPlayer.RpcScaleForDuration(0f, 0.5f);
-        if(instance.localPlayer.team == Team.Red && room.redCustomEntryPoint != null)
-        {
-            instance.localPlayer.Teleport(room.redCustomEntryPoint.position);
-        }
-        else if (instance.localPlayer.team == Team.Blue && room.blueCustomEntryPoint != null)
-        {
-            instance.localPlayer.Teleport(room.blueCustomEntryPoint.position);
-        }
-        else
-        {
-            instance.localPlayer.Teleport(room.entryPoint.position);
-        }
-        
-        Instantiate(GladiatorGameManager.instance.monsterSpawnEffect, instance.localPlayer.transform.position, Quaternion.identity);
-        instance.localPlayer.SetCurrentRoom(room);
-        GameEventMessage.SendEvent("Move Finished");
-        OverlayCanvas.Blink();
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(SourceInfo.Empty(), 0.5f));
-        instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(SourceInfo.Empty(), 3.5f, 30f));
-
-
-        yield return new WaitForSeconds(.45f);
-        for (float t = 0.5f; t < 1f; t += 0.05f)
-        {
-            instance.localPlayer.RpcFlashForDuration(1f, 1f, 1f, 1f, 0.225f, t);
-        }
-    }
-
-
-
 }

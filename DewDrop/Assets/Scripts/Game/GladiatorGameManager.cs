@@ -125,7 +125,53 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private int remainingRoundTime = 0;
 
-    
+    public static void DoObeliskTeleportation(Room room)
+    {
+        instance.StartCoroutine(CoroutineMove(room));
+        GameEventMessage.SendEvent("Move Started");
+    }
+
+
+    private static IEnumerator CoroutineMove(Room room)
+    {
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(SourceInfo.Empty(), 4f));
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 4f, (GameManager.instance.localPlayer.maximumHealth - GameManager.instance.localPlayer.currentHealth), true));
+        GameManager.instance.localPlayer.DoManaHeal(GameManager.instance.localPlayer.stat.finalMaximumMana / 2f, GameManager.instance.localPlayer, true, new SourceInfo());
+        for (int i = 0; i < 20; i++)
+        {
+            GameManager.instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
+            yield return new WaitForSeconds(0.03f);
+        }
+        GameManager.instance.localPlayer.RpcScaleForDuration(0f, 0.5f);
+        if (GameManager.instance.localPlayer.team == Team.Red && room.redCustomEntryPoint != null)
+        {
+            GameManager.instance.localPlayer.Teleport(room.redCustomEntryPoint.position);
+        }
+        else if (GameManager.instance.localPlayer.team == Team.Blue && room.blueCustomEntryPoint != null)
+        {
+            GameManager.instance.localPlayer.Teleport(room.blueCustomEntryPoint.position);
+        }
+        else
+        {
+            GameManager.instance.localPlayer.Teleport(room.entryPoint.position);
+        }
+
+        Instantiate(GladiatorGameManager.instance.monsterSpawnEffect, GameManager.instance.localPlayer.transform.position, Quaternion.identity);
+        GameManager.instance.localPlayer.SetCurrentRoom(room);
+        GameEventMessage.SendEvent("Move Finished");
+        OverlayCanvas.Blink();
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(SourceInfo.Empty(), 0.5f));
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(SourceInfo.Empty(), 3.5f, 30f));
+
+
+        yield return new WaitForSeconds(.45f);
+        for (float t = 0.5f; t < 1f; t += 0.05f)
+        {
+            GameManager.instance.localPlayer.RpcFlashForDuration(1f, 1f, 1f, 1f, 0.225f, t);
+        }
+    }
+
+
 
     private IEnumerator CoroutineTickTime()
     {
