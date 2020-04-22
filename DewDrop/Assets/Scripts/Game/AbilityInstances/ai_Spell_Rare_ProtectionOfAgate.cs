@@ -9,7 +9,7 @@ public class ai_Spell_Rare_ProtectionOfAgate : AbilityInstance
     {
         if (!photonView.IsMine) return;
         info.owner.ApplyStatusEffect(StatusEffect.Protected(source, protectedDuration));
-        DestroySelf(5f);
+        Despawn(5f);
     }
 
     protected override void AliveUpdate()

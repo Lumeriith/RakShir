@@ -18,7 +18,7 @@ public class ai_Spell_Rare_GrantMagic : AbilityInstance
             
 
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
 
     }

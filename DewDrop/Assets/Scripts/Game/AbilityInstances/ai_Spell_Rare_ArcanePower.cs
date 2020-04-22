@@ -18,6 +18,6 @@ public class ai_Spell_Rare_ArcanePower : AbilityInstance
         }
         info.owner.DoManaHeal(manaHealPerHit * targets.Count, info.owner, false, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

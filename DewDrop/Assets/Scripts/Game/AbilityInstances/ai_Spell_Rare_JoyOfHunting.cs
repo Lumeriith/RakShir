@@ -26,8 +26,8 @@ public class ai_Spell_Rare_JoyOfHunting : AbilityInstance
     {
         if(photonView.IsMine && Time.time - startTime > duration)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
             loopSFX.DestroyFadingOut(1f);
         }
     }

@@ -57,7 +57,7 @@ public class ai_Spell_Rare_CleansingFlame : AbilityInstance
             }
 
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

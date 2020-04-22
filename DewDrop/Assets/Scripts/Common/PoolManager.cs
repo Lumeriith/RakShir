@@ -3,16 +3,130 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PoolManager : MonoBehaviour, IPunPrefabPool
+public interface IDelayedDespawn
 {
-    public void Destroy(GameObject gameObject)
+    bool IsReadyForDespawn();
+    GameObject GetGameObject();
+    Coroutine StartCoroutine(IEnumerator routine);
+}
+
+public class PoolManager : MonoBehaviour
+{
+    public class PoolManagerPunBridge : IPunPrefabPool
     {
-        throw new System.NotImplementedException();
+        public PoolManagerPunBridge()
+        {
+            PhotonNetwork.PrefabPool = this;
+        }
+
+        public void Destroy(GameObject gameObject)
+        {
+            IDelayedDespawn target = gameObject.GetComponent<IDelayedDespawn>();
+            if (target != null)
+            {
+                DespawnWhenReady(target);
+            }
+            else Despawn(gameObject);
+        }
+
+        public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
+        {
+            string shortName = prefabId.Split('/')[1];
+            GameObject original = null;
+            if (prefabId.StartsWith("AbilityInstances/")) original = DewResources.GetAbilityInstance(shortName);
+            else if (prefabId.StartsWith("Items/")) original = DewResources.GetItem(shortName);
+            else if (prefabId.StartsWith("LivingThings/")) original = DewResources.GetLivingThing(shortName);
+            else if (prefabId.StartsWith("Rooms")) original = DewResources.GetRoom(shortName);
+            else if (prefabId.StartsWith("Sounds")) original = DewResources.GetSFXInstance(shortName);
+            else Debug.LogErrorFormat("WTF {0}", prefabId);
+
+            return SpawnNoActivation(original, position, rotation);
+        }
     }
 
-    public new GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
+    private static PoolManagerPunBridge _bridge;
+    private static Dictionary<GameObject, Queue<GameObject>> _pools = new Dictionary<GameObject, Queue<GameObject>>();
+    private static Dictionary<GameObject, GameObject> _originalBySpawnling = new Dictionary<GameObject, GameObject>();
+    private static Transform _poolRoot = null;
+
+    private void Start()
     {
-        
-        throw new System.NotImplementedException();
+        _bridge = new PoolManagerPunBridge();
+        PhotonNetwork.PrefabPool = _bridge;
     }
+
+    public static Transform GetPoolRoot()
+    {
+        if(_poolRoot == null)
+        {
+            _poolRoot = new GameObject("Pool Root").transform;
+            _poolRoot.SetAsFirstSibling();
+        }
+        return _poolRoot;
+    }
+
+    public static GameObject GetPooledGameObjectFromPool(GameObject original, bool activate)
+    {
+        if (!_pools.TryGetValue(original, out Queue<GameObject> pool))
+        {
+            pool = new Queue<GameObject>();
+            _pools.Add(original, pool);
+        }
+        if (pool.Count == 0)
+        {
+            pool.Enqueue(Object.Instantiate(original, _poolRoot));
+        }
+        GameObject spawnling = pool.Dequeue();
+        _originalBySpawnling.Add(spawnling, original);
+        spawnling.SetActive(activate);
+        return spawnling;
+    }
+
+    public static GameObject Spawn(GameObject original, Vector3 position, Quaternion rotation, Transform parent = null)
+    {
+        GameObject spawnling = GetPooledGameObjectFromPool(original, true);
+        spawnling.transform.position = position;
+        spawnling.transform.rotation = rotation;
+        spawnling.transform.parent = parent;
+
+        return spawnling;
+    }
+
+    private static GameObject SpawnNoActivation(GameObject original, Vector3 position, Quaternion rotation)
+    {
+        GameObject spawnling = GetPooledGameObjectFromPool(original, false);
+        spawnling.transform.position = position;
+        spawnling.transform.rotation = rotation;
+
+        return spawnling;
+    }
+
+    public static void Despawn(GameObject gobj)
+    {
+        if(!_originalBySpawnling.TryGetValue(gobj, out GameObject original))
+        {
+            Debug.LogErrorFormat("Tried to despawn a GameObject with unknown original! Destroying it instead. {0}", gobj);
+            Object.Destroy(gobj);
+        }
+        else
+        {
+            gobj.SetActive(false);
+            gobj.transform.parent = GetPoolRoot();
+            _pools[original].Enqueue(gobj);
+            _originalBySpawnling.Remove(gobj);
+        }
+    }
+
+    public static void DespawnWhenReady(IDelayedDespawn target)
+    {
+        target.StartCoroutine(CoroutineDespawnWhenReady(target));
+    }
+
+    private static IEnumerator CoroutineDespawnWhenReady(IDelayedDespawn target)
+    {
+        while (!target.IsReadyForDespawn()) yield return null;
+        Despawn(target.GetGameObject());
+    }
+
+
 }

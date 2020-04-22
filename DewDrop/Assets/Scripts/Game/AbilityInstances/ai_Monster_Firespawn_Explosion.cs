@@ -32,6 +32,6 @@ public class ai_Monster_Firespawn_Explosion : AbilityInstance
             }
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

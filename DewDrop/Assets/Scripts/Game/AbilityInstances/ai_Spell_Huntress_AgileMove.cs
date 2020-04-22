@@ -30,7 +30,7 @@ public class ai_Spell_Huntress_AgileMove : AbilityInstance
         info.owner.stat.bonusDodgeChance += dodgeAmount;
         yield return new WaitForSeconds(duration);
         info.owner.stat.bonusDodgeChance -= dodgeAmount;
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 }

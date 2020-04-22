@@ -42,7 +42,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     {
         if (!isAlive) return;
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     protected override void AliveUpdate()
@@ -67,7 +67,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         lv.StartDisplacement(Displacement.ByVector(info.owner.transform.forward * airborneDistance, airborneTime, false, false, true, Ease.EaseOutSine));
 
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
         displacement.Cancel();
     }
 

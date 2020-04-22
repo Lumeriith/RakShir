@@ -16,7 +16,7 @@ public class ai_Gem_Epic_Time : AbilityInstance
         time.trigger.ApplyCooldownReduction(time.cooldownReduction[time.level]);
         SFXManager.CreateSFXInstance("si_Gem_Epic_Time", transform.position);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
 

@@ -27,7 +27,7 @@ public class ai_Spell_Huntress_Evade : AbilityInstance
         if (photonView.IsMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

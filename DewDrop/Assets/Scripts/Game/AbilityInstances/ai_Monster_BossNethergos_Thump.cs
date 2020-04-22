@@ -47,7 +47,7 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
         if (photonView.IsMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

@@ -19,7 +19,7 @@ public class ai_Spell_Rare_DarkEnergy : AbilityInstance
             targets[i].ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
         }
-        DestroySelf(5f);
+        Despawn(5f);
     }
 
     protected override void AliveUpdate()

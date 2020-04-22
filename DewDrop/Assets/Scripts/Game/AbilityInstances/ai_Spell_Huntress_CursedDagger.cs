@@ -71,8 +71,8 @@ public class ai_Spell_Huntress_CursedDagger : AbilityInstance
                 if(remainingDuration < 0)
                 {
                     info.owner.OnDoBasicAttackHit -= OwnerBasicAttackHit;
-                    DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmittingAndClear);
-                    DestroySelf();
+                    DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
+                    Despawn();
                 }
                 
             }

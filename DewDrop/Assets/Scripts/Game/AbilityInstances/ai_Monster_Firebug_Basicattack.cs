@@ -10,7 +10,7 @@ public class ai_Monster_Firebug_Basicattack : AbilityInstance
         if (!photonView.IsMine) return;
         castInfo.owner.DoBasicAttackImmediately(castInfo.target, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     

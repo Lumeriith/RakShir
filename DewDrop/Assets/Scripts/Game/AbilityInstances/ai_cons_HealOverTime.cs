@@ -22,7 +22,7 @@ public class ai_cons_HealOverTime : AbilityInstance
     IEnumerator CoroutineDestroy()
     {
         yield return new WaitForSeconds(duration);
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 }

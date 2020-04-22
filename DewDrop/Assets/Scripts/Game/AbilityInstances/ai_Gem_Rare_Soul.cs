@@ -33,8 +33,8 @@ public class ai_Gem_Rare_Soul : AbilityInstance
             {
                 SFXManager.CreateSFXInstance("si_Gem_Rare_Soul Eat", transform.position);
                 photonView.RPC("RpcIncreaseHealth", RpcTarget.All);
-                DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-                DestroySelf();
+                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+                Despawn();
             }
         }
     }
@@ -70,8 +70,8 @@ public class ai_Gem_Rare_Soul : AbilityInstance
             }
             else if (index == -1 || Time.time - soul.damagedTimes[index] > soul.scarDuration)
             {
-                DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-                DestroySelf();
+                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+                Despawn();
                 break;
             }
             

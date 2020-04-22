@@ -18,7 +18,7 @@ public class ai_Spell_Rare_Hamstring : AbilityInstance
             info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
             info.owner.DoHeal(healAmountMultiplier * info.owner.maximumHealth, info.owner, false, source);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

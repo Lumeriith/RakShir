@@ -33,7 +33,7 @@ public class ai_Monster_Archer_Trueshot : AbilityInstance
         {
             fly.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -47,7 +47,7 @@ public class ai_Monster_Archer_Trueshot : AbilityInstance
 
         photonView.RPC("RpcLanded", RpcTarget.All);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

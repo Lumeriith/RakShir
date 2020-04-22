@@ -46,7 +46,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     {
         photonView.RPC("RpcStopCharge", RpcTarget.All);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     private void ChargeFinished()
@@ -71,7 +71,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         photonView.RPC("RpcStopCharge", RpcTarget.All);
 
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

@@ -38,7 +38,7 @@ public class ai_Gem_Common_Aftertaste : AbilityInstance
         {
             info.owner.DoHeal(amount * ((gem_Common_Aftertaste)source.gem).bonusHealPercentage[source.gem.level] / 100f, info.target, false, source);
         }
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop, info.target);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems, info.target);
+        Despawn();
     }
 }

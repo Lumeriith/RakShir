@@ -12,6 +12,6 @@ public class ai_Gem_Common_Regrowth : AbilityInstance
         if (!isMine) return;
         info.owner.DoHeal(((gem_Common_Regrowth)source.gem).healAmount[source.gem.level], info.owner, false, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

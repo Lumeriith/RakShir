@@ -24,12 +24,12 @@ public class ai_Spell_Huntress_Ambush : AbilityInstance
         info.owner.PlayCustomAnimation("Huntress - Ambush - Slice", sliceAnimationDuration);
         info.owner.control.StartChanneling(new Channel(new SelfValidator(), sliceChannelDuration, false, false, false, false, null, null));
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     private void Canceled()
     {
-        DestroySelf();
+        Despawn();
     }
 
 

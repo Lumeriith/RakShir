@@ -35,8 +35,8 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
             if (Vector3.Distance(transform.position, start) >= distance)
             {
                 photonView.RPC("RpcDestroyModel", RpcTarget.All);
-                DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-                DestroySelf();
+                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+                Despawn();
             }
         }
     }
@@ -58,7 +58,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
         }
         info.owner.DoManaHeal(20f, info.owner, true, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
     [PunRPC]
     private void RpcDestroyModel()

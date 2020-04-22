@@ -47,8 +47,8 @@ public class ai_Monster_BossNethergos_Breath : AbilityInstance
         collider.SetActive(false);
         if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 

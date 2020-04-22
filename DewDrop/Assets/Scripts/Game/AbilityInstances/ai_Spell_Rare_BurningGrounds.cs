@@ -50,7 +50,7 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
         }
         loopSFX.DestroyFadingOut(1f);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

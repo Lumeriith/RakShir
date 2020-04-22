@@ -4,30 +4,47 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public enum DetachBehaviour { DontStop, StopEmitting, StopEmittingAndClear }
+public enum DespawnBehaviour : byte { Immediately, WaitForParticleSystems, StopAndWaitForParticleSystems }
+public enum AttachBehaviour : byte { Full, IgnoreRotation }
 
-
+public class AbilityCallbacks
+{
+    public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
+    public System.Action<InfoDamage> OnDealPureDamage = (InfoDamage _) => { };
+    public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
+    public System.Action<InfoBasicAttackHit> OnDoBasicAttackHit = (InfoBasicAttackHit _) => { };
+    public System.Action<InfoDeath> OnKill = (InfoDeath _) => { };
+    public System.Action<InfoHeal> OnDoHeal = (InfoHeal _) => { };
+    public System.Action<InfoManaHeal> OnDoManaHeal = (InfoManaHeal _) => { };
+}
 
 //[RequireComponent(typeof(PhotonView))]
-public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback
+public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback, IDelayedDespawn
 {
-    protected bool isCreated { get; private set; } = false;
-    protected bool isDestroyed { get; private set; } = false;
-
-    public bool isAlive { get { return isCreated && !isDestroyed; } }
+    public bool isAlive { get { return _isInitialized && !_isMarkedForDespawn; } }
     public bool isMine { get { return photonView.IsMine; } }
+    public CastInfo info { get { return _info; } }
 
-    public CastInfo info;
-
-    public SourceInfo source;
-
+    public AbilityCallbacks callbacks { get; private set; }
+    private CastInfo _info;
     public float creationTime { private set; get; }
+    private bool _isReadyForDespawn;
+
+    private bool _isInitialized;
+    private bool _isMarkedForDespawn;
+
+    private DespawnBehaviour _despawnBehaviour;
+
+    private Transform _attachTo;
+    private AttachBehaviour _attachBehaviour;
+    private Vector3 _attachOffset;
+    private Quaternion _attachRotation;
+    private ParticleSystem _mainParticleSystem;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] initData = info.photonView.InstantiationData;
-        this.info = new CastInfo();
-        this.source = new SourceInfo();
+        _info = new CastInfo();
 
         if(initData == null)
         {
@@ -37,57 +54,44 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         if ((int)initData[0] != -1)
         {
-            this.info.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
+            _info.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
         }
         else
         {
-            this.info.owner = null;
+            _info.owner = null;
             Debug.LogWarning("This AbilityInstance does not have an owner!\n" + this.name);
         }
 
-        this.info.point = (Vector3)initData[1];
-        this.info.directionVector = ((Vector3)initData[2]).normalized;
+        _info.point = (Vector3)initData[1];
+        _info.directionVector = ((Vector3)initData[2]).normalized;
 
         if ((int)initData[3] != -1)
         {
-            this.info.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<LivingThing>();
+            _info.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<LivingThing>();
         }
         else
         {
-            this.info.target = null;
+            _info.target = null;
         }
 
-        if ((string)initData[4] != "" && this.info.owner != null)
-        {
-            foreach(Transform t in this.info.owner.transform)
-            {
-                if(t.name == (string)initData[4])
-                {
-                    source.trigger = t.GetComponent<AbilityTrigger>();
-                    break;
-                }
-            }
-        }
-
-        if((int)initData[5] != -1)
-        {
-            source.gem = PhotonNetwork.GetPhotonView((int)initData[5]).GetComponent<Gem>();
-        }
-
-        source.instance = this;
-        source.thing = this.info.owner;
-
-        object[] data = new object[initData.Length - 6];
+        object[] data = new object[initData.Length - 4];
         for(int i = 0; i < data.Length; i++)
         {
-            data[i] = initData[i + 6];
+            data[i] = initData[i + 4];
         }
 
-        isCreated = true;
-        creationTime = Time.time;
-        OnCreate(this.info, data);
+        _isReadyForDespawn = false;
 
-        //Debug.Log(string.Format("AbilityInstance - {0}\nSource Trigger: {1}\nSource Gem: {2}\nSource Instance: {3}", this, source.trigger, source.gem, source.instance));
+        callbacks = new AbilityCallbacks();
+        creationTime = Time.time;
+        _isReadyForDespawn = false;
+        _isInitialized = true;
+        _isMarkedForDespawn = false;
+        if (_mainParticleSystem == null) _mainParticleSystem = GetComponent<ParticleSystem>();
+
+        _attachTo = null;
+
+        OnCreate(this.info, data);
     }
 
     protected abstract void OnCreate(CastInfo info, object[] data);
@@ -96,41 +100,65 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     private void Update()
     {
-        if (isCreated && !isDestroyed) AliveUpdate();
+        if (isAlive) AliveUpdate();
+        if (_isMarkedForDespawn)
+        {
+            if(_attachTo != null)
+            {
+                if(_attachBehaviour == AttachBehaviour.Full)
+                {
+                    transform.position = _attachTo.TransformPoint(_attachOffset);
+                    transform.rotation = _attachTo.rotation * _attachRotation;
+                }
+                else if (_attachBehaviour == AttachBehaviour.IgnoreRotation)
+                {
+                    transform.position = _attachTo.TransformPoint(_attachOffset);
+                }
+            }
+
+            if (_despawnBehaviour == DespawnBehaviour.Immediately) _isReadyForDespawn = true;
+            else if (_despawnBehaviour == DespawnBehaviour.WaitForParticleSystems) _isReadyForDespawn = _mainParticleSystem == null || !_mainParticleSystem.IsAlive();
+            else if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _isReadyForDespawn = _mainParticleSystem == null || !_mainParticleSystem.IsAlive();
+            else _isReadyForDespawn = true;
+        }
     }
 
-    public void DestroySelf()
+    public void Despawn(DespawnBehaviour behaviour)
     {
-        if (!isCreated || isDestroyed) return;
-        isDestroyed = true;
-        photonView.RPC("RpcDestroySelf", RpcTarget.All);
+        if (!isAlive) return;
+        photonView.RPC("RpcDespawn", RpcTarget.All, (byte)behaviour);
     }
 
-    public void DestroySelf(float delay)
+    public void Despawn(DespawnBehaviour behaviour, MonoBehaviourPun attachTo, AttachBehaviour attachBehaviour)
     {
-        if (!isCreated || isDestroyed) return;
-
-        StartCoroutine(CoroutineDelayedDestroySelf(delay));
-
+        if (!isAlive) return;
+        Vector3 attachOffset = attachTo.transform.InverseTransformPoint(transform.position);
+        Quaternion attachRotation = Quaternion.Inverse(attachTo.transform.rotation) * transform.rotation;
+        photonView.RPC("RpcDespawnWithAttach", RpcTarget.All, (byte)behaviour, attachTo.photonView.ViewID, (byte)attachBehaviour, attachOffset, attachRotation);
     }
-
-    private IEnumerator CoroutineDelayedDestroySelf(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        isDestroyed = true;
-        photonView.RPC("RpcDestroySelf", RpcTarget.All);
-    }
-
 
     [PunRPC]
-    protected void RpcDestroySelf()
+    protected void RpcDespawn(byte behaviour)
     {
-        isDestroyed = true;
-        if (photonView.IsMine)
-        {
-            PhotonNetwork.Destroy(gameObject);
-        }
+        _despawnBehaviour = (DespawnBehaviour)behaviour;
+        if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _mainParticleSystem.Stop();
+        if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
+    }
 
+    [PunRPC]
+    protected void RpcDespawnWithAttach(byte behaviour, int attachToViewID, byte attachBehaviour, Vector3 attachOffset, Quaternion attachRotation)
+    {
+        _despawnBehaviour = (DespawnBehaviour)behaviour;
+        _attachTo = PhotonView.Find(attachToViewID)?.transform;
+        _attachBehaviour = (AttachBehaviour)attachBehaviour;
+        _attachOffset = attachOffset;
+        _attachRotation = attachRotation;
+
+        transform.position = _attachTo.TransformPoint(_attachOffset);
+        transform.rotation = _attachTo.rotation * _attachRotation;
+
+        if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _mainParticleSystem.Stop();
+        if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
     }
 
     [PunRPC]
@@ -141,23 +169,14 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     protected virtual void OnReceiveEvent(string eventString) { }
 
-    public void DetachChildParticleSystemsAndAutoDelete(DetachBehaviour behaviour = DetachBehaviour.DontStop, MonoBehaviourPun attachTo = null)
+    public bool IsReadyForDespawn()
     {
-        photonView.RPC("RpcDetachChildParticleSystemsAndAutoDelete", RpcTarget.All, (int)behaviour, attachTo == null ? -1 : attachTo.photonView.ViewID);
+        return _isReadyForDespawn;
+
     }
 
-    [PunRPC]
-    protected void RpcDetachChildParticleSystemsAndAutoDelete(int clear, int viewID)
+    public GameObject GetGameObject()
     {
-        PhotonView view = viewID != -1 ? PhotonNetwork.GetPhotonView(viewID) : null;
-        ParticleSystem[] psList = GetComponentsInChildren<ParticleSystem>();
-        foreach (ParticleSystem ps in psList)
-        {
-            if(clear != 0) ps.Stop(false, clear == 2 ? ParticleSystemStopBehavior.StopEmittingAndClear : ParticleSystemStopBehavior.StopEmitting);
-            ps.gameObject.AddComponent<ParticleSystemAutoDestroy>();
-            if (view != null) ps.transform.parent = view.transform;
-            else ps.transform.parent = transform.parent;
-        }
+        return gameObject;
     }
-
 }

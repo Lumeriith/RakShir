@@ -57,7 +57,7 @@ public class ai_BasicAttack_Rare_PainOrb : AbilityInstance
             }
             
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

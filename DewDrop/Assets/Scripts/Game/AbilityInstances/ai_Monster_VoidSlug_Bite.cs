@@ -25,6 +25,6 @@ public class ai_Monster_VoidSlug_Bite : AbilityInstance
             info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration3, slowAmount));
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

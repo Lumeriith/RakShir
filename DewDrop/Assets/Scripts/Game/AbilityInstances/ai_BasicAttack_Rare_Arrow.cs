@@ -33,7 +33,7 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
 
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_Arrow", transform.position);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

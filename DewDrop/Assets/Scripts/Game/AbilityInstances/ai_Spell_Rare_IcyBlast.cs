@@ -40,7 +40,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         yield return new WaitForSeconds(secondBlastDelay);
         Explode();
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     protected override void AliveUpdate()
@@ -90,7 +90,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
 
     private void ChannelCanceled()
     {
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmittingAndClear);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
+        Despawn();
     }
 }

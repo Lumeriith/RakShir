@@ -22,7 +22,7 @@ public class ai_BasicAttack_Rare_SwordAndShield : AbilityInstance
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_SwordAndShield " + Random.Range(0, 3), targets[i].transform.position);
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
 

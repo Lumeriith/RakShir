@@ -14,6 +14,6 @@ public class ai_Spell_Rare_Overpower : AbilityInstance
         info.owner.DoMagicDamage(damage, info.target, false, source);
         info.target.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

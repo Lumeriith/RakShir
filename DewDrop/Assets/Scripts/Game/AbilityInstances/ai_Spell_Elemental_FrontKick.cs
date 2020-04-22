@@ -22,14 +22,10 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     GameObject flash;
 
 
-    private void Awake()
+    protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         whoof = transform.Find("Whoof").GetComponent<ParticleSystem>();
         flash = transform.Find("Flash").gameObject;
-    }
-
-    protected override void OnCreate(CastInfo castInfo, object[] data)
-    {
         if (photonView.IsMine)
         {
             Channel channel = new Channel(channelValidator, duration, false, false, false, false, null, End);
@@ -88,7 +84,7 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     {
         if (!isAlive) return;
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
 
     }
 

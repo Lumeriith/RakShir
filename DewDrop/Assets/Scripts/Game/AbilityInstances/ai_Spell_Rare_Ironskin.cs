@@ -12,7 +12,7 @@ public class ai_Spell_Rare_Ironskin : AbilityInstance
         if (!photonView.IsMine) return;
         info.owner.ApplyStatusEffect(StatusEffect.Shield(source, shieldDuration,shieldMultiplier * info.owner.stat.finalMaximumHealth, true));
         info.owner.ApplyStatusEffect(StatusEffect.Unstoppable(source, unstoppableDuration));
-        DestroySelf(5f);
+        Despawn(5f);
     }
 
     protected override void AliveUpdate()

@@ -46,7 +46,7 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
         {
             photonView.RPC("RpcStopFly", RpcTarget.All);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
     private void OnTriggerEnter(Collider other)

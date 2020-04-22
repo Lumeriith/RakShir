@@ -74,7 +74,7 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
             }
         }
         DetachChildParticleSystemsAndAutoDelete();  
-        DestroySelf();
+        Despawn();
     }
 
     private void OnTriggerEnter(Collider other)

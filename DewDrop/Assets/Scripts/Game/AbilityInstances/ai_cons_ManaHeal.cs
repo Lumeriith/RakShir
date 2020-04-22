@@ -21,6 +21,6 @@ public class ai_cons_ManaHeal : AbilityInstance
     {
         yield return new WaitForSeconds(3f);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

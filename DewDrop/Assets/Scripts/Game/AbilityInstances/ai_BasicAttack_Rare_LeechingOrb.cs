@@ -41,8 +41,8 @@ public class ai_BasicAttack_Rare_LeechingOrb : AbilityInstance
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_LeechingOrb Hit", transform.position);
 
             photonView.RPC("RpcHit", RpcTarget.All);
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
+            Despawn();
         }
     }
 

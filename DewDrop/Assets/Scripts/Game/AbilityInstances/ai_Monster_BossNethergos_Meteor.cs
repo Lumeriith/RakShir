@@ -28,6 +28,6 @@ public class ai_Monster_BossNethergos_Meteor : AbilityInstance
             }
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

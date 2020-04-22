@@ -29,7 +29,7 @@ public class ai_Monster_Archer_Basicattack : AbilityInstance
             photonView.RPC("RpcLanded", RpcTarget.All);
             fly.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

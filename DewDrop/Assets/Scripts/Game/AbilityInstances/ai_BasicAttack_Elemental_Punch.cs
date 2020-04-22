@@ -11,6 +11,6 @@ public class ai_BasicAttack_Elemental_Punch : AbilityInstance
         SFXManager.CreateSFXInstance("si_BasicAttack_Elemental_Punch " + Random.Range(0, 2), info.target.transform.position);
         info.owner.DoBasicAttackImmediately(info.target, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

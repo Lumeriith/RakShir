@@ -32,8 +32,8 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
         if (!photonView.IsMine) return;
         if (Vector3.Distance(startPosition, transform.position) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -47,7 +47,7 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
 
         photonView.RPC("RpcLanded", RpcTarget.All);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

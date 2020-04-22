@@ -22,7 +22,7 @@ public class ai_Spell_Rare_Stomp : AbilityInstance
                 targets[i].ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
             }
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

@@ -37,8 +37,8 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
 
     private void Finished()
     {
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 
     private void OnTriggerEnter(Collider other)

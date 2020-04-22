@@ -42,7 +42,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         if (isMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

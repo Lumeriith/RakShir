@@ -30,7 +30,7 @@ public class ai_Spell_Rare_Blink : AbilityInstance
                 info.owner.DoMagicDamage(damage, targets[i], false, source);
             }
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

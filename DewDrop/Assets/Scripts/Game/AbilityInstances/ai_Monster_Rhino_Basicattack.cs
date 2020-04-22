@@ -17,7 +17,7 @@ public class ai_Monster_Rhino_Basicattack : AbilityInstance
         info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
         castInfo.owner.DoBasicAttackImmediately(castInfo.target, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     

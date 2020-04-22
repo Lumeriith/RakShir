@@ -29,8 +29,8 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         {
             if (photonView.IsMine && speed.isAlive) speed.Remove();
             if (photonView.IsMine && haste.isAlive) haste.Remove();
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 }

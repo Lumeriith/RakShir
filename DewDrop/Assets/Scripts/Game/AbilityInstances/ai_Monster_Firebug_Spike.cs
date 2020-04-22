@@ -26,8 +26,8 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
 
         if(Vector3.Distance(transform.position, startPosition) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 

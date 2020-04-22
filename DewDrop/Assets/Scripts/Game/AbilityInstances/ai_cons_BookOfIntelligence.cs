@@ -24,6 +24,6 @@ public class ai_cons_BookOfIntelligence : AbilityInstance
             yield return null;
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

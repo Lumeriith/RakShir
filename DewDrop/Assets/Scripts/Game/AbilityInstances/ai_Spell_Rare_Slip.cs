@@ -31,8 +31,8 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
     private void StopSlip()
     {
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 
     protected override void AliveUpdate()

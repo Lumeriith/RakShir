@@ -42,7 +42,7 @@ public class ai_Monster_BossNethergos_Slice : AbilityInstance
         if (photonView.IsMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

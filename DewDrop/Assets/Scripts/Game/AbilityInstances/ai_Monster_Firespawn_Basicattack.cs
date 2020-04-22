@@ -28,7 +28,7 @@ public class ai_Monster_Firespawn_Basicattack : AbilityInstance
             info.owner.DoBasicAttackImmediately(info.target, source);
             photonView.RPC("RpcLanded", RpcTarget.All);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

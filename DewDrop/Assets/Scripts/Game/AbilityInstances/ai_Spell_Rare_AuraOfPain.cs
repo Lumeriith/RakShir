@@ -51,7 +51,7 @@ public class ai_Spell_Rare_AuraOfPain : AbilityInstance
         }
 
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

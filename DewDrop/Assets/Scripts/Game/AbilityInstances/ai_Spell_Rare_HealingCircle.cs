@@ -41,8 +41,8 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
         }
         yield return new WaitForSeconds(0.1f);
         loopSFX.DestroyFadingOut(1f);
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 
     [PunRPC]

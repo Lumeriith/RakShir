@@ -36,7 +36,7 @@ public class ai_Monster_Mage_Lightning : AbilityInstance
             yield return new WaitForSeconds(interval);
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

@@ -67,8 +67,8 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         {
             loopSFX.DestroyFadingOut(.35f);
             SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Stop", transform.position);
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
 
     }

@@ -22,6 +22,6 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
             info.owner.DoMagicDamage(damage, lvs[i], false, source);
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

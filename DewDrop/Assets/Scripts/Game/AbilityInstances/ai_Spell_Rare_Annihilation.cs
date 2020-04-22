@@ -50,8 +50,8 @@ public class ai_Spell_Rare_Annihilation : AbilityInstance
         if(eventString == "EndAura")
         {
             loop.DestroyFadingOut(1f);
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 

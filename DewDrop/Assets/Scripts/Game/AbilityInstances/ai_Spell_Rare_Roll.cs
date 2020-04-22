@@ -44,7 +44,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     {
         info.owner.OnDoBasicAttackHit -= EffectUsed;
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     private void EffectUsed(InfoBasicAttackHit info)
@@ -55,7 +55,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
         photonView.RPC("RpcHit", RpcTarget.All, info.to.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_Roll Hit", info.to.transform.position);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]

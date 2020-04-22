@@ -4,26 +4,55 @@ using UnityEngine;
 
 public static class DewResources
 {
-    private static Dictionary<string, AnimationClip> _animationClipByName;
+    private const string MainReferencePath = "Assets/Resources/MainReferences.asset";
+    private const string MainReferenceResourceName = "MainReferences";
+
+    private static DewResourceReferences _references;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void BuildOnResources()
+    {
+        UnityEditor.AssetDatabase.LoadAssetAtPath<DewResourceReferences>(MainReferencePath).Build();
+    }
+
+    public static void Initialize()
+    {
+        _references = Resources.Load<DewResourceReferences>(MainReferenceResourceName);
+    }
 
     public static AnimationClip GetAnimationClip(string name)
     {
-        
-        if (_animationClipByName == null) BuildAnimationClipByNameDictionary();
-        _animationClipByName.TryGetValue(name, out AnimationClip result);
-        if (result == null) Debug.LogErrorFormat("No AniamtionClip with name {0} was found!", name);
+        if (!_references.animations.TryGetValue(name, out AnimationClip result)) Debug.LogErrorFormat("No AnimationClip with name {0} was found!", name);
         return result;
     }
 
-    private static void BuildAnimationClipByNameDictionary()
+    public static GameObject GetLivingThing(string name)
     {
-        _animationClipByName = new Dictionary<string, AnimationClip>();
-        AnimationClip[] clips = Resources.LoadAll<AnimationClip>("Animations");
-        for(int i = 0; i < clips.Length; i++)
-        {
-            if (!_animationClipByName.ContainsKey(clips[i].name)) _animationClipByName.Add(clips[i].name, clips[i]);
-            else Debug.LogErrorFormat("AnimationClip name conflict! {0}", clips[i].name);
-        }
+        if (!_references.livingThings.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No LivingThing with name {0} was found!", name);
+        return result;
     }
 
+    public static GameObject GetAbilityInstance(string name)
+    {
+        if (!_references.abilityInstances.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No AbilityInstance with name {0} was found!", name);
+        return result;
+    }
+
+    public static GameObject GetItem(string name)
+    {
+        if (!_references.items.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No Item with name {0} was found!", name);
+        return result;
+    }
+
+    public static GameObject GetRoom(string name)
+    {
+        if (!_references.rooms.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No Room with name {0} was found!", name);
+        return result;
+    }
+
+    public static GameObject GetSFXInstance(string name)
+    {
+        if (!_references.sfxInstances.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No SFXInstance with name {0} was found!", name);
+        return result;
+    }
 }

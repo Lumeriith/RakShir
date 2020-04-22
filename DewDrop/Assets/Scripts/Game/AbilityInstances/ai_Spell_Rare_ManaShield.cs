@@ -59,8 +59,8 @@ public class ai_Spell_Rare_ManaShield : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_ManaShield Off", transform.position);
             if (shield.isAlive) shield.Remove();
             StopCoroutine(chargeCoroutine);
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 }

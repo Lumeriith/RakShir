@@ -38,8 +38,8 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
         transform.position += transform.forward * speed * Time.deltaTime;
         if(isMine && Vector3.Distance(transform.position, startPosition) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 
@@ -59,8 +59,8 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
         SFXManager.CreateSFXInstance("si_Spell_Rare_IceBolt Hit", transform.position);
         thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
         photonView.RPC("RpcHit", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
+        Despawn();
     }
 
     [PunRPC]

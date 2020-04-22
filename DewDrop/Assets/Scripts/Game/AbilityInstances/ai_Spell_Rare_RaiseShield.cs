@@ -83,8 +83,8 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
             transform.position += info.directionVector * speed * Time.deltaTime;
         } else if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 
@@ -102,14 +102,14 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
         {
             protection.Remove();
             info.owner.OnTakeDamage -= TookDamage;
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmittingAndClear);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
+            Despawn();
         }
         else if (!isActivated)
         {
             info.owner.OnTakeDamage -= TookDamage;
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
+            Despawn();
         }
         
         

@@ -32,7 +32,7 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
             {
                 fly.Stop();
                 DetachChildParticleSystemsAndAutoDelete();
-                DestroySelf();
+                Despawn();
             }
         }
     }
@@ -45,7 +45,7 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
         info.owner.DoMagicDamage(damage, lv, false, source);
         lv.statusEffect.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
 

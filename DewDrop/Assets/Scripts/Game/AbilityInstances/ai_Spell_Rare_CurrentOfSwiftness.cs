@@ -37,8 +37,8 @@ public class ai_Spell_Rare_CurrentOfSwiftness : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_CurrentOfSwiftness Off", transform.position);
             if (speed != null && speed.isAlive) speed.Remove();
             if (haste != null && haste.isAlive) haste.Remove();
-            DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-            DestroySelf();
+            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn();
         }
     }
 }

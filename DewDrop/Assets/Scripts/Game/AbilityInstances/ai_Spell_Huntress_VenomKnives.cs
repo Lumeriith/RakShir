@@ -56,7 +56,7 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
             target.OnTakeBasicAttackHit -= BasicAttackHit;
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     private void BasicAttackHit(InfoBasicAttackHit hit)

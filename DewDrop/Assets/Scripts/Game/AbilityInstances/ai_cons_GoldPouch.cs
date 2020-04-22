@@ -20,6 +20,6 @@ public class ai_cons_GoldPouch : AbilityInstance
             yield return null;
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

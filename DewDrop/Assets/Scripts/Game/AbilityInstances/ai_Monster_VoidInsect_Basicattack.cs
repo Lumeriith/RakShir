@@ -31,7 +31,7 @@ public class ai_Monster_VoidInsect_Basicattack : AbilityInstance
             info.target.ApplyStatusEffect(StatusEffect.DamageOverTime(source, poisonDuration, poisonAmount));
             photonView.RPC("RpcLanded", RpcTarget.All);
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 

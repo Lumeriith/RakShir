@@ -47,6 +47,6 @@ public class ai_Spell_Rare_HarvestSoul : AbilityInstance
             }
         }
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

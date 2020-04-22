@@ -12,7 +12,7 @@ public class ai_Spell_Rare_LifeSurge : AbilityInstance
         info.owner.ApplyStatusEffect(StatusEffect.HealOverTime(source, healOverTimeDuration, healMultiplier * info.owner.stat.finalMaximumHealth, true));
         info.owner.DoHeal(healMultiplier * info.owner.stat.finalMaximumHealth, info.owner, true, source);
         info.owner.statusEffect.CleanseAllHarmfulStatusEffects();
-        DestroySelf(5f);
+        Despawn(5f);
     }
 
     protected override void AliveUpdate()

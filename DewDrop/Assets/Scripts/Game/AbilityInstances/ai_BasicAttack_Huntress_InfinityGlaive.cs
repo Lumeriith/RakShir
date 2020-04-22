@@ -65,7 +65,7 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
             if(nextTargetId == -1)
             {
                 DetachChildParticleSystemsAndAutoDelete();
-                DestroySelf();
+                Despawn();
             }
         }
     }

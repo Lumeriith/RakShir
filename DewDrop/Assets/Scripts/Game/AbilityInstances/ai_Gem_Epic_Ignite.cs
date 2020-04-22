@@ -72,7 +72,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         if (isMine)
         {
             DetachChildParticleSystemsAndAutoDelete();
-            DestroySelf();
+            Despawn();
         }
     }
 }

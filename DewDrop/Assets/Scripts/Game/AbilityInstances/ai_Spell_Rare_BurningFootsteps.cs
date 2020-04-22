@@ -37,7 +37,7 @@ public class ai_Spell_Rare_BurningFootsteps : AbilityInstance
             }
         }
         if (loopSFX != null) loopSFX.Stop();
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 }

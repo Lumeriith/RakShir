@@ -130,7 +130,7 @@ public class DebugCommands : MonoBehaviour
         if (target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
         {
             Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
-            GameManager.DoObeliskTeleportation(nextRoom);
+            GladiatorGameManager.DoObeliskTeleportation(nextRoom);
         }
     }
 

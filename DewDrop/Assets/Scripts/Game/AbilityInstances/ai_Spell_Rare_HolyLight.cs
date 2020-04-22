@@ -31,7 +31,7 @@ public class ai_Spell_Rare_HolyLight : AbilityInstance
         }
         info.owner.DoHeal(healAmount, info.owner, false, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 
     [PunRPC]
