@@ -39,8 +39,8 @@ public class ai_Gem_Rare_Dawn : AbilityInstance
             info.owner.DoMagicDamage(dawn.damageAmount[dawn.level], targets[i], false, source);
         }
         photonView.RPC("RpcExplosionEffect", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.DontStop);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
+        Despawn();
     }
     
     [PunRPC]

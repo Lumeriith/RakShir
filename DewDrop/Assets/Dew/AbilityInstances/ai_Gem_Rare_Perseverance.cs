@@ -20,8 +20,8 @@ public class ai_Gem_Rare_Perseverance : AbilityInstance
 
     private void ShieldExpired()
     {
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 
 }

@@ -47,8 +47,8 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
             yield return new WaitForSeconds(immolation.tickTime);
             
         }
-        DetachChildParticleSystemsAndAutoDelete(DetachBehaviour.StopEmitting);
-        DestroySelf();
+        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn();
     }
 
     [PunRPC]

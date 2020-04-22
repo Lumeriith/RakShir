@@ -11,6 +11,6 @@ public class ai_Gem_Rare_Consume : AbilityInstance
         if (!isMine) return;
         info.owner.DoHeal((float)data[0], info.owner, true, source);
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }

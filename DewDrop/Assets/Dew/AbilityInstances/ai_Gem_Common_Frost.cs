@@ -12,6 +12,6 @@ public class ai_Gem_Common_Frost : AbilityInstance
         gem_Common_Frost frost = (gem_Common_Frost)source.gem;
         info.target.ApplyStatusEffect(StatusEffect.Slow(source, frost.slowDuration[frost.level], frost.slowAmount[frost.level]));
         DetachChildParticleSystemsAndAutoDelete();
-        DestroySelf();
+        Despawn();
     }
 }
