@@ -8,6 +8,7 @@ public static class DewResources
 
     public static AnimationClip GetAnimationClip(string name)
     {
+        
         if (_animationClipByName == null) BuildAnimationClipByNameDictionary();
         _animationClipByName.TryGetValue(name, out AnimationClip result);
         if (result == null) Debug.LogErrorFormat("No AniamtionClip with name {0} was found!", name);
@@ -21,6 +22,8 @@ public static class DewResources
         for(int i = 0; i < clips.Length; i++)
         {
             if (!_animationClipByName.ContainsKey(clips[i].name)) _animationClipByName.Add(clips[i].name, clips[i]);
+            else Debug.LogErrorFormat("AnimationClip name conflict! {0}", clips[i].name);
         }
     }
+
 }
