@@ -11,9 +11,9 @@ public class StatusEffectVisual : MonoBehaviour
     public AttachPosition position;
     public StatusEffectType type;
     
-    private LivingThing _target;
+    private Entity _target;
 
-    public void Attach(LivingThing to)
+    public void Attach(Entity to)
     {
         _target = to;
         transform.SetParent(to.transform);

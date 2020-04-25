@@ -4,7 +4,7 @@ using UnityEngine;
 using Doozy.Engine;
 public class MoonAltar : Activatable
 {
-    public override LivingThing entity => null;
+    public override Entity entity => null;
 
     protected override void Start()
     {
@@ -12,9 +12,9 @@ public class MoonAltar : Activatable
     }
 
 
-    protected override void OnChannelStart(LivingThing activator) { }
-    protected override void OnChannelCancel(LivingThing activator) { }
-    protected override void OnChannelSuccess(LivingThing activator)
+    protected override void OnChannelStart(Entity activator) { }
+    protected override void OnChannelCancel(Entity activator) { }
+    protected override void OnChannelSuccess(Entity activator)
     {
         if (!activator.photonView.IsMine) return;
         GameEventMessage.SendEvent("Shop");

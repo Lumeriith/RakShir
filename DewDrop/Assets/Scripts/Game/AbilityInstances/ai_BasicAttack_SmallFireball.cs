@@ -4,8 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 public class ai_BasicAttack_SmallFireball : AbilityInstance
 {
-    private LivingThing target;
-    private LivingThing owner;
+    private Entity target;
+    private Entity owner;
 
     private Vector3 offset;
 

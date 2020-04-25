@@ -11,7 +11,7 @@ public class ai_Spell_Rare_ArcanePower : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
             info.owner.DoMagicDamage(targets[i], damage, false, this);

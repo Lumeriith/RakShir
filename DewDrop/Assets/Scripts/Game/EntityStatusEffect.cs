@@ -50,12 +50,12 @@ public struct EntityStatus : IReadOnlyEntityStatus
 }
 
 
-public class LivingThingStatusEffect : MonoBehaviourPun
+public class EntityStatusEffect : MonoBehaviourPun
 {
     private const float overTimeEffectTickInterval = 0.5f;
 
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
-    private LivingThing livingThing;
+    private Entity livingThing;
 
     private float lastOverTimeEffectTickTime = 0f;
 
@@ -72,7 +72,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
             if ((int)type > maxStatusEffectTypeValue) maxStatusEffectTypeValue = (int)type;
         }
         statusEffectCountMap = new int[maxStatusEffectTypeValue + 1];
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         lastOverTimeEffectTickTime = Time.time;
         
     }

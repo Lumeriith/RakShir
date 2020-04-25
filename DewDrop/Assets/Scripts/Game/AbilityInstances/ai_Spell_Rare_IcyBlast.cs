@@ -51,7 +51,7 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
     {
         SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Blast", transform.position);
         photonView.RPC("RpcBlast", RpcTarget.All);
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].statusEffect.IsAffectedBy(StatusEffectType.Slow))

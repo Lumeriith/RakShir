@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class equip_Helmet_Huntress_HuntressHelmet : Equipment
 {
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.bonusDodgeChance += 10f;
         owner.stat.bonusMaximumHealth += 50f;
         
     }
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.bonusDodgeChance -= 10f;
         owner.stat.bonusMaximumHealth -= 50f;

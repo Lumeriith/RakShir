@@ -6,7 +6,7 @@ using Doozy.Engine.Nody;
 using Doozy.Engine.Nody.Nodes;
 public class UnitControlManager : MonoBehaviour
 {
-    public LivingThing selectedUnit;
+    public Entity selectedUnit;
 
     [Header("General Key Configurations")]
     public KeyCode castConfirmKey = KeyCode.Mouse0;
@@ -105,14 +105,14 @@ public class UnitControlManager : MonoBehaviour
     }
 
 
-    private LivingThing GetFirstValidTarget(TargetValidator tv)
+    private Entity GetFirstValidTarget(TargetValidator tv)
     {
         Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("LivingThing"));
         IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
         foreach(RaycastHit hit in hits)
         {
-            LivingThing lt = hit.collider.GetComponent<LivingThing>();
+            Entity lt = hit.collider.GetComponent<Entity>();
             if (lt == null || lt.IsDead()) continue;
             if(tv.Evaluate(selectedUnit, lt))
             {
@@ -178,7 +178,7 @@ public class UnitControlManager : MonoBehaviour
                 selectedUnit.control.CommandAbility(trigger, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.Target:
-                LivingThing result = GetFirstValidTarget(trigger.targetValidator);
+                Entity result = GetFirstValidTarget(trigger.targetValidator);
                 if (result != null)
                 {
                     info.target = result;
@@ -224,7 +224,7 @@ public class UnitControlManager : MonoBehaviour
                 selectedUnit.control.CommandConsumable(consumable, info, isReservation);
                 return true;
             case AbilityTrigger.TargetingType.Target:
-                LivingThing result = GetFirstValidTarget(consumable.targetValidator);
+                Entity result = GetFirstValidTarget(consumable.targetValidator);
                 if (result != null)
                 {
                     info.target = result;
@@ -253,7 +253,7 @@ public class UnitControlManager : MonoBehaviour
         IngameDebugConsole.DebugLogManager dbg = FindObjectOfType<IngameDebugConsole.DebugLogManager>();
         if (dbg != null) debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
 
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             if (thing.type == LivingThingType.Player && thing.photonView.IsMine && selectedUnit == null) selectedUnit = thing;
         };
@@ -262,14 +262,14 @@ public class UnitControlManager : MonoBehaviour
     private MeshOutline previousOutline;
     private void DrawAppropriateOutline()
     {
-        LivingThing target = GetFirstValidTarget(canDrawOutline);
+        Entity target = GetFirstValidTarget(canDrawOutline);
 
         if (target != null)
         {
             if (previousOutline != null)
             {
                 previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
-                if (previousOutline.GetComponentInParent<LivingThing>().type != LivingThingType.Player) previousOutline.enabled = false; // TODO: Optimize This.
+                if (previousOutline.GetComponentInParent<Entity>().type != LivingThingType.Player) previousOutline.enabled = false; // TODO: Optimize This.
             }
             previousOutline = target.outline;
 
@@ -285,7 +285,7 @@ public class UnitControlManager : MonoBehaviour
             if (previousOutline != null)
             {
                 previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
-                if (previousOutline.GetComponentInParent<LivingThing>().type != LivingThingType.Player) previousOutline.enabled = false;
+                if (previousOutline.GetComponentInParent<Entity>().type != LivingThingType.Player) previousOutline.enabled = false;
                 previousOutline = null;
             }
         }
@@ -342,7 +342,7 @@ public class UnitControlManager : MonoBehaviour
                 case InputState.Attack:
                     if (Input.GetKeyDown(castConfirmKey))
                     {
-                        LivingThing target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
+                        Entity target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
                         if (target != null)
                         {
                             selectedUnit.control.CommandChase(target, isReserveKeyPressed);
@@ -598,7 +598,7 @@ public class UnitControlManager : MonoBehaviour
             }
             else
             {
-                LivingThing target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                Entity target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
                 Activatable act = GetFirstActivatable();
 
                 if (target != null)
@@ -689,7 +689,7 @@ public class UnitControlManager : MonoBehaviour
                 else if (targetingType == AbilityTrigger.TargetingType.PointStrict) secondRangeIndicator.transform.position = GetCurrentCursorPositionInWorldSpace();
                 else if (targetingType == AbilityTrigger.TargetingType.Target)
                 {
-                    LivingThing thing = GetFirstValidTarget(targetValidator);
+                    Entity thing = GetFirstValidTarget(targetValidator);
                     if(thing == null)
                     {
                         secondRangeIndicator.gameObject.SetActive(false);

@@ -23,7 +23,7 @@ public class ai_Spell_Rare_Blink : AbilityInstance
         if (photonView.IsMine)
         {
             info.owner.Teleport(info.point);
-            List<LivingThing> targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, radius, targetValidator);
+            List<Entity> targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, radius, targetValidator);
             if (targets.Count > 0) info.owner.control.skillSet[3].ApplyCooldownReduction(cooldownReduction);
             for(int i = 0; i < targets.Count; i++)
             {

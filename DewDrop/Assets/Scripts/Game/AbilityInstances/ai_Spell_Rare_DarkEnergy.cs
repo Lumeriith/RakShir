@@ -13,7 +13,7 @@ public class ai_Spell_Rare_DarkEnergy : AbilityInstance
         hit = transform.Find("Hit").gameObject;
         if (!photonView.IsMine) return;
         info.owner.statusEffect.CleanseAllHarmfulStatusEffects();
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
             targets[i].ApplyStatusEffect(StatusEffect.Silence(silenceDuration), this);

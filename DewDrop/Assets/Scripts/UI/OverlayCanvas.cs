@@ -26,7 +26,7 @@ public class OverlayCanvas : MonoBehaviour
     private float stunAmount = 0f;
     private float blinkAmount = 0f;
 
-    private LivingThing player = null;
+    private Entity player = null;
 
     private void Awake()
     {
@@ -76,7 +76,7 @@ public class OverlayCanvas : MonoBehaviour
 
     private void UpdateAmounts()
     {
-        LivingThing player = GameManager.instance.localPlayer;
+        Entity player = GameManager.instance.localPlayer;
         painAmount = Mathf.MoveTowards(painAmount, 0, 0.8f * Time.deltaTime);
         painAmount = Mathf.Clamp(painAmount, Mathf.Clamp(1 - player.currentHealth / player.maximumHealth - 0.6f, 0f, 1f) * 0.65f / 0.4f, 1f);
         damageOverTimeAmount = Mathf.MoveTowards(damageOverTimeAmount, 0f, 4f * Time.deltaTime);

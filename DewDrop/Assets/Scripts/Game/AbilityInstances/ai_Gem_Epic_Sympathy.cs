@@ -18,7 +18,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         if (!isMine) return;
         SFXManager.CreateSFXInstance("si_Gem_Epic_Sympathy " + Random.Range(0, 3), Vector3.Lerp(info.target.transform.position + info.target.GetCenterOffset(), info.owner.transform.position + info.owner.GetCenterOffset(), .5f));
 
-        List<LivingThing> targets = info.owner.GetAllTargetsInLine(
+        List<Entity> targets = info.owner.GetAllTargetsInLine(
             info.target.transform.position + info.target.GetCenterOffset(),
             info.owner.transform.position + info.owner.GetCenterOffset() - info.target.transform.position - info.target.GetCenterOffset(),
             sympathy.splashWidth,

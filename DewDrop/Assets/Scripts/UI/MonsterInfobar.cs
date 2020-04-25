@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MonsterInfobar : MonoBehaviour, IInfobar
 {
-    private LivingThing target;
+    private Entity target;
 
     private new Renderer renderer
     {
@@ -25,7 +25,7 @@ public class MonsterInfobar : MonoBehaviour, IInfobar
 
     private CanvasGroup canvasGroup;
 
-    public void SetTarget(LivingThing target)
+    public void SetTarget(Entity target)
     {
         this.target = target;
     }

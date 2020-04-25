@@ -5,13 +5,13 @@ using UnityEngine;
 public class TestCrowdControlDetectingSphere : MonoBehaviour
 {
     private new Renderer renderer;
-    private LivingThing livingThing;
+    private Entity livingThing;
 
     public StatusEffectType detect;
     private void Awake()
     {
         renderer = GetComponent<Renderer>();
-        livingThing = GetComponentInParent<LivingThing>();
+        livingThing = GetComponentInParent<Entity>();
     }
 
     // Update is called once per frame

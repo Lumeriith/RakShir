@@ -20,7 +20,7 @@ public class Displacement
     private System.Action _canceledCallback = () => { };
 
     // TowardsTarget Displacement Properties
-    public LivingThing to { get; private set; }
+    public Entity to { get; private set; }
     public float gap { get; private set; }
     public float speed { get; private set; }
 
@@ -31,7 +31,7 @@ public class Displacement
     public Ease ease { get; private set; }
 
     // Active Displacement Properties
-    public LivingThing self { get; private set; }
+    public Entity self { get; private set; }
     public bool hasFinished { get; private set; }
 
 
@@ -49,7 +49,7 @@ public class Displacement
 
     private float _elapsedTime = 0f;
 
-    public static Displacement TowardsTarget(LivingThing to, float gap, float speed, bool isFriendly, bool lookForward, System.Action finishedCallback = null, System.Action canceledCallback = null)
+    public static Displacement TowardsTarget(Entity to, float gap, float speed, bool isFriendly, bool lookForward, System.Action finishedCallback = null, System.Action canceledCallback = null)
     {
         Displacement newDisplacement = new Displacement();
         newDisplacement.type = DisplacementType.TowardsTarget;
@@ -123,7 +123,7 @@ public class Displacement
         hasFinished = true;
     }
 
-    public void SetSelf(LivingThing self)
+    public void SetSelf(Entity self)
     {
         this.self = self;
     }

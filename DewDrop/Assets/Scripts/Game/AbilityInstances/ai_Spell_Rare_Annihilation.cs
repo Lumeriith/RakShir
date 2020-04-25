@@ -26,7 +26,7 @@ public class ai_Spell_Rare_Annihilation : AbilityInstance
         loop = SFXManager.CreateSFXInstance("si_Spell_Rare_Annihilation Loop", transform.position);
         loop.Follow(this);
         
-        List<LivingThing> targets;
+        List<Entity> targets;
         while (true)
         {
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, affectedTargets);

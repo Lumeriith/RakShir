@@ -10,7 +10,7 @@ public class trg_Spell_Elemental_DoubleKick : AbilityTrigger
     {
         
 
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, kickRange, kickTargetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(info.owner.transform.position, kickRange, kickTargetValidator);
 
         if (targets.Count == 0) return;
 

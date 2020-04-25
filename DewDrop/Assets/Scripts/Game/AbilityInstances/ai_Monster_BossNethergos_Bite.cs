@@ -46,7 +46,7 @@ public class ai_Monster_BossNethergos_Bite : AbilityInstance
     {
         if (!acceptCollisions || !photonView.IsMine || affectedColliders.Contains(other)) return;
         affectedColliders.Add(other);
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null) return;
         info.owner.DoMagicDamage(thing, damage, false, this);
     }

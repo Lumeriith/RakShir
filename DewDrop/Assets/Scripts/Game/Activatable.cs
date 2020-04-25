@@ -10,12 +10,12 @@ public abstract class Activatable : DewActionCaller
     public Channel channel;
     public bool isInterruptedByDamage = true;
 
-    protected abstract void OnChannelStart(LivingThing activator);
-    protected abstract void OnChannelCancel(LivingThing activator);
-    protected abstract void OnChannelSuccess(LivingThing activator);
+    protected abstract void OnChannelStart(Entity activator);
+    protected abstract void OnChannelCancel(Entity activator);
+    protected abstract void OnChannelSuccess(Entity activator);
 
 
-    private List<KeyValuePair<LivingThing, Channel>> dict = new List<KeyValuePair<LivingThing, Channel>>();
+    private List<KeyValuePair<Entity, Channel>> dict = new List<KeyValuePair<Entity, Channel>>();
 
     protected override void Start()
     {
@@ -23,7 +23,7 @@ public abstract class Activatable : DewActionCaller
         GameManager.instance.OnActivatableInstantiate.Invoke(this);
     }
 
-    public void StartActivate(LivingThing activator)
+    public void StartActivate(Entity activator)
     {
         if (!activator.photonView.IsMine)
         {
@@ -39,7 +39,7 @@ public abstract class Activatable : DewActionCaller
         activator.control.StartChanneling(newChannel);
 
         activator.OnDealDamage += Interrupt;
-        dict.Add(new KeyValuePair<LivingThing, Channel>(activator, newChannel));
+        dict.Add(new KeyValuePair<Entity, Channel>(activator, newChannel));
 
     }
 
@@ -61,19 +61,19 @@ public abstract class Activatable : DewActionCaller
     [PunRPC]
     protected void RpcChannelStart(int viewId)
     {
-        OnChannelStart(PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>());
+        OnChannelStart(PhotonNetwork.GetPhotonView(viewId).GetComponent<Entity>());
     }
 
     [PunRPC]
     protected void RpcChannelSuccess(int viewId)
     {
-        OnChannelSuccess(PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>());
+        OnChannelSuccess(PhotonNetwork.GetPhotonView(viewId).GetComponent<Entity>());
     }
 
     [PunRPC]
     protected void RpcChannelCancel(int viewId)
     {
-        LivingThing activator = PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>();
+        Entity activator = PhotonNetwork.GetPhotonView(viewId).GetComponent<Entity>();
         if (activator.photonView.IsMine) activator.OnDealDamage -= Interrupt;
         OnChannelCancel(activator);
         

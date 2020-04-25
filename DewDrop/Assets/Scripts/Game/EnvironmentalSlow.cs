@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnvironmentalSlow : MonoBehaviour
 {
 
-    private List<LivingThing> affectedLivingThings = new List<LivingThing>();
+    private List<Entity> affectedLivingThings = new List<Entity>();
     private List<StatusEffect> statusEffects = new List<StatusEffect>();
     private List<float> lastUpdateTime = new List<float>();
 
@@ -16,7 +16,7 @@ public class EnvironmentalSlow : MonoBehaviour
     public float tickTime = 0.2f;
     private void OnTriggerStay(Collider other)
     {
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null) return;
         if (!thing.photonView.IsMine) return;
         int index = affectedLivingThings.IndexOf(thing);

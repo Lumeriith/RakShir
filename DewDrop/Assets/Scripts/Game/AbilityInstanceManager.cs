@@ -6,10 +6,10 @@ using System.Linq;
 
 public struct CastInfo
 {
-    public LivingThing owner;
+    public Entity owner;
     public Vector3 point;
     public Vector3 directionVector;
-    public LivingThing target;
+    public Entity target;
 
     public Quaternion directionQuaternion
     {
@@ -19,12 +19,12 @@ public struct CastInfo
         }
     }
 
-    public static CastInfo OwnerOnly(LivingThing owner)
+    public static CastInfo OwnerOnly(Entity owner)
     {
         return new CastInfo { owner = owner };
     }
 
-    public static CastInfo OwnerAndTarget(LivingThing owner, LivingThing target) {
+    public static CastInfo OwnerAndTarget(Entity owner, Entity target) {
         return new CastInfo { owner = owner, target = target };
     }
 }

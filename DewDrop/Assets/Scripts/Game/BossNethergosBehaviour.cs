@@ -8,7 +8,7 @@ public class BossNethergosBehaviour : MonoBehaviourPun
     private Material bodyMaterial;
     private Material wingMaterial;
 
-    private LivingThing livingThing;
+    private Entity livingThing;
 
     private bool shouldRevive = true;
 
@@ -33,7 +33,7 @@ public class BossNethergosBehaviour : MonoBehaviourPun
 
     private void Start()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         if (photonView.IsMine)
         {
             livingThing.OnDeath += Death;

@@ -9,7 +9,7 @@ public class gem_Rare_Overdrive : Gem
 
     private float reducedCooldown;
 
-    public override void OnEquip(LivingThing owner, AbilityTrigger trigger)
+    public override void OnEquip(Entity owner, AbilityTrigger trigger)
     {
         if(trigger.cooldownTime <= 1)
         {
@@ -29,7 +29,7 @@ public class gem_Rare_Overdrive : Gem
         trigger.manaCost += 5f;
     }
 
-    public override void OnUnequip(LivingThing owner, AbilityTrigger trigger)
+    public override void OnUnequip(Entity owner, AbilityTrigger trigger)
     {
         trigger.cooldownTime += reducedCooldown;
         trigger.manaCost -= 5f;

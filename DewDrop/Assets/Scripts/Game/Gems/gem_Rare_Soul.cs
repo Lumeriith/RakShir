@@ -12,7 +12,7 @@ public class gem_Rare_Soul : Gem
     public float[] healthBonusLimit = { 200f, 300f, 400f, 500f };
     public float increasedHealth = 0f;
 
-    public List<LivingThing> damagedTargets;
+    public List<Entity> damagedTargets;
     public List<float> damagedTimes;
 
     public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)

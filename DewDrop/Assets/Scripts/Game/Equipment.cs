@@ -64,8 +64,8 @@ public abstract class Equipment : Item
         photonView.RPC("RpcUnequip", RpcTarget.All);
     }
 
-    public abstract void OnEquip(LivingThing owner);
-    public abstract void OnUnequip(LivingThing owner);
+    public abstract void OnEquip(Entity owner);
+    public abstract void OnUnequip(Entity owner);
 
     [PunRPC]
     protected void RpcEquip()
@@ -118,7 +118,7 @@ public abstract class Equipment : Item
         owner.outline.UpdateMeshOutlineInfo();
     }
 
-    private void UpdateAttachments(LivingThing owner)
+    private void UpdateAttachments(Entity owner)
     {
         foreach (Attachment attachment in attachments)
         {

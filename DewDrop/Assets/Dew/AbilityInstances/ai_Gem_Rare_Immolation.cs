@@ -32,7 +32,7 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
 
     IEnumerator CoroutineImmolation()
     {
-        List<LivingThing> targets;
+        List<Entity> targets;
         while(immolation.timeLeft > 0f)
         {
             photonView.RPC("RpcCircleEffect", RpcTarget.All);
@@ -61,7 +61,7 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
     {
         PhotonView view = PhotonNetwork.GetPhotonView(viewID);
         if (view == null) return;
-        LivingThing thing = view.GetComponent<LivingThing>();
+        Entity thing = view.GetComponent<Entity>();
         GameObject newHit = Instantiate(hit, thing.transform.position + thing.GetCenterOffset(), Quaternion.identity, thing.transform.parent);
         newHit.GetComponent<ParticleSystem>().Play();
         newHit.AddComponent<ParticleSystemAutoDestroy>();

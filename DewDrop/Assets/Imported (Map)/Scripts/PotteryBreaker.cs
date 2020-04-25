@@ -10,8 +10,8 @@ namespace Map
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<LivingThing>() == null) return;
-            LivingThing target = other.GetComponent<LivingThing>();
+            if (other.GetComponent<Entity>() == null) return;
+            Entity target = other.GetComponent<Entity>();
             if (target.type != LivingThingType.Player) return;
 
             foreach (Transform child in transform)

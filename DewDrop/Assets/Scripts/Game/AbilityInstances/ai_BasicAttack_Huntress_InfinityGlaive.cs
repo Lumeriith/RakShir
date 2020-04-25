@@ -12,9 +12,9 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
     public TargetValidator bounceTargetValidator;
 
     private int currentBounceCount = 0;
-    private List<LivingThing> hitEnemies = new List<LivingThing>();
+    private List<Entity> hitEnemies = new List<Entity>();
 
-    private LivingThing currentTarget;
+    private Entity currentTarget;
 
     private ParticleSystem fly;
     private ParticleSystem land;
@@ -46,7 +46,7 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
             if (currentBounceCount < maxBounceCount)
             {
                 currentBounceCount++;
-                List<LivingThing> possibleTargets = info.owner.GetAllTargetsInRange(transform.position, bounceRange, bounceTargetValidator);
+                List<Entity> possibleTargets = info.owner.GetAllTargetsInRange(transform.position, bounceRange, bounceTargetValidator);
                 
                 for(int i=0;i<possibleTargets.Count;i++)
                 {
@@ -80,7 +80,7 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
         }
         else
         {
-            currentTarget = PhotonNetwork.GetPhotonView(new_target_id).GetComponent<LivingThing>();
+            currentTarget = PhotonNetwork.GetPhotonView(new_target_id).GetComponent<Entity>();
         }
     }
 }

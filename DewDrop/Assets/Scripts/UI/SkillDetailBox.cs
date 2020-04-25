@@ -27,7 +27,7 @@ public class SkillDetailBox : MonoBehaviour
 
     private void UpdateText()
     {
-        LivingThing target = UnitControlManager.instance.selectedUnit;
+        Entity target = UnitControlManager.instance.selectedUnit;
         if (target == null || !target.photonView.IsMine || target.control.skillSet[parent.skillIndex] == null)
         {
             gameObject.SetActive(false);

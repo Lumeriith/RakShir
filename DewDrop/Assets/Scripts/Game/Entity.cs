@@ -22,20 +22,20 @@ public enum Relation { Own, Enemy, Ally }
 
 
 
-[RequireComponent(typeof(LivingThingControl))]
-[RequireComponent(typeof(LivingThingStat))]
-[RequireComponent(typeof(LivingThingStatusEffect))]
+[RequireComponent(typeof(EntityControl))]
+[RequireComponent(typeof(EntityStat))]
+[RequireComponent(typeof(EntityStatusEffect))]
 [RequireComponent(typeof(PhotonView))]
 [RequireComponent(typeof(PhotonTransformViewClassic))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
-public class LivingThing : MonoBehaviourPun
+public class Entity : MonoBehaviourPun
 {
     private bool didDamageFlash;
 
     private NavMeshAgent agent;
-    private LivingThing lastAttacker;
+    private Entity lastAttacker;
     private Animator animator;
     private AnimatorOverrideController aoc;
     private AnimationClip[] defaultClips;
@@ -146,7 +146,7 @@ public class LivingThing : MonoBehaviourPun
     private GameObject unitBase;
 
     [ShowIf("ShouldShowSummonerField")]
-    public LivingThing summoner = null;
+    public Entity summoner = null;
 
     [Header("Optional Explicit Transforms")]
     public Transform head;
@@ -158,11 +158,11 @@ public class LivingThing : MonoBehaviourPun
     public Transform bottom;
 
     [HideInInspector]
-    public LivingThingControl control;
+    public EntityControl control;
     [HideInInspector]
-    public LivingThingStat stat;
+    public EntityStat stat;
     [HideInInspector]
-    public LivingThingStatusEffect statusEffect;
+    public EntityStatusEffect statusEffect;
     [HideInInspector]
     public MeshOutline outline;
 
@@ -203,9 +203,9 @@ public class LivingThing : MonoBehaviourPun
         defaultScale = model.localScale;
         model.localScale = Vector3.zero;
 
-        control = GetComponent<LivingThingControl>();
-        stat = GetComponent<LivingThingStat>();
-        statusEffect = GetComponent<LivingThingStatusEffect>();
+        control = GetComponent<EntityControl>();
+        stat = GetComponent<EntityStat>();
+        statusEffect = GetComponent<EntityStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
 
         defaultMovementSpeed = stat.baseMovementSpeed;
@@ -500,14 +500,14 @@ public class LivingThing : MonoBehaviourPun
     {
         return !stat.isDead;
     }
-    public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
+    public List<Entity> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
     {
         Collider[] colliders = Physics.OverlapSphere(center, range, LayerMask.GetMask("LivingThing"));
         colliders = colliders.OrderBy(collider => Vector3.Distance(center, collider.transform.position)).ToArray();
-        List<LivingThing> result = new List<LivingThing>();
+        List<Entity> result = new List<Entity>();
         for (int i = 0; i < colliders.Length; i++)
         {
-            LivingThing lv = colliders[i].GetComponent<LivingThing>();
+            Entity lv = colliders[i].GetComponent<Entity>();
             if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);
@@ -515,14 +515,14 @@ public class LivingThing : MonoBehaviourPun
         }
         return result;
     }
-    public List<LivingThing> GetAllTargetsInLine(Vector3 origin, Vector3 directionVector, float width, float distance, TargetValidator targetValidator)
+    public List<Entity> GetAllTargetsInLine(Vector3 origin, Vector3 directionVector, float width, float distance, TargetValidator targetValidator)
     {
         RaycastHit[] hits = Physics.SphereCastAll(origin, width / 2f, directionVector, distance, LayerMask.GetMask("LivingThing"));
         hits = hits.OrderBy(hit => Vector3.Distance(origin, hit.collider.transform.position)).ToArray();
-        List<LivingThing> result = new List<LivingThing>();
+        List<Entity> result = new List<Entity>();
         for (int i = 0; i < hits.Length; i++)
         {
-            LivingThing lv = hits[i].collider.GetComponent<LivingThing>();
+            Entity lv = hits[i].collider.GetComponent<Entity>();
             if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
             {
                 result.Add(lv);
@@ -530,11 +530,11 @@ public class LivingThing : MonoBehaviourPun
         }
         return result;
     }
-    public LivingThing GetLastAttacker()
+    public Entity GetLastAttacker()
     {
         return lastAttacker ?? this;
     }
-    public Relation GetRelationTo(LivingThing to)
+    public Relation GetRelationTo(Entity to)
     {
         if (this == to || to.summoner == this) return Relation.Own;
         if (team == Team.None || team != to.team) return Relation.Enemy;
@@ -634,7 +634,7 @@ public class LivingThing : MonoBehaviourPun
     {
         photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
-    public void DoHeal(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
+    public void DoHeal(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -644,7 +644,7 @@ public class LivingThing : MonoBehaviourPun
         }
         to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoManaHeal(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
+    public void DoManaHeal(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -654,11 +654,11 @@ public class LivingThing : MonoBehaviourPun
         }
         to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoBasicAttackImmediately(LivingThing to, DewActionCaller handler)
+    public void DoBasicAttackImmediately(Entity to, DewActionCaller handler)
     {
         to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler.GetActionCallerUID());
     }
-    public void DoMagicDamage(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
+    public void DoMagicDamage(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -668,7 +668,7 @@ public class LivingThing : MonoBehaviourPun
         }
         to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoPureDamage(LivingThing to, float amount, DewActionCaller handler)
+    public void DoPureDamage(Entity to, float amount, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -721,7 +721,7 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcScaleForDuration", RpcTarget.All, multiplier, duration);
     }
-    public void GiveGold(LivingThing to, float amount)
+    public void GiveGold(Entity to, float amount)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -791,7 +791,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     private void RpcStartDisplacementTowardsTarget(bool isFriendly, bool lookForward, int toViewID, float gap, float speed)
     {
-        Displacement displacement = Displacement.TowardsTarget(PhotonNetwork.GetPhotonView(toViewID).GetComponent<LivingThing>(), gap, speed, isFriendly, lookForward);
+        Displacement displacement = Displacement.TowardsTarget(PhotonNetwork.GetPhotonView(toViewID).GetComponent<Entity>(), gap, speed, isFriendly, lookForward);
 
         if (ongoingDisplacement != null)
         {
@@ -878,9 +878,9 @@ public class LivingThing : MonoBehaviourPun
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
-        LivingThing from;
+        Entity from;
 
-        from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 
         if(statusEffect.status.shield > finalAmount)
@@ -929,7 +929,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyBasicAttackDamage(int from_id, float random, int callerUID)
     {
-        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
         if (from.statusEffect.IsAffectedBy(StatusEffectType.Blind))
         {
@@ -993,7 +993,7 @@ public class LivingThing : MonoBehaviourPun
     [PunRPC]
     protected void RpcGiveGold(float amount, int to_id)
     {
-        LivingThing to = PhotonNetwork.GetPhotonView(to_id).GetComponent<LivingThing>();
+        Entity to = PhotonNetwork.GetPhotonView(to_id).GetComponent<Entity>();
         stat.currentGold -= amount;
         if (photonView.IsMine) stat.SyncChangingStats();
         to.stat.currentGold += amount;
@@ -1029,7 +1029,7 @@ public class LivingThing : MonoBehaviourPun
     protected void RpcApplyPureDamage(float amount, int from_id, int callerUID)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
-        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
         stat.currentHealth -= Mathf.Max(0, amount);
         stat.ValidateHealth();
         if(from!=this) lastAttacker = from;
@@ -1058,7 +1058,7 @@ public class LivingThing : MonoBehaviourPun
     protected void RpcDeath()
     {
         InfoDeath info;
-        LivingThing killer = GetLastAttacker();
+        Entity killer = GetLastAttacker();
 
         if (killer == null) killer = this;
 
@@ -1083,7 +1083,7 @@ public class LivingThing : MonoBehaviourPun
     protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
         float finalAmount;
-        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 
@@ -1112,7 +1112,7 @@ public class LivingThing : MonoBehaviourPun
     protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
         float finalAmount;
-        LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
+        Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 

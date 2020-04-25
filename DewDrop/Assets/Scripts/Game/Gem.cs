@@ -93,9 +93,9 @@ public abstract class Gem : Item
         }
     }
 
-    public virtual void OnEquip(LivingThing owner, AbilityTrigger trigger) { }
+    public virtual void OnEquip(Entity owner, AbilityTrigger trigger) { }
 
-    public virtual void OnUnequip(LivingThing owner, AbilityTrigger trigger) { }
+    public virtual void OnUnequip(Entity owner, AbilityTrigger trigger) { }
 
     public virtual void OnTriggerCast(bool isMine) { }
 

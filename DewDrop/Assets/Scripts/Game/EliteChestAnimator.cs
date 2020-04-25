@@ -12,7 +12,7 @@ public class EliteChestAnimator : MonoBehaviour
 
     private void Awake()
     {
-        LivingThing thing = GetComponent<LivingThing>();
+        Entity thing = GetComponent<Entity>();
         thing.OnDeath += Death;
         thing.LookAt(Camera.main.transform.position, true);
     }

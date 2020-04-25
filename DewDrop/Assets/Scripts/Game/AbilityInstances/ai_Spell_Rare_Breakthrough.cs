@@ -43,7 +43,7 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!isMine) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         thing.ApplyStatusEffect(StatusEffect.Slow(duration, slowAmount), this);
         thing.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, damage), this);
@@ -54,7 +54,7 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
     [PunRPC]
     private void RpcSmallFire(int id)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(id).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(id).GetComponent<Entity>();
         GameObject newFire = Instantiate(smallFire, thing.transform.position + thing.GetCenterOffset(), Quaternion.identity, thing.transform);
         newFire.GetComponent<ParticleSystem>().Play();
         newFire.AddComponent<ParticleSystemAutoDestroy>();

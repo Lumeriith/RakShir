@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class equip_Weapon_Rare_SwordAndShield : Equipment
 {
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.baseAttackDamage = 70f;
         owner.stat.baseAttacksPerSecond = 1.2f;
@@ -16,7 +16,7 @@ public class equip_Weapon_Rare_SwordAndShield : Equipment
         }
     }
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;

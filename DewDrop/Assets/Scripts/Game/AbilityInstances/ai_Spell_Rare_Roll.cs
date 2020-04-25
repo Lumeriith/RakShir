@@ -59,7 +59,7 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     [PunRPC]
     private void RpcHit(int id)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(id).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(id).GetComponent<Entity>();
         hit.transform.position = thing.transform.position + thing.GetCenterOffset();
         hit.Play();
     }

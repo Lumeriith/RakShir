@@ -98,11 +98,11 @@ public abstract class AbilityTrigger : MonoBehaviour
     private int _skillIndex = -1;
 
     [HideInInspector]
-    public LivingThing owner
+    public Entity owner
     {
         get
         {
-            if (_owner == null) _owner = GetComponentInParent<LivingThing>();
+            if (_owner == null) _owner = GetComponentInParent<Entity>();
             return _owner;
         }
         set
@@ -110,7 +110,7 @@ public abstract class AbilityTrigger : MonoBehaviour
             _owner = value;
         }
     }
-    private LivingThing _owner;
+    private Entity _owner;
 
     [HideInInspector]
     public CastInfo info;

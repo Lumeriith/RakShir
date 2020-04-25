@@ -7,14 +7,14 @@ using System.Linq;
 public class DebugCommands : MonoBehaviour
 {
     public static Object[] resources;
-    private static LivingThing GetFirstValidTarget()
+    private static Entity GetFirstValidTarget()
     {
         Ray cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("LivingThing"));
         IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
         foreach (RaycastHit hit in hits)
         {
-            LivingThing lt = hit.collider.GetComponent<LivingThing>();
+            Entity lt = hit.collider.GetComponent<Entity>();
             if (lt == null) continue;
             return lt;
         }
@@ -61,7 +61,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("earn", "Make a living thing at cursor position earn specified aount of money")]
     public static void Earn(float amount)
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.EarnGold(amount);
     }
@@ -70,7 +70,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("blue", "Apply superb cooldown reduction and mana regeneration bonus to the target")]
     public static void Blue()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.stat.bonusManaRegenerationPerSecond += 1000f;
         target.stat.bonusCooldownReduction += 10000f;
@@ -80,7 +80,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("red", "Apply superb attack damage bonus to the target")]
     public static void Red()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.stat.bonusAttackDamage += 10000f;
         target.stat.SyncTemporaryAttributes();
@@ -91,7 +91,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("reset", "Reset all cooldowns of local player and fully heals mana")]
     public static void Reset()
     {
-        LivingThing target = GameManager.instance.localPlayer;
+        Entity target = GameManager.instance.localPlayer;
         for(int i = 0; i < target.control.skillSet.Length; i++)
         {
             if (target.control.skillSet[i] != null) target.control.skillSet[i].ResetCooldown();
@@ -103,7 +103,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("skip", "Skip this room of local player and move to next random room")]
     public static void Skip()
     {
-        LivingThing target = GameManager.instance.localPlayer;
+        Entity target = GameManager.instance.localPlayer;
         if (target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
         {
             Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
@@ -126,7 +126,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("skipfancy", "Skip this room of local player and move to next random room by Obelisk teleportation")]
     public static void SkipFancy()
     {
-        LivingThing target = GameManager.instance.localPlayer;
+        Entity target = GameManager.instance.localPlayer;
         if (target.currentRoom != null && target.currentRoom.nextRooms.Count != 0)
         {
             Room nextRoom = target.currentRoom.nextRooms[Random.Range(0, target.currentRoom.nextRooms.Count)];
@@ -138,7 +138,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("heal", "Fully heal a living thing at cursor position")]
     public static void Heal()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.DoHeal(target, target.maximumHealth, true, null);
     }
@@ -146,7 +146,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("revive", "Revive a living thing at cursor position")]
     public static void Revive()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.Revive();
         target.DoHeal(target, target.maximumHealth, true, null);
@@ -155,7 +155,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("kill", "Kill a living thing at cursor position")]
     public static void Kill()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.Kill();
     }
@@ -171,7 +171,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]
     public static void Hot(float amount, float duration)
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(duration, amount), null);
     }
@@ -179,7 +179,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("dot", "Damage LivingThing at cursor location over time for given amount and duration.")]
     public static void Dot(float amount, float duration)
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, amount), null);
     }
@@ -187,7 +187,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("shield", "Sield LivingThing at cursor location for given amount and duration.")]
     public static void Shield(float amount, float duration)
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.statusEffect.ApplyStatusEffect(StatusEffect.Shield(duration, amount), null);
     }
@@ -229,7 +229,7 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("select", "Select the unit on the cursor. Expect an unexpected behaviour that isn't local.")]
     public static void Select()
     {
-        LivingThing target = GetFirstValidTarget();
+        Entity target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         UnitControlManager.instance.selectedUnit = target;
     }

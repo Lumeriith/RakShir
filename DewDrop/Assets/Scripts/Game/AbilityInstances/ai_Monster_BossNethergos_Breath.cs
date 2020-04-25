@@ -56,7 +56,7 @@ public class ai_Monster_BossNethergos_Breath : AbilityInstance
     {
         if (!acceptCollisions || !photonView.IsMine || affectedColliders.Contains(other)) return;
         affectedColliders.Add(other);
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null) return;
         info.owner.DoMagicDamage(thing, damage, false, this);
         thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), this);

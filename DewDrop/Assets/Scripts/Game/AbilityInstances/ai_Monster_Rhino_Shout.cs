@@ -15,7 +15,7 @@ public class ai_Monster_Rhino_Shout : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        List<LivingThing> lvs = info.owner.GetAllTargetsInRange(info.owner.transform.position, range, targetValidator);
+        List<Entity> lvs = info.owner.GetAllTargetsInRange(info.owner.transform.position, range, targetValidator);
         for(int i = 0; i < lvs.Count; i++)
         {
             lvs[i].StartDisplacement(Displacement.ByVector((lvs[i].transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutSine));

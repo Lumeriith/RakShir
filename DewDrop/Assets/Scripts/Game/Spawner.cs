@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
 
 
     [HideInInspector]
-    public List<LivingThing> spawnedLivingThings;
+    public List<Entity> spawnedLivingThings;
 
     private bool started = false;
 
@@ -29,10 +29,10 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public void Spawn(LivingThing activator = null)
+    public void Spawn(Entity activator = null)
     {
         started = true;
-        LivingThing thing = Dew.SpawnEntity(livingThingPrefab.name, transform.position, transform.rotation);
+        Entity thing = Dew.SpawnEntity(livingThingPrefab.name, transform.position, transform.rotation);
         spawnedLivingThings.Add(thing);
         if(activator != null)
         {

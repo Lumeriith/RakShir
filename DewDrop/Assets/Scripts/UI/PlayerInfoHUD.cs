@@ -33,7 +33,7 @@ public class PlayerInfoHUD : MonoBehaviour
 
     void LateUpdate()
     {
-        LivingThing target = UnitControlManager.instance.selectedUnit;
+        Entity target = UnitControlManager.instance.selectedUnit;
         if (target == null) return;
 
         uhb.SetTarget(target);

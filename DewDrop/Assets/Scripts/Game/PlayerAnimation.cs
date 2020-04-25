@@ -4,11 +4,11 @@ using UnityEngine;
 using Photon.Pun;
 public class PlayerAnimation : MonoBehaviourPun
 {
-    LivingThing livingThing;
+    Entity livingThing;
     Animator animator;
     private void Awake()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         animator = transform.Find("Model").GetComponent<Animator>();
     }
 

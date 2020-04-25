@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnvironmentalDamage : MonoBehaviour
 {
-    private List<LivingThing> affectedLivingThings = new List<LivingThing>();
+    private List<Entity> affectedLivingThings = new List<Entity>();
     private List<float> lastHitTime = new List<float>();
 
     private bool didUpdate = false;
@@ -13,7 +13,7 @@ public class EnvironmentalDamage : MonoBehaviour
     public float tickTime = 0.5f;
     private void OnTriggerStay(Collider other)
     {
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null) return;
         if (!thing.photonView.IsMine) return;
         int index = affectedLivingThings.IndexOf(thing);

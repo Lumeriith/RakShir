@@ -11,8 +11,8 @@ public class MonsterInfoHUD : MonoBehaviour
     private UniversalHealthbar uhb;
     private CanvasGroup group;
 
-    private LivingThing player;
-    private LivingThing target;
+    private Entity player;
+    private Entity target;
 
     private Text text_statusEffects;
     private Image image_statusEffectsBackdrop;

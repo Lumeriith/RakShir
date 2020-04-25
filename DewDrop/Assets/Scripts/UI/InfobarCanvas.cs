@@ -10,7 +10,7 @@ public class InfobarCanvas : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             if(thing.type == LivingThingType.Player)
             {
@@ -27,7 +27,7 @@ public class InfobarCanvas : MonoBehaviour
         };
     }
 
-    IEnumerator CoroutineInstantiateInfobar(GameObject infobar, LivingThing target)
+    IEnumerator CoroutineInstantiateInfobar(GameObject infobar, Entity target)
     {
         yield return new WaitForSeconds(.5f);
         if (infobar != null)

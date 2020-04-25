@@ -52,7 +52,7 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
         if (isEmpowered)

@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class MoonPortal : Activatable
 {
-    public override LivingThing entity => null;
+    public override Entity entity => null;
 
     private static Vector3 previousPlayerPosition;
     private static Room previousPlayerRoom = null;
@@ -18,11 +18,11 @@ public class MoonPortal : Activatable
         base.Start();
         gameObject.SetActive(isOnByDefault);
     }
-    protected override void OnChannelCancel(LivingThing activator) { }
+    protected override void OnChannelCancel(Entity activator) { }
 
-    protected override void OnChannelStart(LivingThing activator) { }
+    protected override void OnChannelStart(Entity activator) { }
 
-    protected override void OnChannelSuccess(LivingThing activator)
+    protected override void OnChannelSuccess(Entity activator)
     {
         if (!activator.photonView.IsMine) return;
         if (targetRoom == null) targetRoom = transform.Find("/Map/Lunar Altar(Clone)").GetComponent<Room>();

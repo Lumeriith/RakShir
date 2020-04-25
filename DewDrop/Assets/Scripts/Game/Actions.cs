@@ -5,67 +5,67 @@ using Photon.Pun;
 
 public struct InfoManaSpent
 {
-    public LivingThing livingThing;
+    public Entity livingThing;
     public float amount;
 }
 public struct InfoDeath
 {
-    public LivingThing victim;
-    public LivingThing killer;
+    public Entity victim;
+    public Entity killer;
 }
 public struct InfoDamage
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
     public float damage;
     public DamageType type;
 }
 public struct InfoMagicDamage
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
     public float originalDamage;
     public float finalDamage;
 }
 public struct InfoHeal
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
     public float originalHeal;
     public float finalHeal;
 }
 public struct InfoManaHeal
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
     public float originalManaHeal;
     public float finalManaHeal;
 }
 public struct InfoBasicAttackHit
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
     public float damage;
 }
 public struct InfoMiss
 {
-    public LivingThing to;
-    public LivingThing from;
+    public Entity to;
+    public Entity from;
 }
 public struct InfoChannel
 {
-    public LivingThing livingThing;
+    public Entity livingThing;
     public float remainingTime;
 }
 public struct InfoGold
 {
-    public LivingThing from;
-    public LivingThing to;
+    public Entity from;
+    public Entity to;
     public float amount;
 }
 public struct InfoSpendGold
 {
-    public LivingThing livingThing;
+    public Entity livingThing;
     public float amount;
 }
 

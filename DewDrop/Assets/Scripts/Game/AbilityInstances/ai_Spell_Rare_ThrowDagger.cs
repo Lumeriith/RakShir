@@ -43,7 +43,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowDagger Hit", transform.position);
         info.owner.DoMagicDamage(lv, initialDamage, false, this);

@@ -25,7 +25,7 @@ public class MapElementMonsterSpawner : MapElement
 
     private IEnumerator CoroutineSpawnEnemies()
     {
-        List<LivingThing> spawnedMonsters = new List<LivingThing>();
+        List<Entity> spawnedMonsters = new List<Entity>();
         Vector3 position;
         for(int i = 0; i < monstersToSpawn.Count; i++)
         {

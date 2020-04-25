@@ -50,7 +50,7 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine || !isAlive) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 

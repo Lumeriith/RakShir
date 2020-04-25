@@ -16,11 +16,11 @@ public abstract class Item : Activatable
     public string itemDescription;
 
     [HideInInspector]
-    public LivingThing owner = null;
+    public Entity owner = null;
 
     private Vector3 startPosition;
 
-    public override LivingThing entity => owner;
+    public override Entity entity => owner;
 
     protected override void Start()
     {
@@ -45,7 +45,7 @@ public abstract class Item : Activatable
 
     }
 
-    public void TransferOwnership(LivingThing owner)
+    public void TransferOwnership(Entity owner)
     {
         photonView.RPC("RpcTransferOwnership", RpcTarget.All, owner.photonView.ViewID);
     }
@@ -67,17 +67,17 @@ public abstract class Item : Activatable
         PhotonNetwork.Destroy(gameObject);
     }
 
-    protected override void OnChannelCancel(LivingThing activator)
+    protected override void OnChannelCancel(Entity activator)
     {
 
     }
 
-    protected override void OnChannelStart(LivingThing activator)
+    protected override void OnChannelStart(Entity activator)
     {
 
     }
 
-    protected override void OnChannelSuccess(LivingThing activator)
+    protected override void OnChannelSuccess(Entity activator)
     {
         if (activator.photonView.IsMine)
         {
@@ -89,7 +89,7 @@ public abstract class Item : Activatable
     [PunRPC]
     protected void RpcTransferOwnership(int owner_id)
     {
-        LivingThing livingThing = PhotonNetwork.GetPhotonView(owner_id).GetComponent<LivingThing>();
+        Entity livingThing = PhotonNetwork.GetPhotonView(owner_id).GetComponent<Entity>();
 
         if (owner != null)
         {

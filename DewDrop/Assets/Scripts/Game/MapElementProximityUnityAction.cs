@@ -16,7 +16,7 @@ public class MapElementProximityUnityAction : MapElement
     private void OnTriggerStay(Collider other)
     {
         if (!isActivated || isFinished) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !thing.photonView.IsMine || thing != GameManager.instance.localPlayer) return;
         MarkAsFinished();
         if (isObjective) GuidanceArrowManager.RemoveObjective();

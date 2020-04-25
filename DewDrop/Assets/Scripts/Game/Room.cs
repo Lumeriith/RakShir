@@ -70,7 +70,7 @@ public class Room : MonoBehaviourPun
 
 
 
-    public void ActivateRoom(LivingThing activator)
+    public void ActivateRoom(Entity activator)
     {
         
         photonView.RPC("RpcActivateRoom", RpcTarget.All, activator.photonView.ViewID);
@@ -81,7 +81,7 @@ public class Room : MonoBehaviourPun
     private void RpcActivateRoom(int activator_id)
     {
         
-        LivingThing activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<LivingThing>();
+        Entity activator = PhotonNetwork.GetPhotonView(activator_id).GetComponent<Entity>();
         if (!activator.photonView.IsMine) return;
         if (rerollsShopUponEntering) ShopManager.instance.RerollShop();
         if (customMusic != null) Music.Play(customMusic);
@@ -100,7 +100,7 @@ public class Room : MonoBehaviourPun
     }
 
 
-    private IEnumerator CoroutineElement(LivingThing activator)
+    private IEnumerator CoroutineElement(Entity activator)
     {
         int i = 0;
         yield return new WaitForSeconds(iterationDelay);

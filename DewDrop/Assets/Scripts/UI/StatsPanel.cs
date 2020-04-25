@@ -14,7 +14,7 @@ public class StatsPanel : MonoBehaviour
     void Update()
     {
         if (GameManager.instance.localPlayer == null) return;
-        LivingThingStat stat = GameManager.instance.localPlayer.stat;
+        EntityStat stat = GameManager.instance.localPlayer.stat;
 
         string health = string.Format("{0} / {1}", (int)stat.currentHealth, (int)stat.finalMaximumHealth);
         if (stat.bonusMaximumHealth > 0) health += string.Format(" <color=yellow>(+{0})</color>", (int)stat.bonusMaximumHealth);

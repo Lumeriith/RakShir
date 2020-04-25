@@ -43,7 +43,7 @@ public class StatusEffect
 
     public long uid;
     public DewActionCaller handler;
-    public LivingThing owner;
+    public Entity owner;
     public StatusEffectType type;
     public float duration;
     public float originalDuration;
@@ -148,7 +148,7 @@ public class StatusEffect
         "정지", "무적", "보호", "지정불가", "저지불가", "정신조종", "변이", "기절", "수면", "매혹", "공포", "침묵", "이동불가", "실명", ""
     };
 
-    public static string GetImportantStatusEffectName(LivingThing thing)
+    public static string GetImportantStatusEffectName(Entity thing)
     {
         List<StatusEffectType> existingTypes = new List<StatusEffectType>();
         for (int i = 0; i < thing.statusEffect.statusEffects.Count; i++)
@@ -167,7 +167,7 @@ public class StatusEffect
         return "";
     }
 
-    public static string GetImportantStatusEffectNames(LivingThing thing)
+    public static string GetImportantStatusEffectNames(Entity thing)
     {
         string result = "";
         List<StatusEffectType> existingTypes = new List<StatusEffectType>();

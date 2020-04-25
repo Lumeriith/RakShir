@@ -75,7 +75,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
         info.owner.DoMagicDamage(thing, damage, false, this);
@@ -86,7 +86,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewID)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 }

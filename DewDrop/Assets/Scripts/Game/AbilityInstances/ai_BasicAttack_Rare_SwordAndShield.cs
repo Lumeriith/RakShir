@@ -13,7 +13,7 @@ public class ai_BasicAttack_Rare_SwordAndShield : AbilityInstance
         hit = transform.Find("Hit").gameObject;
 
         if (!photonView.IsMine) return;
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(info.target.transform.position, splashRadius, validator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(info.target.transform.position, splashRadius, validator);
         for(int i = 0; i < maxTargets; i++)
         {
             if (targets.Count <= i) break;
@@ -28,7 +28,7 @@ public class ai_BasicAttack_Rare_SwordAndShield : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewID)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position + thing.GetRandomOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 

@@ -62,7 +62,7 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
         if (!photonView.IsMine) return;
         if (affectedColliders.Contains(other)) return;
         affectedColliders.Add(other);
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         thing.ApplyStatusEffect(StatusEffect.Stun(stunDuration), this);
         thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), this);
@@ -74,7 +74,7 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewID)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 

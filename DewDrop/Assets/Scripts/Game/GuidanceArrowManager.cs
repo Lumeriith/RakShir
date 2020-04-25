@@ -56,7 +56,7 @@ public class GuidanceArrowManager : MonoBehaviour
         transform.position = GameManager.instance.localPlayer.transform.position;
         transform.rotation = Quaternion.identity;
 
-        List<LivingThing> enemies = new List<LivingThing>();
+        List<Entity> enemies = new List<Entity>();
 
         for(int i = 0; i < GameManager.instance.everyLivingThings.Count; i++)
         {

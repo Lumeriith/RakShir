@@ -7,10 +7,10 @@ using ExitGames.Client.Photon;
 using Sirenix.OdinInspector;
 
 
-public class LivingThingStat : MonoBehaviourPun
+public class EntityStat : MonoBehaviourPun
 {
 
-    private LivingThing livingThing;
+    private Entity livingThing;
 
     [Header("Changing Stats")]
     public float currentHealth = 1000;
@@ -124,7 +124,7 @@ public class LivingThingStat : MonoBehaviourPun
 
     private void Awake()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
     }
 
     private void Update()

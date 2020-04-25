@@ -5,7 +5,7 @@ using UnityEngine;
 public class equip_Weapon_Rare_StaffOfPain : Equipment
 {
     public float painDuration = 4f;
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.baseAttackDamage = 30f;
         owner.stat.baseAttacksPerSecond = 1.1f;
@@ -16,7 +16,7 @@ public class equip_Weapon_Rare_StaffOfPain : Equipment
         }
     }
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;

@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     private CursorShapeType lastCursorShape;
 
 
-    public LivingThing localPlayer
+    public Entity localPlayer
     {
         get
         {
@@ -32,16 +32,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private LivingThing _localPlayer;
+    private Entity _localPlayer;
 
-    public System.Action<LivingThing> OnLivingThingInstantiate = (LivingThing _) => { };
-    public System.Action<LivingThing> OnLivingThingDestroy = (LivingThing _) => { };
+    public System.Action<Entity> OnLivingThingInstantiate = (Entity _) => { };
+    public System.Action<Entity> OnLivingThingDestroy = (Entity _) => { };
 
     public System.Action<Activatable> OnActivatableInstantiate = (Activatable _) => { };
-    public System.Action<LivingThing> OnLivingThingRoomEnter = (LivingThing _) => { };
+    public System.Action<Entity> OnLivingThingRoomEnter = (Entity _) => { };
 
     [HideInInspector]
-    public List<LivingThing> everyLivingThings = new List<LivingThing>();
+    public List<Entity> everyLivingThings = new List<Entity>();
 
     private static GameManager _instance;
     public static GameManager instance
@@ -96,9 +96,9 @@ public class GameManager : MonoBehaviour
 
 
 
-    public static LivingThing SpawnLocalPlayer(PlayerType type, Vector3 location)
+    public static Entity SpawnLocalPlayer(PlayerType type, Vector3 location)
     {
-        LivingThing localPlayer;
+        Entity localPlayer;
         List<Activatable> startItems = new List<Activatable>();
         if (type == PlayerType.Elemental)
         {
@@ -145,12 +145,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        OnLivingThingInstantiate += (LivingThing thing) =>
+        OnLivingThingInstantiate += (Entity thing) =>
         {
             everyLivingThings.Add(thing);
         };
 
-        OnLivingThingDestroy += (LivingThing thing) =>
+        OnLivingThingDestroy += (Entity thing) =>
         {
             everyLivingThings.Remove(thing);
         };

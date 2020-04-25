@@ -102,7 +102,7 @@ public class MapView : MonoBehaviour
 
         if (GladiatorGameManager.instance != null)
         {
-            foreach (LivingThing player in GladiatorGameManager.instance.gamePlayers.Values)
+            foreach (Entity player in GladiatorGameManager.instance.gamePlayers.Values)
             {
                 index = Array.IndexOf(rooms, player.currentRoom);
                 if (index != -1)

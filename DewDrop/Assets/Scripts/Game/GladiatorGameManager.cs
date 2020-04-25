@@ -95,7 +95,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [ReadOnly]
     private int[] blueCommonLootDeck;
 
-    public Dictionary<Photon.Realtime.Player, LivingThing> gamePlayers = new Dictionary<Photon.Realtime.Player, LivingThing>();
+    public Dictionary<Photon.Realtime.Player, Entity> gamePlayers = new Dictionary<Photon.Realtime.Player, Entity>();
     private Dictionary<Photon.Realtime.Player, bool> readyStatuses = new Dictionary<Photon.Realtime.Player, bool>();
 
 
@@ -186,7 +186,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             float damage = 1f;
             while (true)
             {
-                foreach(LivingThing thing in gamePlayers.Values)
+                foreach(Entity thing in gamePlayers.Values)
                 {
                     if(thing.currentHealth > damage)
                     {
@@ -289,7 +289,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RpcRegisterSpawnEffectEvent()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(.5f), null);
             Instantiate(monsterSpawnEffect, thing.transform.position, Quaternion.identity);
@@ -332,7 +332,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private void RegisterKillDropLootEvent()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             thing.OnDeath += (InfoDeath info) =>
             {
@@ -343,7 +343,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private void RegisterKillRewardGoldEvent()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             thing.OnDeath += (InfoDeath info) =>
             {
@@ -354,7 +354,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private void RegisterPlayerDeathEvent()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             if (thing.type == LivingThingType.Player)
             {
@@ -369,7 +369,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private void RegisterPlayerRoomEnterEvent()
     {
-        GameManager.instance.OnLivingThingRoomEnter += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingRoomEnter += (Entity thing) =>
         {
             if (thing.type == LivingThingType.Player)
             {
@@ -468,7 +468,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         this.didRedTeamWin = didRedTeamWin;
     }
 
-    private void HandlePlayerRoomEnter(LivingThing player)
+    private void HandlePlayerRoomEnter(Entity player)
     {
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
         for(int i = 0; i < players.Length; i++)
@@ -490,7 +490,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
 
 
-    private IEnumerator CoroutinePlayerRevival(LivingThing player)
+    private IEnumerator CoroutinePlayerRevival(Entity player)
     {
         yield return new WaitForSeconds(4f);
         player.SpendGold(player.stat.currentGold * lostGoldMultiplierOnDeath);
@@ -531,7 +531,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         GameManager.DropLoot(name, position);
     }
 
-    private void DropLootOnContext(LivingThing killer, LivingThing victim)
+    private void DropLootOnContext(Entity killer, Entity victim)
     {
         float randomValue = Random.value;
         float epic = 0f, rare = 0f, common = 0f, consumable = 0f;
@@ -612,9 +612,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void RewardGoldOnContext(LivingThing killer, LivingThing victim)
+    private void RewardGoldOnContext(Entity killer, Entity victim)
     {
-        LivingThing rewardTarget = null;
+        Entity rewardTarget = null;
         if(victim.type == LivingThingType.Monster)
         {
             if(killer.type == LivingThingType.Player)
@@ -850,7 +850,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RpcCreateLocalPlayer(int type, Vector3 pos, int roomViewId)
     {
-        LivingThing thing = GameManager.SpawnLocalPlayer((PlayerType)type, pos);
+        Entity thing = GameManager.SpawnLocalPlayer((PlayerType)type, pos);
         Room room = PhotonNetwork.GetPhotonView(roomViewId).GetComponent<Room>();
         thing.SetCurrentRoom(room);
         photonView.RPC("RpcRegisterLivingThingOnGamePlayers", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, thing.photonView.ViewID);
@@ -864,7 +864,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         {
             if(players[i].ActorNumber == actorNumber)
             {
-                gamePlayers.Add(players[i], PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>());
+                gamePlayers.Add(players[i], PhotonNetwork.GetPhotonView(viewId).GetComponent<Entity>());
                 return;
             }
         }

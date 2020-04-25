@@ -6,7 +6,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
 {
     public float bonusDamageToPoisoned = 45f;
     
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.baseAttackDamage = 40f;
         owner.stat.baseAttacksPerSecond = 1.4f;
@@ -19,7 +19,7 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
         }
     }
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;

@@ -37,8 +37,8 @@ public class ai_Spell_Rare_CleansingFlame : AbilityInstance
         {
             SFXManager.CreateSFXInstance("si_Spell_Rare_CleansingFlame", transform.position);
 
-            List<LivingThing> healTargets = info.owner.GetAllTargetsInRange(transform.position, radius, healValidator);
-            List<LivingThing> damageTargets = info.owner.GetAllTargetsInRange(transform.position, radius, damageValidator);
+            List<Entity> healTargets = info.owner.GetAllTargetsInRange(transform.position, radius, healValidator);
+            List<Entity> damageTargets = info.owner.GetAllTargetsInRange(transform.position, radius, damageValidator);
 
             for (int i = 0; i < healTargets.Count; i++)
             {

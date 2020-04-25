@@ -45,7 +45,7 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!isMine) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !validator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {

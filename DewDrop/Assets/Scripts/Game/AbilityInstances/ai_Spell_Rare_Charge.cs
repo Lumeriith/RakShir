@@ -56,7 +56,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         SFXManager.CreateSFXInstance("si_Spell_Rare_Charge Hit", transform.position);
         displacement.Cancel();
         //chargeSFX.Stop();
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(info.target.transform.position, radius, targetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(info.target.transform.position, radius, targetValidator);
 
         for (int i = 0; i < targets.Count; i++)
         {
@@ -90,7 +90,7 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     private void RpcHit(int viewID)
     {
         if (!isAlive) return;
-        LivingThing target = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity target = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit.gameObject, target.transform.position + target.GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 

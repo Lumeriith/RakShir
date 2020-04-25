@@ -14,7 +14,7 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
     public TargetValidator targetValidator;
 
     private SFXInstance loopSFX;
-    private List<LivingThing> affectedTargets = new List<LivingThing>();
+    private List<Entity> affectedTargets = new List<Entity>();
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
@@ -30,7 +30,7 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
 
     private IEnumerator CoroutineBurningGrounds()
     {
-        List<LivingThing> targets;
+        List<Entity> targets;
         for(int i = 0; i < ticks; i++)
         {
             targets = info.owner.GetAllTargetsInRange(transform.position, range, targetValidator);
@@ -57,7 +57,7 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
     private void RpcHit(int viewID)
     {
         Transform target = PhotonNetwork.GetPhotonView(viewID).transform;
-        Instantiate(hit, target.transform.position + target.GetComponent<LivingThing>().GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
+        Instantiate(hit, target.transform.position + target.GetComponent<Entity>().GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 
 }

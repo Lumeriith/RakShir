@@ -14,7 +14,7 @@ public abstract class DewActionCaller : MonoBehaviourPun
     private static Dictionary<int, DewActionCaller> _storedReferences = new Dictionary<int, DewActionCaller>();
     private static Queue<int> _viewIDs = new Queue<int>();
 
-    public abstract LivingThing entity { get; }
+    public abstract Entity entity { get; }
 
     public Action<InfoManaSpent> OnSpendMana { get; set; } = (_) => { };
     public Action<InfoDamage> OnDealDamage { get; set; } = (_) => { };
@@ -69,7 +69,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
     private Quaternion _attachRotation;
     private ParticleSystem _mainParticleSystem;
 
-    public override LivingThing entity => info.owner;
+    public override Entity entity => info.owner;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -84,7 +84,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
 
         if ((int)initData[0] != -1)
         {
-            _info.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<LivingThing>();
+            _info.owner = PhotonNetwork.GetPhotonView((int)initData[0]).GetComponent<Entity>();
         }
         else
         {
@@ -97,7 +97,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
 
         if ((int)initData[3] != -1)
         {
-            _info.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<LivingThing>();
+            _info.target = PhotonNetwork.GetPhotonView((int)initData[3]).GetComponent<Entity>();
         }
         else
         {

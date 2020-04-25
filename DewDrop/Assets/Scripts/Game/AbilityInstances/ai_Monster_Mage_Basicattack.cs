@@ -39,7 +39,7 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null || !tv.Evaluate(info.owner, lv)) return;
         photonView.RPC("RpcLanded", RpcTarget.All, lv.transform.position + lv.GetCenterOffset());
         info.owner.DoMagicDamage(lv, damage, false, this);

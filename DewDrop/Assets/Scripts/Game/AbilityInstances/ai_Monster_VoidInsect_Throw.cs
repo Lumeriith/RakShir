@@ -38,7 +38,7 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
         lv.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), this);

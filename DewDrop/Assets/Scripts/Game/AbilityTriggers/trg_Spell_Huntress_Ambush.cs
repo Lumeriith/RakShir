@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class trg_Spell_Huntress_Ambush : AbilityTrigger
 {
-    private LivingThing huntressMarkTarget;
+    private Entity huntressMarkTarget;
 
-    private LivingThing dashTarget;
+    private Entity dashTarget;
 
     public float backoffLifetime = 3f;
 

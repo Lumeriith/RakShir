@@ -28,7 +28,7 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
 
     private IEnumerator CoroutineHeal()
     {
-        List<LivingThing> targets;
+        List<Entity> targets;
         for (int i = 0; i < ticks; i++)
         {
             yield return new WaitForSeconds(tickInterval);
@@ -48,7 +48,7 @@ public class ai_Spell_Rare_HealingCircle : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewID)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position + thing.GetCenterOffset(), Quaternion.identity, transform);
     }
 }

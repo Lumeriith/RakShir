@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class equip_Armor_Rare_LightArmorOfMana : Equipment
 {
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.bonusMaximumHealth += 250f;
         owner.stat.bonusMaximumMana += 50f;
@@ -12,7 +12,7 @@ public class equip_Armor_Rare_LightArmorOfMana : Equipment
     }
 
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.bonusMaximumHealth -= 250f;
         owner.stat.bonusMaximumMana -= 50f;

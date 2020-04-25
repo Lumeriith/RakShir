@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UniversalHealthbar : MonoBehaviour, IInfobar
 {
-    private LivingThing target;
+    private Entity target;
 
     public Vector3 worldOffset;
     public Vector3 UIOffset;
@@ -33,7 +33,7 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
     public Color ownHealthbarColor;
     public Color allyHealthbarColor;
 
-    public void SetTarget(LivingThing target)
+    public void SetTarget(Entity target)
     {
         this.target = target;
     }

@@ -55,7 +55,7 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
         yield return new WaitForSeconds(travelTime);
         projectile.Stop();
         GetComponent<SphereCollider>().enabled = false;
-        List<LivingThing> targets;
+        List<Entity> targets;
         for(int i = 0; i < ticksCount; i++)
         {
             yield return new WaitForSeconds(tickTime);
@@ -80,7 +80,7 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!isMine) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {

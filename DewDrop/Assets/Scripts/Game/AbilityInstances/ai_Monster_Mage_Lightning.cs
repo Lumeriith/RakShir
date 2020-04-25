@@ -24,7 +24,7 @@ public class ai_Monster_Mage_Lightning : AbilityInstance
 
     IEnumerator CoroutineMagic()
     {
-        List<LivingThing> lvs;
+        List<Entity> lvs;
         for (int i = 0; i < ticks; i++)
         {
             lvs = info.owner.GetAllTargetsInRange(transform.position, radius, tv);

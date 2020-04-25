@@ -53,7 +53,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!isAlive || !photonView.IsMine) return;
-        LivingThing lv = other.GetComponent<LivingThing>();
+        Entity lv = other.GetComponent<Entity>();
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
 

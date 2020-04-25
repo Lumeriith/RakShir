@@ -8,7 +8,7 @@ public class StatusEffectVisualsManager : MonoBehaviour
 
     private static StatusEffectVisualsManager _instance;
     
-    public static void CreateVisual(LivingThing owner, StatusEffectType type)
+    public static void CreateVisual(Entity owner, StatusEffectType type)
     {
         if (_instance == null) _instance = FindObjectOfType<StatusEffectVisualsManager>();
         for (int i = 0; i < _instance.visuals.Count; i++)

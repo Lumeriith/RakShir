@@ -5,9 +5,9 @@ using Photon.Pun;
 
 public static class Dew
 {
-    public static LivingThing SpawnEntity(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
+    public static Entity SpawnEntity(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
     {
-        return PhotonNetwork.Instantiate("Entities/" + livingThingName, location, rotation).GetComponent<LivingThing>();
+        return PhotonNetwork.Instantiate("Entities/" + livingThingName, location, rotation).GetComponent<Entity>();
     }
 
     public static Item SpawnItem(string itemName, Vector3 location, Quaternion rotation = new Quaternion())

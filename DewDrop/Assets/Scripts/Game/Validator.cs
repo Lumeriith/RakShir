@@ -73,7 +73,7 @@ public class TargetValidator : System.ICloneable
     };
 
 
-    public bool Evaluate(LivingThing self, LivingThing target)
+    public bool Evaluate(Entity self, Entity target)
     {
         if (target == null || self == null || (evaluatesFalseIfDead && target.IsDead())) return invertResult ? true : false;
 
@@ -193,7 +193,7 @@ public class SelfValidator : System.ICloneable
     }
 
 
-    public bool Evaluate(LivingThing self)
+    public bool Evaluate(Entity self)
     {
         if (self == null || (evaluatesFalseIfDead && self.IsDead())) return invertResult ? true : false;
 

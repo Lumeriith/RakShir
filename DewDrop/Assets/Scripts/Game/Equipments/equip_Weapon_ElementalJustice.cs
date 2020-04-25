@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class equip_Weapon_ElementalJustice : Equipment
 {
-    public override void OnEquip(LivingThing owner)
+    public override void OnEquip(Entity owner)
     {
         owner.stat.baseAttackDamage = 25f;
         owner.stat.baseAttacksPerSecond = 1.6f;
@@ -24,7 +24,7 @@ public class equip_Weapon_ElementalJustice : Equipment
         }
     }
 
-    public override void OnUnequip(LivingThing owner)
+    public override void OnUnequip(Entity owner)
     {
         owner.stat.baseAttackDamage = 1f;
         owner.stat.baseAttacksPerSecond = 1f;

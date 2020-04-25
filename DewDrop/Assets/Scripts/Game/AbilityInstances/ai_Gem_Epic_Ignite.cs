@@ -48,7 +48,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
     {
         PhotonView view = PhotonNetwork.GetPhotonView(id);
         if (view == null) return;
-        LivingThing thing = view.GetComponent<LivingThing>();
+        Entity thing = view.GetComponent<Entity>();
         if (thing == null) return;
         distanceEmitter.transform.position = info.owner.transform.position + info.owner.GetCenterOffset();
         distanceEmitter.Play();
@@ -62,7 +62,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         didHit = true;
     }
 
-    private IEnumerator CoroutineMoveDistanceEmitter(LivingThing thing)
+    private IEnumerator CoroutineMoveDistanceEmitter(Entity thing)
     {
         yield return null;
         Debug.Log("Moved" + thing.name);

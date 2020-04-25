@@ -16,7 +16,7 @@ public enum AIMode { None, AutoAttackInRange, AutoChaseToAttack }
 public class Channel
 {
     public SelfValidator channelValidator;
-    public LivingThing owner;
+    public Entity owner;
     public float duration;
 
     public bool canMove;
@@ -77,12 +77,12 @@ public class Command
     public CommandType type;
     public object[] parameters;
 
-    private LivingThing self;
+    private Entity self;
 
     private float lastAttackMoveCheckTime = -1f;
     private float autoChaseOutOfRangeTime = 0f;
 
-    public Command(LivingThing self, CommandType type, params object[] parameters)
+    public Command(Entity self, CommandType type, params object[] parameters)
     {
         this.self = self;
         this.type = type;
@@ -101,13 +101,13 @@ public class Command
             case CommandType.Move:
                 return ProcessMove((Vector3)parameters[0]);
             case CommandType.Attack:
-                return ProcessAttack((LivingThing)parameters[0]);
+                return ProcessAttack((Entity)parameters[0]);
             case CommandType.AttackMove:
                 return ProcessAttackMove((Vector3)parameters[0]);
             case CommandType.Chase:
-                return ProcessChase((LivingThing)parameters[0]);
+                return ProcessChase((Entity)parameters[0]);
             case CommandType.AutoChase:
-                return ProcessAutoChase((LivingThing)parameters[0]);
+                return ProcessAutoChase((Entity)parameters[0]);
             case CommandType.Ability:
                 return ProcessAbility((AbilityTrigger)parameters[0], (CastInfo)parameters[1]);
             case CommandType.Activate:
@@ -115,7 +115,7 @@ public class Command
             case CommandType.Consumable:
                 return ProcessConsumable((Consumable)parameters[0], (CastInfo)parameters[1]);
             case CommandType.AutoAttackInRange:
-                return ProcessAutoAttackInRange((LivingThing)parameters[0]);
+                return ProcessAutoAttackInRange((Entity)parameters[0]);
         }
         return false;
     }
@@ -230,7 +230,7 @@ public class Command
         return false;
     }
 
-    private bool ProcessAttack(LivingThing target)
+    private bool ProcessAttack(Entity target)
     {
         if (target.IsDead()) return true;
         self.LookAt(target.transform.position);
@@ -259,7 +259,7 @@ public class Command
         if(lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / self.control.attackMoveTargetChecksForSecond)
         {
             lastAttackMoveCheckTime = Time.time;
-            List<LivingThing> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].range, 6f), self.control.skillSet[0].targetValidator);
+            List<Entity> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].range, 6f), self.control.skillSet[0].targetValidator);
             if(targets.Count == 0)
             {
                 if (self.control.IsMoveProhibitedByChannel()) return false;
@@ -283,7 +283,7 @@ public class Command
         return false;
     }
 
-    private bool ProcessChase(LivingThing target)
+    private bool ProcessChase(Entity target)
     {
 
         if (SelfValidator.CancelsChaseCommand.Evaluate(self)) return true;
@@ -322,7 +322,7 @@ public class Command
         return false;
     }
 
-    private bool ProcessAutoChase(LivingThing target)
+    private bool ProcessAutoChase(Entity target)
     {
 
         if(Vector3.Distance(self.transform.position,target.transform.position) - target.unitRadius > self.control.autoChaseRange)
@@ -339,7 +339,7 @@ public class Command
         return ProcessChase(target);
     }
 
-    private bool ProcessAutoAttackInRange(LivingThing target)
+    private bool ProcessAutoAttackInRange(Entity target)
     {
         if (self.control.skillSet[0] == null) return true;
         if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].range)
@@ -425,7 +425,7 @@ public class Command
 
 
 
-public class LivingThingControl : MonoBehaviourPun
+public class EntityControl : MonoBehaviourPun
 {
     public NavMeshAgent agent { get; private set; }
 
@@ -451,7 +451,7 @@ public class LivingThingControl : MonoBehaviourPun
     private float lastAICheckTime = 0f;
 
     private Animator animator;
-    private LivingThing livingThing;
+    private Entity livingThing;
 
     
 
@@ -503,7 +503,7 @@ public class LivingThingControl : MonoBehaviourPun
         reservedCommands.Add(command);
     }
 
-    public void CommandAttack(LivingThing target, bool reserve = false)
+    public void CommandAttack(Entity target, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.Attack, target);
         if (!reserve) reservedCommands.Clear();
@@ -517,20 +517,20 @@ public class LivingThingControl : MonoBehaviourPun
         reservedCommands.Add(command);
     }
 
-    public void CommandChase(LivingThing target, bool reserve = false)
+    public void CommandChase(Entity target, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.Chase, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
-    public void CommandAutoChase(LivingThing target, bool reserve = false)
+    public void CommandAutoChase(Entity target, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.AutoChase, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
-    public void CommandAutoAttackInRange(LivingThing target, bool reserve = false)
+    public void CommandAutoAttackInRange(Entity target, bool reserve = false)
     {
         Command command = new Command(livingThing, CommandType.AutoAttackInRange, target);
         if (!reserve) reservedCommands.Clear();
@@ -685,7 +685,7 @@ public class LivingThingControl : MonoBehaviourPun
     #endregion Functions For Local
     private void Awake()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         agent = GetComponent<NavMeshAgent>();
         animator = transform.Find("Model").GetComponent<Animator>();
         agent.updateRotation = false;
@@ -796,7 +796,7 @@ public class LivingThingControl : MonoBehaviourPun
                     if (IsAbilityProhibitedByChannel()) continue;
                     if (skillSet[i].targetingType == AbilityTrigger.TargetingType.Target)
                     {
-                        List<LivingThing> targets = livingThing.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
+                        List<Entity> targets = livingThing.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
                         if(targets.Count != 0)
                         {
                             CommandAbility(skillSet[i], new CastInfo { target = targets[0], owner = livingThing, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
@@ -827,7 +827,7 @@ public class LivingThingControl : MonoBehaviourPun
         if (Time.time - lastAICheckTime >= aiInterval)
         {
             lastAICheckTime = Time.time;
-            List<LivingThing> acTargets;
+            List<Entity> acTargets;
 
             if (currentCommand == null)
             {

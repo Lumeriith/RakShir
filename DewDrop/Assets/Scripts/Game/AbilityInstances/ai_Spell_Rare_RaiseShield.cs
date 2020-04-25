@@ -67,7 +67,7 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
     private void OnTriggerEnter(Collider other)
     {
         if (!isActivated || !photonView.IsMine) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         info.owner.DoBasicAttackImmediately(thing, this);
         thing.StartDisplacement(Displacement.ByVector(info.directionVector * pushDistance, pushDuration, false, false, false, Ease.EaseOutQuad, null, null));
@@ -90,7 +90,7 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewId)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewId).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewId).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position + thing.GetCenterOffset(), Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
     }
 

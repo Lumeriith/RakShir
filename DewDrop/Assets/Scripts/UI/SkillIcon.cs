@@ -72,7 +72,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
     private void Update()
     {
-        LivingThing target = UnitControlManager.instance.selectedUnit;
+        Entity target = UnitControlManager.instance.selectedUnit;
 
         if (target == null || !target.photonView.IsMine)
         {

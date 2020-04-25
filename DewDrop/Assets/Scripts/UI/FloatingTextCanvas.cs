@@ -29,14 +29,14 @@ public class FloatingTextCanvas : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
+        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
             if (thing.type == LivingThingType.Player && thing.photonView.IsMine) RegisterFloatingTextEvents(thing);
         };
 
     }
 
-    public void RegisterFloatingTextEvents(LivingThing player)
+    public void RegisterFloatingTextEvents(Entity player)
     {
         player.OnDoBasicAttackHit += (InfoBasicAttackHit info) =>
         {

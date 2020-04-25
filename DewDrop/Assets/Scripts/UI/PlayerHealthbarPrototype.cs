@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealthbarPrototype : MonoBehaviour
 {
-    public LivingThing targetPlayer;
+    public Entity targetPlayer;
     
     Text text_Name;
     Text text_Detail;

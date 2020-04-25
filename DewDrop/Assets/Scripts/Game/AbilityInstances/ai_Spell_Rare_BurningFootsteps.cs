@@ -25,7 +25,7 @@ public class ai_Spell_Rare_BurningFootsteps : AbilityInstance
 
     private IEnumerator CoroutineDamage()
     {
-        List<LivingThing> targets;
+        List<Entity> targets;
         for (int i = 0; i < ticks; i++)
         {
             yield return new WaitForSeconds(tickInterval);

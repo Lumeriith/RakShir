@@ -21,7 +21,7 @@ public class ai_Spell_Rare_HolyLight : AbilityInstance
         flash.Play();
         if (!photonView.IsMine) return;
         float healAmount = this.healAmount;
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
             targets[i].ApplyStatusEffect(StatusEffect.Blind(blindDuration), this);
@@ -37,7 +37,7 @@ public class ai_Spell_Rare_HolyLight : AbilityInstance
     [PunRPC]
     private void RpcHit(int viewID)
     {
-        LivingThing thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<LivingThing>();
+        Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position + thing.GetCenterOffset(), Quaternion.identity, transform);
     }
 }

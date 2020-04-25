@@ -33,7 +33,7 @@ public class ai_Gem_Rare_Dawn : AbilityInstance
         yield return new WaitForSeconds(dawn.explosionDelay);
         start.Stop();
         SFXManager.CreateSFXInstance("si_Gem_Rare_Dawn Explode", transform.position);
-        List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, dawn.explosionRadius, dawn.affectedTargets);
+        List<Entity> targets = info.owner.GetAllTargetsInRange(transform.position, dawn.explosionRadius, dawn.affectedTargets);
         for(int i = 0; i < targets.Count; i++)
         {
             info.owner.DoMagicDamage(targets[i], dawn.damageAmount[dawn.level], false, this);

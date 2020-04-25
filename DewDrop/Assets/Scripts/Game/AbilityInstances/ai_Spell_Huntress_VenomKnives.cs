@@ -12,7 +12,7 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
     public float basicAttackBonusDamage;
     public TargetValidator targetValidator;
 
-    private List<LivingThing> affectedTargets = new List<LivingThing>();
+    private List<Entity> affectedTargets = new List<Entity>();
 
 
     private GameObject land;
@@ -28,8 +28,8 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
     {
         start.Play();
         if (!photonView.IsMine) return;
-        List<LivingThing> targets = castInfo.owner.GetAllTargetsInRange(transform.position, range, targetValidator);
-        foreach(LivingThing target in targets)
+        List<Entity> targets = castInfo.owner.GetAllTargetsInRange(transform.position, range, targetValidator);
+        foreach(Entity target in targets)
         {
             target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonTime, poisonDamage), this);
             castInfo.owner.DoMagicDamage(target, initialDamage, false, this);
@@ -51,7 +51,7 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
     IEnumerator CoroutineUnsubscribe()
     {
         yield return new WaitForSeconds(poisonTime);
-        foreach(LivingThing target in affectedTargets)
+        foreach(Entity target in affectedTargets)
         {
             target.OnTakeBasicAttackHit -= BasicAttackHit;
         }

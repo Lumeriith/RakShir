@@ -18,7 +18,7 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
     private GameObject hitEffect;
 
-    private LivingThing target;
+    private Entity target;
 
 
 
@@ -28,7 +28,7 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
         hitEffect = transform.Find("HitEffect").gameObject;
         if (!photonView.IsMine) return;
 
-        target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<LivingThing>();
+        target = PhotonNetwork.GetPhotonView((int)data[0]).GetComponent<Entity>();
 
         info.owner.StartDisplacement(Displacement.TowardsTarget(target, marginToTarget, dashSpeed, true, true, DashFinished, DashCanceled));
     }

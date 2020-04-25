@@ -1,5 +1,5 @@
 ﻿
 public interface IInfobar
 {
-    void SetTarget(LivingThing target);
+    void SetTarget(Entity target);
 }

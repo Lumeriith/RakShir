@@ -4,10 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 public class TestSansBehaviour : MonoBehaviourPun
 {
-    private LivingThing livingThing;
+    private Entity livingThing;
     private void Start()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         if (photonView.IsMine)
         {
             livingThing.OnDeath += Death;

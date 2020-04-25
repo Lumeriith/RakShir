@@ -5,7 +5,7 @@ public class PlayerInventory : MonoBehaviour
 {
 
 
-    public LivingThing livingThing { private set; get; }
+    public Entity livingThing { private set; get; }
 
     public Consumable[] consumableBelt = new Consumable[3];
     public Equipment[] equipped = new Equipment[5];
@@ -40,7 +40,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        livingThing = GetComponent<LivingThing>();
+        livingThing = GetComponent<Entity>();
         inventory = new Item[inventoryCapacity + 1];
     }
 

@@ -44,7 +44,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
     {
         if (!photonView.IsMine) return;
         if (elapsedTime > duration) return;
-        LivingThing thing = other.GetComponent<LivingThing>();
+        Entity thing = other.GetComponent<Entity>();
         if (thing == null) return;
         if (!validator.Evaluate(info.owner, thing)) return;
         thing.ApplyStatusEffect(StatusEffect.Root(rootDuration), this);
