@@ -34,7 +34,7 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        if(PhotonNetwork.IsMasterClient) NetworkingManager.instance.Sync();
+        //if(PhotonNetwork.IsMasterClient) NetworkingManager.instance.Sync();
     }
 
     public override void OnDisconnected(DisconnectCause cause)

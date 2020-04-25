@@ -8,6 +8,7 @@ public static class DewResources
     private const string MainReferenceResourceName = "MainReferences";
 
     private static DewResourceReferences _references;
+    private static List<string> _entityAndItemNames = new List<string>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void BuildOnResources()
@@ -26,7 +27,7 @@ public static class DewResources
         return result;
     }
 
-    public static GameObject GetLivingThing(string name)
+    public static GameObject GetEntity(string name)
     {
         if (!_references.livingThings.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No LivingThing with name {0} was found!", name);
         return result;
@@ -55,4 +56,32 @@ public static class DewResources
         if (!_references.sfxInstances.TryGetValue(name, out GameObject result)) Debug.LogErrorFormat("No SFXInstance with name {0} was found!", name);
         return result;
     }
+
+    public static GameObject GetEntityOrItemBySubstring(string substring)
+    {
+        if(_entityAndItemNames.Count == 0)
+        {
+            foreach (string name in _references.livingThings.Keys) _entityAndItemNames.Add(name);
+            foreach (string name in _references.items.Keys) _entityAndItemNames.Add(name);
+        }
+
+        string foundName = "";
+        for(int i = 0;i< _entityAndItemNames.Count; i++)
+        {
+            if (_entityAndItemNames[i] == substring) return GetGameObject(substring);
+            else if (foundName == "" && _entityAndItemNames[i].Contains(substring)) foundName = _entityAndItemNames[i];
+        }
+        if (foundName == "") return null;
+        return GetGameObject(foundName);
+    }
+
+    public static GameObject GetGameObject(string name)
+    {
+        if (_references.sfxInstances.ContainsKey(name)) return _references.sfxInstances[name];
+        if (_references.items.ContainsKey(name)) return _references.items[name];
+        if (_references.livingThings.ContainsKey(name)) return _references.livingThings[name];
+        if (_references.rooms.ContainsKey(name)) return _references.rooms[name];
+        return null;
+    }
+
 }

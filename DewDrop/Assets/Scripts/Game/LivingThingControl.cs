@@ -50,7 +50,7 @@ public class Channel
     public void Tick()
     {
         if (hasEnded) return;
-        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime * (100f + owner.statusEffect.totalHasteAmount) / 100f);
+        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime * (100f + owner.statusEffect.status.haste) / 100f);
         if(duration == 0)
         {
             hasEnded = true;
@@ -244,7 +244,7 @@ public class Command
 
         CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
         //self.control.skillSet[0].Cast(info, 1f);
-        self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (1f + self.statusEffect.totalHasteAmount / 100f));
+        self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (1f + self.statusEffect.status.haste / 100f));
         return true;
     }
 
@@ -743,7 +743,7 @@ public class LivingThingControl : MonoBehaviourPun
         }
         else
         {
-            agent.speed = livingThing.stat.finalMovementSpeed / 100f * (100f + livingThing.statusEffect.totalSpeedAmount) / 100f * (100f - livingThing.statusEffect.totalSlowAmount) / 100f;
+            agent.speed = livingThing.stat.finalMovementSpeed / 100f * (100f + livingThing.statusEffect.status.speed) / 100f * (100f - livingThing.statusEffect.status.slow) / 100f;
         }
 
 

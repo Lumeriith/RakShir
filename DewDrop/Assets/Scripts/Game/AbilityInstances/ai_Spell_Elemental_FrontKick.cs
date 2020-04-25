@@ -21,9 +21,11 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     ParticleSystem whoof;
     GameObject flash;
 
+    private bool didHit;
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
+        didHit = false;
         whoof = transform.Find("Whoof").GetComponent<ParticleSystem>();
         flash = transform.Find("Flash").gameObject;
         if (photonView.IsMine)
@@ -45,7 +47,6 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
         }
     }
 
-    private bool didHit = false;
     private void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine || !isAlive) return;

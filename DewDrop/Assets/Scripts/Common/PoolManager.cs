@@ -31,14 +31,14 @@ public class PoolManager : MonoBehaviour
 
         public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
         {
-            string shortName = prefabId.Split('/')[1];
+            string shortName = prefabId.Contains("/") ? prefabId.Split('/')[1] : prefabId;
             GameObject original = null;
             if (prefabId.StartsWith("AbilityInstances/")) original = DewResources.GetAbilityInstance(shortName);
             else if (prefabId.StartsWith("Items/")) original = DewResources.GetItem(shortName);
-            else if (prefabId.StartsWith("LivingThings/")) original = DewResources.GetLivingThing(shortName);
-            else if (prefabId.StartsWith("Rooms")) original = DewResources.GetRoom(shortName);
+            else if (prefabId.StartsWith("Entities/")) original = DewResources.GetEntity(shortName);
+            else if (prefabId.StartsWith("Rooms/")) original = DewResources.GetRoom(shortName);
             else if (prefabId.StartsWith("SFXInstances/")) original = DewResources.GetSFXInstance(shortName);
-            else Debug.LogErrorFormat("Unknown DewResource {0}", prefabId);
+            else original = DewResources.GetGameObject(shortName);
 
             return SpawnNoActivation(original, position, rotation);
         }

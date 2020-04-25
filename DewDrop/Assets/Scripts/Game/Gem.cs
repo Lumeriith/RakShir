@@ -17,7 +17,7 @@ public abstract class Gem : Item, IDewActionCaller
     private List<Collider> deactivatedColliders = new List<Collider>();
     private List<Rigidbody> deactivatedRigidbodies = new List<Rigidbody>();
 
-    public LivingThing invokerEntity { get => owner; }
+    public LivingThing entity { get => owner; }
     public Action<InfoManaSpent> OnSpendMana { get; set; } = (_) => { };
     public Action<InfoDamage> OnDealDamage { get; set; } = (_) => { };
     public Action<InfoDamage> OnDealPureDamage { get; set; } = (_) => { };

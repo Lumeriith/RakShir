@@ -163,32 +163,9 @@ public class DebugCommands : MonoBehaviour
     [ConsoleMethod("spawn", "Spawn all Networked GameObjects with matching names at cursor position.")]
     public static void Spawn(string name)
     {
-        List<GameObject> targets = new List<GameObject>();
-        if (resources == null) resources = Resources.LoadAll("");
-        foreach (object obj in resources)
-        {
-            GameObject gobj = obj as GameObject;
-            if (gobj != null && gobj.name.IndexOf(name, System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                if(gobj.name.StartsWith("cons_") || gobj.name.StartsWith("equip_") || gobj.name.StartsWith("player_") || gobj.name.StartsWith("monster_") || gobj.name.StartsWith("gem_"))
-                {
-                    targets.Add(gobj);
-                }
+        PhotonNetwork.Instantiate(DewResources.GetEntityOrItemBySubstring(name).name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere, Quaternion.identity);
 
-            }
-        }
 
-        foreach(GameObject target in targets)
-        {
-            if(target.name.StartsWith("player_") || target.name.StartsWith("monster_"))
-            {
-                GameManager.SpawnLivingThing(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
-            } else if (target.name.StartsWith("cons_") || target.name.StartsWith("equip_") || target.name.StartsWith("gem_"))
-            {
-                GameManager.SpawnItem(target.name, GetCurrentCursorPositionInWorldSpace() + Vector3.up * 1f + Random.onUnitSphere);
-            }
-            
-        }
     }
 
     [ConsoleMethod("hot", "Heal LivingThing at cursor location over time for given amount and duration.")]

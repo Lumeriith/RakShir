@@ -46,7 +46,7 @@ public class AbilityInstanceSafeReference : System.IEquatable<AbilityInstanceSaf
     public System.Action<InfoBasicAttackHit> OnDoBasicAttackHit { get; set; } = (InfoBasicAttackHit _) => { };
     public System.Action<InfoHeal> OnDoHeal { get; set; } = (InfoHeal _) => { };
     public System.Action<InfoManaHeal> OnDoManaHeal { get; set; } = (InfoManaHeal _) => { };
-    public LivingThing invokerEntity { get => owner; }
+    public LivingThing entity { get => owner; }
 
     /// <summary>
     /// Is the instance active and hasn't been marked for despawn/despawned/reused?

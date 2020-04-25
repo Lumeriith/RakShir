@@ -72,7 +72,7 @@ public class ShopManager : MonoBehaviour
             {
                 SFXManager.CreateSFXInstance("si_local_ShopBuy", GameManager.instance.localPlayer.transform.position, true);
                 GameManager.instance.localPlayer.SpendGold(currentStock[index].value);
-                GameManager.instance.localPlayer.ActivateImmediately(GameManager.SpawnItem(currentStock[index].name, GameManager.instance.localPlayer.transform.position));
+                GameManager.instance.localPlayer.ActivateImmediately(Dew.SpawnItem(currentStock[index].name, GameManager.instance.localPlayer.transform.position));
                 currentStockNumber[index]--;
             }
             else

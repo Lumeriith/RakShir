@@ -331,7 +331,7 @@ public class LivingThing : MonoBehaviourPun
             Kill();
         }
 
-        float walkSpeedMultiplier = stat.finalMovementSpeed / 100f * (100f + statusEffect.totalSpeedAmount) / 100f * (100f - statusEffect.totalSlowAmount) / defaultMovementSpeed;
+        float walkSpeedMultiplier = stat.finalMovementSpeed / 100f * (100f + statusEffect.status.speed) / 100f * (100f - statusEffect.status.slow) / defaultMovementSpeed;
         walkSpeedMultiplier = 1 + (walkSpeedMultiplier - 1) * 0.5f;
         animator.SetFloat("WalkSpeedMultiplier", walkSpeedMultiplier);
 
@@ -883,14 +883,14 @@ public class LivingThing : MonoBehaviourPun
         from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
         finalAmount = ignoreSpellPower ? amount : amount * from.stat.finalSpellPower / 100;
 
-        if(statusEffect.totalShieldAmount > finalAmount)
+        if(statusEffect.status.shield > finalAmount)
         {
             if(photonView.IsMine) statusEffect.ApplyShieldDamage(finalAmount);
         }
         else
         {
-            stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.totalShieldAmount);
-            if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.totalShieldAmount);
+            stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.status.shield);
+            if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.status.shield);
             stat.ValidateHealth();
         }
 
@@ -953,14 +953,14 @@ public class LivingThing : MonoBehaviourPun
 
             if (!SelfValidator.CanBeDamaged.Evaluate(this)) finalAmount = 0f;
 
-            if (statusEffect.totalShieldAmount > finalAmount)
+            if (statusEffect.status.shield > finalAmount)
             {
                 if (photonView.IsMine) statusEffect.ApplyShieldDamage(finalAmount);
             }
             else
             {
-                stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.totalShieldAmount);
-                if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.totalShieldAmount);
+                stat.currentHealth -= Mathf.Max(0, finalAmount - statusEffect.status.shield);
+                if (photonView.IsMine) statusEffect.ApplyShieldDamage(statusEffect.status.shield);
                 stat.ValidateHealth();
             }
 

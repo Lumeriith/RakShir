@@ -32,7 +32,7 @@ public class Spawner : MonoBehaviour
     public void Spawn(LivingThing activator = null)
     {
         started = true;
-        LivingThing thing = GameManager.SpawnLivingThing(livingThingPrefab.name, transform.position, transform.rotation);
+        LivingThing thing = Dew.SpawnEntity(livingThingPrefab.name, transform.position, transform.rotation);
         spawnedLivingThings.Add(thing);
         if(activator != null)
         {

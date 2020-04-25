@@ -7,7 +7,7 @@ using ExitGames.Client.Photon;
 using Sirenix.OdinInspector;
 
 
-public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
+public class LivingThingStat : MonoBehaviourPun
 {
 
     private LivingThing livingThing;
@@ -115,37 +115,16 @@ public class LivingThingStat : MonoBehaviourPun, IOnEventCallback
     public float finalMaximumMana { get { return baseMaximumMana + finalIntelligence * additionalMaximumManaPerUnit + bonusMaximumMana; } }
     public float finalManaRegenerationPerSecond { get { return baseManaRegenerationPerSecond + finalIntelligence * additionalManaRegenerationPerSecondPerUnit + bonusManaRegenerationPerSecond; } }
     public float finalMovementSpeed { get { return (baseMovementSpeed + finalAgility * additionalMovementSpeedPerUnit + bonusMovementSpeed); } }
-    public float finalAttackDamage { get { return (baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage) * (100f + livingThing.statusEffect.totalAttackDamageBoostAmount - livingThing.statusEffect.totalAttackDamageReductionAmount) / 100f; } }
+    public float finalAttackDamage { get { return (baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage) * (100f + livingThing.statusEffect.status.attackDamageBoost - livingThing.statusEffect.status.attackDamageReduction) / 100f; } }
     public float finalAttacksPerSecond { get { return baseAttacksPerSecond * (1 + (finalAgility * additionalAttackSpeedPercentagePerUnit / 100) + (bonusAttackSpeedPercentage / 100)); } }
-    public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower + livingThing.statusEffect.totalSpellPowerBoostAmount - livingThing.statusEffect.totalSpellPowerReductionAmount; } }
+    public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower + livingThing.statusEffect.status.spellPowerBoost - livingThing.statusEffect.status.spellPowerReduction; } }
     public float finalCooldownReduction { get { return baseCooldownReduction + finalIntelligence * additionalCooldownReductionPerUnit + bonusCooldownReduction; } }
     public float finalDodgeChance { get { return baseDodgeChance + finalAgility * additionalDodgeChancePerUnit + bonusDodgeChance; } }
 
-    private void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    private void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
 
     private void Awake()
     {
         livingThing = GetComponent<LivingThing>();
-    }
-    public void OnEvent(EventData photonEvent)
-    {
-        byte code = photonEvent.Code;
-
-        if(code == NetworkingManager.event_SyncAllStats && photonView.IsMine)
-        {
-            SyncChangingStats();
-            SyncBaseStats();
-            SyncSecondaryStats();
-            SyncTemporaryAttributes();
-        }
     }
 
     private void Update()

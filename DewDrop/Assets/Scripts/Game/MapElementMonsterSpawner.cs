@@ -33,7 +33,7 @@ public class MapElementMonsterSpawner : MapElement
             position.z = position.y;
             position.y = 0f;
             position = position * radius + transform.position;
-            spawnedMonsters.Add(GameManager.SpawnLivingThing(monstersToSpawn[i].name, position));
+            spawnedMonsters.Add(Dew.SpawnEntity(monstersToSpawn[i].name, position));
             spawnedMonsters[spawnedMonsters.Count - 1].control.CommandChase(GameManager.instance.localPlayer);
             yield return new WaitForSeconds(spawnDelay);
         }

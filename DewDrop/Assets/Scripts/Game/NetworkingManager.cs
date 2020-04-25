@@ -16,9 +16,6 @@ public class NetworkingManager : MonoBehaviourPunCallbacks
     }
     private static NetworkingManager _instance;
 
-    public const byte event_SyncAllStats = 1;
-    public const byte event_SyncItemsAndEquipments = 2;
-
 
     private float lastSyncAllStats = 0;
     public float syncAllStatsInterval = 5f;
@@ -48,15 +45,10 @@ public class NetworkingManager : MonoBehaviourPunCallbacks
        
         if (Time.time - lastSyncAllStats > syncAllStatsInterval)
         {
-            Sync();
+            
         }
     }
 
-    public void Sync()
-    {
-        lastSyncAllStats = Time.time;
-        PhotonNetwork.RaiseEvent(event_SyncAllStats, null, raiseToAll, sendReliably);
-    }
 
     
 

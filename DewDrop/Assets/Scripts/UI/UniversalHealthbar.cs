@@ -62,7 +62,7 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
     }
     private void UpdateGrid()
     {
-        float maxAmount = target.maximumHealth + target.statusEffect.totalShieldAmount;
+        float maxAmount = target.maximumHealth + target.statusEffect.status.shield;
         float width = image_health.rectTransform.rect.width;
         int lineCount = (int)(maxAmount / 100f);
 
@@ -89,12 +89,12 @@ public class UniversalHealthbar : MonoBehaviour, IInfobar
 
     private void UpdateFill()
     {
-        float maxAmount = target.maximumHealth + target.statusEffect.totalShieldAmount;
-        float futureHealthDelta = target.statusEffect.totalHealOverTimeAmount - target.statusEffect.totalDamageOverTimeAmount;
+        float maxAmount = target.maximumHealth + target.statusEffect.status.shield;
+        float futureHealthDelta = target.statusEffect.status.healOverTime - target.statusEffect.status.damageOverTime;
         float healthWidth = image_health.rectTransform.rect.width;
 
-        image_health_fill.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (target.currentHealth + target.statusEffect.totalShieldAmount) / maxAmount * healthWidth);
-        image_shield.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, target.statusEffect.totalShieldAmount / maxAmount * healthWidth);
+        image_health_fill.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (target.currentHealth + target.statusEffect.status.shield) / maxAmount * healthWidth);
+        image_shield.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, target.statusEffect.status.shield / maxAmount * healthWidth);
         if (futureHealthDelta > 0)
         {
             image_health_HoT.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, futureHealthDelta / maxAmount * healthWidth);

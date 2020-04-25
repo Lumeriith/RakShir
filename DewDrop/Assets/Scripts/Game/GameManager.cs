@@ -94,15 +94,7 @@ public class GameManager : MonoBehaviour
         PlayerViewCamera.instance.visionMultiplier = multiplier;
     }
 
-    public static LivingThing SpawnLivingThing(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
-    {
-        return PhotonNetwork.Instantiate("LivingThings/" + livingThingName, location, rotation).GetComponent<LivingThing>();
-    }
 
-    public static Item SpawnItem(string itemName, Vector3 location, Quaternion rotation = new Quaternion())
-    {
-        return PhotonNetwork.Instantiate("Items/" + itemName, location, rotation).GetComponent<Item>();
-    }
 
     public static LivingThing SpawnLocalPlayer(PlayerType type, Vector3 location)
     {
@@ -110,28 +102,28 @@ public class GameManager : MonoBehaviour
         List<Activatable> startItems = new List<Activatable>();
         if (type == PlayerType.Elemental)
         {
-            localPlayer = SpawnLivingThing("player_Elemental", location);
-            startItems.Add(SpawnItem("equip_Armor_ElementalIntegrity", location));
-            startItems.Add(SpawnItem("equip_Boots_ElementalDetermination", location));
-            startItems.Add(SpawnItem("equip_Weapon_ElementalJustice", location));
+            localPlayer = Dew.SpawnEntity("player_Elemental", location);
+            startItems.Add(Dew.SpawnItem("equip_Armor_ElementalIntegrity", location));
+            startItems.Add(Dew.SpawnItem("equip_Boots_ElementalDetermination", location));
+            startItems.Add(Dew.SpawnItem("equip_Weapon_ElementalJustice", location));
 
-            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
-            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
-            startItems.Add(SpawnItem("cons_ManaPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_ManaPotionMedium", location));
 
 
             AvatarManager.instance.SetAvatar(PlayerType.Elemental);
         }
         else
         {
-            localPlayer = SpawnLivingThing("player_Reptile", location);
-            startItems.Add(SpawnItem("equip_Armor_ReptileSkin", location));
-            startItems.Add(SpawnItem("equip_Boots_ReptileFeet", location));
-            startItems.Add(SpawnItem("equip_Weapon_ReptileClaw", location));
+            localPlayer = Dew.SpawnEntity("player_Reptile", location);
+            startItems.Add(Dew.SpawnItem("equip_Armor_ReptileSkin", location));
+            startItems.Add(Dew.SpawnItem("equip_Boots_ReptileFeet", location));
+            startItems.Add(Dew.SpawnItem("equip_Weapon_ReptileClaw", location));
 
-            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
-            startItems.Add(SpawnItem("cons_HealingPotionMedium", location));
-            startItems.Add(SpawnItem("cons_ManaPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_HealingPotionMedium", location));
+            startItems.Add(Dew.SpawnItem("cons_ManaPotionMedium", location));
 
             AvatarManager.instance.SetAvatar(PlayerType.Reptile);
         }
@@ -166,7 +158,7 @@ public class GameManager : MonoBehaviour
 
     public static void DropLoot(string name, Vector3 position)
     {
-        GameObject gobj = SpawnItem(name, position + Vector3.up * 2f + Random.insideUnitSphere * 0.8f, Random.rotation).gameObject;
+        GameObject gobj = Dew.SpawnItem(name, position + Vector3.up * 2f + Random.insideUnitSphere * 0.8f, Random.rotation).gameObject;
         Rigidbody rb = gobj.GetComponent<Rigidbody>();
         if(rb != null)
         {

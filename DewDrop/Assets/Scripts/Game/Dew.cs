@@ -14,7 +14,20 @@ public static class Dew
 
             PhotonView view = PhotonNetwork.GetPhotonView(serialized);
             return view.GetComponent<IDewActionCaller>();
+
         }
         return null;
     }
+
+    public static LivingThing SpawnEntity(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
+    {
+        return PhotonNetwork.Instantiate("Entities/" + livingThingName, location, rotation).GetComponent<LivingThing>();
+    }
+
+    public static Item SpawnItem(string itemName, Vector3 location, Quaternion rotation = new Quaternion())
+    {
+        return PhotonNetwork.Instantiate("Items/" + itemName, location, rotation).GetComponent<Item>();
+    }
+
+
 }

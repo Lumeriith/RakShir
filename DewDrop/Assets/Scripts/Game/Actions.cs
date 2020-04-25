@@ -81,7 +81,7 @@ public delegate void SpendGoldHandler(InfoGold info);
 
 public interface IDewActionCaller
 {
-    LivingThing invokerEntity { get; }
+    LivingThing entity { get; }
 
     System.Action<InfoManaSpent> OnSpendMana { get; set; }
     System.Action<InfoDamage> OnDealDamage { get; set; }

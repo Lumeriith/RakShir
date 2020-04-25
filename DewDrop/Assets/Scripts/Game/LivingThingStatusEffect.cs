@@ -2,6 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+
+public interface IReadOnlyEntityStatus
+{
+    float speed { get; }
+    float haste { get; }
+    float slow { get; }
+
+    float healOverTime { get; }
+    float damageOverTime { get; }
+    float shield { get; }
+
+    float spellPowerReduction { get; }
+    float spellPowerBoost { get; }
+    float attackDamageReduction { get; }
+    float attackDamageBoost { get; }
+}
+
+public struct EntityStatus : IReadOnlyEntityStatus
+{
+    public float speed { get; set; }
+    public float haste { get; set; }
+    public float slow { get; set; }
+
+    public float healOverTime { get; set; }
+    public float damageOverTime { get; set; }
+    public float shield { get; set; }
+
+    public float spellPowerReduction { get; set; }
+    public float spellPowerBoost { get; set; }
+    public float attackDamageReduction { get; set; }
+    public float attackDamageBoost { get; set; }
+
+    public void Clear()
+    {
+        speed = 0f;
+        haste = 0f;
+        slow = 0f;
+        healOverTime = 0f;
+        damageOverTime = 0f;
+        shield = 0f;
+        spellPowerReduction = 0f;
+        spellPowerBoost = 0f;
+        attackDamageReduction = 0f;
+        attackDamageBoost = 0f;
+    }
+}
+
+
 public class LivingThingStatusEffect : MonoBehaviourPun
 {
     private const float overTimeEffectTickInterval = 0.5f;
@@ -9,25 +57,12 @@ public class LivingThingStatusEffect : MonoBehaviourPun
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
     private LivingThing livingThing;
 
-    public float totalSpeedAmount { get; private set; }
-    public float totalHasteAmount { get; private set; }
-    public float totalSlowAmount { get; private set; }
-
-    public float totalHealOverTimeAmount { get; private set; }
-    public float totalDamageOverTimeAmount { get; private set; }
-    public float totalShieldAmount { get; private set; }
-
-    public float totalSpellPowerReductionAmount { get; private set; }
-
-    public float totalSpellPowerBoostAmount { get; private set; }
-
-    public float totalAttackDamageReductionAmount { get; private set; }
-    
-    public float totalAttackDamageBoostAmount { get; private set; }
-
     private float lastOverTimeEffectTickTime = 0f;
 
     private int[] statusEffectCountMap;
+
+    public IReadOnlyEntityStatus status { get => _status; }
+    private EntityStatus _status;
 
     private void Awake()
     {
@@ -317,73 +352,60 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         for (int i = 0; i < reservedHealAmounts.Count; i++)
         {
-            if(reservedHealHandlers[i].invokerEntity == null) livingThing.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
-            else reservedHealHandlers[i].invokerEntity.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            if(reservedHealHandlers[i].entity == null) livingThing.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            else reservedHealHandlers[i].entity.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
 
         }
 
         for (int i = 0; i < reservedMagicDamageAmounts.Count; i++)
         {
-            if(reservedMagicDamageHandlers[i].invokerEntity == null) livingThing.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
-            else reservedMagicDamageHandlers[i].invokerEntity.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            if(reservedMagicDamageHandlers[i].entity == null) livingThing.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            else reservedMagicDamageHandlers[i].entity.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
         }
 
-
-
-        totalHasteAmount = 0;
-        totalSlowAmount = 0;
-        totalSpeedAmount = 0;
-        totalHealOverTimeAmount = 0;
-        totalDamageOverTimeAmount = 0;
-        totalShieldAmount = 0;
-
-        totalAttackDamageBoostAmount = 0;
-        totalAttackDamageReductionAmount = 0;
-
-        totalSpellPowerBoostAmount = 0;
-        totalSpellPowerReductionAmount = 0;
+        _status.Clear();
 
         for(int i = 0; i < statusEffects.Count; i++)
         {
             if (statusEffects[i].type == StatusEffectType.Haste && statusEffects[i].parameter != null)
             {
-                totalHasteAmount += (float)statusEffects[i].parameter;
+                _status.haste += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.Slow && statusEffects[i].parameter != null)
             {
-                totalSlowAmount = Mathf.Max(totalSlowAmount, (float)statusEffects[i].parameter);
+                _status.slow = Mathf.Max(_status.slow, (float)statusEffects[i].parameter);
             }
             else if (statusEffects[i].type == StatusEffectType.Speed && statusEffects[i].parameter != null)
             {
-                totalSpeedAmount += (float)statusEffects[i].parameter;
+                _status.speed += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.HealOverTime)
             {
-                totalHealOverTimeAmount += (float)statusEffects[i].parameter;
+                _status.healOverTime += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.DamageOverTime)
             {
-                totalDamageOverTimeAmount += (float)statusEffects[i].parameter;
+                _status.damageOverTime += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.Shield)
             {
-                totalShieldAmount += (float)statusEffects[i].parameter;
+                _status.shield += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.AttackDamageBoost)
             {
-                totalAttackDamageBoostAmount += (float)statusEffects[i].parameter;
+                _status.attackDamageBoost += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.AttackDamageReduction)
             {
-                totalAttackDamageReductionAmount += (float)statusEffects[i].parameter;
+                _status.attackDamageReduction += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.SpellPowerBoost)
             {
-                totalSpellPowerBoostAmount += (float)statusEffects[i].parameter;
+                _status.spellPowerBoost += (float)statusEffects[i].parameter;
             }
             else if (statusEffects[i].type == StatusEffectType.SpellPowerReduction)
             {
-                totalSpellPowerReductionAmount += (float)statusEffects[i].parameter;
+                _status.spellPowerReduction += (float)statusEffects[i].parameter;
             }
         }
 
