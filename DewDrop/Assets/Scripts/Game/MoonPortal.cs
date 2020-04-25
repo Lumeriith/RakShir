@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 public class MoonPortal : Activatable
 {
+    public override LivingThing entity => null;
+
     private static Vector3 previousPlayerPosition;
     private static Room previousPlayerRoom = null;
 

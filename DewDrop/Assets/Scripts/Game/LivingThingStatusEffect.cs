@@ -104,7 +104,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         return result;
     }
 
-    public void ApplyStatusEffect(StatusEffect ce, IDewActionCaller caller)
+    public void ApplyStatusEffect(StatusEffect ce, DewActionCaller caller)
     {
         if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing)) return;
         long uid; 
@@ -120,7 +120,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         statusEffects.Add(ce);
         statusEffectCountMap[(int)ce.type] += 1;
         if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
-        photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler.Serialize(), (byte)ce.type, ce.duration, ce.parameter);
+        photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler.GetActionCallerUID(), (byte)ce.type, ce.duration, ce.parameter);
     }
 
     public void CleanseStatusEffect(StatusEffectType type)
@@ -191,10 +191,10 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         }
 
         List<float> reservedHealAmounts = new List<float>();
-        List<IDewActionCaller> reservedHealHandlers = new List<IDewActionCaller>();
+        List<DewActionCaller> reservedHealHandlers = new List<DewActionCaller>();
 
         List<float> reservedMagicDamageAmounts = new List<float>();
-        List<IDewActionCaller> reservedMagicDamageHandlers = new List<IDewActionCaller>();
+        List<DewActionCaller> reservedMagicDamageHandlers = new List<DewActionCaller>();
 
         int temp = 0;
 
@@ -462,12 +462,12 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
 
     [PunRPC]
-    public void RpcApplyStatusEffect(long uid, int serializedHandler, byte type, float duration, object parameter)
+    public void RpcApplyStatusEffect(long uid, int callerUID, byte type, float duration, object parameter)
     {
         StatusEffect ce = new StatusEffect((StatusEffectType)type, duration, parameter);
         ce.owner = livingThing;
         ce.uid = uid;
-        ce.handler = Dew.DeserializeActionCaller(serializedHandler);
+        ce.handler = DewActionCaller.Retrieve(callerUID);
         statusEffects.Add(ce);
         statusEffectCountMap[(int)ce.type] += 1;
         if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);

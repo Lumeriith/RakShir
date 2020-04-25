@@ -24,8 +24,8 @@ public class ai_Spell_Huntress_AgileMove : AbilityInstance
     {
         if (info.owner.photonView.IsMine)
         {
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), reference);
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(duration, shieldAmount), reference);
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), this);
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(duration, shieldAmount), this);
         }
         info.owner.stat.bonusDodgeChance += dodgeAmount;
         yield return new WaitForSeconds(duration);

@@ -7,12 +7,12 @@ public class gem_Common_Aftertaste : Gem
     public float[] bonusMagicDamagePercentage = { 10, 15, 20, 25, 30 };
     public float[] bonusHealPercentage = { 20, 25, 30, 35, 40 };
 
-    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
         if (isMine)
         {
-            reference.OnDealMagicDamage += DealtMagicDamage;
-            reference.OnDoHeal += DidHeal;
+            instance.OnDealMagicDamage += DealtMagicDamage;
+            instance.OnDoHeal += DidHeal;
         }
     }
 

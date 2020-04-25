@@ -15,9 +15,9 @@ public class gem_Rare_Soul : Gem
     public List<LivingThing> damagedTargets;
     public List<float> damagedTimes;
 
-    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
-        if (isMine) reference.OnDealMagicDamage += DealtMagicDamage;
+        if (isMine) instance.OnDealMagicDamage += DealtMagicDamage;
     }
     private void DealtMagicDamage(InfoMagicDamage info)
     {

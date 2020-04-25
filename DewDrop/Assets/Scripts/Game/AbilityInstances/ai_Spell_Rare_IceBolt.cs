@@ -49,14 +49,14 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
         if (thing == null || !validator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {
-            info.owner.DoMagicDamage(thing, damage * slowedEnemiesBonusMultiplier, false, reference);
+            info.owner.DoMagicDamage(thing, damage * slowedEnemiesBonusMultiplier, false, this);
         }
         else
         {
-            info.owner.DoMagicDamage(thing, damage, false, reference);
+            info.owner.DoMagicDamage(thing, damage, false, this);
         }
         SFXManager.CreateSFXInstance("si_Spell_Rare_IceBolt Hit", transform.position);
-        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
         photonView.RPC("RpcHit", RpcTarget.All);
         Despawn(DespawnBehaviour.WaitForParticleSystems);
     }

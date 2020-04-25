@@ -42,7 +42,7 @@ public class StatusEffect
     #region Instance Members
 
     public long uid;
-    public IDewActionCaller handler;
+    public DewActionCaller handler;
     public LivingThing owner;
     public StatusEffectType type;
     public float duration;
@@ -67,7 +67,7 @@ public class StatusEffect
         this.originalDuration = duration;
     }
 
-    public void SetHandler(IDewActionCaller caller)
+    public void SetHandler(DewActionCaller caller)
     {
         handler = caller;
     }

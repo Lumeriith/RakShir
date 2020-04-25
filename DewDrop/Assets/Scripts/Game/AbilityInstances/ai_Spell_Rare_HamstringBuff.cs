@@ -17,8 +17,8 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         {
             speed = StatusEffect.Speed(duration, speedAmount);
             haste = StatusEffect.Haste(duration, hasteAmount);
-            info.owner.ApplyStatusEffect(speed, reference);
-            info.owner.ApplyStatusEffect(haste, reference);
+            info.owner.ApplyStatusEffect(speed, this);
+            info.owner.ApplyStatusEffect(haste, this);
             info.owner.control.skillSet[0].ResetCooldown();
         }
     }

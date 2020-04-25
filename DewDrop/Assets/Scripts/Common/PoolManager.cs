@@ -3,57 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public interface IDelayedDespawn
-{
-    bool IsReadyForDespawn();
-    GameObject GetGameObject();
-    Coroutine StartCoroutine(IEnumerator routine);
-}
-
 public class PoolManager : MonoBehaviour
 {
-    public class PoolManagerPunBridge : IPunPrefabPool
-    {
-        public PoolManagerPunBridge()
-        {
-            PhotonNetwork.PrefabPool = this;
-        }
-
-        public void Destroy(GameObject gameObject)
-        {
-            IDelayedDespawn target = gameObject.GetComponent<IDelayedDespawn>();
-            if (target != null)
-            {
-                DespawnWhenReady(target);
-            }
-            else Despawn(gameObject);
-        }
-
-        public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
-        {
-            string shortName = prefabId.Contains("/") ? prefabId.Split('/')[1] : prefabId;
-            GameObject original = null;
-            if (prefabId.StartsWith("AbilityInstances/")) original = DewResources.GetAbilityInstance(shortName);
-            else if (prefabId.StartsWith("Items/")) original = DewResources.GetItem(shortName);
-            else if (prefabId.StartsWith("Entities/")) original = DewResources.GetEntity(shortName);
-            else if (prefabId.StartsWith("Rooms/")) original = DewResources.GetRoom(shortName);
-            else if (prefabId.StartsWith("SFXInstances/")) original = DewResources.GetSFXInstance(shortName);
-            else original = DewResources.GetGameObject(shortName);
-
-            return SpawnNoActivation(original, position, rotation);
-        }
-    }
-
-    private static PoolManagerPunBridge _bridge;
     private static Dictionary<GameObject, Queue<GameObject>> _pools = new Dictionary<GameObject, Queue<GameObject>>();
     private static Dictionary<GameObject, GameObject> _originalBySpawnling = new Dictionary<GameObject, GameObject>();
     private static Transform _poolRoot = null;
-
-    private void Start()
-    {
-        _bridge = new PoolManagerPunBridge();
-        PhotonNetwork.PrefabPool = _bridge;
-    }
 
     public static Transform GetPoolRoot()
     {
@@ -117,16 +71,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public static void DespawnWhenReady(IDelayedDespawn target)
-    {
-        target.StartCoroutine(CoroutineDespawnWhenReady(target));
-    }
 
-    private static IEnumerator CoroutineDespawnWhenReady(IDelayedDespawn target)
-    {
-        while (!target.IsReadyForDespawn()) yield return null;
-        Despawn(target.GetGameObject());
-    }
 
 
 }

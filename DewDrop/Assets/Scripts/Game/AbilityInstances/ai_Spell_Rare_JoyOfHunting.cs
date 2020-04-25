@@ -15,8 +15,8 @@ public class ai_Spell_Rare_JoyOfHunting : AbilityInstance
         transform.parent = info.owner.transform;
         transform.position = info.owner.transform.position;
         if (!photonView.IsMine) return;
-        info.owner.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), reference);
-        info.owner.ApplyStatusEffect(StatusEffect.Haste(duration, hasteAmount), reference);
+        info.owner.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), this);
+        info.owner.ApplyStatusEffect(StatusEffect.Haste(duration, hasteAmount), this);
         startTime = Time.time;
         loopSFX = SFXManager.CreateSFXInstance("si_Spell_Rare_JoyOfHunting Loop", transform.position);
         loopSFX.Follow(this);

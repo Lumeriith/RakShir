@@ -83,8 +83,8 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
     private void Kick()
     {
-        info.owner.DoBasicAttackImmediately(target, reference);
-        info.owner.DoMagicDamage(target, bonusDamage, false, reference);
+        info.owner.DoBasicAttackImmediately(target, this);
+        info.owner.DoMagicDamage(target, bonusDamage, false, this);
         info.owner.LookAt(target.transform.position, true);
     }
 

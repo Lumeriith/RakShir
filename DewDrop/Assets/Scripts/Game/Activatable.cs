@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView))]
-public abstract class Activatable : MonoBehaviourPunCallbacks
+public abstract class Activatable : DewActionCaller
 {
     public float activationRange = 2.5f;
     public Channel channel;
@@ -17,8 +17,9 @@ public abstract class Activatable : MonoBehaviourPunCallbacks
 
     private List<KeyValuePair<LivingThing, Channel>> dict = new List<KeyValuePair<LivingThing, Channel>>();
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         GameManager.instance.OnActivatableInstantiate.Invoke(this);
     }
 

@@ -10,7 +10,7 @@ public class ai_Gem_Common_Frost : AbilityInstance
         transform.parent = info.target.transform;
         if (!isMine) return;
         gem_Common_Frost frost = (gem_Common_Frost)gem;
-        info.target.ApplyStatusEffect(StatusEffect.Slow(frost.slowDuration[frost.level], frost.slowAmount[frost.level]), reference);
+        info.target.ApplyStatusEffect(StatusEffect.Slow(frost.slowDuration[frost.level], frost.slowAmount[frost.level]), this);
         Despawn(info.target);
     }
 }

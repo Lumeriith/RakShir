@@ -10,11 +10,15 @@ public static class DewResources
     private static DewResourceReferences _references;
     private static List<string> _entityAndItemNames = new List<string>();
 
+#if UNITY_EDITOR
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void BuildOnResources()
     {
         UnityEditor.AssetDatabase.LoadAssetAtPath<DewResourceReferences>(MainReferencePath).Build();
     }
+
+#endif
 
     public static void Initialize()
     {
@@ -69,7 +73,7 @@ public static class DewResources
         for(int i = 0;i< _entityAndItemNames.Count; i++)
         {
             if (_entityAndItemNames[i] == substring) return GetGameObject(substring);
-            else if (foundName == "" && _entityAndItemNames[i].Contains(substring)) foundName = _entityAndItemNames[i];
+            else if (foundName == "" && _entityAndItemNames[i].ToLower().Contains(substring.ToLower())) foundName = _entityAndItemNames[i];
         }
         if (foundName == "") return null;
         return GetGameObject(foundName);

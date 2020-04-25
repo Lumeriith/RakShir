@@ -79,19 +79,5 @@ public delegate void ChannelHandler(InfoChannel info);
 public delegate void GoldHandler(InfoGold info);
 public delegate void SpendGoldHandler(InfoGold info);
 
-public interface IDewActionCaller
-{
-    LivingThing entity { get; }
-
-    System.Action<InfoManaSpent> OnSpendMana { get; set; }
-    System.Action<InfoDamage> OnDealDamage { get; set; }
-    System.Action<InfoDamage> OnDealPureDamage { get; set; }
-    System.Action<InfoMagicDamage> OnDealMagicDamage { get; set; }
-    System.Action<InfoBasicAttackHit> OnDoBasicAttackHit { get; set; }
-    System.Action<InfoHeal> OnDoHeal { get; set; }
-    System.Action<InfoManaHeal> OnDoManaHeal { get; set; }
-
-    int Serialize();
-}
 
 

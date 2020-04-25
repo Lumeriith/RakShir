@@ -32,11 +32,11 @@ public class ai_Gem_Common_Aftertaste : AbilityInstance
         SFXManager.CreateSFXInstance("si_Gem_Common_Aftertaste Hit", transform.position);
         if (isDamage)
         {
-            info.owner.DoMagicDamage(info.target, amount * ((gem_Common_Aftertaste)gem).bonusMagicDamagePercentage[gem.level] / 100f, false, reference);
+            info.owner.DoMagicDamage(info.target, amount * ((gem_Common_Aftertaste)gem).bonusMagicDamagePercentage[gem.level] / 100f, false, this);
         }
         else
         {
-            info.owner.DoHeal(info.target, amount * ((gem_Common_Aftertaste)gem).bonusHealPercentage[gem.level] / 100f, false, reference);
+            info.owner.DoHeal(info.target, amount * ((gem_Common_Aftertaste)gem).bonusHealPercentage[gem.level] / 100f, false, this);
         }
         Despawn(info.target);
     }

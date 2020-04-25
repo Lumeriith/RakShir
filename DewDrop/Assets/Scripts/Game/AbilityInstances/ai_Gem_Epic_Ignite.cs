@@ -39,7 +39,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         //if (info.reference.instance.creationTime < creationTime) return;
         this.info.owner.OnDoBasicAttackHit -= DidBasicAttackHit;
         photonView.RPC("RpcHit", RpcTarget.All, info.to.photonView.ViewID);
-        info.to.ApplyStatusEffect(StatusEffect.DamageOverTime(ignite.damageDuration, ignite.damageAmount[ignite.level]), reference);
+        info.to.ApplyStatusEffect(StatusEffect.DamageOverTime(ignite.damageDuration, ignite.damageAmount[ignite.level]), this);
         SFXManager.CreateSFXInstance("si_Gem_Epic_Ignite Hit", transform.position);
     }
 

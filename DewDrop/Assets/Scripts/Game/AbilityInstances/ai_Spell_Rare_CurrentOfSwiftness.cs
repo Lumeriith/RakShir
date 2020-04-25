@@ -19,9 +19,9 @@ public class ai_Spell_Rare_CurrentOfSwiftness : AbilityInstance
         shield = StatusEffect.Shield(shieldDuration, shieldAmount);
         speed = StatusEffect.Speed(shieldDuration, speedAmount);
         haste = StatusEffect.Haste(shieldDuration, hasteAmount);
-        info.owner.statusEffect.ApplyStatusEffect(shield, reference);
-        info.owner.statusEffect.ApplyStatusEffect(speed, reference);
-        info.owner.statusEffect.ApplyStatusEffect(haste, reference);
+        info.owner.statusEffect.ApplyStatusEffect(shield, this);
+        info.owner.statusEffect.ApplyStatusEffect(speed, this);
+        info.owner.statusEffect.ApplyStatusEffect(haste, this);
         sfx = SFXManager.CreateSFXInstance("si_Spell_Rare_CurrentOfSwiftness", transform.position);
         sfx.Follow(this);
     }

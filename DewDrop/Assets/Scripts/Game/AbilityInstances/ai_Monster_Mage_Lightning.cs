@@ -30,7 +30,7 @@ public class ai_Monster_Mage_Lightning : AbilityInstance
             lvs = info.owner.GetAllTargetsInRange(transform.position, radius, tv);
             for (int j = 0; j < lvs.Count; j++)
             {
-                info.owner.DoMagicDamage(lvs[j], damage, false, reference);
+                info.owner.DoMagicDamage(lvs[j], damage, false, this);
                 photonView.RPC("RpcHit", RpcTarget.All, lvs[j].transform.position + lvs[j].GetCenterOffset());
             }
             yield return new WaitForSeconds(interval);

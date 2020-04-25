@@ -25,7 +25,7 @@ public class ai_Monster_Archer_Basicattack : AbilityInstance
         transform.LookAt(info.target.transform.position + offset);
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target, reference);
+            info.owner.DoBasicAttackImmediately(info.target, this);
             photonView.RPC("RpcLanded", RpcTarget.All);
             fly.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             

@@ -470,7 +470,7 @@ public class LivingThing : MonoBehaviourPun
     {
         return stat.currentMana >= amount;
     }
-    public bool SpendMana(float amount, IDewActionCaller handler)
+    public bool SpendMana(float amount, DewActionCaller handler)
     {
         if (amount == 0) return true;
         if (amount < 0)
@@ -480,7 +480,7 @@ public class LivingThing : MonoBehaviourPun
         }
         if (stat.currentMana >= amount)
         {
-            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, handler?.Serialize());
+            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, handler?.GetActionCallerUID());
             return true;
         }
         else
@@ -583,7 +583,7 @@ public class LivingThing : MonoBehaviourPun
     {
         photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
     }
-    public void ApplyStatusEffect(StatusEffect statusEffect, IDewActionCaller caller)
+    public void ApplyStatusEffect(StatusEffect statusEffect, DewActionCaller caller)
     {
         this.statusEffect.ApplyStatusEffect(statusEffect, caller);
     }
@@ -634,7 +634,7 @@ public class LivingThing : MonoBehaviourPun
     {
         photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
-    public void DoHeal(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
+    public void DoHeal(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -642,9 +642,9 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoManaHeal(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
+    public void DoManaHeal(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -652,13 +652,13 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoBasicAttackImmediately(LivingThing to, IDewActionCaller handler)
+    public void DoBasicAttackImmediately(LivingThing to, DewActionCaller handler)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler.Serialize());
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler.GetActionCallerUID());
     }
-    public void DoMagicDamage(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
+    public void DoMagicDamage(LivingThing to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -666,9 +666,9 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
+        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
     }
-    public void DoPureDamage(LivingThing to, float amount, IDewActionCaller handler)
+    public void DoPureDamage(LivingThing to, float amount, DewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -676,8 +676,8 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.Serialize());
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.Serialize());
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.GetActionCallerUID());
     }
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
@@ -861,7 +861,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcSpendMana(float amount, int serializedHandler)
+    protected void RpcSpendMana(float amount, int callerUID)
     {
         stat.currentMana -= amount;
         stat.ValidateMana();
@@ -870,11 +870,11 @@ public class LivingThing : MonoBehaviourPun
         info.livingThing = this;
         info.amount = amount;
         OnSpendMana.Invoke(info);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnSpendMana.Invoke(info);
+        DewActionCaller.Retrieve(callerUID)?.OnSpendMana.Invoke(info);
     }
 
     [PunRPC]
-    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
+    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
@@ -908,7 +908,7 @@ public class LivingThing : MonoBehaviourPun
         infoMagicDamage.finalDamage = finalAmount;
         OnTakeMagicDamage.Invoke(infoMagicDamage);
         from.OnDealMagicDamage.Invoke(infoMagicDamage);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDealMagicDamage.Invoke(infoMagicDamage);
+        DewActionCaller.Retrieve(callerUID)?.OnDealMagicDamage.Invoke(infoMagicDamage);
 
         InfoDamage infoDamage;
         infoDamage.damage = amount;
@@ -917,7 +917,7 @@ public class LivingThing : MonoBehaviourPun
         infoDamage.type = DamageType.Spell;
         OnTakeDamage.Invoke(infoDamage);
         from.OnDealDamage.Invoke(infoDamage);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(infoDamage);
+        DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(infoDamage);
     }
 
     [PunRPC]
@@ -927,7 +927,7 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcApplyBasicAttackDamage(int from_id, float random, int serializedHandler)
+    protected void RpcApplyBasicAttackDamage(int from_id, float random, int callerUID)
     {
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
 
@@ -977,7 +977,7 @@ public class LivingThing : MonoBehaviourPun
             infoBasicAttackHit.to = this;
             OnTakeBasicAttackHit.Invoke(infoBasicAttackHit);
             from.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
-            Dew.DeserializeActionCaller(serializedHandler)?.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
+            DewActionCaller.Retrieve(callerUID)?.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
 
             InfoDamage infoDamage;
             infoDamage.damage = finalAmount;
@@ -986,7 +986,7 @@ public class LivingThing : MonoBehaviourPun
             infoDamage.type = DamageType.Physical;
             OnTakeDamage.Invoke(infoDamage);
             from.OnDealDamage.Invoke(infoDamage);
-            Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(infoDamage);
+            DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(infoDamage);
         }
     }
 
@@ -1026,7 +1026,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyPureDamage(float amount, int from_id, int serializedHandler)
+    protected void RpcApplyPureDamage(float amount, int from_id, int callerUID)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1048,8 +1048,8 @@ public class LivingThing : MonoBehaviourPun
         from.OnDealDamage.Invoke(info);
         OnTakePureDamage.Invoke(info);
         from.OnDealPureDamage.Invoke(info);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(info);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDealPureDamage.Invoke(info);
+        DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(info);
+        DewActionCaller.Retrieve(callerUID)?.OnDealPureDamage.Invoke(info);
     }
 
 
@@ -1080,7 +1080,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
+    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1105,11 +1105,11 @@ public class LivingThing : MonoBehaviourPun
         info.finalHeal = finalAmount;
         from.OnDoHeal.Invoke(info);
         OnTakeHeal.Invoke(info);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDoHeal.Invoke(info);
+        DewActionCaller.Retrieve(callerUID)?.OnDoHeal.Invoke(info);
     }
 
     [PunRPC]
-    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
+    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1126,7 +1126,7 @@ public class LivingThing : MonoBehaviourPun
         info.finalManaHeal = finalAmount;
         from.OnDoManaHeal.Invoke(info);
         OnTakeManaHeal.Invoke(info);
-        Dew.DeserializeActionCaller(serializedHandler)?.OnDoManaHeal.Invoke(info);
+        DewActionCaller.Retrieve(callerUID)?.OnDoManaHeal.Invoke(info);
     }
 
     [PunRPC]

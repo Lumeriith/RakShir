@@ -8,7 +8,7 @@ public class ai_cons_ManaHeal : AbilityInstance
     {
         if (!photonView.IsMine) return;
 
-        info.owner.DoManaHeal(info.owner, (float)data[0], true, reference);
+        info.owner.DoManaHeal(info.owner, (float)data[0], true, this);
         Despawn(info.owner);
     }
 }

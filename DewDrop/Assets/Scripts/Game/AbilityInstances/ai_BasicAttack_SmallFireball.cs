@@ -39,7 +39,7 @@ public class ai_BasicAttack_SmallFireball : AbilityInstance
             if (Vector3.Distance(transform.position, targetPosition) < 0.3f)
             {
                 photonView.RPC("Landed", RpcTarget.All);
-                owner.DoBasicAttackImmediately(target, reference);
+                owner.DoBasicAttackImmediately(target, this);
                 Despawn();
             }
         }

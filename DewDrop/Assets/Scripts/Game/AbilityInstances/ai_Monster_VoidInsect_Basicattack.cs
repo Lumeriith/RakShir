@@ -27,8 +27,8 @@ public class ai_Monster_VoidInsect_Basicattack : AbilityInstance
         transform.LookAt(info.target.transform.position + offset);
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target, reference);
-            info.target.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), reference);
+            info.owner.DoBasicAttackImmediately(info.target, this);
+            info.target.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), this);
             photonView.RPC("RpcLanded", RpcTarget.All);
             
             Despawn();

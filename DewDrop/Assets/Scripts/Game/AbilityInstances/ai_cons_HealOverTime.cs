@@ -9,7 +9,7 @@ public class ai_cons_HealOverTime : AbilityInstance
     {
         if (!photonView.IsMine) return;
 
-        info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime((float)data[1], (float)data[0], true), reference);
+        info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime((float)data[1], (float)data[0], true), this);
         duration = (float)data[1];
         StartCoroutine(CoroutineDestroy());
     }

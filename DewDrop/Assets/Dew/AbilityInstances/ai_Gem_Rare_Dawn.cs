@@ -36,7 +36,7 @@ public class ai_Gem_Rare_Dawn : AbilityInstance
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, dawn.explosionRadius, dawn.affectedTargets);
         for(int i = 0; i < targets.Count; i++)
         {
-            info.owner.DoMagicDamage(targets[i], dawn.damageAmount[dawn.level], false, reference);
+            info.owner.DoMagicDamage(targets[i], dawn.damageAmount[dawn.level], false, this);
         }
         photonView.RPC("RpcExplosionEffect", RpcTarget.All);
         Despawn();

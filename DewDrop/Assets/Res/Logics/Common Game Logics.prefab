@@ -560,7 +560,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1828306030}
-  - component: {fileID: 1828306032}
   - component: {fileID: 5563328938251661380}
   m_Layer: 0
   m_Name: SFX Manager
@@ -583,14 +582,6 @@ Transform:
   m_Father: {fileID: 767569082761898594}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1828306032
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828306029}
-  m_Enabled: 1
 --- !u!114 &5563328938251661380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91962,6 +91953,7 @@ GameObject:
   - component: {fileID: 8751973268834618720}
   - component: {fileID: 8751973268834618722}
   - component: {fileID: 5782637724414606988}
+  - component: {fileID: 2188643688407116923}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -92152,6 +92144,14 @@ MonoBehaviour:
   frustumSettings:
     baseSettings: {fileID: 11400000, guid: 9803a0f9bc2cfb647868a3ec070cd809, type: 2}
     qualitySettings: {fileID: 0}
+--- !u!81 &2188643688407116923
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751973268834618724}
+  m_Enabled: 1
 --- !u!1 &8805961924288865023
 GameObject:
   m_ObjectHideFlags: 0

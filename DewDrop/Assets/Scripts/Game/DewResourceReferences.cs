@@ -20,6 +20,7 @@ public class DewResourceReferences : SerializedScriptableObject
     public Dictionary<string, GameObject> rooms;
     public Dictionary<string, GameObject> sfxInstances;
 
+#if UNITY_EDITOR
 
     [Button]
     public void Build()
@@ -86,4 +87,7 @@ public class DewResourceReferences : SerializedScriptableObject
         }
         return added;
     }
+
+#endif
+
 }

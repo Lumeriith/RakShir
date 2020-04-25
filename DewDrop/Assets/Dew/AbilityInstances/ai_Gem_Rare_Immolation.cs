@@ -40,7 +40,7 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
             SFXManager.CreateSFXInstance("si_Gem_Rare_Immolation", transform.position);
             for (int i = 0; i < targets.Count; i++)
             {
-                info.owner.DoMagicDamage(targets[i], immolation.damagePerTick[immolation.level], false, reference);
+                info.owner.DoMagicDamage(targets[i], immolation.damagePerTick[immolation.level], false, this);
                 photonView.RPC("RpcCreateHitEffect", RpcTarget.All, targets[i].photonView.ViewID);
                 SFXManager.CreateSFXInstance("si_Gem_Rare_Immolation Hit", targets[i].transform.position);
             }

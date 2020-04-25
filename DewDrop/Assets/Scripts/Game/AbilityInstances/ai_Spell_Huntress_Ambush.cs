@@ -19,7 +19,7 @@ public class ai_Spell_Huntress_Ambush : AbilityInstance
 
     private void Slice()
     {
-        info.owner.DoMagicDamage(info.target, 70, false, reference);
+        info.owner.DoMagicDamage(info.target, 70, false, this);
         info.owner.LookAt(info.target.transform.position, true);
         info.owner.PlayCustomAnimation("Huntress - Ambush - Slice", sliceAnimationDuration);
         info.owner.control.StartChanneling(new Channel(new SelfValidator(), sliceChannelDuration, false, false, false, false, null, null));

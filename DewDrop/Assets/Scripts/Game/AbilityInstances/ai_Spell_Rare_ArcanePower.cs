@@ -14,9 +14,9 @@ public class ai_Spell_Rare_ArcanePower : AbilityInstance
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
-            info.owner.DoMagicDamage(targets[i], damage, false, reference);
+            info.owner.DoMagicDamage(targets[i], damage, false, this);
         }
-        info.owner.DoManaHeal(info.owner, manaHealPerHit * targets.Count, false, reference);
+        info.owner.DoManaHeal(info.owner, manaHealPerHit * targets.Count, false, this);
         
         Despawn();
     }

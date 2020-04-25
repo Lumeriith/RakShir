@@ -42,8 +42,8 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !tv.Evaluate(info.owner, lv)) return;
         photonView.RPC("RpcLanded", RpcTarget.All, lv.transform.position + lv.GetCenterOffset());
-        info.owner.DoMagicDamage(lv, damage, false, reference);
-        lv.statusEffect.ApplyStatusEffect(StatusEffect.Root(rootDuration), reference);
+        info.owner.DoMagicDamage(lv, damage, false, this);
+        lv.statusEffect.ApplyStatusEffect(StatusEffect.Root(rootDuration), this);
         
         Despawn();
     }

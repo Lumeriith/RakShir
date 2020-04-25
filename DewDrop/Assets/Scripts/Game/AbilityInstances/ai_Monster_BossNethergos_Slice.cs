@@ -51,8 +51,8 @@ public class ai_Monster_BossNethergos_Slice : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
-        info.owner.DoMagicDamage(thing, damage, false, reference);
-        thing.ApplyStatusEffect(StatusEffect.Slow(slowTime, slowAmount), reference);
+        info.owner.DoMagicDamage(thing, damage, false, this);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowTime, slowAmount), this);
         thing.StartDisplacement(Displacement.ByVector((thing.transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutSine));
 
     }

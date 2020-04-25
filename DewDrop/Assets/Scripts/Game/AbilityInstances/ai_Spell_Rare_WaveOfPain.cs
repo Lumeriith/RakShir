@@ -65,11 +65,11 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
                 SFXManager.CreateSFXInstance("si_Spell_Rare_WaveOfPain TickHit", targets[j].transform.position);
                 if (targets[j].IsAffectedBy(StatusEffectType.Slow))
                 {
-                    info.owner.DoMagicDamage(targets[j], tickDamage * slowedEnemiesDamageMultiplier, false, reference);
+                    info.owner.DoMagicDamage(targets[j], tickDamage * slowedEnemiesDamageMultiplier, false, this);
                 }
                 else
                 {
-                    info.owner.DoMagicDamage(targets[j], tickDamage, false, reference);
+                    info.owner.DoMagicDamage(targets[j], tickDamage, false, this);
                 }
             }
         }
@@ -84,15 +84,15 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {
-            info.owner.DoMagicDamage(thing, initialDamage * slowedEnemiesDamageMultiplier, false, reference);
+            info.owner.DoMagicDamage(thing, initialDamage * slowedEnemiesDamageMultiplier, false, this);
         }
         else
         {
-            info.owner.DoMagicDamage(thing, initialDamage, false, reference);
+            info.owner.DoMagicDamage(thing, initialDamage, false, this);
         }
         SFXManager.CreateSFXInstance("si_Spell_Rare_WaveOfPain InitialHit", thing.transform.position);
 
-        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
         
     }
 }

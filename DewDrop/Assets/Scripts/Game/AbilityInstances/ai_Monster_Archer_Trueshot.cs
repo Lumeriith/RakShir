@@ -42,8 +42,8 @@ public class ai_Monster_Archer_Trueshot : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
-        info.owner.DoMagicDamage(lv, damage, false, reference);
-        lv.statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+        info.owner.DoMagicDamage(lv, damage, false, this);
+        lv.statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
 
         photonView.RPC("RpcLanded", RpcTarget.All);
         

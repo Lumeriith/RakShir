@@ -25,7 +25,7 @@ public class ai_Monster_Firespawn_Basicattack : AbilityInstance
         transform.position = Vector3.MoveTowards(transform.position, info.target.transform.position + offset, projectileSpeed * Time.deltaTime);
         if(photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target, reference);
+            info.owner.DoBasicAttackImmediately(info.target, this);
             photonView.RPC("RpcLanded", RpcTarget.All);
             
             Despawn();

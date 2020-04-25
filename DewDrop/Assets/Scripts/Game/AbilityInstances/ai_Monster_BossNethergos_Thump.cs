@@ -64,10 +64,10 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
-        thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
-        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
-        info.owner.DoMagicDamage(thing, damage, false, reference);
+        thing.ApplyStatusEffect(StatusEffect.Stun(stunDuration), this);
+        thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), this);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
+        info.owner.DoMagicDamage(thing, damage, false, this);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
     }
 

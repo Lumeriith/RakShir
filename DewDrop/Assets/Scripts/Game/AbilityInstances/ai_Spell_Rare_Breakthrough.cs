@@ -45,8 +45,8 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
         if (!isMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Slow(duration, slowAmount), reference);
-        thing.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, damage), reference);
+        thing.ApplyStatusEffect(StatusEffect.Slow(duration, slowAmount), this);
+        thing.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, damage), this);
         photonView.RPC("RpcSmallFire", RpcTarget.All, thing.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_Breakthrough Hit", thing.transform.position);
     }

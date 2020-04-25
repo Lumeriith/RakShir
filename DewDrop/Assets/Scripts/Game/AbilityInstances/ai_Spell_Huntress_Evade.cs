@@ -36,8 +36,8 @@ public class ai_Spell_Huntress_Evade : AbilityInstance
         info.owner.stat.bonusDodgeChance += dodgeAmount;
         if (photonView.IsMine)
         {
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), reference);
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(duration, info.owner.maximumHealth * healMultiplier, true), reference);
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), this);
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(duration, info.owner.maximumHealth * healMultiplier, true), this);
         }
         yield return new WaitForSeconds(duration);
         info.owner.stat.bonusDodgeChance -= dodgeAmount;

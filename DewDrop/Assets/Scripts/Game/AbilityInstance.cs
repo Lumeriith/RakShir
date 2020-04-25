@@ -2,22 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using System;
 
 public enum DespawnBehaviour : byte { Immediately, WaitForParticleSystems, StopAndWaitForParticleSystems }
 public enum AttachBehaviour : byte { Full, IgnoreRotation }
 
-//[RequireComponent(typeof(PhotonView))]
-public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback, IDelayedDespawn
+public abstract class DewActionCaller : MonoBehaviourPun
 {
-    public bool isAlive { get { return _isInitialized && !_isMarkedForDespawn; } }
+    private const int MaxStoredReferences = 5000;
+
+    private static Dictionary<int, DewActionCaller> _storedReferences = new Dictionary<int, DewActionCaller>();
+    private static Queue<int> _viewIDs = new Queue<int>();
+
+    public abstract LivingThing entity { get; }
+
+    public Action<InfoManaSpent> OnSpendMana { get; set; } = (_) => { };
+    public Action<InfoDamage> OnDealDamage { get; set; } = (_) => { };
+    public Action<InfoDamage> OnDealPureDamage { get; set; } = (_) => { };
+    public Action<InfoMagicDamage> OnDealMagicDamage { get; set; } = (_) => { };
+    public Action<InfoBasicAttackHit> OnDoBasicAttackHit { get; set; } = (_) => { };
+    public Action<InfoHeal> OnDoHeal { get; set; } = (_) => { };
+    public Action<InfoManaHeal> OnDoManaHeal { get; set; } = (_) => { };
+
+    private int _uid;
+
+    protected virtual void Start()
+    {
+        _uid = photonView.ViewID;
+        _storedReferences.Add(_uid, this);
+        _viewIDs.Enqueue(_uid);
+        if (_viewIDs.Count > MaxStoredReferences) _storedReferences.Remove(_viewIDs.Dequeue());
+    }
+
+
+    public int GetActionCallerUID() => _uid;
+
+    public static DewActionCaller Retrieve(int uid)
+    {
+        if (uid == 0) return null;
+        return _storedReferences[uid];
+    }
+}
+
+
+//[RequireComponent(typeof(PhotonView))]
+public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCallback, IDelayedDestroy
+{
+    public bool isAlive { get { return _isInitialized && !_isMarkedForDespawn && this != null; } }
     public bool isMine { get { return photonView.IsMine; } }
     public CastInfo info { get { return _info; } }
     protected Gem gem { get; private set; }
 
-    public AbilityInstanceSafeReference reference { get; private set; }
     private CastInfo _info;
     public float creationTime { private set; get; }
+
     private bool _isReadyForDespawn;
 
     private bool _isInitialized;
@@ -30,6 +68,8 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     private Vector3 _attachOffset;
     private Quaternion _attachRotation;
     private ParticleSystem _mainParticleSystem;
+
+    public override LivingThing entity => info.owner;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -82,7 +122,6 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         _isReadyForDespawn = false;
 
-        reference = new AbilityInstanceSafeReference(this);
         creationTime = Time.time;
         _isReadyForDespawn = false;
         _isInitialized = true;
@@ -93,12 +132,6 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         OnCreate(this.info, data);
     }
-
-    private void OnDisable()
-    {
-        reference = null; // Allowing the safe reference to be garbage collected
-    }
-
 
     protected abstract void OnCreate(CastInfo info, object[] data);
 
@@ -196,9 +229,6 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         photonView.RPC("RpcDespawnWithAttach", RpcTarget.All, (byte)behaviour, attachTo.photonView.ViewID, (byte)attachBehaviour, attachOffset, attachRotation);
     }
 
-
-
-
     [PunRPC]
     protected void RpcDespawn(byte behaviour)
     {
@@ -233,7 +263,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
     protected virtual void OnReceiveEvent(string eventString) { }
 
-    public bool IsReadyForDespawn()
+    public bool IsReadyForDestroy()
     {
         return _isReadyForDespawn;
 
@@ -243,4 +273,6 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
     {
         return gameObject;
     }
+
+    public int Serialize() => photonView.ViewID;
 }

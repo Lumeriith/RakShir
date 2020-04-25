@@ -24,14 +24,14 @@ public class ai_Spell_Rare_HarvestSoul : AbilityInstance
         yield return new WaitForSeconds(delay);
         if(info.target.type == LivingThingType.Monster && (info.target.tier == LivingThingTier.Boss || info.target.tier == LivingThingTier.Elite))
         {
-            info.owner.DoPureDamage(info.target, info.target.maximumHealth * damageRatio * 0.5f, reference);
+            info.owner.DoPureDamage(info.target, info.target.maximumHealth * damageRatio * 0.5f, this);
         }
         else
         {
-            info.owner.DoPureDamage(info.target, info.target.maximumHealth * damageRatio, reference);
+            info.owner.DoPureDamage(info.target, info.target.maximumHealth * damageRatio, this);
         }
-        info.owner.DoHeal(info.owner, healAmount, false, reference);
-        info.owner.DoManaHeal(info.owner, manahealAmount, false, reference);
+        info.owner.DoHeal(info.owner, healAmount, false, this);
+        info.owner.DoManaHeal(info.owner, manahealAmount, false, this);
         SFXManager.CreateSFXInstance("si_Spell_Rare_HarvestSoul Hit", transform.position);
         float start = Time.time;
         while(Time.time - start < gracePeriod)

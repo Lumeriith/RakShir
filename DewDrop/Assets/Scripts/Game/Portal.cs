@@ -6,6 +6,8 @@ public class Portal : Activatable
 {
     private Room room;
 
+    public override LivingThing entity => null;
+
     private bool isOpen = false;
 
     public void OpenPortal()

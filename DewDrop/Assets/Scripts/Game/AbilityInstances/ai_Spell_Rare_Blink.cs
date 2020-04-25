@@ -27,7 +27,7 @@ public class ai_Spell_Rare_Blink : AbilityInstance
             if (targets.Count > 0) info.owner.control.skillSet[3].ApplyCooldownReduction(cooldownReduction);
             for(int i = 0; i < targets.Count; i++)
             {
-                info.owner.DoMagicDamage(targets[i], damage, false, reference);
+                info.owner.DoMagicDamage(targets[i], damage, false, this);
             }
             
             Despawn();

@@ -4,6 +4,8 @@ using UnityEngine;
 using Doozy.Engine;
 public class MoonAltar : Activatable
 {
+    public override LivingThing entity => null;
+
     protected override void Start()
     {
         base.Start();

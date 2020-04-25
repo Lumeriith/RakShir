@@ -5,20 +5,6 @@ using Photon.Pun;
 
 public static class Dew
 {
-    public static IDewActionCaller DeserializeActionCaller(int serialized)
-    {
-        if (PhotonNetwork.PhotonViewExists(serialized))
-        {
-            AbilityInstanceSafeReference reference = AbilityInstanceSafeReference.RetrieveOrCreate(serialized);
-            if (reference != null) return reference;
-
-            PhotonView view = PhotonNetwork.GetPhotonView(serialized);
-            return view.GetComponent<IDewActionCaller>();
-
-        }
-        return null;
-    }
-
     public static LivingThing SpawnEntity(string livingThingName, Vector3 location, Quaternion rotation = new Quaternion())
     {
         return PhotonNetwork.Instantiate("Entities/" + livingThingName, location, rotation).GetComponent<LivingThing>();

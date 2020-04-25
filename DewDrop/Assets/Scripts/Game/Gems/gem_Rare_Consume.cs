@@ -6,9 +6,9 @@ public class gem_Rare_Consume : Gem
 {
     public float[] healPercentage = { 25, 35, 45, 55 };
 
-    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
-        reference.OnDealMagicDamage += DealtMagicDamage;
+        if(isMine) instance.OnDealMagicDamage += DealtMagicDamage;
     }
 
     private void DealtMagicDamage(InfoMagicDamage info)

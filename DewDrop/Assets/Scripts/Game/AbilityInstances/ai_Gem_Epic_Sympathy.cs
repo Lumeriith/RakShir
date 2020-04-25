@@ -27,7 +27,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         for(int i = 0; i < targets.Count; i++)
         {
             if (targets[i] == info.target) continue;
-            info.owner.DoMagicDamage(targets[i], (float)data[0] * sympathy.splashPercentage[sympathy.level] / 100f, true, reference);
+            info.owner.DoMagicDamage(targets[i], (float)data[0] * sympathy.splashPercentage[sympathy.level] / 100f, true, this);
             SFXManager.CreateSFXInstance("si_Gem_Epic_Sympathy Hit", targets[i].transform.position + targets[i].GetCenterOffset());
         }
     }

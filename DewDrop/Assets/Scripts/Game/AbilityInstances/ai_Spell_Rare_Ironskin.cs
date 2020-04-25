@@ -10,8 +10,8 @@ public class ai_Spell_Rare_Ironskin : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info.owner.ApplyStatusEffect(StatusEffect.Shield(shieldDuration, shieldMultiplier * info.owner.stat.finalMaximumHealth, true), reference);
-        info.owner.ApplyStatusEffect(StatusEffect.Unstoppable(unstoppableDuration), reference);
+        info.owner.ApplyStatusEffect(StatusEffect.Shield(shieldDuration, shieldMultiplier * info.owner.stat.finalMaximumHealth, true), this);
+        info.owner.ApplyStatusEffect(StatusEffect.Unstoppable(unstoppableDuration), this);
         Despawn(info.owner);
     }
 

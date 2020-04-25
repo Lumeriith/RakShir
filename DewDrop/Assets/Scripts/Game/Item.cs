@@ -20,6 +20,7 @@ public abstract class Item : Activatable
 
     private Vector3 startPosition;
 
+    public override LivingThing entity => owner;
 
     protected override void Start()
     {

@@ -8,7 +8,7 @@ public class ai_Spell_Rare_ProtectionOfAgate : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info.owner.ApplyStatusEffect(StatusEffect.Protected(protectedDuration), reference);
+        info.owner.ApplyStatusEffect(StatusEffect.Protected(protectedDuration), this);
         Despawn(info.owner);
     }
 }

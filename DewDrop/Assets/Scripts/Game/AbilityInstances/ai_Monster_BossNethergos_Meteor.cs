@@ -23,8 +23,8 @@ public class ai_Monster_BossNethergos_Meteor : AbilityInstance
             List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
             for (int i = 0; i < targets.Count; i++)
             {
-                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
-                info.owner.DoMagicDamage(targets[i], damage, false, reference);
+                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
+                info.owner.DoMagicDamage(targets[i], damage, false, this);
             }
         }
         

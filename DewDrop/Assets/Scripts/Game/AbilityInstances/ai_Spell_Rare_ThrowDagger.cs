@@ -46,8 +46,8 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowDagger Hit", transform.position);
-        info.owner.DoMagicDamage(lv, initialDamage, false, reference);
-        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(dotDuration, dotAmount), reference);
+        info.owner.DoMagicDamage(lv, initialDamage, false, this);
+        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(dotDuration, dotAmount), this);
         photonView.RPC("RpcLand", RpcTarget.All, transform.position);
         photonView.RPC("RpcDestroyModel", RpcTarget.All);
         if (info.owner.control.skillSet[1] != null && info.owner.control.skillSet[1] as trg_Spell_Rare_ThrowDagger != null)
@@ -55,7 +55,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
             info.owner.control.skillSet[1].ApplyCooldownReduction(cooldownReductionAmount);
             
         }
-        info.owner.DoManaHeal(info.owner, 20f, true, reference);
+        info.owner.DoManaHeal(info.owner, 20f, true, this);
         
         Despawn();
     }

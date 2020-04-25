@@ -8,9 +8,9 @@ public class gem_Common_Frost : Gem
     public float[] slowAmount = { 20, 25, 30, 35, 40 };
 
 
-    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
-        if (isMine) reference.OnDealMagicDamage += DealtMagicDamage;
+        if (isMine) instance.OnDealMagicDamage += DealtMagicDamage;
     }
 
     private void DealtMagicDamage(InfoMagicDamage info)

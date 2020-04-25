@@ -44,8 +44,8 @@ public class ai_Spell_Rare_AuraOfPain : AbilityInstance
             for(int j = 0; j < targets.Count; j++)
             {
                 SFXManager.CreateSFXInstance("si_Spell_Rare_AuraOfPain Hit", targets[j].transform.position);
-                targets[j].ApplyStatusEffect(StatusEffect.Slow(tickInterval, slowAmount), reference);
-                info.owner.DoMagicDamage(targets[j], damage, false, reference);
+                targets[j].ApplyStatusEffect(StatusEffect.Slow(tickInterval, slowAmount), this);
+                info.owner.DoMagicDamage(targets[j], damage, false, this);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
             }
         }

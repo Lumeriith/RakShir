@@ -14,7 +14,7 @@ public class ai_Gem_Rare_Perseverance : AbilityInstance
         if (!isMine) return;
         perseverance = (gem_Rare_Perseverance)gem;
         shield = StatusEffect.Shield(perseverance.shieldDuration[perseverance.level], perseverance.shieldAmount[perseverance.level]);
-        info.owner.ApplyStatusEffect(shield, reference);
+        info.owner.ApplyStatusEffect(shield, this);
         shield.OnExpire += ShieldExpired;
     }
 

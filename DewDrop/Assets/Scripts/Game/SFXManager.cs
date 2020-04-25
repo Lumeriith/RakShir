@@ -16,18 +16,6 @@ public class SFXManager : MonoBehaviour
     }
     private static SFXManager _instance;
 
-    private Camera main;
-
-    private void Start()
-    {
-        main = Camera.main;
-    }
-
-    private void Update()
-    {
-        if (GameManager.instance.localPlayer != null) transform.position = GameManager.instance.localPlayer.transform.position;
-        transform.rotation = main.transform.rotation;
-    }
 
 
     public static SFXInstance CreateSFXInstance(string sfxName, Vector3 position, bool onlyPlayOnLocal = false)

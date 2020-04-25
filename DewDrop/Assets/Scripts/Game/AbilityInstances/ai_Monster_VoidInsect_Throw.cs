@@ -41,8 +41,8 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
-        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), reference);
-        lv.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
+        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), this);
+        lv.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), this);
 
         photonView.RPC("RpcLanded", RpcTarget.All);
         

@@ -35,12 +35,12 @@ public class ai_BasicAttack_Rare_PainOrb : AbilityInstance
         transform.position = Vector3.MoveTowards(transform.position, info.target.transform.position + offset, projectileSpeed * Time.deltaTime);
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target, reference);
+            info.owner.DoBasicAttackImmediately(info.target, this);
             List<StatusEffect> statusEffects = info.target.statusEffect.GetCustomStatusEffectsByName("고통");
             if (statusEffects.Count != 0)
             {
-                info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
-                info.owner.DoPureDamage(info.target, bonusDamage, reference);
+                info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
+                info.owner.DoPureDamage(info.target, bonusDamage, this);
                 photonView.RPC("RpcLanded", RpcTarget.All, true);
                 for(int i = 0; i < statusEffects.Count; i++)
                 {

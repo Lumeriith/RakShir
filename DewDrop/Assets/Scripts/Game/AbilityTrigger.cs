@@ -69,7 +69,7 @@ public abstract class AbilityTrigger : MonoBehaviour
     public SelfValidator selfValidator;
 
     private float specialFillAmount = 0;
-    private List<AbilityInstanceSafeReference> _references = new List<AbilityInstanceSafeReference>();
+    private List<AbilityInstance> _instances = new List<AbilityInstance>();
 
 
     public float cooldownTime;
@@ -232,55 +232,55 @@ public abstract class AbilityTrigger : MonoBehaviour
         owner.control.cooldownTime[skillIndex] = Mathf.MoveTowards(owner.control.cooldownTime[skillIndex], 0, time);
     }
 
-    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
+    public AbilityInstance CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
-        PurgeReferencesList();
+        PurgeInstancesList();
         if (info.owner == null) info.owner = owner;
         return CreateAbilityInstance(prefabName, position, rotation, info, data);
     }
 
-    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
+    public AbilityInstance CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
     {
-        PurgeReferencesList();
-        AbilityInstanceSafeReference reference = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
-        _references.Add(reference);
+        PurgeInstancesList();
+        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        _instances.Add(instance);
         for(int i = 0; i < connectedGems.Count; i++)
         {
-            connectedGems[i].photonView.RPC("RpcOnAbilityInstanceCreatedFromTrigger", RpcTarget.Others, reference.viewID);
-            connectedGems[i].OnAbilityInstanceCreatedFromTrigger(true, reference);
+            connectedGems[i].photonView.RPC("RpcOnAbilityInstanceCreatedFromTrigger", RpcTarget.Others, instance.photonView.ViewID);
+            connectedGems[i].OnAbilityInstanceCreatedFromTrigger(true, instance);
         }
-        return reference;
+        return instance;
     }
 
-    private void PurgeReferencesList()
+    private void PurgeInstancesList()
     {
-        for (int i = _references.Count - 1; i >= 0; i--)
+        for (int i = _instances.Count - 1; i >= 0; i--)
         {
-            if (!_references[i].isValid)
+            if (!_instances[i].isAlive)
             {
-                _references.RemoveAt(i);
+                _instances.RemoveAt(i);
             }
         }
     }
     
     public bool IsAnyInstanceActive()
     {
-        PurgeReferencesList();
-        return _references.Count != 0;
+        PurgeInstancesList();
+        return _instances.Count != 0;
     }
 
-    public AbilityInstanceSafeReference GetLastInstance()
+    public AbilityInstance GetLastInstance()
     {
-        PurgeReferencesList();
-        if (_references.Count == 0) return null;
-        return _references[_references.Count - 1];
+        PurgeInstancesList();
+        if (_instances.Count == 0) return null;
+        return _instances[_instances.Count - 1];
     }
 
-    public AbilityInstanceSafeReference GetFirstInstance()
+    public AbilityInstance GetFirstInstance()
     {
-        PurgeReferencesList();
-        if (_references.Count == 0) return null;
-        return _references[0];
+        PurgeInstancesList();
+        if (_instances.Count == 0) return null;
+        return _instances[0];
     }
 
 
@@ -295,16 +295,16 @@ public abstract class AbilityTrigger : MonoBehaviour
         switch (target)
         {
             case AbilityInstanceEventTargetType.EveryInstance:
-                for(int i = 0; i < _references.Count; i++)
+                for(int i = 0; i < _instances.Count; i++)
                 {
-                    _references[i].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                    _instances[i].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 }
                 break;
             case AbilityInstanceEventTargetType.FirstInstance:
-                _references[0].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _instances[0].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
             case AbilityInstanceEventTargetType.LastInstance:
-                _references[_references.Count - 1].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _instances[_instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
         }
     }

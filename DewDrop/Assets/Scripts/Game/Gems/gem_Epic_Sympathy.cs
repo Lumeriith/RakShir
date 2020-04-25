@@ -8,9 +8,9 @@ public class gem_Epic_Sympathy : Gem
     public float splashWidth = 1f;
     public TargetValidator affectedTargets;
 
-    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
-        if (isMine) reference.OnDealMagicDamage += DealtMagicDamage;
+        if (isMine) instance.OnDealMagicDamage += DealtMagicDamage;
     }
 
     private void DealtMagicDamage(InfoMagicDamage info)
