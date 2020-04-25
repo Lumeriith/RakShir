@@ -55,8 +55,8 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
 
         lv.StartDisplacement(Displacement.ByVector(info.directionVector * pushDistance, airborneDuration, false, false, false, Ease.EaseOutSine));
 
-        info.owner.DoBasicAttackImmediately(lv, source);
-        info.owner.DoMagicDamage(bonusDamage, lv, false, source);
+        info.owner.DoBasicAttackImmediately(lv, reference);
+        info.owner.DoMagicDamage(lv, bonusDamage, false, reference);
         Vector3 hitPos = other.ClosestPoint(transform.position);
         photonView.RPC("CreateFlash", RpcTarget.All, hitPos);
         SFXManager.CreateSFXInstance("si_Spell_Elemental_FrontKick Hit", transform.position);
@@ -83,7 +83,6 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     private void End()
     {
         if (!isAlive) return;
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
 
     }

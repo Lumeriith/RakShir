@@ -39,9 +39,9 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
                 if (!affectedTargets.Contains(targets[j]))
                 {
                     affectedTargets.Add(targets[j]);
-                    targets[j].ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+                    targets[j].ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
                 }
-                info.owner.DoMagicDamage(damage, targets[j], false, source);
+                info.owner.DoMagicDamage(targets[j], damage, false, reference);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
                 SFXManager.CreateSFXInstance("si_Spell_Rare_BurningGrounds Hit", transform.position);
                 
@@ -49,7 +49,7 @@ public class ai_Spell_Rare_BurningGrounds : AbilityInstance
             yield return new WaitForSeconds(tickInterval);
         }
         loopSFX.DestroyFadingOut(1f);
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

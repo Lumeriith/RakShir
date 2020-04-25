@@ -30,12 +30,12 @@ public class ai_Monster_Mage_Lightning : AbilityInstance
             lvs = info.owner.GetAllTargetsInRange(transform.position, radius, tv);
             for (int j = 0; j < lvs.Count; j++)
             {
-                info.owner.DoMagicDamage(damage, lvs[j], false, source);
+                info.owner.DoMagicDamage(lvs[j], damage, false, reference);
                 photonView.RPC("RpcHit", RpcTarget.All, lvs[j].transform.position + lvs[j].GetCenterOffset());
             }
             yield return new WaitForSeconds(interval);
         }
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

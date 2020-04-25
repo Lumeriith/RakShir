@@ -11,19 +11,9 @@ public class ai_cons_BookOfIntelligence : AbilityInstance
         {
             info.owner.stat.SyncSecondaryStats();
         }
-        StartCoroutine(CoroutineFollow());
+        Despawn(info.owner);
     }
 
 
-    IEnumerator CoroutineFollow()
-    {
-        float start = Time.time;
-        while (Time.time - start < 3f)
-        {
-            transform.position = info.owner.transform.position;
-            yield return null;
-        }
-        DetachChildParticleSystemsAndAutoDelete();
-        Despawn();
-    }
+
 }

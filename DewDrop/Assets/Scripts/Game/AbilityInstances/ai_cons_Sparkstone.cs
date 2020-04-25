@@ -41,7 +41,6 @@ public class ai_cons_Sparkstone : AbilityInstance
         {
             info.owner.Teleport(info.point);
             photonView.RPC("RpcBoom", RpcTarget.All);
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
             Despawn();
         }
     }

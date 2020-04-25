@@ -26,7 +26,7 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
 
         if(Vector3.Distance(transform.position, startPosition) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
             Despawn();
         }
     }
@@ -37,6 +37,6 @@ public class ai_Monster_Firebug_Spike : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null) return;
         if (!targetValidator.Evaluate(info.owner, lv)) return;
-        info.owner.DoMagicDamage(damage, lv, false, source);
+        info.owner.DoMagicDamage(lv, damage, false, reference);
     }
 }

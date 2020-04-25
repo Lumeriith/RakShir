@@ -27,11 +27,11 @@ public class ai_Monster_Firespawn_Explosion : AbilityInstance
             List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, 1.25f, targetValidator);
             for(int i = 0; i < targets.Count; i++)
             {
-                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
-                info.owner.DoMagicDamage(damage, targets[i], false, source);
+                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
+                info.owner.DoMagicDamage(targets[i], damage, false, reference);
             }
         }
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 }

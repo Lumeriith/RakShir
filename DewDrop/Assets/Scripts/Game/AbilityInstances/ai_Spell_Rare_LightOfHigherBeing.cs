@@ -8,12 +8,7 @@ public class ai_Spell_Rare_LightOfHigherBeing : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info.owner.ApplyStatusEffect(StatusEffect.Invulnerable(source, invulnerableDuration));
-        Despawn(5f);
-    }
-
-    protected override void AliveUpdate()
-    {
-        transform.position = info.owner.transform.position;
+        info.owner.ApplyStatusEffect(StatusEffect.Invulnerable(invulnerableDuration), reference);
+        Despawn(info.owner);
     }
 }

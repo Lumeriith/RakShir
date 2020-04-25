@@ -35,8 +35,7 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
             if (Vector3.Distance(transform.position, start) >= distance)
             {
                 photonView.RPC("RpcDestroyModel", RpcTarget.All);
-                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-                Despawn();
+                Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
             }
         }
     }
@@ -47,8 +46,8 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowDagger Hit", transform.position);
-        info.owner.DoMagicDamage(initialDamage, lv, false, source);
-        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(source, dotDuration, dotAmount));
+        info.owner.DoMagicDamage(lv, initialDamage, false, reference);
+        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(dotDuration, dotAmount), reference);
         photonView.RPC("RpcLand", RpcTarget.All, transform.position);
         photonView.RPC("RpcDestroyModel", RpcTarget.All);
         if (info.owner.control.skillSet[1] != null && info.owner.control.skillSet[1] as trg_Spell_Rare_ThrowDagger != null)
@@ -56,8 +55,8 @@ public class ai_Spell_Rare_ThrowDagger : AbilityInstance
             info.owner.control.skillSet[1].ApplyCooldownReduction(cooldownReductionAmount);
             
         }
-        info.owner.DoManaHeal(20f, info.owner, true, source);
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoManaHeal(info.owner, 20f, true, reference);
+        
         Despawn();
     }
     [PunRPC]

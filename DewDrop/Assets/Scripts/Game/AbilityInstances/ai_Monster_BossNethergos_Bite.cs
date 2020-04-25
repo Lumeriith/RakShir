@@ -37,7 +37,7 @@ public class ai_Monster_BossNethergos_Bite : AbilityInstance
         collider.SetActive(false);
         if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }
@@ -48,6 +48,6 @@ public class ai_Monster_BossNethergos_Bite : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
-        info.owner.DoMagicDamage(damage, thing, false, source);
+        info.owner.DoMagicDamage(thing, damage, false, reference);
     }
 }

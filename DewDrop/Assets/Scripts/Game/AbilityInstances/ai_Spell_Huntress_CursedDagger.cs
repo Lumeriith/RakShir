@@ -63,15 +63,14 @@ public class ai_Spell_Huntress_CursedDagger : AbilityInstance
                 if (lingerTime > curseInterval)
                 {
                     lingerTime = 0f;
-                    info.target.statusEffect.ApplyStatusEffect(StatusEffect.Silence(source, 1f));
-                    info.owner.DoMagicDamage(75f, info.target, false, source);
+                    info.target.statusEffect.ApplyStatusEffect(StatusEffect.Silence(1f), reference);
+                    info.owner.DoMagicDamage(info.target, 75f, false, reference);
                     photonView.RPC("RpcCurseEffect", RpcTarget.All);
                 }
 
                 if(remainingDuration < 0)
                 {
                     info.owner.OnDoBasicAttackHit -= OwnerBasicAttackHit;
-                    DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
                     Despawn();
                 }
                 

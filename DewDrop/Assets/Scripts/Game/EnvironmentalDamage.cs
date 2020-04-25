@@ -21,7 +21,7 @@ public class EnvironmentalDamage : MonoBehaviour
         {
             if (Time.time - lastHitTime[index] > tickTime)
             {
-                affectedLivingThings[index].DoPureDamage(amount, affectedLivingThings[index], new SourceInfo());
+                affectedLivingThings[index].DoPureDamage(affectedLivingThings[index], amount, null);
                 lastHitTime[index] = Time.time;
             }
         }
@@ -29,7 +29,7 @@ public class EnvironmentalDamage : MonoBehaviour
         {
             affectedLivingThings.Add(thing);
             lastHitTime.Add(Time.time);
-            thing.DoPureDamage(amount, thing, new SourceInfo());
+            thing.DoPureDamage(thing, amount, null);
         }
     }
 

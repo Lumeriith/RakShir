@@ -12,10 +12,10 @@ public class ai_Gem_Epic_Time : AbilityInstance
         transform.parent = info.owner.transform;
         transform.position = info.owner.transform.position;
         if (!isMine) return;
-        time = (gem_Epic_Time)source.gem;
+        time = (gem_Epic_Time)gem;
         time.trigger.ApplyCooldownReduction(time.cooldownReduction[time.level]);
         SFXManager.CreateSFXInstance("si_Gem_Epic_Time", transform.position);
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

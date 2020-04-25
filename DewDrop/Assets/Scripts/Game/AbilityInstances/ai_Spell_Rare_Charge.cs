@@ -45,7 +45,6 @@ public class ai_Spell_Rare_Charge : AbilityInstance
     private void StopCharge()
     {
         photonView.RPC("RpcStopCharge", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 
@@ -62,15 +61,13 @@ public class ai_Spell_Rare_Charge : AbilityInstance
         for (int i = 0; i < targets.Count; i++)
         {
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
-            info.owner.DoMagicDamage(damage, targets[i], false, source);
+            info.owner.DoMagicDamage(targets[i], damage, false, reference);
             targets[i].StartDisplacement(Displacement.ByVector(info.owner.transform.forward * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutQuad));
-            targets[i].ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
+            targets[i].ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
         }
-
 
         photonView.RPC("RpcStopCharge", RpcTarget.All);
 
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 

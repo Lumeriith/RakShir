@@ -27,12 +27,11 @@ public class ai_BasicAttack_Rare_Arrow : AbilityInstance
         transform.LookAt(info.target.transform.position + offset);
         if (photonView.IsMine && transform.position == info.target.transform.position + offset)
         {
-            info.owner.DoBasicAttackImmediately(info.target, source);
+            info.owner.DoBasicAttackImmediately(info.target, reference);
             photonView.RPC("RpcLanded", RpcTarget.All);
             if(fly != null) fly.Stop();
 
             SFXManager.CreateSFXInstance("si_BasicAttack_Rare_Arrow", transform.position);
-            DetachChildParticleSystemsAndAutoDelete();
             Despawn();
         }
     }

@@ -11,7 +11,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
     protected override void OnCreate(CastInfo info, object[] data)
     {
         distanceEmitter = transform.Find<ParticleSystem>("Distance Emitter");
-        sympathy = (gem_Epic_Sympathy)source.gem;
+        sympathy = (gem_Epic_Sympathy)gem;
         transform.position = info.target.transform.position + info.target.GetCenterOffset();
         transform.rotation = Quaternion.LookRotation(info.owner.transform.position - info.target.transform.position, Vector3.up);
         StartCoroutine(CoroutineSympathy());
@@ -27,7 +27,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         for(int i = 0; i < targets.Count; i++)
         {
             if (targets[i] == info.target) continue;
-            info.owner.DoMagicDamage((float)data[0] * sympathy.splashPercentage[sympathy.level] / 100f, targets[i], true, source);
+            info.owner.DoMagicDamage(targets[i], (float)data[0] * sympathy.splashPercentage[sympathy.level] / 100f, true, reference);
             SFXManager.CreateSFXInstance("si_Gem_Epic_Sympathy Hit", targets[i].transform.position + targets[i].GetCenterOffset());
         }
     }
@@ -41,7 +41,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         distanceEmitter.Stop();
         if (isMine)
         {
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }

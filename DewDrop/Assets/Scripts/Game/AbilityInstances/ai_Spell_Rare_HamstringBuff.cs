@@ -15,10 +15,10 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         transform.parent = info.owner.transform;
         if (photonView.IsMine)
         {
-            speed = StatusEffect.Speed(source, duration, speedAmount);
-            haste = StatusEffect.Haste(source, duration, hasteAmount);
-            info.owner.ApplyStatusEffect(speed);
-            info.owner.ApplyStatusEffect(haste);
+            speed = StatusEffect.Speed(duration, speedAmount);
+            haste = StatusEffect.Haste(duration, hasteAmount);
+            info.owner.ApplyStatusEffect(speed, reference);
+            info.owner.ApplyStatusEffect(haste, reference);
             info.owner.control.skillSet[0].ResetCooldown();
         }
     }
@@ -29,8 +29,7 @@ public class ai_Spell_Rare_HamstringBuff : AbilityInstance
         {
             if (photonView.IsMine && speed.isAlive) speed.Remove();
             if (photonView.IsMine && haste.isAlive) haste.Remove();
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
 }

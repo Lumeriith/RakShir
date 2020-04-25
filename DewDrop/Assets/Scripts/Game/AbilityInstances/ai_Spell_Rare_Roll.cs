@@ -34,8 +34,8 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     private IEnumerator CoroutineApplyDamageBoost()
     {
         yield return new WaitForSeconds(duration);
-        damageBoost = StatusEffect.AttackDamageBoost(source, attackDamageBoostDuration, attackDamageBoostAmount);
-        info.owner.ApplyStatusEffect(damageBoost);
+        damageBoost = StatusEffect.AttackDamageBoost(attackDamageBoostDuration, attackDamageBoostAmount);
+        info.owner.ApplyStatusEffect(damageBoost, reference);
         damageBoost.OnExpire += EffectExpired;
         info.owner.OnDoBasicAttackHit += EffectUsed;
     }
@@ -43,7 +43,6 @@ public class ai_Spell_Rare_Roll : AbilityInstance
     private void EffectExpired()
     {
         info.owner.OnDoBasicAttackHit -= EffectUsed;
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 
@@ -54,7 +53,6 @@ public class ai_Spell_Rare_Roll : AbilityInstance
         damageBoost.Remove();
         photonView.RPC("RpcHit", RpcTarget.All, info.to.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_Roll Hit", info.to.transform.position);
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 

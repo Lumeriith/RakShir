@@ -7,16 +7,6 @@ public class gem_Epic_Ignite : Gem
     public float damageDuration = 3f;
     public float[] damageAmount = { 50f, 80f, 110f };
 
-    public override void OnEquip(LivingThing owner, AbilityTrigger trigger)
-    {
-
-    }
-
-    public override void OnUnequip(LivingThing owner, AbilityTrigger trigger)
-    {
-
-    }
-
     public override void OnTriggerCast(bool isMine)
     {
         if (!isMine) return;

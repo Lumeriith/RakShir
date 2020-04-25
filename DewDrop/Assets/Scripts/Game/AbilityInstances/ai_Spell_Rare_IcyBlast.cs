@@ -39,7 +39,6 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         Explode();
         yield return new WaitForSeconds(secondBlastDelay);
         Explode();
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 
@@ -57,13 +56,13 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
         {
             if (targets[i].statusEffect.IsAffectedBy(StatusEffectType.Slow))
             {
-                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
+                targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Root(rootDuration), reference);
                 photonView.RPC("RpcRoot", RpcTarget.All, targets[i].photonView.ViewID);
             }
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
-            targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+            targets[i].statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
             SFXManager.CreateSFXInstance("si_Spell_Rare_IcyBlast Hit", transform.position);
-            info.owner.DoMagicDamage(damage, targets[i], false, source);
+            info.owner.DoMagicDamage(targets[i], damage, false, reference);
         }
     }
 
@@ -90,7 +89,6 @@ public class ai_Spell_Rare_IcyBlast : AbilityInstance
 
     private void ChannelCanceled()
     {
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
-        Despawn();
+        Despawn(DespawnBehaviour.Immediately);
     }
 }

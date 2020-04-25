@@ -37,7 +37,6 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
 
     private void Finished()
     {
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
         Despawn();
     }
 
@@ -46,8 +45,8 @@ public class ai_Spell_Rare_Breakthrough : AbilityInstance
         if (!isMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, duration, slowAmount));
-        thing.ApplyStatusEffect(StatusEffect.DamageOverTime(source, duration, damage));
+        thing.ApplyStatusEffect(StatusEffect.Slow(duration, slowAmount), reference);
+        thing.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, damage), reference);
         photonView.RPC("RpcSmallFire", RpcTarget.All, thing.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_Breakthrough Hit", thing.transform.position);
     }

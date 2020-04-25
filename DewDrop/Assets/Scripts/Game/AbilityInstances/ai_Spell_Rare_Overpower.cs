@@ -11,9 +11,9 @@ public class ai_Spell_Rare_Overpower : AbilityInstance
     {
         if (!photonView.IsMine) return;
         SFXManager.CreateSFXInstance("si_Spell_Rare_Overpower", transform.position);
-        info.owner.DoMagicDamage(damage, info.target, false, source);
-        info.target.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoMagicDamage(info.target, damage, false, reference);
+        info.target.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
+        
         Despawn();
     }
 }

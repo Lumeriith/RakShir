@@ -17,12 +17,12 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
     {
         transform.position = info.owner.transform.position;
         transform.parent = info.owner.transform;
-        immolation = (gem_Rare_Immolation)source.gem;
+        immolation = (gem_Rare_Immolation)gem;
         main = transform.Find<ParticleSystem>("Main");
         hit = transform.Find("Hit").gameObject;
         circle = transform.Find<ParticleSystem>("Circle");
         main.Play();
-        if (isMine) StartCoroutine("CoroutineImmolation");
+        if (isMine) StartCoroutine(CoroutineImmolation());
     }
 
     protected override void AliveUpdate()
@@ -40,15 +40,14 @@ public class ai_Gem_Rare_Immolation : AbilityInstance
             SFXManager.CreateSFXInstance("si_Gem_Rare_Immolation", transform.position);
             for (int i = 0; i < targets.Count; i++)
             {
-                info.owner.DoMagicDamage(immolation.damagePerTick[immolation.level], targets[i], false, source);
+                info.owner.DoMagicDamage(targets[i], immolation.damagePerTick[immolation.level], false, reference);
                 photonView.RPC("RpcCreateHitEffect", RpcTarget.All, targets[i].photonView.ViewID);
                 SFXManager.CreateSFXInstance("si_Gem_Rare_Immolation Hit", targets[i].transform.position);
             }
             yield return new WaitForSeconds(immolation.tickTime);
             
         }
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-        Despawn();
+        Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
     }
 
     [PunRPC]

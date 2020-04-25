@@ -9,8 +9,7 @@ public class ai_Gem_Rare_Consume : AbilityInstance
         transform.position = info.owner.transform.position;
         transform.parent = info.owner.transform;
         if (!isMine) return;
-        info.owner.DoHeal((float)data[0], info.owner, true, source);
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoHeal(info.owner, (float)data[0], true, reference);
         Despawn();
     }
 }

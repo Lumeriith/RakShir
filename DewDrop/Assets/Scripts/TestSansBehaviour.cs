@@ -17,10 +17,10 @@ public class TestSansBehaviour : MonoBehaviourPun
     void Death(InfoDeath info)
     {
         livingThing.Revive();
-        StatusEffect hot = new StatusEffect(SourceInfo.CasterOnly(livingThing), StatusEffectType.HealOverTime, 3, livingThing.maximumHealth);
-        livingThing.statusEffect.ApplyStatusEffect(hot);
+        StatusEffect hot = new StatusEffect(StatusEffectType.HealOverTime, 3, livingThing.maximumHealth);
+        livingThing.statusEffect.ApplyStatusEffect(hot, null);
 
-        StatusEffect invul = new StatusEffect(SourceInfo.CasterOnly(livingThing), StatusEffectType.Invulnerable, 3);
-        livingThing.statusEffect.ApplyStatusEffect(invul);
+        StatusEffect invul = new StatusEffect(StatusEffectType.Invulnerable, 3);
+        livingThing.statusEffect.ApplyStatusEffect(invul, null);
     }
 }

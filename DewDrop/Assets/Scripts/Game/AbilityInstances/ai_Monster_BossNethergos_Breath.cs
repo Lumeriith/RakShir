@@ -47,7 +47,7 @@ public class ai_Monster_BossNethergos_Breath : AbilityInstance
         collider.SetActive(false);
         if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
             Despawn();
         }
     }
@@ -58,7 +58,7 @@ public class ai_Monster_BossNethergos_Breath : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
-        info.owner.DoMagicDamage(damage, thing, false, source);
-        thing.ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
+        info.owner.DoMagicDamage(thing, damage, false, reference);
+        thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
     }
 }

@@ -8,19 +8,7 @@ public class ai_cons_ManaHeal : AbilityInstance
     {
         if (!photonView.IsMine) return;
 
-        info.owner.DoManaHeal((float)data[0], info.owner, true, source);
-        StartCoroutine(CoroutineDestroy());
-    }
-
-    protected override void AliveUpdate()
-    {
-        transform.position = info.owner.transform.position + info.owner.GetCenterOffset();
-    }
-
-    IEnumerator CoroutineDestroy()
-    {
-        yield return new WaitForSeconds(3f);
-        DetachChildParticleSystemsAndAutoDelete();
-        Despawn();
+        info.owner.DoManaHeal(info.owner, (float)data[0], true, reference);
+        Despawn(info.owner);
     }
 }

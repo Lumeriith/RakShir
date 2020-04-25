@@ -24,13 +24,12 @@ public class ai_Spell_Huntress_AgileMove : AbilityInstance
     {
         if (info.owner.photonView.IsMine)
         {
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(source, duration, speedAmount));
-            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(source, duration, shieldAmount));
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Speed(duration, speedAmount), reference);
+            info.owner.statusEffect.ApplyStatusEffect(StatusEffect.Shield(duration, shieldAmount), reference);
         }
         info.owner.stat.bonusDodgeChance += dodgeAmount;
         yield return new WaitForSeconds(duration);
         info.owner.stat.bonusDodgeChance -= dodgeAmount;
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-        Despawn();
+        Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
     }
 }

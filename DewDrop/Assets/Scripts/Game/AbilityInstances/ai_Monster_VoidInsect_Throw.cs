@@ -32,8 +32,7 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
         if (!photonView.IsMine) return;
         if (Vector3.Distance(startPosition, transform.position) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -42,11 +41,11 @@ public class ai_Monster_VoidInsect_Throw : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
-        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(source, poisonDuration, poisonAmount));
-        lv.ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
+        lv.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonAmount), reference);
+        lv.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
 
         photonView.RPC("RpcLanded", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

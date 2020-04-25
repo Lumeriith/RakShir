@@ -16,12 +16,12 @@ public class ai_Spell_Rare_CurrentOfSwiftness : AbilityInstance
     {
         transform.parent = info.owner.transform;
         if (!photonView.IsMine) return;
-        shield = StatusEffect.Shield(source, shieldDuration, shieldAmount);
-        speed = StatusEffect.Speed(source, shieldDuration, speedAmount);
-        haste = StatusEffect.Haste(source, shieldDuration, hasteAmount);
-        info.owner.statusEffect.ApplyStatusEffect(shield);
-        info.owner.statusEffect.ApplyStatusEffect(speed);
-        info.owner.statusEffect.ApplyStatusEffect(haste);
+        shield = StatusEffect.Shield(shieldDuration, shieldAmount);
+        speed = StatusEffect.Speed(shieldDuration, speedAmount);
+        haste = StatusEffect.Haste(shieldDuration, hasteAmount);
+        info.owner.statusEffect.ApplyStatusEffect(shield, reference);
+        info.owner.statusEffect.ApplyStatusEffect(speed, reference);
+        info.owner.statusEffect.ApplyStatusEffect(haste, reference);
         sfx = SFXManager.CreateSFXInstance("si_Spell_Rare_CurrentOfSwiftness", transform.position);
         sfx.Follow(this);
     }
@@ -37,8 +37,7 @@ public class ai_Spell_Rare_CurrentOfSwiftness : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_CurrentOfSwiftness Off", transform.position);
             if (speed != null && speed.isAlive) speed.Remove();
             if (haste != null && haste.isAlive) haste.Remove();
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
 }

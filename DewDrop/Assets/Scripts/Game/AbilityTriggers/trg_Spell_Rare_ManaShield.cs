@@ -33,7 +33,7 @@ public class trg_Spell_Rare_ManaShield : AbilityTrigger
     public override void AliveUpdate(bool isMine)
     {
         if (!isMine) return;
-        ai_Spell_Rare_ManaShield ai = GetLastInstance() as ai_Spell_Rare_ManaShield;
+        ai_Spell_Rare_ManaShield ai = GetLastInstance().Dereference() as ai_Spell_Rare_ManaShield;
         if (ai != null)
         {
             SetSpecialFillAmount((float)ai.shield.parameter / (maximumShieldAmount / 100f * owner.stat.finalSpellPower));

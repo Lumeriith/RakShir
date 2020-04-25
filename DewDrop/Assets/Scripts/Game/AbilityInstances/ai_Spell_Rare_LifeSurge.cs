@@ -9,14 +9,9 @@ public class ai_Spell_Rare_LifeSurge : AbilityInstance
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         if (!photonView.IsMine) return;
-        info.owner.ApplyStatusEffect(StatusEffect.HealOverTime(source, healOverTimeDuration, healMultiplier * info.owner.stat.finalMaximumHealth, true));
-        info.owner.DoHeal(healMultiplier * info.owner.stat.finalMaximumHealth, info.owner, true, source);
+        info.owner.ApplyStatusEffect(StatusEffect.HealOverTime(healOverTimeDuration, healMultiplier * info.owner.stat.finalMaximumHealth, true), reference);
+        info.owner.DoHeal(info.owner, healMultiplier * info.owner.stat.finalMaximumHealth, true, reference);
         info.owner.statusEffect.CleanseAllHarmfulStatusEffects();
-        Despawn(5f);
-    }
-
-    protected override void AliveUpdate()
-    {
-        transform.position = info.owner.transform.position;
+        Despawn(info.owner);
     }
 }

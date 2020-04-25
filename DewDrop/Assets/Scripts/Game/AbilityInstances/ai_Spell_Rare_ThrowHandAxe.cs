@@ -67,8 +67,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         {
             loopSFX.DestroyFadingOut(.35f);
             SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Stop", transform.position);
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         }
 
     }
@@ -78,8 +77,8 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         if (!photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
-        info.owner.DoMagicDamage(damage, thing, false, source);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+        info.owner.DoMagicDamage(thing, damage, false, reference);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
         SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Hit", transform.position);
     }

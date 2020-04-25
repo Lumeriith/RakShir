@@ -69,7 +69,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         return result;
     }
 
-    public void ApplyStatusEffect(StatusEffect ce)
+    public void ApplyStatusEffect(StatusEffect ce, IDewActionCaller caller)
     {
         if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing)) return;
         long uid; 
@@ -81,10 +81,11 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         ce.uid = uid;
         ce.owner = livingThing;
+        ce.handler = caller;
         statusEffects.Add(ce);
         statusEffectCountMap[(int)ce.type] += 1;
         if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
-        photonView.RPC("RpcApplyStatusEffect", RpcTarget.Others, uid, ce.source, (byte)ce.type, ce.duration, ce.parameter);
+        photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler.Serialize(), (byte)ce.type, ce.duration, ce.parameter);
     }
 
     public void CleanseStatusEffect(StatusEffectType type)
@@ -155,10 +156,10 @@ public class LivingThingStatusEffect : MonoBehaviourPun
         }
 
         List<float> reservedHealAmounts = new List<float>();
-        List<SourceInfo> reservedHealSourceInfos = new List<SourceInfo>();
+        List<IDewActionCaller> reservedHealHandlers = new List<IDewActionCaller>();
 
         List<float> reservedMagicDamageAmounts = new List<float>();
-        List<SourceInfo> reservedMagicDamageSourceInfos = new List<SourceInfo>();
+        List<IDewActionCaller> reservedMagicDamageHandlers = new List<IDewActionCaller>();
 
         int temp = 0;
 
@@ -191,7 +192,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             temp = -1;
                             for(int j = 0; j < reservedHealAmounts.Count; j++)
                             {
-                                if(reservedHealSourceInfos[j].IsSameSourceExceptInstance(statusEffects[i].source))
+                                if(reservedHealHandlers[j] == statusEffects[i].handler)
                                 {
                                     temp = j;
                                     break;
@@ -205,7 +206,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedHealAmounts.Add((float)statusEffects[i].parameter);
-                                reservedHealSourceInfos.Add(statusEffects[i].source);
+                                reservedHealHandlers.Add(statusEffects[i].handler);
                             }
 
                             //ce.caster.DoHeal((float)ce.parameter, livingThing, true);
@@ -220,7 +221,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             temp = -1;
                             for (int j = 0; j < reservedHealAmounts.Count; j++)
                             {
-                                if (reservedHealSourceInfos[j].IsSameSourceExceptInstance(statusEffects[i].source))
+                                if (reservedHealHandlers[j] == statusEffects[i].handler)
                                 {
                                     temp = j;
                                     break;
@@ -234,7 +235,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedHealAmounts.Add(amount);
-                                reservedHealSourceInfos.Add(statusEffects[i].source);
+                                reservedHealHandlers.Add(statusEffects[i].handler);
                             }
 
                             //ce.caster.DoHeal(amount, livingThing);
@@ -251,7 +252,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             temp = -1;
                             for (int j = 0; j < reservedMagicDamageAmounts.Count; j++)
                             {
-                                if (reservedMagicDamageSourceInfos[j].IsSameSourceExceptInstance(statusEffects[i].source))
+                                if (reservedMagicDamageHandlers[j] == statusEffects[i].handler)
                                 {
                                     temp = j;
                                     break;
@@ -265,7 +266,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedMagicDamageAmounts.Add((float)statusEffects[i].parameter);
-                                reservedMagicDamageSourceInfos.Add(statusEffects[i].source);
+                                reservedMagicDamageHandlers.Add(statusEffects[i].handler);
                             }
 
                             //ce.caster.DoMagicDamage((float)ce.parameter, livingThing, true);
@@ -280,7 +281,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             temp = -1;
                             for (int j = 0; j < reservedMagicDamageAmounts.Count; j++)
                             {
-                                if (reservedMagicDamageSourceInfos[j].IsSameSourceExceptInstance(statusEffects[i].source))
+                                if (reservedMagicDamageHandlers[j] == statusEffects[i].handler)
                                 {
                                     temp = j;
                                     break;
@@ -294,7 +295,7 @@ public class LivingThingStatusEffect : MonoBehaviourPun
                             else
                             {
                                 reservedMagicDamageAmounts.Add(amount);
-                                reservedMagicDamageSourceInfos.Add(statusEffects[i].source);
+                                reservedMagicDamageHandlers.Add(statusEffects[i].handler);
                             }
                             //ce.caster.DoMagicDamage(amount, livingThing, true);
                         }
@@ -316,15 +317,15 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
         for (int i = 0; i < reservedHealAmounts.Count; i++)
         {
-            if(reservedHealSourceInfos[i].thing == null) livingThing.DoHeal(reservedHealAmounts[i], livingThing, true, reservedHealSourceInfos[i]);
-            else reservedHealSourceInfos[i].thing.DoHeal(reservedHealAmounts[i], livingThing, true, reservedHealSourceInfos[i]);
+            if(reservedHealHandlers[i].invokerEntity == null) livingThing.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            else reservedHealHandlers[i].invokerEntity.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
 
         }
 
         for (int i = 0; i < reservedMagicDamageAmounts.Count; i++)
         {
-            if(reservedMagicDamageSourceInfos[i].thing == null) livingThing.DoMagicDamage(reservedMagicDamageAmounts[i], livingThing, true, reservedMagicDamageSourceInfos[i]);
-            else reservedMagicDamageSourceInfos[i].thing.DoMagicDamage(reservedMagicDamageAmounts[i], livingThing, true, reservedMagicDamageSourceInfos[i]);
+            if(reservedMagicDamageHandlers[i].invokerEntity == null) livingThing.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            else reservedMagicDamageHandlers[i].invokerEntity.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
         }
 
 
@@ -439,14 +440,12 @@ public class LivingThingStatusEffect : MonoBehaviourPun
 
 
     [PunRPC]
-    public void RpcApplyStatusEffect(long uid, SourceInfo source, byte type, float duration, object parameter)
+    public void RpcApplyStatusEffect(long uid, int serializedHandler, byte type, float duration, object parameter)
     {
-        LivingThing owner = livingThing;
-
-        StatusEffect ce = new StatusEffect(source, (StatusEffectType)type, duration, parameter);
-        ce.source = source;
+        StatusEffect ce = new StatusEffect((StatusEffectType)type, duration, parameter);
         ce.owner = livingThing;
         ce.uid = uid;
+        ce.handler = Dew.DeserializeActionCaller(serializedHandler);
         statusEffects.Add(ce);
         statusEffectCountMap[(int)ce.type] += 1;
         if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);

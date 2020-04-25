@@ -31,7 +31,7 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
             if(Vector3.Distance(transform.position, startPos) > distance)
             {
                 fly.Stop();
-                DetachChildParticleSystemsAndAutoDelete();
+                
                 Despawn();
             }
         }
@@ -42,9 +42,9 @@ public class ai_Monster_Mage_Basicattack : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !tv.Evaluate(info.owner, lv)) return;
         photonView.RPC("RpcLanded", RpcTarget.All, lv.transform.position + lv.GetCenterOffset());
-        info.owner.DoMagicDamage(damage, lv, false, source);
-        lv.statusEffect.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoMagicDamage(lv, damage, false, reference);
+        lv.statusEffect.ApplyStatusEffect(StatusEffect.Root(rootDuration), reference);
+        
         Despawn();
     }
 

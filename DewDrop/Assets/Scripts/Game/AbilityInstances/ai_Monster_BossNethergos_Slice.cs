@@ -41,7 +41,6 @@ public class ai_Monster_BossNethergos_Slice : AbilityInstance
         collider.SetActive(false);
         if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete();
             Despawn();
         }
     }
@@ -52,8 +51,8 @@ public class ai_Monster_BossNethergos_Slice : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
-        info.owner.DoMagicDamage(damage, thing, false, source);
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowTime, slowAmount));
+        info.owner.DoMagicDamage(thing, damage, false, reference);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowTime, slowAmount), reference);
         thing.StartDisplacement(Displacement.ByVector((thing.transform.position - info.owner.transform.position).normalized * airborneDistance, airborneDuration, false, false, false, Ease.EaseOutSine));
 
     }

@@ -65,15 +65,15 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
                 SFXManager.CreateSFXInstance("si_Spell_Rare_WaveOfPain TickHit", targets[j].transform.position);
                 if (targets[j].IsAffectedBy(StatusEffectType.Slow))
                 {
-                    info.owner.DoMagicDamage(tickDamage * slowedEnemiesDamageMultiplier, targets[j], false, source);
+                    info.owner.DoMagicDamage(targets[j], tickDamage * slowedEnemiesDamageMultiplier, false, reference);
                 }
                 else
                 {
-                    info.owner.DoMagicDamage(tickDamage, targets[j], false, source);
+                    info.owner.DoMagicDamage(targets[j], tickDamage, false, reference);
                 }
             }
         }
-        DetachChildParticleSystemsAndAutoDelete();  
+          
         Despawn();
     }
 
@@ -84,15 +84,15 @@ public class ai_Spell_Rare_WaveOfPain : AbilityInstance
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {
-            info.owner.DoMagicDamage(initialDamage * slowedEnemiesDamageMultiplier, thing, false, source);
+            info.owner.DoMagicDamage(thing, initialDamage * slowedEnemiesDamageMultiplier, false, reference);
         }
         else
         {
-            info.owner.DoMagicDamage(initialDamage, thing, false, source);
+            info.owner.DoMagicDamage(thing, initialDamage, false, reference);
         }
         SFXManager.CreateSFXInstance("si_Spell_Rare_WaveOfPain InitialHit", thing.transform.position);
 
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
         
     }
 }

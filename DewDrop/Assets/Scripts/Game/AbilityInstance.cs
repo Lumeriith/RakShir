@@ -7,25 +7,15 @@ using Photon.Pun;
 public enum DespawnBehaviour : byte { Immediately, WaitForParticleSystems, StopAndWaitForParticleSystems }
 public enum AttachBehaviour : byte { Full, IgnoreRotation }
 
-public class AbilityCallbacks
-{
-    public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
-    public System.Action<InfoDamage> OnDealPureDamage = (InfoDamage _) => { };
-    public System.Action<InfoMagicDamage> OnDealMagicDamage = (InfoMagicDamage _) => { };
-    public System.Action<InfoBasicAttackHit> OnDoBasicAttackHit = (InfoBasicAttackHit _) => { };
-    public System.Action<InfoDeath> OnKill = (InfoDeath _) => { };
-    public System.Action<InfoHeal> OnDoHeal = (InfoHeal _) => { };
-    public System.Action<InfoManaHeal> OnDoManaHeal = (InfoManaHeal _) => { };
-}
-
 //[RequireComponent(typeof(PhotonView))]
 public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCallback, IDelayedDespawn
 {
     public bool isAlive { get { return _isInitialized && !_isMarkedForDespawn; } }
     public bool isMine { get { return photonView.IsMine; } }
     public CastInfo info { get { return _info; } }
+    protected Gem gem { get; private set; }
 
-    public AbilityCallbacks callbacks { get; private set; }
+    public AbilityInstanceSafeReference reference { get; private set; }
     private CastInfo _info;
     public float creationTime { private set; get; }
     private bool _isReadyForDespawn;
@@ -74,15 +64,25 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
             _info.target = null;
         }
 
-        object[] data = new object[initData.Length - 4];
+        if((int)initData[4] != -1)
+        {
+            gem = PhotonNetwork.GetPhotonView((int)initData[4]).GetComponent<Gem>();
+        }
+        else
+        {
+            gem = null;
+        }
+
+
+        object[] data = new object[initData.Length - 5];
         for(int i = 0; i < data.Length; i++)
         {
-            data[i] = initData[i + 4];
+            data[i] = initData[i + 5];
         }
 
         _isReadyForDespawn = false;
 
-        callbacks = new AbilityCallbacks();
+        reference = new AbilityInstanceSafeReference(this);
         creationTime = Time.time;
         _isReadyForDespawn = false;
         _isInitialized = true;
@@ -93,6 +93,12 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         OnCreate(this.info, data);
     }
+
+    private void OnDisable()
+    {
+        reference = null; // Allowing the safe reference to be garbage collected
+    }
+
 
     protected abstract void OnCreate(CastInfo info, object[] data);
 
@@ -123,13 +129,66 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         }
     }
 
+    /// <summary>
+    /// Despawn this instance after the child ParticleSystems are fully stopped.
+    /// </summary>
+    public void Despawn()
+    {
+        if (!isAlive) return;
+        photonView.RPC("RpcDespawn", RpcTarget.All, (byte)DespawnBehaviour.WaitForParticleSystems);
+    }
+
+
+    /// <summary>
+    /// Despawn this instance using the given DespawnBehaviour.
+    /// </summary>
+    /// <param name="behaviour"></param>
     public void Despawn(DespawnBehaviour behaviour)
     {
         if (!isAlive) return;
         photonView.RPC("RpcDespawn", RpcTarget.All, (byte)behaviour);
     }
 
-    public void Despawn(DespawnBehaviour behaviour, MonoBehaviourPun attachTo, AttachBehaviour attachBehaviour)
+    /// <summary>
+    /// Attach to the given target ignoring rotation and despawn after the child ParticleSystems are fully stopped.
+    /// </summary>
+    /// <param name="attachTo"></param>
+    public void Despawn(MonoBehaviourPun attachTo)
+    {
+        Despawn(attachTo, AttachBehaviour.IgnoreRotation, DespawnBehaviour.WaitForParticleSystems);
+    }
+
+    /// <summary>
+    /// Attach to the given target with the given behaviour and despawn after the child ParticleSystems are fully stopped.
+    /// </summary>
+    /// <param name="attachTo"></param>
+    /// <param name="attachBehaviour"></param>
+    /// <param name="behaviour"></param>
+    public void Despawn(MonoBehaviourPun attachTo, AttachBehaviour attachBehaviour)
+    {
+        Despawn(attachTo, attachBehaviour, DespawnBehaviour.WaitForParticleSystems);
+    }
+
+    /// <summary>
+    /// Attach to the given target ignoring rotation and despawn with the given behaviour.
+    /// </summary>
+    /// <param name="attachTo"></param>
+    /// <param name="attachBehaviour"></param>
+    /// <param name="behaviour"></param>
+    public void Despawn(MonoBehaviourPun attachTo, DespawnBehaviour behaviour)
+    {
+        Despawn(attachTo, AttachBehaviour.IgnoreRotation, behaviour);
+    }
+
+
+
+    /// <summary>
+    /// Attach to the given target with the given behaviour and despawn with the given behaviour.
+    /// </summary>
+    /// <param name="attachTo"></param>
+    /// <param name="attachBehaviour"></param>
+    /// <param name="behaviour"></param>
+    public void Despawn(MonoBehaviourPun attachTo, AttachBehaviour attachBehaviour, DespawnBehaviour behaviour)
     {
         if (!isAlive) return;
         Vector3 attachOffset = attachTo.transform.InverseTransformPoint(transform.position);
@@ -137,12 +196,16 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
         photonView.RPC("RpcDespawnWithAttach", RpcTarget.All, (byte)behaviour, attachTo.photonView.ViewID, (byte)attachBehaviour, attachOffset, attachRotation);
     }
 
+
+
+
     [PunRPC]
     protected void RpcDespawn(byte behaviour)
     {
         _despawnBehaviour = (DespawnBehaviour)behaviour;
         if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _mainParticleSystem.Stop();
         if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
+        _isMarkedForDespawn = true;
     }
 
     [PunRPC]
@@ -159,6 +222,7 @@ public abstract class AbilityInstance : MonoBehaviourPun, IPunInstantiateMagicCa
 
         if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _mainParticleSystem.Stop();
         if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
+        _isMarkedForDespawn = true;
     }
 
     [PunRPC]

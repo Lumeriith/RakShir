@@ -31,8 +31,7 @@ public class ai_Spell_Rare_Slip : AbilityInstance
 
     private void StopSlip()
     {
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-        Despawn();
+        Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
     }
 
     protected override void AliveUpdate()
@@ -48,8 +47,8 @@ public class ai_Spell_Rare_Slip : AbilityInstance
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null) return;
         if (!validator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Root(source, rootDuration));
+        thing.ApplyStatusEffect(StatusEffect.Root(rootDuration), reference);
         SFXManager.CreateSFXInstance("si_Spell_Rare_Slip Hit", other.transform.position);
-        info.owner.DoMagicDamage(damage, thing, false, source);
+        info.owner.DoMagicDamage(thing, damage, false, reference);
     }
 }

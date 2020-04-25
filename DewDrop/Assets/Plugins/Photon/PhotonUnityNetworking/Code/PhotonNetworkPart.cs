@@ -712,7 +712,7 @@ namespace Photon.Pun
                 Debug.Log("Network destroy Instantiated GO: " + go.name);
             }
 
-            go.SetActive(false);            // PUN 2 disables objects before the return to the pool
+            if(prefabPool is DefaultPool) go.SetActive(false);            // PUN 2 disables objects before the return to the pool
             prefabPool.Destroy(go);         // PUN 2 always uses a PrefabPool (even for the default implementation)
         }
 
@@ -790,6 +790,11 @@ namespace Photon.Pun
         {
             view.removedFromLocalViewList = true;
             return photonViewList.Remove(view.ViewID);
+        }
+
+        public static bool PhotonViewExists(int viewID)
+        {
+            return photonViewList.ContainsKey(viewID);
         }
 
         public static PhotonView GetPhotonView(int viewID)

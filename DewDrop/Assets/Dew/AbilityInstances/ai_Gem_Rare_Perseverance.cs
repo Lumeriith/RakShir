@@ -12,16 +12,15 @@ public class ai_Gem_Rare_Perseverance : AbilityInstance
         transform.position = info.owner.transform.position + info.owner.GetCenterOffset();
         transform.parent = info.owner.transform;
         if (!isMine) return;
-        perseverance = (gem_Rare_Perseverance)source.gem;
-        shield = StatusEffect.Shield(source, perseverance.shieldDuration[perseverance.level], perseverance.shieldAmount[perseverance.level]);
-        info.owner.ApplyStatusEffect(shield);
+        perseverance = (gem_Rare_Perseverance)gem;
+        shield = StatusEffect.Shield(perseverance.shieldDuration[perseverance.level], perseverance.shieldAmount[perseverance.level]);
+        info.owner.ApplyStatusEffect(shield, reference);
         shield.OnExpire += ShieldExpired;
     }
 
     private void ShieldExpired()
     {
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-        Despawn();
+        Despawn(info.owner, AttachBehaviour.IgnoreRotation);
     }
 
 }

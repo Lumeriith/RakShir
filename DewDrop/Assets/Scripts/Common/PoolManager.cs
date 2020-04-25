@@ -37,8 +37,8 @@ public class PoolManager : MonoBehaviour
             else if (prefabId.StartsWith("Items/")) original = DewResources.GetItem(shortName);
             else if (prefabId.StartsWith("LivingThings/")) original = DewResources.GetLivingThing(shortName);
             else if (prefabId.StartsWith("Rooms")) original = DewResources.GetRoom(shortName);
-            else if (prefabId.StartsWith("Sounds")) original = DewResources.GetSFXInstance(shortName);
-            else Debug.LogErrorFormat("WTF {0}", prefabId);
+            else if (prefabId.StartsWith("SFXInstances/")) original = DewResources.GetSFXInstance(shortName);
+            else Debug.LogErrorFormat("Unknown DewResource {0}", prefabId);
 
             return SpawnNoActivation(original, position, rotation);
         }

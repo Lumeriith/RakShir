@@ -41,7 +41,7 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
         if (Vector3.Distance(transform.position,currentTarget.transform.position + currentTarget.GetCenterOffset()) < float.Epsilon)
         {
             int nextTargetId = -1;
-            info.owner.DoBasicAttackImmediately(currentTarget, source);
+            info.owner.DoBasicAttackImmediately(currentTarget, reference);
             hitEnemies.Add(currentTarget);
             if (currentBounceCount < maxBounceCount)
             {
@@ -64,7 +64,6 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
 
             if(nextTargetId == -1)
             {
-                DetachChildParticleSystemsAndAutoDelete();
                 Despawn();
             }
         }

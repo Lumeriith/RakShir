@@ -96,7 +96,7 @@ public class DebugCommands : MonoBehaviour
         {
             if (target.control.skillSet[i] != null) target.control.skillSet[i].ResetCooldown();
         }
-        target.DoManaHeal(target.stat.finalMaximumMana, target, true, new SourceInfo());
+        target.DoManaHeal(target, target.stat.finalMaximumMana, true, null);
     }
 
 
@@ -140,7 +140,7 @@ public class DebugCommands : MonoBehaviour
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
-        target.DoHeal(target.maximumHealth, target, true, new SourceInfo());
+        target.DoHeal(target, target.maximumHealth, true, null);
     }
 
     [ConsoleMethod("revive", "Revive a living thing at cursor position")]
@@ -149,7 +149,7 @@ public class DebugCommands : MonoBehaviour
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
         target.Revive();
-        target.DoHeal(target.maximumHealth, target, true, new SourceInfo());
+        target.DoHeal(target, target.maximumHealth, true, null);
     }
 
     [ConsoleMethod("kill", "Kill a living thing at cursor position")]
@@ -196,7 +196,7 @@ public class DebugCommands : MonoBehaviour
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
-        target.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), duration, amount));
+        target.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(duration, amount), null);
     }
 
     [ConsoleMethod("dot", "Damage LivingThing at cursor location over time for given amount and duration.")]
@@ -204,7 +204,7 @@ public class DebugCommands : MonoBehaviour
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
-        target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(SourceInfo.Empty(), duration, amount));
+        target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(duration, amount), null);
     }
 
     [ConsoleMethod("shield", "Sield LivingThing at cursor location for given amount and duration.")]
@@ -212,7 +212,7 @@ public class DebugCommands : MonoBehaviour
     {
         LivingThing target = GetFirstValidTarget();
         if (target == null) target = GameManager.instance.localPlayer;
-        target.statusEffect.ApplyStatusEffect(StatusEffect.Shield(SourceInfo.Empty(), duration, amount));
+        target.statusEffect.ApplyStatusEffect(StatusEffect.Shield(duration, amount), null);
     }
 
     [ConsoleMethod("music", "Tunes the jukebox.")]

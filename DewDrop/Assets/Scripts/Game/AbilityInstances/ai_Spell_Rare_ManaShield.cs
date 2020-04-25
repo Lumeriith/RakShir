@@ -33,8 +33,8 @@ public class ai_Spell_Rare_ManaShield : AbilityInstance
         {
             if (shield == null || !shield.isAlive)
             {
-                shield = StatusEffect.Shield(source, 2f, shieldChargeAmount);
-                info.owner.ApplyStatusEffect(shield);
+                shield = StatusEffect.Shield(2f, shieldChargeAmount);
+                info.owner.ApplyStatusEffect(shield, reference);
             }
             else
             {
@@ -59,8 +59,7 @@ public class ai_Spell_Rare_ManaShield : AbilityInstance
             SFXManager.CreateSFXInstance("si_Spell_Rare_ManaShield Off", transform.position);
             if (shield.isAlive) shield.Remove();
             StopCoroutine(chargeCoroutine);
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
 }

@@ -15,19 +15,12 @@ public class gem_Rare_Soul : Gem
     public List<LivingThing> damagedTargets;
     public List<float> damagedTimes;
 
-    public override void OnEquip(LivingThing owner, AbilityTrigger trigger)
+    public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference)
     {
-        if (owner.isMine) owner.OnDealMagicDamage += DealtMagicDamage;
+        if (isMine) reference.OnDealMagicDamage += DealtMagicDamage;
     }
-
-    public override void OnUnequip(LivingThing owner, AbilityTrigger trigger)
-    {
-        if (owner.isMine) owner.OnDealMagicDamage -= DealtMagicDamage;
-    }
-
     private void DealtMagicDamage(InfoMagicDamage info)
     {
-        if (info.source.trigger != trigger) return;
         int index = damagedTargets.IndexOf(info.to);
         if (index == -1)
         {

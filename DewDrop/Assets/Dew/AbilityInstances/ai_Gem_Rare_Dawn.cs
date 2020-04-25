@@ -14,7 +14,7 @@ public class ai_Gem_Rare_Dawn : AbilityInstance
 
     protected override void OnCreate(CastInfo info, object[] data)
     {
-        dawn = (gem_Rare_Dawn)source.gem;
+        dawn = (gem_Rare_Dawn)gem;
         circle = transform.Find<ParticleSystem>("Circle");
         explosion = transform.Find<ParticleSystem>("Explosion");
         circle.Play();
@@ -36,10 +36,9 @@ public class ai_Gem_Rare_Dawn : AbilityInstance
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, dawn.explosionRadius, dawn.affectedTargets);
         for(int i = 0; i < targets.Count; i++)
         {
-            info.owner.DoMagicDamage(dawn.damageAmount[dawn.level], targets[i], false, source);
+            info.owner.DoMagicDamage(targets[i], dawn.damageAmount[dawn.level], false, reference);
         }
         photonView.RPC("RpcExplosionEffect", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
         Despawn();
     }
     

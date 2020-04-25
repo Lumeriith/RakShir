@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
+using Photon.Pun; 
 
 public class ai_Spell_Rare_AuraOfPain : AbilityInstance
 {
@@ -44,13 +44,13 @@ public class ai_Spell_Rare_AuraOfPain : AbilityInstance
             for(int j = 0; j < targets.Count; j++)
             {
                 SFXManager.CreateSFXInstance("si_Spell_Rare_AuraOfPain Hit", targets[j].transform.position);
-                targets[j].ApplyStatusEffect(StatusEffect.Slow(source, tickInterval, slowAmount));
-                info.owner.DoMagicDamage(damage, targets[j], false, source);
+                targets[j].ApplyStatusEffect(StatusEffect.Slow(tickInterval, slowAmount), reference);
+                info.owner.DoMagicDamage(targets[j], damage, false, reference);
                 photonView.RPC("RpcHit", RpcTarget.All, targets[j].photonView.ViewID);
             }
         }
 
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

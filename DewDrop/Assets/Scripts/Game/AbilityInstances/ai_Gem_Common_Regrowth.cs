@@ -10,8 +10,8 @@ public class ai_Gem_Common_Regrowth : AbilityInstance
         glow.parent = info.owner.transform;
         glow.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         if (!isMine) return;
-        info.owner.DoHeal(((gem_Common_Regrowth)source.gem).healAmount[source.gem.level], info.owner, false, source);
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoHeal(info.owner, ((gem_Common_Regrowth)gem).healAmount[gem.level], false, reference);
+        
         Despawn();
     }
 }

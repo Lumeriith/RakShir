@@ -38,8 +38,7 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
         transform.position += transform.forward * speed * Time.deltaTime;
         if(isMine && Vector3.Distance(transform.position, startPosition) > distance)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
 
@@ -50,17 +49,16 @@ public class ai_Spell_Rare_IceBolt : AbilityInstance
         if (thing == null || !validator.Evaluate(info.owner, thing)) return;
         if (thing.IsAffectedBy(StatusEffectType.Slow))
         {
-            info.owner.DoMagicDamage(damage * slowedEnemiesBonusMultiplier, thing, false, source);
+            info.owner.DoMagicDamage(thing, damage * slowedEnemiesBonusMultiplier, false, reference);
         }
         else
         {
-            info.owner.DoMagicDamage(damage, thing, false, source);
+            info.owner.DoMagicDamage(thing, damage, false, reference);
         }
         SFXManager.CreateSFXInstance("si_Spell_Rare_IceBolt Hit", transform.position);
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
         photonView.RPC("RpcHit", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
-        Despawn();
+        Despawn(DespawnBehaviour.WaitForParticleSystems);
     }
 
     [PunRPC]

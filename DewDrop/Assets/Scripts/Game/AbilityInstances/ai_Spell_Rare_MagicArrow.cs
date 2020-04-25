@@ -45,7 +45,7 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
         if (Vector3.Distance(startPosition, transform.position) > distance)
         {
             photonView.RPC("RpcStopFly", RpcTarget.All);
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }
@@ -57,13 +57,13 @@ public class ai_Spell_Rare_MagicArrow : AbilityInstance
 
         if (isEmpowered)
         {
-            info.owner.DoMagicDamage(damage + bonusDamage, lv, false, source);
-            lv.statusEffect.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
+            info.owner.DoMagicDamage(lv, damage + bonusDamage, false, reference);
+            lv.statusEffect.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
             SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow EmpoweredHit", transform.position);
         }
         else
         {
-            info.owner.DoMagicDamage(damage, lv, false, source);
+            info.owner.DoMagicDamage(lv, damage, false, reference);
             SFXManager.CreateSFXInstance("si_Spell_Rare_MagicArrow Hit", transform.position);
         }
 

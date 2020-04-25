@@ -32,7 +32,7 @@ public class ai_Spell_Rare_Annihilation : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, affectedTargets);
             for(int i = 0; i < targets.Count; i++)
             {
-                info.owner.DoMagicDamage(damage, targets[i], false, source);
+                info.owner.DoMagicDamage(targets[i], damage, false, reference);
                 SFXManager.CreateSFXInstance("si_Spell_Rare_Annihilation Hit", targets[i].transform.position);
             }
             yield return new WaitForSeconds(tickInterval);
@@ -50,7 +50,7 @@ public class ai_Spell_Rare_Annihilation : AbilityInstance
         if(eventString == "EndAura")
         {
             loop.DestroyFadingOut(1f);
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+            Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
             Despawn();
         }
     }

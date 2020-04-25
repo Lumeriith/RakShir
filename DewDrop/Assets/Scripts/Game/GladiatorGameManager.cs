@@ -134,9 +134,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
 
     private static IEnumerator CoroutineMove(Room room)
     {
-        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(SourceInfo.Empty(), 4f));
-        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 4f, (GameManager.instance.localPlayer.maximumHealth - GameManager.instance.localPlayer.currentHealth), true));
-        GameManager.instance.localPlayer.DoManaHeal(GameManager.instance.localPlayer.stat.finalMaximumMana / 2f, GameManager.instance.localPlayer, true, new SourceInfo());
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Protected(4f), null);
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.HealOverTime(4f, (GameManager.instance.localPlayer.maximumHealth - GameManager.instance.localPlayer.currentHealth), true), null);
+        GameManager.instance.localPlayer.DoManaHeal(GameManager.instance.localPlayer, GameManager.instance.localPlayer.stat.finalMaximumMana / 2f, true, null);
         for (int i = 0; i < 20; i++)
         {
             GameManager.instance.localPlayer.RpcFlashForDuration(1, 1, 1, 1, 0.2f, 0.8f - 0.03f * i);
@@ -160,8 +160,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         GameManager.instance.localPlayer.SetCurrentRoom(room);
         GameEventMessage.SendEvent("Move Finished");
         OverlayCanvas.Blink();
-        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(SourceInfo.Empty(), 0.5f));
-        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(SourceInfo.Empty(), 3.5f, 30f));
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Stun(0.5f), null);
+        GameManager.instance.localPlayer.ApplyStatusEffect(StatusEffect.Speed(3.5f, 30f), null);
 
 
         yield return new WaitForSeconds(.45f);
@@ -190,11 +190,11 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
                 {
                     if(thing.currentHealth > damage)
                     {
-                        thing.DoPureDamage(damage, thing, new SourceInfo());
+                        thing.DoPureDamage(thing, damage, null);
                     }
                     else if (thing.currentHealth > 1f)
                     {
-                        thing.DoPureDamage(thing.currentHealth - 1f, thing, new SourceInfo());
+                        thing.DoPureDamage(thing, thing.currentHealth - 1f, null);
                     }
                 }
                 damage += 1f;
@@ -291,7 +291,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
     {
         GameManager.instance.OnLivingThingInstantiate += (LivingThing thing) =>
         {
-            if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(SourceInfo.Empty(), .5f));
+            if (thing.photonView.IsMine) thing.statusEffect.ApplyStatusEffect(StatusEffect.Stasis(.5f), null);
             Instantiate(monsterSpawnEffect, thing.transform.position, Quaternion.identity);
             thing.RpcScaleForDuration(0f, 0.5f);
             for (float t = 0.5f; t < 1f; t += 0.05f)
@@ -390,8 +390,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             didRedTeamWin[roundIndex] = info.victim.team == Team.Blue;
             roundIndex++;
             photonView.RPC("RpcSyncRoundResult", RpcTarget.Others, didRedTeamWin, roundIndex);
-            info.killer.ApplyStatusEffect(StatusEffect.Invulnerable(SourceInfo.Empty(), 5f));
-            info.killer.ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 5f, info.killer.maximumHealth - info.killer.currentHealth, true));
+            info.killer.ApplyStatusEffect(StatusEffect.Invulnerable(5f), null);
+            info.killer.ApplyStatusEffect(StatusEffect.HealOverTime(5f, info.killer.maximumHealth - info.killer.currentHealth, true), null);
             photonView.RPC("RpcShowDefeatEffect", info.victim.photonView.Owner);
             photonView.RPC("RpcShowVictoryEffect", info.killer.photonView.Owner);
             photonView.RPC("RpcStopRoundTimer", RpcTarget.All);
@@ -481,8 +481,8 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         
         for (int i = 0; i < players.Length; i++)
         {
-            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.Invulnerable(SourceInfo.Empty(), 5f));
-            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.HealOverTime(SourceInfo.Empty(), 5f, gamePlayers[players[i]].maximumHealth - gamePlayers[players[i]].currentHealth, true));
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.Invulnerable(5f), null);
+            gamePlayers[players[i]].ApplyStatusEffect(StatusEffect.HealOverTime(5f, gamePlayers[players[i]].maximumHealth - gamePlayers[players[i]].currentHealth, true), null);
         }
 
         photonView.RPC("RpcStartRoundTimer", RpcTarget.All);
@@ -508,9 +508,9 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
         
         player.Revive();
-        player.DoHeal(player.maximumHealth, player, true, new SourceInfo());
-        player.DoManaHeal(player.stat.finalMaximumMana, player, true, new SourceInfo());
-        player.statusEffect.ApplyStatusEffect(StatusEffect.Protected(SourceInfo.Empty(), 5f));
+        player.DoHeal(player, player.maximumHealth, true, null);
+        player.DoManaHeal(player, player.stat.finalMaximumMana, true, null);
+        player.statusEffect.ApplyStatusEffect(StatusEffect.Protected(5f), null);
     }
 
     private void SetPhase(GladiatorGamePhase phase)
@@ -626,7 +626,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
                 rewardTarget = killer.summoner;
             }
             if (rewardTarget == null) return;
-            victim.GiveGold(victim.droppedGold * goldModifier * (1 + goldRandomness * (Random.value * 2f - 1f)), rewardTarget);
+            victim.GiveGold(rewardTarget, victim.droppedGold * goldModifier * (1 + goldRandomness * (Random.value * 2f - 1f)));
             SFXManager.CreateSFXInstance("si_local_EarnMoney", victim.transform.position, rewardTarget.photonView.Owner);
         }
 

@@ -43,20 +43,20 @@ public class ai_Spell_Rare_CleansingFlame : AbilityInstance
             for (int i = 0; i < healTargets.Count; i++)
             {
                 if (healTargets[i].currentHealth / healTargets[i].maximumHealth < healthThreshold)
-                    info.owner.DoHeal(healAmount * bonusMultiplier, healTargets[i], false, source);
+                    info.owner.DoHeal(healTargets[i], healAmount * bonusMultiplier, false, reference);
                 else
-                    info.owner.DoHeal(healAmount, healTargets[i], false, source);
+                    info.owner.DoHeal(healTargets[i], healAmount, false, reference);
             }
             for (int i = 0; i < damageTargets.Count; i++)
             {
                 if (damageTargets[i].currentHealth / damageTargets[i].maximumHealth < healthThreshold)
-                    info.owner.DoMagicDamage(damage * bonusMultiplier, damageTargets[i], false, source);
+                    info.owner.DoMagicDamage(damageTargets[i], damage * bonusMultiplier, false, reference);
                 else
-                    info.owner.DoMagicDamage(damage, damageTargets[i], false, source);
-                damageTargets[i].ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
+                    info.owner.DoMagicDamage(damageTargets[i], damage, false, reference);
+                damageTargets[i].ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
             }
 
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }

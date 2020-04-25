@@ -32,7 +32,7 @@ public class NetworkingManager : MonoBehaviourPunCallbacks
     {
         if (!registeredCustomTypes)
         {
-            PhotonPeer.RegisterType(typeof(SourceInfo), 255, SourceInfo.SerializeSourceInfo, SourceInfo.DeserializeSourceInfo);
+            //PhotonPeer.RegisterType(typeof(SourceInfo), 255, SourceInfo.SerializeSourceInfo, SourceInfo.DeserializeSourceInfo);
             registeredCustomTypes = true;
         }
     }

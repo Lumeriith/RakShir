@@ -23,6 +23,7 @@ public class trg_Spell_Rare_LifeLeech : AbilityTrigger
 
     private void BasicAttackHit(InfoBasicAttackHit info)
     {
-        owner.DoHeal(info.damage * healMultiplier, owner, true, source);
+        owner.DoHeal(owner, info.damage * healMultiplier, true, null);
+        // TODO better
     }
 }

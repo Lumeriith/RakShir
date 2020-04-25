@@ -46,7 +46,7 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
         acceptCollisions = false;
         if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }
@@ -64,10 +64,10 @@ public class ai_Monster_BossNethergos_Thump : AbilityInstance
         affectedColliders.Add(other);
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        thing.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
-        thing.ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
-        thing.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
-        info.owner.DoMagicDamage(damage, thing, false, source);
+        thing.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
+        thing.ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
+        thing.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+        info.owner.DoMagicDamage(thing, damage, false, reference);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
     }
 

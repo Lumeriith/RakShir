@@ -39,8 +39,8 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
 
         start.Play();
         if (!photonView.IsMine) return;
-        protection = StatusEffect.Protected(source, duration);
-        info.owner.ApplyStatusEffect(protection);
+        protection = StatusEffect.Protected(duration);
+        info.owner.ApplyStatusEffect(protection, reference);
         channel = new Channel(channelValidator, duration, false, false, false, false, Stop, Stop);
         info.owner.control.StartChanneling(channel);
         info.owner.OnTakeDamage += TookDamage;
@@ -69,9 +69,9 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
         if (!isActivated || !photonView.IsMine) return;
         LivingThing thing = other.GetComponent<LivingThing>();
         if (thing == null || !targetValidator.Evaluate(info.owner, thing)) return;
-        info.owner.DoBasicAttackImmediately(thing, source);
+        info.owner.DoBasicAttackImmediately(thing, reference);
         thing.StartDisplacement(Displacement.ByVector(info.directionVector * pushDistance, pushDuration, false, false, false, Ease.EaseOutQuad, null, null));
-        thing.ApplyStatusEffect(StatusEffect.Stun(source, stunDuration));
+        thing.ApplyStatusEffect(StatusEffect.Stun(stunDuration), reference);
         photonView.RPC("RpcHit", RpcTarget.All, thing.photonView.ViewID);
     }
     protected override void AliveUpdate()
@@ -83,8 +83,7 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
             transform.position += info.directionVector * speed * Time.deltaTime;
         } else if (photonView.IsMine)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         }
     }
 
@@ -102,13 +101,11 @@ public class ai_Spell_Rare_RaiseShield : AbilityInstance
         {
             protection.Remove();
             info.owner.OnTakeDamage -= TookDamage;
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.Immediately);
-            Despawn();
+            Despawn(DespawnBehaviour.Immediately);
         }
         else if (!isActivated)
         {
             info.owner.OnTakeDamage -= TookDamage;
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.WaitForParticleSystems);
             Despawn();
         }
         

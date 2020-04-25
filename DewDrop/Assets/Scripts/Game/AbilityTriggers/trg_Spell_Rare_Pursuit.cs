@@ -40,8 +40,9 @@ public class trg_Spell_Rare_Pursuit : AbilityTrigger
     {
         if(speed == null || !speed.isAlive)
         {
-            speed = StatusEffect.Speed(source, speedDuration, speedAmount);
-            owner.statusEffect.ApplyStatusEffect(speed);
+            speed = StatusEffect.Speed(speedDuration, speedAmount);
+            owner.statusEffect.ApplyStatusEffect(speed, null);
+            // TODO better
         }
         else
         {

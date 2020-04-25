@@ -8,7 +8,7 @@ public class cons_ManaPotion : Consumable
     public override bool OnUse(CastInfo info)
     {
         SFXManager.CreateSFXInstance("si_cons_AnyPotion", info.owner.transform.position);
-        AbilityInstanceManager.CreateAbilityInstance("ai_cons_ManaHeal", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info, new SourceInfo(), new object[] { manahealAmount });
+        AbilityInstanceManager.CreateAbilityInstance("ai_cons_ManaHeal", info.owner.transform.position + info.owner.GetCenterOffset(), Quaternion.identity, info, new object[] { manahealAmount });
         DestroySelf();
         return true;
     }

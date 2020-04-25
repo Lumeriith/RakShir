@@ -13,7 +13,7 @@ public class ai_Gem_Rare_Soul : AbilityInstance
 
     protected override void OnCreate(CastInfo info, object[] data)
     {
-        soul = (gem_Rare_Soul)source.gem;
+        soul = (gem_Rare_Soul)gem;
         scar = transform.Find<ParticleSystem>("Scar");
         orb = transform.Find<ParticleSystem>("Orb");
         scar.Play();
@@ -33,7 +33,7 @@ public class ai_Gem_Rare_Soul : AbilityInstance
             {
                 SFXManager.CreateSFXInstance("si_Gem_Rare_Soul Eat", transform.position);
                 photonView.RPC("RpcIncreaseHealth", RpcTarget.All);
-                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+                Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
                 Despawn();
             }
         }
@@ -70,8 +70,7 @@ public class ai_Gem_Rare_Soul : AbilityInstance
             }
             else if (index == -1 || Time.time - soul.damagedTimes[index] > soul.scarDuration)
             {
-                DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-                Despawn();
+                Despawn(info.target, DespawnBehaviour.StopAndWaitForParticleSystems);
                 break;
             }
             

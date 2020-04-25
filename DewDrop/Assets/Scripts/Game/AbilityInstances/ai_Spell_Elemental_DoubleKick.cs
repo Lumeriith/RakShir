@@ -55,7 +55,6 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
         if(!targetValidator.Evaluate(info.owner, target))
         {
-            DetachChildParticleSystemsAndAutoDelete();
             Despawn();
             yield break;
         }
@@ -67,7 +66,6 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
 
         if (!targetValidator.Evaluate(info.owner, target))
         {
-            DetachChildParticleSystemsAndAutoDelete();
             Despawn();
             yield break;
         }
@@ -75,20 +73,18 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
         photonView.RPC("CreateHitEffect", RpcTarget.All, target.transform.position + target.GetCenterOffset());
         SFXManager.CreateSFXInstance("si_Spell_Elemental_DoubleKick Hit 1", target.transform.position);
         Kick();
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 
     private void DashCanceled()
     {
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 
     private void Kick()
     {
-        info.owner.DoBasicAttackImmediately(target, source);
-        info.owner.DoMagicDamage(bonusDamage, target, false, source);
+        info.owner.DoBasicAttackImmediately(target, reference);
+        info.owner.DoMagicDamage(target, bonusDamage, false, reference);
         info.owner.LookAt(target.transform.position, true);
     }
 
@@ -101,7 +97,6 @@ public class ai_Spell_Elemental_DoubleKick : AbilityInstance
     private void NoTarget()
     {
         info.owner.control.skillSet[2].ResetCooldown();
-        DetachChildParticleSystemsAndAutoDelete();
         Despawn();
     }
 

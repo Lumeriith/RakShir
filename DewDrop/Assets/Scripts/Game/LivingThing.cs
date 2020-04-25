@@ -20,103 +20,7 @@ public enum Relation { Own, Enemy, Ally }
 
 #endregion Enums
 
-#region Action Info Structs
-public struct InfoManaSpent
-{
-    public SourceInfo source;
-    public LivingThing livingThing;
-    public float amount;
-}
 
-public struct InfoDeath
-{
-    public LivingThing victim;
-    public LivingThing killer;
-}
-
-public struct InfoDamage
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-    public float damage;
-    public DamageType type;
-}
-
-public struct InfoMagicDamage
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-    public float originalDamage;
-    public float finalDamage;
-}
-
-public struct InfoHeal
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-    public float originalHeal;
-    public float finalHeal;
-}
-public struct InfoManaHeal
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-    public float originalManaHeal;
-    public float finalManaHeal;
-}
-
-
-public struct InfoBasicAttackHit
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-    public float damage;
-}
-
-public struct InfoMiss
-{
-    public SourceInfo source;
-    public LivingThing to;
-    public LivingThing from;
-}
-
-public struct InfoChannel
-{
-    public LivingThing livingThing;
-    public float remainingTime;
-}
-
-public struct InfoStartWalking
-{
-    public LivingThing livingThing;
-    public Vector3 destination;
-}
-
-public struct InfoStopWalking
-{
-    public LivingThing livingThing;
-}
-
-public struct InfoGold
-{
-    public LivingThing from;
-    public LivingThing to;
-    public float amount;
-}
-
-public struct InfoSpendGold
-{
-    public LivingThing livingThing;
-    public float amount;
-}
-
-
-#endregion Action Info Structs
 
 [RequireComponent(typeof(LivingThingControl))]
 [RequireComponent(typeof(LivingThingStat))]
@@ -179,10 +83,6 @@ public class LivingThing : MonoBehaviourPun
 
     public System.Action<InfoDeath> OnDeath = (InfoDeath _) => { };
     public System.Action<InfoDeath> OnKill = (InfoDeath _) => { };
-
-
-    public System.Action<InfoStartWalking> OnStartWalking = (InfoStartWalking _) => { };
-    public System.Action<InfoStopWalking> OnStopWalking = (InfoStopWalking _) => { };
 
     public System.Action<InfoHeal> OnDoHeal = (InfoHeal _) => { };
     public System.Action<InfoHeal> OnTakeHeal = (InfoHeal _) => { };
@@ -561,6 +461,107 @@ public class LivingThing : MonoBehaviourPun
     #endregion
 
     #region Functions For Everyone
+
+    public bool IsAffectedBy(StatusEffectType type)
+    {
+        return statusEffect.IsAffectedBy(type);
+    }
+    public bool HasMana(float amount)
+    {
+        return stat.currentMana >= amount;
+    }
+    public bool SpendMana(float amount, IDewActionCaller handler)
+    {
+        if (amount == 0) return true;
+        if (amount < 0)
+        {
+            Debug.LogWarning(name + ": Attempted to spend mana of negative value! (" + amount.ToString() + ")");
+            return true;
+        }
+        if (stat.currentMana >= amount)
+        {
+            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, handler?.Serialize());
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool HasGold(float amount)
+    {
+        return stat.currentGold >= amount;
+    }
+    public bool IsDead()
+    {
+        return stat.isDead;
+    }
+    public bool IsAlive()
+    {
+        return !stat.isDead;
+    }
+    public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
+    {
+        Collider[] colliders = Physics.OverlapSphere(center, range, LayerMask.GetMask("LivingThing"));
+        colliders = colliders.OrderBy(collider => Vector3.Distance(center, collider.transform.position)).ToArray();
+        List<LivingThing> result = new List<LivingThing>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            LivingThing lv = colliders[i].GetComponent<LivingThing>();
+            if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
+            {
+                result.Add(lv);
+            }
+        }
+        return result;
+    }
+    public List<LivingThing> GetAllTargetsInLine(Vector3 origin, Vector3 directionVector, float width, float distance, TargetValidator targetValidator)
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(origin, width / 2f, directionVector, distance, LayerMask.GetMask("LivingThing"));
+        hits = hits.OrderBy(hit => Vector3.Distance(origin, hit.collider.transform.position)).ToArray();
+        List<LivingThing> result = new List<LivingThing>();
+        for (int i = 0; i < hits.Length; i++)
+        {
+            LivingThing lv = hits[i].collider.GetComponent<LivingThing>();
+            if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
+            {
+                result.Add(lv);
+            }
+        }
+        return result;
+    }
+    public LivingThing GetLastAttacker()
+    {
+        return lastAttacker ?? this;
+    }
+    public Relation GetRelationTo(LivingThing to)
+    {
+        if (this == to || to.summoner == this) return Relation.Own;
+        if (team == Team.None || team != to.team) return Relation.Enemy;
+        return Relation.Ally;
+    }
+    public Vector3 GetCenterOffset()
+    {
+        Vector3 bottom = this.bottom.position - transform.position;
+        Vector3 top = this.top.position - transform.position;
+
+        bottom.x = 0f;
+        bottom.z = 0f;
+        top.x = 0f;
+        top.z = 0f;
+
+        return Vector3.Lerp(bottom, top, 0.5f);
+    }
+    public Vector3 GetRandomOffset()
+    {
+        Vector3 bottom = this.bottom.position - transform.position;
+        Vector3 top = this.top.position - transform.position;
+
+        return Vector3.Lerp(bottom, top, Random.value);
+    }
+
+
+
     public void UpdateCurrentRoom()
     {
         RaycastHit info;
@@ -578,73 +579,39 @@ public class LivingThing : MonoBehaviourPun
     {
         photonView.RPC("RpcCancelDisplacement", RpcTarget.All);
     }
-
-    public bool IsAffectedBy(StatusEffectType type)
-    {
-        return statusEffect.IsAffectedBy(type);
-    }
-
     public void SetReadableName(string readableName)
     {
         photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
     }
-
-    public void ApplyStatusEffect(StatusEffect statusEffect)
+    public void ApplyStatusEffect(StatusEffect statusEffect, IDewActionCaller caller)
     {
-        this.statusEffect.ApplyStatusEffect(statusEffect);
+        this.statusEffect.ApplyStatusEffect(statusEffect, caller);
     }
-
     public void Destroy()
     {
         photonView.RPC("RpcDestroy", RpcTarget.All);
     }
-
     public void SetCurrentRoom(Room room)
     {
         photonView.RPC("RpcSetCurrentRoom", RpcTarget.All, room.photonView.ViewID);
     }
-
     public void ActivateImmediately(Activatable activatable)
     {
         activatable.photonView.RPC("RpcChannelStart", RpcTarget.All, this.photonView.ViewID);
         activatable.photonView.RPC("RpcChannelSuccess", RpcTarget.All, this.photonView.ViewID);
     }
-
-    public bool HasMana(float amount)
+    public void ChangeWalkAnimation(string animationName)
     {
-        return stat.currentMana >= amount;
+        photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, animationName);
     }
-
-
-    public bool SpendMana(float amount, SourceInfo source)
+    public void ChangeStandAnimation(string animationName)
     {
-        if (amount == 0) return true;
-        if (amount < 0)
-        {
-            Debug.LogWarning(name + ": Attempted to spend mana of negative value! (" + amount.ToString() + ")");
-            return true;
-        }
-        if (stat.currentMana >= amount)
-        {
-            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, source);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, animationName);
     }
-
-    public bool HasGold(float amount)
-    {
-        return stat.currentGold >= amount;
-    }
-
-
     public bool SpendGold(float amount)
     {
         if (amount == 0) return true;
-        if(amount < 0)
+        if (amount < 0)
         {
             Debug.LogWarning(name + ": Attempted to spend gold of negative value! (" + amount.ToString() + ")");
             return true;
@@ -659,199 +626,15 @@ public class LivingThing : MonoBehaviourPun
             return false;
         }
     }
-
-
-
-
-    public bool IsDead()
-    {
-        return stat.isDead;
-    }
-
-    public bool IsAlive()
-    {
-        return !stat.isDead;
-    }
-
-    public List<LivingThing> GetAllTargetsInRange(Vector3 center, float range, TargetValidator targetValidator)
-    {
-        Collider[] colliders = Physics.OverlapSphere(center, range, LayerMask.GetMask("LivingThing"));
-        colliders = colliders.OrderBy(collider => Vector3.Distance(center, collider.transform.position)).ToArray();
-        List<LivingThing> result = new List<LivingThing>();
-        for(int i =0;i<colliders.Length;i++)
-        {
-            LivingThing lv = colliders[i].GetComponent<LivingThing>();
-            if(lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
-            {
-                result.Add(lv);
-            }
-        }
-        return result;
-    }
-
-    public List<LivingThing> GetAllTargetsInLine(Vector3 origin, Vector3 directionVector, float width, float distance, TargetValidator targetValidator)
-    {
-        RaycastHit[] hits = Physics.SphereCastAll(origin, width / 2f, directionVector, distance, LayerMask.GetMask("LivingThing"));
-        hits = hits.OrderBy(hit => Vector3.Distance(origin, hit.collider.transform.position)).ToArray();
-        List<LivingThing> result = new List<LivingThing>();
-        for (int i = 0;  i<hits.Length;i++)
-        {
-            LivingThing lv = hits[i].collider.GetComponent<LivingThing>();
-            if (lv != null && !lv.IsDead() && targetValidator.Evaluate(this, lv))
-            {
-                result.Add(lv);
-            }
-        }
-        return result;
-    }
-
-    public void ChangeWalkAnimation(string animationName)
-    {
-        photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, animationName);
-    }
-    public void ChangeStandAnimation(string animationName)
-    {
-        photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, animationName);
-    }
-
-
-    public LivingThing GetLastAttacker()
-    {
-        return lastAttacker ?? this;
-    }
-
-    public Relation GetRelationTo(LivingThing to)
-    {
-        if (this == to || to.summoner == this) return Relation.Own;
-        if (team == Team.None || team != to.team) return Relation.Enemy;
-        return Relation.Ally;
-    }
-
-    public Vector3 GetCenterOffset()
-    {
-        Vector3 bottom = this.bottom.position - transform.position;
-        Vector3 top = this.top.position - transform.position;
-
-        bottom.x = 0f;
-        bottom.z = 0f;
-        top.x = 0f;
-        top.z = 0f;
-
-        return Vector3.Lerp(bottom, top, 0.5f);
-    }
-
-    public Vector3 GetRandomOffset()
-    {
-        Vector3 bottom = this.bottom.position - transform.position;
-        Vector3 top = this.top.position - transform.position;
-
-        return Vector3.Lerp(bottom, top, Random.value);
-    }
-
     public void Teleport(Vector3 location)
     {
         photonView.RPC("RpcTeleport", RpcTarget.All, location);
     }
-
-    /*
-    public void DashThroughForDuration(Vector3 location, float duration)
-    {
-        if(duration < 0)
-        {
-            Debug.LogWarning(name + ": Attempted to dash for negative duration! (" + duration.ToString() + ")");
-            return;
-        }
-        CancelDash();
-        CancelAirborne();
-        NavMeshPath path = new NavMeshPath();
-        Vector3 destination;
-
-        if (NavMesh.CalculatePath(transform.position, location, control.agent.areaMask, path))
-        {
-            destination = path.corners[path.corners.Length - 1];
-        }
-        else
-        {
-            destination = location;
-        }
-        StatusEffect dash = new StatusEffect(this, StatusEffectType.Dash, duration);
-        statusEffect.ApplyStatusEffect(dash);
-        photonView.RPC("RpcDash", RpcTarget.All, destination, duration);
-    }
-
-    public void DashThroughWithSpeed(Vector3 location, float speed)
-    {
-        if (speed < 0)
-        {
-            Debug.LogWarning(name + ": Attempted to dash for negative speed! (" + speed.ToString() + ")");
-            return;
-        }
-        CancelDash();
-        CancelAirborne();
-        NavMeshPath path = new NavMeshPath();
-        Vector3 destination;
-        
-        if (NavMesh.CalculatePath(transform.position, location, control.agent.areaMask, path))
-        {
-            destination = path.corners[path.corners.Length - 1];
-        }
-        else
-        {
-            destination = location;
-        }
-
-        float time = Vector3.Distance(transform.position, destination) / (speed); // Fix this.
-
-        StatusEffect dash = new StatusEffect(this, StatusEffectType.Dash, time);
-        statusEffect.ApplyStatusEffect(dash);
-        photonView.RPC("RpcDash", RpcTarget.All, destination, time);
-    }
-
-    public void AirborneForDuration(Vector3 landLocation, float duration)
-    {
-        if (duration < 0)
-        {
-            Debug.LogWarning(name + ": Attempted to dash for negative duration! (" + duration.ToString() + ")");
-            return;
-        }
-        if (!SelfValidator.CanBeAirborned.Evaluate(this)) return;
-
-        CancelDash();
-        CancelAirborne();
-        NavMeshPath path = new NavMeshPath();
-        Vector3 destination;
-
-        if (NavMesh.CalculatePath(transform.position, landLocation, control.agent.areaMask, path))
-        {
-            destination = path.corners[path.corners.Length - 1];
-        }
-        else
-        {
-            destination = landLocation;
-        }
-        StatusEffect airborne = new StatusEffect(this, StatusEffectType.Airborne, duration);
-        statusEffect.ApplyStatusEffect(airborne);
-        photonView.RPC("RpcAirborne", RpcTarget.All, destination, duration);
-    }
-
-    public void CancelAirborne()
-    {
-        statusEffect.CleanseStatusEffect(StatusEffectType.Airborne);
-        photonView.RPC("RpcCancelAirborne", RpcTarget.All);
-    }
-
-    public void CancelDash()
-    {
-        statusEffect.CleanseStatusEffect(StatusEffectType.Dash);
-        photonView.RPC("RpcCancelDash", RpcTarget.All);
-    }
-    */
-
     public void LookAt(Vector3 lookPosition, bool immediately = false)
     {
         photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
-    public void DoHeal(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
+    public void DoHeal(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -859,10 +642,9 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
     }
-
-    public void DoManaHeal(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
+    public void DoManaHeal(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -870,15 +652,13 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
     }
-
-    public void DoBasicAttackImmediately(LivingThing to, SourceInfo source)
+    public void DoBasicAttackImmediately(LivingThing to, IDewActionCaller handler)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, source);
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler.Serialize());
     }
-
-    public void DoMagicDamage(float amount, LivingThing to, bool ignoreSpellPower, SourceInfo source)
+    public void DoMagicDamage(LivingThing to, float amount, bool ignoreSpellPower, IDewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -886,10 +666,9 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, source);
+        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.Serialize());
     }
-
-    public void DoPureDamage(float amount, LivingThing to, SourceInfo source)
+    public void DoPureDamage(LivingThing to, float amount, IDewActionCaller handler)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -897,14 +676,13 @@ public class LivingThing : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, source);
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.Serialize());
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.Serialize());
     }
-
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
         PlayCustomAnimation(animation.name, duration);
     }
-
     public void PlayCustomAnimation(string animationName, float duration = -1)
     {
         if (duration == 0) return;
@@ -915,17 +693,14 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcPlayCustomAnimation", RpcTarget.All, animationName, duration);
     }
-
     public void Kill()
     {
         photonView.RPC("RpcDeath", RpcTarget.All);
     }
-
     public void Revive()
     {
         photonView.RPC("RpcRevive", RpcTarget.All);
     }
-
     public void FlashForDuration(Color color, float multiplier, float duration)
     {
         if (duration == 0) return;
@@ -936,7 +711,6 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcFlashForDuration", RpcTarget.All, color.r, color.g, color.b, color.a, multiplier, duration);
     }
-
     public void ScaleForDuration(float multiplier, float duration)
     {
         if (duration == 0) return;
@@ -947,10 +721,7 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcScaleForDuration", RpcTarget.All, multiplier, duration);
     }
-
-
-
-    public void GiveGold(float amount, LivingThing to)
+    public void GiveGold(LivingThing to, float amount)
     {
         if (amount == 0) return;
         if (amount < 0)
@@ -960,7 +731,6 @@ public class LivingThing : MonoBehaviourPun
         }
         photonView.RPC("RpcGiveGold", RpcTarget.All, amount, to.photonView.ViewID);
     }
-
     public void EarnGold(float amount)
     {
         if (amount == 0) return;
@@ -973,7 +743,7 @@ public class LivingThing : MonoBehaviourPun
     }
     public void StartDisplacement(Displacement displacement)
     {
-        if(!displacement.isFriendly && !SelfValidator.CanBePushed.Evaluate(this))
+        if (!displacement.isFriendly && !SelfValidator.CanBePushed.Evaluate(this))
         {
             displacement.SetSelf(this);
             displacement.Cancel();
@@ -1091,20 +861,20 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcSpendMana(float amount, SourceInfo source)
+    protected void RpcSpendMana(float amount, int serializedHandler)
     {
         stat.currentMana -= amount;
         stat.ValidateMana();
 
         InfoManaSpent info;
-        info.source = source;
         info.livingThing = this;
         info.amount = amount;
         OnSpendMana.Invoke(info);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnSpendMana.Invoke(info);
     }
 
     [PunRPC]
-    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
+    protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
@@ -1131,23 +901,23 @@ public class LivingThing : MonoBehaviourPun
             stat.SyncChangingStats();
         }
 
-        InfoMagicDamage info;
-        info.source = source;
-        info.to = this;
-        info.from = from;
-        info.originalDamage = amount;
-        info.finalDamage = finalAmount;
-        OnTakeMagicDamage.Invoke(info);
-        info.from.OnDealMagicDamage.Invoke(info);
+        InfoMagicDamage infoMagicDamage;
+        infoMagicDamage.to = this;
+        infoMagicDamage.from = from;
+        infoMagicDamage.originalDamage = amount;
+        infoMagicDamage.finalDamage = finalAmount;
+        OnTakeMagicDamage.Invoke(infoMagicDamage);
+        from.OnDealMagicDamage.Invoke(infoMagicDamage);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDealMagicDamage.Invoke(infoMagicDamage);
 
-        InfoDamage info2;
-        info2.source = source;
-        info2.damage = amount;
-        info2.from = from;
-        info2.to = this;
-        info2.type = DamageType.Spell;
-        OnTakeDamage.Invoke(info2);
-        from.OnDealDamage.Invoke(info2);
+        InfoDamage infoDamage;
+        infoDamage.damage = amount;
+        infoDamage.from = from;
+        infoDamage.to = this;
+        infoDamage.type = DamageType.Spell;
+        OnTakeDamage.Invoke(infoDamage);
+        from.OnDealDamage.Invoke(infoDamage);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(infoDamage);
     }
 
     [PunRPC]
@@ -1157,16 +927,13 @@ public class LivingThing : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void RpcApplyBasicAttackDamage(int from_id, float random, SourceInfo source)
+    protected void RpcApplyBasicAttackDamage(int from_id, float random, int serializedHandler)
     {
-        
-        
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
 
         if (from.statusEffect.IsAffectedBy(StatusEffectType.Blind))
         {
             InfoMiss info;
-            info.source = source;
             info.from = from;
             info.to = this;
             from.OnMiss.Invoke(info);
@@ -1174,7 +941,6 @@ public class LivingThing : MonoBehaviourPun
         else if (random < stat.finalDodgeChance / 100f)
         {
             InfoMiss info;
-            info.source = source;
             info.from = from;
             info.to = this;
             from.OnMiss.Invoke(info);
@@ -1205,22 +971,22 @@ public class LivingThing : MonoBehaviourPun
                 stat.SyncChangingStats(); // Is this redundant? check when you're not sleep deprived.
             }
 
-            InfoBasicAttackHit info;
-            info.source = source;
-            info.damage = finalAmount;
-            info.from = from;
-            info.to = this;
-            OnTakeBasicAttackHit.Invoke(info);
-            from.OnDoBasicAttackHit.Invoke(info);
+            InfoBasicAttackHit infoBasicAttackHit;
+            infoBasicAttackHit.damage = finalAmount;
+            infoBasicAttackHit.from = from;
+            infoBasicAttackHit.to = this;
+            OnTakeBasicAttackHit.Invoke(infoBasicAttackHit);
+            from.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
+            Dew.DeserializeActionCaller(serializedHandler)?.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
 
-            InfoDamage info2;
-            info2.source = source;
-            info2.damage = finalAmount;
-            info2.from = from;
-            info2.to = this;
-            info2.type = DamageType.Physical;
-            OnTakeDamage.Invoke(info2);
-            from.OnDealDamage.Invoke(info2);
+            InfoDamage infoDamage;
+            infoDamage.damage = finalAmount;
+            infoDamage.from = from;
+            infoDamage.to = this;
+            infoDamage.type = DamageType.Physical;
+            OnTakeDamage.Invoke(infoDamage);
+            from.OnDealDamage.Invoke(infoDamage);
+            Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(infoDamage);
         }
     }
 
@@ -1260,7 +1026,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyPureDamage(float amount, int from_id, SourceInfo source)
+    protected void RpcApplyPureDamage(float amount, int from_id, int serializedHandler)
     {
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1272,16 +1038,18 @@ public class LivingThing : MonoBehaviourPun
             stat.SyncChangingStats();   
         }
 
-        InfoDamage info2;
-        info2.source = source;
-        info2.damage = amount;
-        info2.from = from;
-        info2.to = this;
-        info2.type = DamageType.Pure;
-        OnTakeDamage.Invoke(info2);
-        from.OnDealDamage.Invoke(info2);
-        OnTakePureDamage.Invoke(info2);
-        from.OnDealPureDamage.Invoke(info2);
+        InfoDamage info;
+        info.damage = amount;
+        info.from = from;
+        info.to = this;
+        info.type = DamageType.Pure;
+
+        OnTakeDamage.Invoke(info);
+        from.OnDealDamage.Invoke(info);
+        OnTakePureDamage.Invoke(info);
+        from.OnDealPureDamage.Invoke(info);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDealDamage.Invoke(info);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDealPureDamage.Invoke(info);
     }
 
 
@@ -1312,7 +1080,7 @@ public class LivingThing : MonoBehaviourPun
 
 
     [PunRPC]
-    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
+    protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1331,17 +1099,17 @@ public class LivingThing : MonoBehaviourPun
         if (finalAmount <= 0) return;
 
         InfoHeal info;
-        info.source = source;
         info.from = from;
         info.to = this;
         info.originalHeal = amount;
         info.finalHeal = finalAmount;
         from.OnDoHeal.Invoke(info);
         OnTakeHeal.Invoke(info);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDoHeal.Invoke(info);
     }
 
     [PunRPC]
-    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, SourceInfo source)
+    protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, int serializedHandler)
     {
         float finalAmount;
         LivingThing from = PhotonNetwork.GetPhotonView(from_id).GetComponent<LivingThing>();
@@ -1352,32 +1120,14 @@ public class LivingThing : MonoBehaviourPun
         stat.ValidateMana();
 
         InfoManaHeal info;
-        info.source = source;
         info.from = from;
         info.to = this;
         info.originalManaHeal = amount;
         info.finalManaHeal = finalAmount;
         from.OnDoManaHeal.Invoke(info);
         OnTakeManaHeal.Invoke(info);
+        Dew.DeserializeActionCaller(serializedHandler)?.OnDoManaHeal.Invoke(info);
     }
-
-
-
-
-    private Coroutine lastDashCoroutine;
-    private Coroutine lastAirborneCoroutine;
-
-    [PunRPC]
-    private void RpcDash(Vector3 destination, float time)
-    {
-        lastDashCoroutine = StartCoroutine(CoroutineDash(destination, time));
-    }
-    [PunRPC]
-    private void RpcAirborne(Vector3 destination, float time)
-    {
-        lastAirborneCoroutine = StartCoroutine(CoroutineAirborne(destination, time));
-    }
-
 
     [PunRPC]
     private void RpcSpendGold(float amount)
@@ -1453,22 +1203,6 @@ public class LivingThing : MonoBehaviourPun
         transform.position = location;
         control.agent.enabled = true;
     }
-    /*
-    [PunRPC]
-    private void RpcCancelDash()
-    {
-        if (lastDashCoroutine == null) return;
-        StopCoroutine(lastDashCoroutine);
-        
-    }
-
-    [PunRPC]
-    private void RpcCancelAirborne()
-    {
-        if (lastAirborneCoroutine == null) return;
-        StopCoroutine(lastAirborneCoroutine);
-    }
-    */
 
     [PunRPC]
     private void RpcCancelDisplacement()
@@ -1477,42 +1211,6 @@ public class LivingThing : MonoBehaviourPun
         ongoingDisplacement.Cancel();
         ongoingDisplacement = null;
     }
-    
-
-
 
     #endregion RPCs
-
-
-    #region Coroutines
-    IEnumerator CoroutineAirborne(Vector3 destination, float time)
-    {
-        float startTime = Time.time;
-        Vector3 startPosition = transform.position;
-
-        while (Time.time - startTime < time)
-        {
-            transform.position = Vector3.Lerp(startPosition, destination, (Time.time - startTime) / time);
-            yield return null;
-        }
-        transform.position = destination;
-        lastAirborneCoroutine = null;
-    }
-
-
-    IEnumerator CoroutineDash(Vector3 destination, float time)
-    {
-        float startTime = Time.time;
-        Vector3 startPosition = transform.position;
-
-        while (Time.time - startTime < time)
-        {
-            transform.position = Vector3.Lerp(startPosition, destination, (Time.time - startTime) / time);
-            yield return null;
-        }
-        transform.position = destination;
-        lastDashCoroutine = null;
-    }
-
-    #endregion Coroutines
 }

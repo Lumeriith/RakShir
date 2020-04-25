@@ -8,8 +8,8 @@ public class ai_Monster_Firebug_Basicattack : AbilityInstance
     {
         transform.Find("Flash").position = castInfo.target.transform.position + castInfo.target.GetCenterOffset();
         if (!photonView.IsMine) return;
-        castInfo.owner.DoBasicAttackImmediately(castInfo.target, source);
-        DetachChildParticleSystemsAndAutoDelete();
+        castInfo.owner.DoBasicAttackImmediately(castInfo.target, reference);
+        
         Despawn();
     }
 

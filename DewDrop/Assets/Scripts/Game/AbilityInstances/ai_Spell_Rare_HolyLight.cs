@@ -24,13 +24,13 @@ public class ai_Spell_Rare_HolyLight : AbilityInstance
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
-            targets[i].ApplyStatusEffect(StatusEffect.Blind(source, blindDuration));
-            info.owner.DoMagicDamage(damage, targets[i], false, source);
+            targets[i].ApplyStatusEffect(StatusEffect.Blind(blindDuration), reference);
+            info.owner.DoMagicDamage(targets[i], damage, false, reference);
             healAmount += healPerHitAmount;
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
         }
-        info.owner.DoHeal(healAmount, info.owner, false, source);
-        DetachChildParticleSystemsAndAutoDelete();
+        info.owner.DoHeal(info.owner, healAmount, false, reference);
+        
         Despawn();
     }
 

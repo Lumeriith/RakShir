@@ -34,6 +34,6 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
 
     private void BasicAttackHit(InfoBasicAttackHit info)
     {
-        if (info.to.IsAffectedBy(StatusEffectType.DamageOverTime)) info.source.thing.DoMagicDamage(45f, info.to, false, SourceInfo.CasterOnly(info.source.thing));
+        if (info.to.IsAffectedBy(StatusEffectType.DamageOverTime)) info.from.DoMagicDamage(info.to, 45f, false, null);
     }
 }

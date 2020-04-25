@@ -9,7 +9,7 @@ public class ai_cons_HealOverTime : AbilityInstance
     {
         if (!photonView.IsMine) return;
 
-        info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime(source, (float)data[1], (float)data[0], true));
+        info.owner.statusEffect.ApplyStatusEffect(StatusEffect.HealOverTime((float)data[1], (float)data[0], true), reference);
         duration = (float)data[1];
         StartCoroutine(CoroutineDestroy());
     }
@@ -22,7 +22,6 @@ public class ai_cons_HealOverTime : AbilityInstance
     IEnumerator CoroutineDestroy()
     {
         yield return new WaitForSeconds(duration);
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-        Despawn();
+        Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
     }
 }

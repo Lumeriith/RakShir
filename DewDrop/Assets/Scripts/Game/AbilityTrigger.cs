@@ -69,22 +69,13 @@ public abstract class AbilityTrigger : MonoBehaviour
     public SelfValidator selfValidator;
 
     private float specialFillAmount = 0;
-    private List<AbilityInstance> instances = new List<AbilityInstance>();
+    private List<AbilityInstanceSafeReference> _references = new List<AbilityInstanceSafeReference>();
 
 
     public float cooldownTime;
 
     public List<Gem> connectedGems;
 
-
-
-    protected SourceInfo source
-    {
-        get
-        {
-            return new SourceInfo { trigger = this, thing = owner };
-        }
-    }
 
     public int skillIndex
     {
@@ -221,8 +212,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public bool SpendMana()
     {
-        SourceInfo source = new SourceInfo { trigger = this, thing = owner };
-        return owner.SpendMana(manaCost, source);
+        return owner.SpendMana(manaCost, null);
     }
 
     public void RefundMana()
@@ -242,52 +232,55 @@ public abstract class AbilityTrigger : MonoBehaviour
         owner.control.cooldownTime[skillIndex] = Mathf.MoveTowards(owner.control.cooldownTime[skillIndex], 0, time);
     }
 
-    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
+    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
-        SourceInfo source = new SourceInfo() { trigger = this, thing = owner };
-        PurgeInstancesList();
+        PurgeReferencesList();
         if (info.owner == null) info.owner = owner;
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
-        instances.Add(instance);
+        return CreateAbilityInstance(prefabName, position, rotation, info, data);
     }
 
-    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
+    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
     {
-        SourceInfo source = new SourceInfo() { trigger = this, thing = owner };
-        PurgeInstancesList();
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
-        instances.Add(instance);
-    }
-
-    private void PurgeInstancesList()
-    {
-        for (int i = instances.Count - 1; i >= 0; i--)
+        PurgeReferencesList();
+        AbilityInstanceSafeReference reference = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        _references.Add(reference);
+        for(int i = 0; i < connectedGems.Count; i++)
         {
-            if (instances[i] == null || !instances[i].isAlive)
+            connectedGems[i].photonView.RPC("RpcOnAbilityInstanceCreatedFromTrigger", RpcTarget.Others, reference.viewID);
+            connectedGems[i].OnAbilityInstanceCreatedFromTrigger(true, reference);
+        }
+        return reference;
+    }
+
+    private void PurgeReferencesList()
+    {
+        for (int i = _references.Count - 1; i >= 0; i--)
+        {
+            if (!_references[i].isValid)
             {
-                instances.RemoveAt(i);
+                _references.RemoveAt(i);
             }
         }
     }
     
     public bool IsAnyInstanceActive()
     {
-        PurgeInstancesList();
-        return instances.Count != 0;
+        PurgeReferencesList();
+        return _references.Count != 0;
     }
 
-    public AbilityInstance GetLastInstance()
+    public AbilityInstanceSafeReference GetLastInstance()
     {
-        PurgeInstancesList();
-        if (instances.Count == 0) return null;
-        return instances[instances.Count - 1];
+        PurgeReferencesList();
+        if (_references.Count == 0) return null;
+        return _references[_references.Count - 1];
     }
 
-    public AbilityInstance GetFirstInstsance()
+    public AbilityInstanceSafeReference GetFirstInstance()
     {
-        PurgeInstancesList();
-        if (instances.Count == 0) return null;
-        return instances[0];
+        PurgeReferencesList();
+        if (_references.Count == 0) return null;
+        return _references[0];
     }
 
 
@@ -302,16 +295,16 @@ public abstract class AbilityTrigger : MonoBehaviour
         switch (target)
         {
             case AbilityInstanceEventTargetType.EveryInstance:
-                for(int i = 0; i < instances.Count; i++)
+                for(int i = 0; i < _references.Count; i++)
                 {
-                    instances[i].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                    _references[i].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 }
                 break;
             case AbilityInstanceEventTargetType.FirstInstance:
-                instances[0].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _references[0].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
             case AbilityInstanceEventTargetType.LastInstance:
-                instances[instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _references[_references.Count - 1].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
         }
     }

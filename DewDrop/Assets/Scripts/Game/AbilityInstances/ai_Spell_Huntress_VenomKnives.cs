@@ -31,8 +31,8 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
         List<LivingThing> targets = castInfo.owner.GetAllTargetsInRange(transform.position, range, targetValidator);
         foreach(LivingThing target in targets)
         {
-            target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(source, poisonTime, poisonDamage));
-            castInfo.owner.DoMagicDamage(initialDamage, target, false, source);
+            target.statusEffect.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonTime, poisonDamage), reference);
+            castInfo.owner.DoMagicDamage(target, initialDamage, false, reference);
             target.OnTakeBasicAttackHit += BasicAttackHit;
             affectedTargets.Add(target);
             photonView.RPC("RpcLand", RpcTarget.All, target.transform.position + target.GetCenterOffset());
@@ -55,7 +55,7 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
         {
             target.OnTakeBasicAttackHit -= BasicAttackHit;
         }
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 
@@ -63,7 +63,7 @@ public class ai_Spell_Huntress_VenomKnives : AbilityInstance
     {
         if(hit.from == info.owner)
         {
-            info.owner.DoMagicDamage(basicAttackBonusDamage, hit.to, false, source);
+            info.owner.DoMagicDamage(hit.to, basicAttackBonusDamage, false, reference);
         }
     }
 }

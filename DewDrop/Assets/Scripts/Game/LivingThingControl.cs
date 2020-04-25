@@ -940,14 +940,12 @@ public class LivingThingControl : MonoBehaviourPun
     private void RpcStartWalking(Vector3 destination)
     {
         animator.SetBool("IsWalking", true);
-        livingThing.OnStartWalking.Invoke(new InfoStartWalking() { livingThing = this.livingThing, destination = destination });
     }
 
     [PunRPC]
     private void RpcStopWalking()
     {
         animator.SetBool("IsWalking", false);
-        livingThing.OnStopWalking.Invoke(new InfoStopWalking() { livingThing = livingThing });
     }
 
 

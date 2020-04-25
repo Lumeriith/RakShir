@@ -19,12 +19,13 @@ public class ai_Monster_VoidSlug_Bite : AbilityInstance
         spray.Play();
         if (photonView.IsMine)
         {
-            info.target.ApplyStatusEffect(StatusEffect.DamageOverTime(source, poisonDuration, poisonDamage));
-            info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration1, slowAmount));
-            info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration2, slowAmount));
-            info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration3, slowAmount));
+            info.target.ApplyStatusEffect(StatusEffect.DamageOverTime(poisonDuration, poisonDamage), reference);
+            info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration1, slowAmount), reference);
+            info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration2, slowAmount), reference);
+            info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration3, slowAmount), reference);
+            // TODO Decaying slow
         }
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 }

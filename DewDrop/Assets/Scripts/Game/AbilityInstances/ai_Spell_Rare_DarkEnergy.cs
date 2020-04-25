@@ -16,15 +16,10 @@ public class ai_Spell_Rare_DarkEnergy : AbilityInstance
         List<LivingThing> targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
         for(int i = 0; i < targets.Count; i++)
         {
-            targets[i].ApplyStatusEffect(StatusEffect.Silence(source, silenceDuration));
+            targets[i].ApplyStatusEffect(StatusEffect.Silence(silenceDuration), reference);
             photonView.RPC("RpcHit", RpcTarget.All, targets[i].photonView.ViewID);
         }
-        Despawn(5f);
-    }
-
-    protected override void AliveUpdate()
-    {
-        transform.position = info.owner.transform.position;
+        Despawn(info.owner, AttachBehaviour.IgnoreRotation);
     }
 
     [PunRPC]

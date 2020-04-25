@@ -9,9 +9,8 @@ public class ai_Gem_Common_Frost : AbilityInstance
         transform.position = info.target.transform.position + info.target.GetCenterOffset();
         transform.parent = info.target.transform;
         if (!isMine) return;
-        gem_Common_Frost frost = (gem_Common_Frost)source.gem;
-        info.target.ApplyStatusEffect(StatusEffect.Slow(source, frost.slowDuration[frost.level], frost.slowAmount[frost.level]));
-        DetachChildParticleSystemsAndAutoDelete();
-        Despawn();
+        gem_Common_Frost frost = (gem_Common_Frost)gem;
+        info.target.ApplyStatusEffect(StatusEffect.Slow(frost.slowDuration[frost.level], frost.slowAmount[frost.level]), reference);
+        Despawn(info.target);
     }
 }

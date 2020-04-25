@@ -2,73 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
-public abstract class Gem : Item
+public abstract class Gem : Item, IDewActionCaller
 {
     [Header("Gem Settings")]
     public AbilityTrigger trigger;
     public int level = 0;
     public int maxLevel = 4;
 
-    private List<AbilityInstance> instances = new List<AbilityInstance>();
+    private List<AbilityInstanceSafeReference> _references = new List<AbilityInstanceSafeReference>();
 
     private GameObject deactivatedModel;
     private List<Collider> deactivatedColliders = new List<Collider>();
     private List<Rigidbody> deactivatedRigidbodies = new List<Rigidbody>();
 
+    public LivingThing invokerEntity { get => owner; }
+    public Action<InfoManaSpent> OnSpendMana { get; set; } = (_) => { };
+    public Action<InfoDamage> OnDealDamage { get; set; } = (_) => { };
+    public Action<InfoDamage> OnDealPureDamage { get; set; } = (_) => { };
+    public Action<InfoMagicDamage> OnDealMagicDamage { get; set; } = (_) => { };
+    public Action<InfoBasicAttackHit> OnDoBasicAttackHit { get; set; } = (_) => { };
+    public Action<InfoHeal> OnDoHeal { get; set; } = (_) => { };
+    public Action<InfoManaHeal> OnDoManaHeal { get; set; } = (_) => { };
 
-    protected SourceInfo source
-    {
-        get
-        {
-            return new SourceInfo { gem = this, thing = owner };
-        }
-    }
-
-    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
+    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
         CastInfo info = new CastInfo { owner = owner };
-        PurgeInstancesList();
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
-        instances.Add(instance);
+        return CreateAbilityInstance(prefabName, position, rotation, info, data);
     }
 
-    public void CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
+    public AbilityInstanceSafeReference CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, CastInfo info, object[] data = null)
     {
-        PurgeInstancesList();
-        AbilityInstance instance = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, source, data);
-        instances.Add(instance);
+        PurgeReferencesList();
+        AbilityInstanceSafeReference reference = AbilityInstanceManager.CreateAbilityInstance(prefabName, position, rotation, info, data);
+        _references.Add(reference);
+        return reference;
     }
 
-    private void PurgeInstancesList()
+    private void PurgeReferencesList()
     {
-        for (int i = instances.Count - 1; i >= 0; i--)
+        for (int i = _references.Count - 1; i >= 0; i--)
         {
-            if (instances[i] == null || !instances[i].isAlive)
-            {
-                instances.RemoveAt(i);
-            }
+            if (!_references[i].isValid) _references.RemoveAt(i);
         }
     }
 
     public bool IsAnyInstanceActive()
     {
-        PurgeInstancesList();
-        return instances.Count != 0;
+        PurgeReferencesList();
+        return _references.Count != 0;
     }
 
-    public AbilityInstance GetLastInstance()
+    public AbilityInstanceSafeReference GetLastInstance()
     {
-        PurgeInstancesList();
-        if (instances.Count == 0) return null;
-        return instances[instances.Count - 1];
+        PurgeReferencesList();
+        if (_references.Count == 0) return null;
+        return _references[_references.Count - 1];
     }
 
-    public AbilityInstance GetFirstInstsance()
+    public AbilityInstanceSafeReference GetFirstInstance()
     {
-        PurgeInstancesList();
-        if (instances.Count == 0) return null;
-        return instances[0];
+        PurgeReferencesList();
+        if (_references.Count == 0) return null;
+        return _references[0];
     }
 
 
@@ -83,25 +80,27 @@ public abstract class Gem : Item
         switch (target)
         {
             case AbilityInstanceEventTargetType.EveryInstance:
-                for (int i = 0; i < instances.Count; i++)
+                for (int i = 0; i < _references.Count; i++)
                 {
-                    instances[i].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                    _references[i].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 }
                 break;
             case AbilityInstanceEventTargetType.FirstInstance:
-                instances[0].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _references[0].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
             case AbilityInstanceEventTargetType.LastInstance:
-                instances[instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _references[_references.Count - 1].Dereference().photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
                 break;
         }
     }
 
-    public abstract void OnEquip(LivingThing owner, AbilityTrigger trigger);
+    public virtual void OnEquip(LivingThing owner, AbilityTrigger trigger) { }
 
-    public abstract void OnUnequip(LivingThing owner, AbilityTrigger trigger);
+    public virtual void OnUnequip(LivingThing owner, AbilityTrigger trigger) { }
 
     public virtual void OnTriggerCast(bool isMine) { }
+
+    public virtual void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstanceSafeReference reference) { }
 
     public virtual void AliveUpdate(bool isMine) { }
 
@@ -136,6 +135,13 @@ public abstract class Gem : Item
     {
         photonView.RPC("RpcDeactivate", RpcTarget.All);
     }
+
+    [PunRPC]
+    protected void RpcOnAbilityInstanceCreatedFromTrigger(int referenceViewID)
+    {
+        OnAbilityInstanceCreatedFromTrigger(false, AbilityInstanceSafeReference.RetrieveOrCreate(referenceViewID));
+    }
+
 
     [PunRPC]
     protected void RpcReactivate()
@@ -226,5 +232,5 @@ public abstract class Gem : Item
         OnTriggerCast(false);
     }
 
-   
+    public int Serialize() => photonView.ViewID;
 }

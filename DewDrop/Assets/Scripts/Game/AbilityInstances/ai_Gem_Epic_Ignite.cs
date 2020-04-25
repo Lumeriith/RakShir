@@ -15,7 +15,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
 
     protected override void OnCreate(CastInfo info, object[] data)
     {
-        ignite = (gem_Epic_Ignite)source.gem;
+        ignite = (gem_Epic_Ignite)gem;
         ready = transform.Find<ParticleSystem>("Ready");
         distanceEmitter = transform.Find<ParticleSystem>("Distance Emitter");
         hit = transform.Find<ParticleSystem>("Hit");
@@ -35,10 +35,11 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
 
     private void DidBasicAttackHit(InfoBasicAttackHit info)
     {
-        if (info.source.instance != null && info.source.instance.creationTime < creationTime) return;
+        // TODO fix?
+        //if (info.reference.instance.creationTime < creationTime) return;
         this.info.owner.OnDoBasicAttackHit -= DidBasicAttackHit;
         photonView.RPC("RpcHit", RpcTarget.All, info.to.photonView.ViewID);
-        info.to.ApplyStatusEffect(StatusEffect.DamageOverTime(source, ignite.damageDuration, ignite.damageAmount[ignite.level]));
+        info.to.ApplyStatusEffect(StatusEffect.DamageOverTime(ignite.damageDuration, ignite.damageAmount[ignite.level]), reference);
         SFXManager.CreateSFXInstance("si_Gem_Epic_Ignite Hit", transform.position);
     }
 
@@ -71,7 +72,7 @@ public class ai_Gem_Epic_Ignite : AbilityInstance
         
         if (isMine)
         {
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }

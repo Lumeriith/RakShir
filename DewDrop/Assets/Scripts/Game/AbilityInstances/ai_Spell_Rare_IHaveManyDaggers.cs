@@ -31,8 +31,7 @@ public class ai_Spell_Rare_IHaveManyDaggers : AbilityInstance
 
         if (photonView.IsMine && Time.time - startTime > duration)
         {
-            DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
-            Despawn();
+            Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
             SFXManager.CreateSFXInstance("si_Spell_Rare_IHaveManyDaggers Expire", transform.position);
             loopSFX.DestroyFadingOut(1f);
         }

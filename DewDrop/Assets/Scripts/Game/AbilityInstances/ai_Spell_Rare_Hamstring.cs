@@ -14,10 +14,10 @@ public class ai_Spell_Rare_Hamstring : AbilityInstance
         if (photonView.IsMine)
         {
             SFXManager.CreateSFXInstance("si_Spell_Rare_Hamstring", transform.position);
-            info.owner.DoMagicDamage(damage, info.target, false, source);
-            info.target.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
-            info.owner.DoHeal(healAmountMultiplier * info.owner.maximumHealth, info.owner, false, source);
-            DetachChildParticleSystemsAndAutoDelete();
+            info.owner.DoMagicDamage(info.target, damage, false, reference);
+            info.target.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
+            info.owner.DoHeal(info.owner, healAmountMultiplier * info.owner.maximumHealth, false, reference);
+            
             Despawn();
         }
     }

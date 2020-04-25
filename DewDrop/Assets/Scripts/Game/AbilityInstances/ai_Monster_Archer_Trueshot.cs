@@ -32,7 +32,7 @@ public class ai_Monster_Archer_Trueshot : AbilityInstance
         if(Vector3.Distance(startPosition, transform.position) > distance)
         {
             fly.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            DetachChildParticleSystemsAndAutoDelete();
+            
             Despawn();
         }
     }
@@ -42,11 +42,11 @@ public class ai_Monster_Archer_Trueshot : AbilityInstance
         LivingThing lv = other.GetComponent<LivingThing>();
         if (lv == null || !targetValidator.Evaluate(info.owner, lv)) return;
 
-        info.owner.DoMagicDamage(damage, lv, false, source);
-        lv.statusEffect.ApplyStatusEffect(StatusEffect.Slow(source, slowDuration, slowAmount));
+        info.owner.DoMagicDamage(lv, damage, false, reference);
+        lv.statusEffect.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), reference);
 
         photonView.RPC("RpcLanded", RpcTarget.All);
-        DetachChildParticleSystemsAndAutoDelete();
+        
         Despawn();
     }
 

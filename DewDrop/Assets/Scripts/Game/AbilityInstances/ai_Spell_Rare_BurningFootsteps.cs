@@ -32,12 +32,12 @@ public class ai_Spell_Rare_BurningFootsteps : AbilityInstance
             targets = info.owner.GetAllTargetsInRange(transform.position, radius, targetValidator);
             for(int j = 0; j < targets.Count; j++)
             {
-                info.owner.DoMagicDamage(damage, targets[j], false, source);
+                info.owner.DoMagicDamage(targets[j], damage, false, reference);
                 SFXManager.CreateSFXInstance("si_Spell_Rare_BurningFootsteps Hit", targets[j].transform.position);
             }
         }
         if (loopSFX != null) loopSFX.Stop();
-        DetachChildParticleSystemsAndAutoDelete(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         Despawn();
     }
 }
