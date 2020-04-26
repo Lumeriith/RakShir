@@ -19,7 +19,7 @@ public class PoolManager : MonoBehaviour
         return _poolRoot;
     }
 
-    public static GameObject GetPooledGameObjectFromPool(GameObject original, bool activate)
+    public static GameObject GetPooledGameObjectFromPool(GameObject original)
     {
         if (!_pools.TryGetValue(original, out Queue<GameObject> pool))
         {
@@ -32,26 +32,16 @@ public class PoolManager : MonoBehaviour
         }
         GameObject spawnling = pool.Dequeue();
         _originalBySpawnling.Add(spawnling, original);
-        spawnling.SetActive(activate);
         return spawnling;
     }
 
     public static GameObject Spawn(GameObject original, Vector3 position, Quaternion rotation, Transform parent = null)
     {
-        GameObject spawnling = GetPooledGameObjectFromPool(original, true);
+        GameObject spawnling = GetPooledGameObjectFromPool(original);
         spawnling.transform.position = position;
         spawnling.transform.rotation = rotation;
-        spawnling.transform.parent = parent;
-
-        return spawnling;
-    }
-
-    private static GameObject SpawnNoActivation(GameObject original, Vector3 position, Quaternion rotation)
-    {
-        GameObject spawnling = GetPooledGameObjectFromPool(original, false);
-        spawnling.transform.position = position;
-        spawnling.transform.rotation = rotation;
-
+        spawnling.transform.SetParent(parent, false);
+        spawnling.SetActive(true);
         return spawnling;
     }
 
@@ -65,7 +55,7 @@ public class PoolManager : MonoBehaviour
         else
         {
             gobj.SetActive(false);
-            gobj.transform.parent = GetPoolRoot();
+            gobj.transform.SetParent(GetPoolRoot(), false);
             _pools[original].Enqueue(gobj);
             _originalBySpawnling.Remove(gobj);
         }

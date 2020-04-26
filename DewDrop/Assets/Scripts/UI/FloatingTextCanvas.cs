@@ -1,141 +1,142 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class FloatingTextCanvas : MonoBehaviour
 {
-    public FloatingText magicDamageFloatingText;
-    public FloatingText physicalDamageFloatingText;
-    public FloatingText healFloatingText;
-    public FloatingText manaHealFloatingText;
-    public FloatingText goldFloatingText;
+    [Title("Floating Text Prefab Assignments")]
+    [SerializeField]
+    private GameObject _magicDamage;
+    [SerializeField]
+    private GameObject _physicalDamage;
+    [SerializeField]
+    private GameObject _heal;
+    [SerializeField]
+    private GameObject _manaHeal;
+    [SerializeField]
+    private GameObject _gold;
+    [SerializeField]
+    private GameObject _pureDamage;
+    [SerializeField]
+    private GameObject _dodge;
+    [SerializeField]
+    private GameObject _miss;
 
-    public FloatingText pureDamageFloatingText;
-    public FloatingText dodgeFloatingText;
-    public FloatingText missFloatingText;
 
-    private static FloatingTextCanvas _instance;
     public static FloatingTextCanvas instance
     {
         get
         {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<FloatingTextCanvas>();
-            }
+            if (_instance == null) _instance = FindObjectOfType<FloatingTextCanvas>();
             return _instance;
         }
     }
+    private static FloatingTextCanvas _instance;
 
     private void Awake()
     {
-        GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
-        {
-            if (thing.type == LivingThingType.Player && thing.photonView.IsMine) RegisterFloatingTextEvents(thing);
-        };
-
+        GameManager.instance.OnLivingThingInstantiate += (Entity entity) => { if (entity.type == LivingThingType.Player && entity.photonView.IsMine) RegisterFloatingTextEvents(entity); };
     }
+
+    public void SpawnFloatingTextAtEntity(GameObject original, string text, Entity entity)
+    {
+        Vector3 worldPos = entity.transform.position + entity.GetCenterOffset();
+        SpawnFloatingText(original, text, worldPos);
+    }
+
+    public void SpawnFloatingTextAtEntity(GameObject original, Entity entity)
+    {
+        Vector3 worldPos = entity.transform.position + entity.GetCenterOffset();
+        SpawnFloatingText(original, worldPos);
+    }
+
+
+
+    public void SpawnFloatingText(GameObject original, string text, Vector3 worldPosition)
+    {
+        FloatingText newText = PoolManager.Spawn(original, Vector3.zero, Quaternion.identity, transform).GetComponent<FloatingText>();
+        newText.Setup(worldPosition, text);
+    }
+
+    public void SpawnFloatingText(GameObject original, Vector3 worldPosition)
+    {
+        FloatingText newText = PoolManager.Spawn(original, Vector3.zero, Quaternion.identity, transform).GetComponent<FloatingText>();
+        newText.Setup(worldPosition);
+    }
+
+
 
     public void RegisterFloatingTextEvents(Entity player)
     {
         player.OnDoBasicAttackHit += (InfoBasicAttackHit info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+            SpawnFloatingTextAtEntity(_physicalDamage, Mathf.Ceil(info.damage).ToString(), info.to);
+        };
 
-            FloatingText floatingText = Instantiate(physicalDamageFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.damage).ToString();
-            floatingText.worldPosition = worldPos;
+        player.OnTakeBasicAttackHit += (InfoBasicAttackHit info) =>
+        {
+            if (info.from == info.to) return;
+            SpawnFloatingTextAtEntity(_physicalDamage, Mathf.Ceil(info.damage).ToString(), info.to);
         };
 
         player.OnDealMagicDamage += (InfoMagicDamage info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+            SpawnFloatingTextAtEntity(_magicDamage, Mathf.Ceil(info.finalDamage).ToString(), info.to);
+        };
 
-            FloatingText floatingText = Instantiate(magicDamageFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalDamage).ToString();
-            floatingText.worldPosition = worldPos;
+        player.OnTakeMagicDamage += (InfoMagicDamage info) =>
+        {
+            if (info.from == info.to) return;
+            SpawnFloatingTextAtEntity(_magicDamage, Mathf.Ceil(info.finalDamage).ToString(), info.to);
         };
 
         player.OnDealPureDamage += (InfoDamage info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(pureDamageFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.damage).ToString();
-            floatingText.worldPosition = worldPos;
+            SpawnFloatingTextAtEntity(_pureDamage, Mathf.Ceil(info.damage).ToString(), info.to);
         };
 
-        player.OnTakeHeal += (InfoHeal info) =>
+        player.OnTakePureDamage += (InfoDamage info) =>
         {
-            if (info.to == info.from) return;
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(healFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalHeal).ToString();
-            floatingText.worldPosition = worldPos;
+            if (info.from == info.to) return;
+            SpawnFloatingTextAtEntity(_pureDamage, Mathf.Ceil(info.damage).ToString(), info.to);
         };
 
         player.OnDoHeal += (InfoHeal info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(healFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalHeal).ToString();
-            floatingText.worldPosition = worldPos;
+            SpawnFloatingTextAtEntity(_heal, Mathf.Ceil(info.finalHeal).ToString(), info.to) ;
         };
 
-        player.OnTakeManaHeal += (InfoManaHeal info) =>
+        player.OnTakeHeal += (InfoHeal info) =>
         {
-            if (info.to == info.from) return;
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(manaHealFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalManaHeal).ToString();
-            floatingText.worldPosition = worldPos;
+            if (info.from == info.to) return;
+            SpawnFloatingTextAtEntity(_heal, Mathf.Ceil(info.finalHeal).ToString(), info.to);
         };
 
         player.OnDoManaHeal += (InfoManaHeal info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
+            SpawnFloatingTextAtEntity(_manaHeal, Mathf.Ceil(info.finalManaHeal).ToString(), info.to);
+        };
 
-            FloatingText floatingText = Instantiate(manaHealFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = Mathf.Ceil(info.finalManaHeal).ToString();
-            floatingText.worldPosition = worldPos;
+        player.OnTakeManaHeal += (InfoManaHeal info) =>
+        {
+            if (info.from == info.to) return;
+            SpawnFloatingTextAtEntity(_manaHeal, Mathf.Ceil(info.finalManaHeal).ToString(), info.to);
         };
 
         player.OnTakeGold += (InfoGold info) =>
         {
-            Vector3 worldPos = info.from.transform.position + info.from.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(goldFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.text = "+" + Mathf.Ceil(info.amount).ToString() + "G";
-            floatingText.worldPosition = worldPos;
+            SpawnFloatingTextAtEntity(_gold, Mathf.Ceil(info.amount).ToString(), info.from);
         };
 
         player.OnDodge += (InfoMiss info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(dodgeFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.worldPosition = worldPos;
+            SpawnFloatingTextAtEntity(_dodge, info.to);
         };
 
         player.OnMiss += (InfoMiss info) =>
         {
-            Vector3 worldPos = info.to.transform.position + info.to.GetRandomOffset();
-
-            FloatingText floatingText = Instantiate(missFloatingText, transform).GetComponent<FloatingText>();
-
-            floatingText.worldPosition = worldPos;
+            SpawnFloatingTextAtEntity(_miss, info.to);
         };
 
 
