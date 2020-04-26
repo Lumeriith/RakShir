@@ -22,6 +22,6 @@ public class ai_cons_HealOverTime : AbilityInstance
     IEnumerator CoroutineDestroy()
     {
         yield return new WaitForSeconds(duration);
-        Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
+        Despawn(info.owner, DespawnBehaviour.StopAndWaitForParticleSystems);
     }
 }

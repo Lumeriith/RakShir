@@ -10,7 +10,7 @@ using Sirenix.OdinInspector;
 public class EntityStat : MonoBehaviourPun
 {
 
-    private Entity livingThing;
+    private Entity _entity;
 
     [Header("Changing Stats")]
     public float currentHealth = 1000;
@@ -115,16 +115,16 @@ public class EntityStat : MonoBehaviourPun
     public float finalMaximumMana { get { return baseMaximumMana + finalIntelligence * additionalMaximumManaPerUnit + bonusMaximumMana; } }
     public float finalManaRegenerationPerSecond { get { return baseManaRegenerationPerSecond + finalIntelligence * additionalManaRegenerationPerSecondPerUnit + bonusManaRegenerationPerSecond; } }
     public float finalMovementSpeed { get { return (baseMovementSpeed + finalAgility * additionalMovementSpeedPerUnit + bonusMovementSpeed); } }
-    public float finalAttackDamage { get { return (baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage) * (100f + livingThing.statusEffect.status.attackDamageBoost - livingThing.statusEffect.status.attackDamageReduction) / 100f; } }
+    public float finalAttackDamage { get { return (baseAttackDamage + finalStrength * additionalAttackDamagePerUnit + bonusAttackDamage) * (100f + _entity.statusEffect.status.attackDamageBoost - _entity.statusEffect.status.attackDamageReduction) / 100f; } }
     public float finalAttacksPerSecond { get { return baseAttacksPerSecond * (1 + (finalAgility * additionalAttackSpeedPercentagePerUnit / 100) + (bonusAttackSpeedPercentage / 100)); } }
-    public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower + livingThing.statusEffect.status.spellPowerBoost - livingThing.statusEffect.status.spellPowerReduction; } }
+    public float finalSpellPower { get { return baseSpellPower + finalIntelligence * additionalSpellPowerPerUnit + bonusSpellPower + _entity.statusEffect.status.spellPowerBoost - _entity.statusEffect.status.spellPowerReduction; } }
     public float finalCooldownReduction { get { return baseCooldownReduction + finalIntelligence * additionalCooldownReductionPerUnit + bonusCooldownReduction; } }
     public float finalDodgeChance { get { return baseDodgeChance + finalAgility * additionalDodgeChancePerUnit + bonusDodgeChance; } }
 
 
     private void Awake()
     {
-        livingThing = GetComponent<Entity>();
+        _entity = GetComponent<Entity>();
     }
 
     private void Update()

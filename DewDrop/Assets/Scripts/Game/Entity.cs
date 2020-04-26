@@ -34,30 +34,30 @@ public class Entity : MonoBehaviourPun
 {
     private bool didDamageFlash;
 
-    private NavMeshAgent agent;
-    private Entity lastAttacker;
-    private Animator animator;
-    private AnimatorOverrideController aoc;
-    private AnimationClip[] defaultClips;
+    private NavMeshAgent _agent;
+    private Entity _lastAttacker;
+    private Animator _animator;
+    private AnimatorOverrideController _overrideController;
+    private AnimationClip[] _defaultClips;
 
-    private List<Color> flashColors = new List<Color>();
-    private List<float> flashDurations = new List<float>();
+    private List<Color> _flashColors = new List<Color>();
+    private List<float> _flashDurations = new List<float>();
 
-    private Transform model;
-    private Vector3 defaultScale;
+    private Transform _model;
+    private Vector3 _defaultScale;
 
-    private List<float> scaleMultipliers = new List<float>();
-    private List<float> scaleDurations = new List<float>();
+    private List<float> _scaleMultipliers = new List<float>();
+    private List<float> _scaleDurations = new List<float>();
 
-    private List<Material> materials = new List<Material>();
-    private List<Color> defaultEmissionColors = new List<Color>();
-    private List<Texture> defaultEmissionMaps = new List<Texture>();
-    private List<bool> defaultKeywordEnabled = new List<bool>();
+    private List<Material> _materials = new List<Material>();
+    private List<Color> _defaultEmissionColors = new List<Color>();
+    private List<Texture> _defaultEmissionMaps = new List<Texture>();
+    private List<bool> _defaultKeywordEnabled = new List<bool>();
 
     [HideInInspector]
     public Displacement ongoingDisplacement = null;
 
-    private float defaultMovementSpeed;
+    private float _defaultMovementSpeed;
 
     #region Action Declarations
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
@@ -197,42 +197,42 @@ public class Entity : MonoBehaviourPun
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
-        agent = GetComponent<NavMeshAgent>();
-        model = transform.Find("Model");
+        _agent = GetComponent<NavMeshAgent>();
+        _model = transform.Find("Model");
 
-        defaultScale = model.localScale;
-        model.localScale = Vector3.zero;
+        _defaultScale = _model.localScale;
+        _model.localScale = Vector3.zero;
 
         control = GetComponent<EntityControl>();
         stat = GetComponent<EntityStat>();
         statusEffect = GetComponent<EntityStatusEffect>();
         gameObject.layer = LayerMask.NameToLayer("LivingThing");
 
-        defaultMovementSpeed = stat.baseMovementSpeed;
+        _defaultMovementSpeed = stat.baseMovementSpeed;
 
-        animator = transform.Find("Model").GetComponent<Animator>();
-        animator.applyRootMotion = false;
+        _animator = transform.Find("Model").GetComponent<Animator>();
+        _animator.applyRootMotion = false;
 
         if (photonView.IsMine)
         {
-            agent.avoidancePriority++;
+            _agent.avoidancePriority++;
         }
 
         if (type == LivingThingType.Monster && tier == LivingThingTier.Boss)
         {
-            agent.avoidancePriority -= 5;
+            _agent.avoidancePriority -= 5;
         }
         if (type == LivingThingType.Monster && tier == LivingThingTier.Elite)
         {
-            agent.avoidancePriority -= 2;
+            _agent.avoidancePriority -= 2;
         }
-        if (type == LivingThingType.Player) agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-        agent.stoppingDistance = 0.1f;
-        agent.autoRepath = false;
-        agent.autoBraking = true;
-        defaultClips = animator.runtimeAnimatorController.animationClips;
-        aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
-        animator.runtimeAnimatorController = aoc;
+        if (type == LivingThingType.Player) _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        _agent.stoppingDistance = 0.1f;
+        _agent.autoRepath = false;
+        _agent.autoBraking = true;
+        _defaultClips = _animator.runtimeAnimatorController.animationClips;
+        _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+        _animator.runtimeAnimatorController = _overrideController;
 
         outline = gameObject.AddComponent<MeshOutline>();
         /*
@@ -264,10 +264,10 @@ public class Entity : MonoBehaviourPun
         {
             if (!renderers[i].material.HasProperty("_EmissionColor") ||
                 !renderers[i].material.HasProperty("_EmissionMap")) continue;
-            materials.Add(renderers[i].material);
-            defaultEmissionColors.Add(materials[materials.Count - 1].GetColor("_EmissionColor"));
-            defaultEmissionMaps.Add(materials[materials.Count - 1].GetTexture("_EmissionMap"));
-            defaultKeywordEnabled.Add(materials[materials.Count - 1].IsKeywordEnabled("_EMISSION"));
+            _materials.Add(renderers[i].material);
+            _defaultEmissionColors.Add(_materials[_materials.Count - 1].GetColor("_EmissionColor"));
+            _defaultEmissionMaps.Add(_materials[_materials.Count - 1].GetTexture("_EmissionMap"));
+            _defaultKeywordEnabled.Add(_materials[_materials.Count - 1].IsKeywordEnabled("_EMISSION"));
         }
 
         OnTakeDamage += (InfoDamage _) => {
@@ -331,81 +331,81 @@ public class Entity : MonoBehaviourPun
             Kill();
         }
 
-        float walkSpeedMultiplier = stat.finalMovementSpeed / 100f * (100f + statusEffect.status.speed) / 100f * (100f - statusEffect.status.slow) / defaultMovementSpeed;
+        float walkSpeedMultiplier = stat.finalMovementSpeed / 100f * (100f + statusEffect.status.speed) / 100f * (100f - statusEffect.status.slow) / _defaultMovementSpeed;
         walkSpeedMultiplier = 1 + (walkSpeedMultiplier - 1) * 0.5f;
-        animator.SetFloat("WalkSpeedMultiplier", walkSpeedMultiplier);
+        _animator.SetFloat("WalkSpeedMultiplier", walkSpeedMultiplier);
 
-        if(scaleMultipliers.Count == 0)
+        if(_scaleMultipliers.Count == 0)
         {
-            model.localScale = defaultScale;
+            _model.localScale = _defaultScale;
         }
         else
         {
-            Vector3 scale = defaultScale;
-            for(int i = 0; i < scaleMultipliers.Count; i++)
+            Vector3 scale = _defaultScale;
+            for(int i = 0; i < _scaleMultipliers.Count; i++)
             {
-                scale *= scaleMultipliers[i];
+                scale *= _scaleMultipliers[i];
             }
-            model.localScale = scale;
+            _model.localScale = scale;
         }
 
         if (IsDead() && shouldDecay)
         {
-            model.localScale = model.localScale * Mathf.Clamp01(1 - (Time.time - timeOfDeath - startDecayTime) / (endDecayTime - startDecayTime));
+            _model.localScale = _model.localScale * Mathf.Clamp01(1 - (Time.time - timeOfDeath - startDecayTime) / (endDecayTime - startDecayTime));
             if (Time.time - timeOfDeath > endDecayTime && photonView.IsMine) Destroy();
         }
 
 
-        if (flashColors.Count == 0)
+        if (_flashColors.Count == 0)
         {
-            for (int i = 0; i < materials.Count; i++)
+            for (int i = 0; i < _materials.Count; i++)
             {
-                materials[i].SetColor("_EmissionColor", defaultEmissionColors[i]);
-                materials[i].SetTexture("_EmissionMap", defaultEmissionMaps[i]);
-                if (defaultKeywordEnabled[i])
+                _materials[i].SetColor("_EmissionColor", _defaultEmissionColors[i]);
+                _materials[i].SetTexture("_EmissionMap", _defaultEmissionMaps[i]);
+                if (_defaultKeywordEnabled[i])
                 {
-                    materials[i].EnableKeyword("_EMISSION");
+                    _materials[i].EnableKeyword("_EMISSION");
                 }
                 else
                 {
-                    materials[i].DisableKeyword("_EMISSION");
+                    _materials[i].DisableKeyword("_EMISSION");
                 }
             }
         }
         else
         {
             Color color = Color.clear;
-            for(int i = 0; i < flashColors.Count; i++)
+            for(int i = 0; i < _flashColors.Count; i++)
             {
-                color += flashColors[i];
+                color += _flashColors[i];
             }
 
-            for (int i = 0; i < materials.Count; i++)
+            for (int i = 0; i < _materials.Count; i++)
             {
-                materials[i].SetColor("_EmissionColor", color);
-                materials[i].SetTexture("_EmissionMap", null);
-                materials[i].EnableKeyword("_EMISSION");
-            }
-        }
-
-        for(int i = scaleMultipliers.Count - 1; i >= 0; i--)
-        {
-            scaleDurations[i] -= Time.deltaTime;
-            if(scaleDurations[i] <= 0)
-            {
-                scaleDurations.RemoveAt(i);
-                scaleMultipliers.RemoveAt(i);
+                _materials[i].SetColor("_EmissionColor", color);
+                _materials[i].SetTexture("_EmissionMap", null);
+                _materials[i].EnableKeyword("_EMISSION");
             }
         }
 
-
-        for (int i = flashColors.Count - 1; i >= 0; i--)
+        for(int i = _scaleMultipliers.Count - 1; i >= 0; i--)
         {
-            flashDurations[i] -= Time.deltaTime;
-            if (flashDurations[i] <= 0)
+            _scaleDurations[i] -= Time.deltaTime;
+            if(_scaleDurations[i] <= 0)
             {
-                flashColors.RemoveAt(i);
-                flashDurations.RemoveAt(i);
+                _scaleDurations.RemoveAt(i);
+                _scaleMultipliers.RemoveAt(i);
+            }
+        }
+
+
+        for (int i = _flashColors.Count - 1; i >= 0; i--)
+        {
+            _flashDurations[i] -= Time.deltaTime;
+            if (_flashDurations[i] <= 0)
+            {
+                _flashColors.RemoveAt(i);
+                _flashDurations.RemoveAt(i);
             }
         }
     }
@@ -532,7 +532,7 @@ public class Entity : MonoBehaviourPun
     }
     public Entity GetLastAttacker()
     {
-        return lastAttacker ?? this;
+        return _lastAttacker ?? this;
     }
     public Relation GetRelationTo(Entity to)
     {
@@ -834,15 +834,15 @@ public class Entity : MonoBehaviourPun
     public void RpcFlashForDuration(float r, float g, float b, float a, float multiplier, float duration)
     {
         Color color = new Color(r, g, b, a);
-        flashColors.Add(color * multiplier);
-        flashDurations.Add(duration);
+        _flashColors.Add(color * multiplier);
+        _flashDurations.Add(duration);
     }
 
     [PunRPC]
     public void RpcScaleForDuration(float multiplier, float duration)
     {
-        scaleMultipliers.Add(multiplier);
-        scaleDurations.Add(duration);
+        _scaleMultipliers.Add(multiplier);
+        _scaleDurations.Add(duration);
     }
 
 
@@ -857,7 +857,7 @@ public class Entity : MonoBehaviourPun
         }
         control.enabled = true;
         control.agent.enabled = true;
-        animator.SetBool("IsDead", false);
+        _animator.SetBool("IsDead", false);
     }
 
     [PunRPC]
@@ -894,7 +894,7 @@ public class Entity : MonoBehaviourPun
             stat.ValidateHealth();
         }
 
-        if(from != this) lastAttacker = from;
+        if(from != this) _lastAttacker = from;
 
         if (photonView.IsMine)
         {
@@ -964,7 +964,7 @@ public class Entity : MonoBehaviourPun
                 stat.ValidateHealth();
             }
 
-            if(from != this) lastAttacker = from;
+            if(from != this) _lastAttacker = from;
 
             if (photonView.IsMine)
             {
@@ -1032,7 +1032,7 @@ public class Entity : MonoBehaviourPun
         Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
         stat.currentHealth -= Mathf.Max(0, amount);
         stat.ValidateHealth();
-        if(from!=this) lastAttacker = from;
+        if(from!=this) _lastAttacker = from;
         if (photonView.IsMine)
         {
             stat.SyncChangingStats();   
@@ -1073,7 +1073,7 @@ public class Entity : MonoBehaviourPun
         OnDeath.Invoke(info);
         
         killer.OnKill.Invoke(info);
-        animator.SetBool("IsDead", true);
+        _animator.SetBool("IsDead", true);
         timeOfDeath = Time.time;
     }
 
@@ -1145,15 +1145,15 @@ public class Entity : MonoBehaviourPun
     {
         AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        foreach (AnimationClip oldClip in defaultClips)
+        foreach (AnimationClip oldClip in _defaultClips)
         {
             if (oldClip.name == "Walk")
             {
                 overrideList.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, newClip));
-                aoc.ApplyOverrides(overrideList);
+                _overrideController.ApplyOverrides(overrideList);
             }
         }
-        animator.runtimeAnimatorController = aoc;
+        _animator.runtimeAnimatorController = _overrideController;
     }
 
     [PunRPC]
@@ -1161,15 +1161,15 @@ public class Entity : MonoBehaviourPun
     {
         AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        foreach (AnimationClip oldClip in defaultClips)
+        foreach (AnimationClip oldClip in _defaultClips)
         {
             if (oldClip.name == "Stand")
             {
                 overrideList.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, newClip));
-                aoc.ApplyOverrides(overrideList);
+                _overrideController.ApplyOverrides(overrideList);
             }
         }
-        animator.runtimeAnimatorController = aoc;
+        _animator.runtimeAnimatorController = _overrideController;
     }
 
 
@@ -1178,17 +1178,17 @@ public class Entity : MonoBehaviourPun
     {
         AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        foreach(AnimationClip oldClip in defaultClips)
+        foreach(AnimationClip oldClip in _defaultClips)
         {
             if(oldClip.name == "Custom Animation")
             {
                 overrideList.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, newClip));
-                aoc.ApplyOverrides(overrideList);
+                _overrideController.ApplyOverrides(overrideList);
             }
         }
-        animator.runtimeAnimatorController = aoc;
-        animator.SetTrigger("PlayCustomAnimation");
-        animator.SetFloat("CustomAnimationSpeed", duration == -1 ? 1f : newClip.length / duration);
+        _animator.runtimeAnimatorController = _overrideController;
+        _animator.SetTrigger("PlayCustomAnimation");
+        _animator.SetFloat("CustomAnimationSpeed", duration == -1 ? 1f : newClip.length / duration);
     }
 
     [PunRPC]

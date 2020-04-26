@@ -52,14 +52,14 @@ public struct EntityStatus : IReadOnlyEntityStatus
 
 public class EntityStatusEffect : MonoBehaviourPun
 {
-    private const float overTimeEffectTickInterval = 0.5f;
+    private const float OverTimeStatusEffectTickInterval = 0.5f;
 
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
-    private Entity livingThing;
+    private Entity _entity;
 
-    private float lastOverTimeEffectTickTime = 0f;
+    private float _lastOverTimeStatusEffectTickTime = 0f;
 
-    private int[] statusEffectCountMap;
+    private int[] _statusEffectCountMap;
 
     public IReadOnlyEntityStatus status { get => _status; }
     private EntityStatus _status;
@@ -71,9 +71,9 @@ public class EntityStatusEffect : MonoBehaviourPun
         {
             if ((int)type > maxStatusEffectTypeValue) maxStatusEffectTypeValue = (int)type;
         }
-        statusEffectCountMap = new int[maxStatusEffectTypeValue + 1];
-        livingThing = GetComponent<Entity>();
-        lastOverTimeEffectTickTime = Time.time;
+        _statusEffectCountMap = new int[maxStatusEffectTypeValue + 1];
+        _entity = GetComponent<Entity>();
+        _lastOverTimeStatusEffectTickTime = Time.time;
         
     }
 
@@ -106,7 +106,7 @@ public class EntityStatusEffect : MonoBehaviourPun
 
     public void ApplyStatusEffect(StatusEffect ce, DewActionCaller caller)
     {
-        if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing)) return;
+        if (ce.IsHarmful() && !SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(_entity)) return;
         long uid; 
         do
         {
@@ -115,11 +115,11 @@ public class EntityStatusEffect : MonoBehaviourPun
         } while (GetStatusEffectByUID(uid) != null);
 
         ce.uid = uid;
-        ce.owner = livingThing;
+        ce.owner = _entity;
         ce.handler = caller;
         statusEffects.Add(ce);
-        statusEffectCountMap[(int)ce.type] += 1;
-        if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
+        _statusEffectCountMap[(int)ce.type] += 1;
+        if(_statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(_entity, ce.type);
         photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler.GetActionCallerUID(), (byte)ce.type, ce.duration, ce.parameter);
     }
 
@@ -155,9 +155,9 @@ public class EntityStatusEffect : MonoBehaviourPun
 
     public bool IsAffectedBy(StatusEffectType type)
     {
-        if(type == StatusEffectType.Dash) return livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.isFriendly;
-        if (type == StatusEffectType.Airborne) return livingThing.ongoingDisplacement != null && !livingThing.ongoingDisplacement.isFriendly;
-        return statusEffectCountMap[(int)type] > 0;
+        if(type == StatusEffectType.Dash) return _entity.ongoingDisplacement != null && _entity.ongoingDisplacement.isFriendly;
+        if (type == StatusEffectType.Airborne) return _entity.ongoingDisplacement != null && !_entity.ongoingDisplacement.isFriendly;
+        return _statusEffectCountMap[(int)type] > 0;
     }
 
     public StatusEffect GetStatusEffectByUID(long uid)
@@ -173,7 +173,7 @@ public class EntityStatusEffect : MonoBehaviourPun
     private bool wasStunned = false;
     private void FixedUpdate()
     {
-        bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
+        bool canTick = SelfValidator.CanTick.Evaluate(_entity);
         bool tickedAirborne = false;
         bool doOverTimeEffectTicks = false;
         float remainingAirboneDuration = 0;
@@ -183,11 +183,11 @@ public class EntityStatusEffect : MonoBehaviourPun
 
 
 
-        if (Time.time - lastOverTimeEffectTickTime > overTimeEffectTickInterval)
+        if (Time.time - _lastOverTimeStatusEffectTickTime > OverTimeStatusEffectTickInterval)
         {
-            lastOverTimeEffectTickTime += overTimeEffectTickInterval;
+            _lastOverTimeStatusEffectTickTime += OverTimeStatusEffectTickInterval;
             doOverTimeEffectTicks = true;
-            lastOverTimeEffectTickTime = Time.time;
+            _lastOverTimeStatusEffectTickTime = Time.time;
         }
 
         List<float> reservedHealAmounts = new List<float>();
@@ -250,7 +250,7 @@ public class EntityStatusEffect : MonoBehaviourPun
                     }
                     else
                     {
-                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * overTimeEffectTickInterval);
+                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * OverTimeStatusEffectTickInterval);
                         if (photonView.IsMine)
                         {
                             temp = -1;
@@ -310,7 +310,7 @@ public class EntityStatusEffect : MonoBehaviourPun
                     }
                     else
                     {
-                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * overTimeEffectTickInterval);
+                        float amount = Mathf.Min((float)statusEffects[i].parameter, (float)statusEffects[i].parameter / statusEffects[i].duration * OverTimeStatusEffectTickInterval);
                         if (photonView.IsMine)
                         {
                             temp = -1;
@@ -342,7 +342,7 @@ public class EntityStatusEffect : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                if ((statusEffects[i].type == StatusEffectType.Shield && (float)statusEffects[i].parameter <= 0) || (statusEffects[i].duration <= 0 && statusEffects[i].type != StatusEffectType.HealOverTime && statusEffects[i].type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(livingThing) && statusEffects[i].IsHarmful()) || livingThing.IsDead())
+                if ((statusEffects[i].type == StatusEffectType.Shield && (float)statusEffects[i].parameter <= 0) || (statusEffects[i].duration <= 0 && statusEffects[i].type != StatusEffectType.HealOverTime && statusEffects[i].type != StatusEffectType.DamageOverTime) || (!SelfValidator.CanHaveHarmfulStatusEffects.Evaluate(_entity) && statusEffects[i].IsHarmful()) || _entity.IsDead())
                 {
                     removeList.Add(statusEffects[i]);
                 }
@@ -352,15 +352,15 @@ public class EntityStatusEffect : MonoBehaviourPun
 
         for (int i = 0; i < reservedHealAmounts.Count; i++)
         {
-            if(reservedHealHandlers[i].entity == null) livingThing.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
-            else reservedHealHandlers[i].entity.DoHeal(livingThing, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            if(reservedHealHandlers[i].entity == null) _entity.DoHeal(_entity, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            else reservedHealHandlers[i].entity.DoHeal(_entity, reservedHealAmounts[i], true, reservedHealHandlers[i]);
 
         }
 
         for (int i = 0; i < reservedMagicDamageAmounts.Count; i++)
         {
-            if(reservedMagicDamageHandlers[i].entity == null) livingThing.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
-            else reservedMagicDamageHandlers[i].entity.DoMagicDamage(livingThing, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            if(reservedMagicDamageHandlers[i].entity == null) _entity.DoMagicDamage(_entity, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            else reservedMagicDamageHandlers[i].entity.DoMagicDamage(_entity, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
         }
 
         _status.Clear();
@@ -465,12 +465,12 @@ public class EntityStatusEffect : MonoBehaviourPun
     public void RpcApplyStatusEffect(long uid, int callerUID, byte type, float duration, object parameter)
     {
         StatusEffect ce = new StatusEffect((StatusEffectType)type, duration, parameter);
-        ce.owner = livingThing;
+        ce.owner = _entity;
         ce.uid = uid;
         ce.handler = DewActionCaller.Retrieve(callerUID);
         statusEffects.Add(ce);
-        statusEffectCountMap[(int)ce.type] += 1;
-        if(statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(livingThing, ce.type);
+        _statusEffectCountMap[(int)ce.type] += 1;
+        if(_statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(_entity, ce.type);
     }
 
     [PunRPC]
@@ -478,7 +478,7 @@ public class EntityStatusEffect : MonoBehaviourPun
     {
         StatusEffect se = GetStatusEffectByUID(uid);
         if (se == null) return;
-        statusEffectCountMap[(int)se.type] -= 1;
+        _statusEffectCountMap[(int)se.type] -= 1;
         se.duration = 0;
         se.OnExpire();
         statusEffects.Remove(se);
@@ -516,7 +516,7 @@ public class EntityStatusEffect : MonoBehaviourPun
                 statusEffects[i].duration = 0;
                 statusEffects[i].OnExpire();
                 statusEffects.RemoveAt(i);
-                statusEffectCountMap[type] -= 1;
+                _statusEffectCountMap[type] -= 1;
             }
         }
     }
@@ -528,7 +528,7 @@ public class EntityStatusEffect : MonoBehaviourPun
         {
             if (statusEffects[i].IsHarmful())
             {
-                statusEffectCountMap[(int)statusEffects[i].type] -= 1;
+                _statusEffectCountMap[(int)statusEffects[i].type] -= 1;
                 statusEffects[i].duration = 0;
                 statusEffects[i].OnExpire();
                 statusEffects.RemoveAt(i);
@@ -539,12 +539,12 @@ public class EntityStatusEffect : MonoBehaviourPun
     [PunRPC]
     private void RpcStartStunned()
     {
-        livingThing.OnStartStunned.Invoke();
+        _entity.OnStartStunned.Invoke();
     }
 
     [PunRPC]
     private void RpcStopStunned()
     {
-        livingThing.OnStopStunned.Invoke();
+        _entity.OnStopStunned.Invoke();
     }
 }
