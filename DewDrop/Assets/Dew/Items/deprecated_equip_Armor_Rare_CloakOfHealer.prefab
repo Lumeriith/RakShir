@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2911441332996855070}
   - component: {fileID: 9189937867593367065}
   m_Layer: 11
-  m_Name: equip_Armor_Rare_CloakOfHealer
+  m_Name: deprecated_equip_Armor_Rare_CloakOfHealer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,88 +131,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   attachments: []
---- !u!1 &3756895863753804117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5424103584340558683}
-  - component: {fileID: 647140547892401143}
-  m_Layer: 11
-  m_Name: trg_Spell_Rare_HealingCircle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5424103584340558683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &647140547892401143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dfdf8ba33b3f541adc21c23ab631f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: d629d703843dcb54589e9c7c8da36b5d, type: 3}
-  abilityName: "\uCE58\uC720\uC758 \uC6D0"
-  abilityDescription: "\uC815\uC2E0\uC744 \uC9D1\uC911\uD558\uC5EC 0.5\uCD08 \uD6C4,
-    \uB300\uC0C1 \uC9C0\uC5ED\uC5D0 6\uCD08 \uB3D9\uC548 \uC9C0\uC18D\uB418\uB294
-    \uCE58\uC720\uC758 \uC6D0\uC744 \uD615\uC131\uD569\uB2C8\uB2E4. \uC6D0 \uC548\uC758
-    \uC544\uAD70\uB4E4\uC740 0.5\uCD08\uB2F9 30\uC758 [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
-  soundEffect:
-  - {fileID: 1607579122048388727, guid: 52869f7548e34c74c91310c225f403c5, type: 3}
-  castAnimation:
-  - {fileID: 7400000, guid: 1f8621e50482eee4db531bbee7507c60, type: 2}
-  animationDuration: 1
-  indicator:
-    type: 1
-    range: 6.5
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 1
-    secondRange: 3.5
-  dontCancelBasicCommands: 0
-  targetingType: 1
-  range: 6.5
-  manaCost: 70
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 14
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -383,3 +301,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3549982634276603956}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8499966869078926188
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 4744223586144217657, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Rare_HealingCircle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f173911e54876e44887fe19aec20a2a5, type: 3}
+--- !u!4 &5424103584340558683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4518161206703497271, guid: f173911e54876e44887fe19aec20a2a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 8499966869078926188}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &647140547892401143 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9011395211882475675, guid: f173911e54876e44887fe19aec20a2a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 8499966869078926188}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dfdf8ba33b3f541adc21c23ab631f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

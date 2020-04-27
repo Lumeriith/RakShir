@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c22b50688830204eb05af71a42c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.9, y: 1.1}
+  pitchRandomMultiplier: {x: 0.95, y: 1.05}
   destroyWhenNotPlaying: 1
+  _clips:
+  - {fileID: 8300000, guid: 2b479ea7e44fadf43a957a7268eff182, type: 3}
+  - {fileID: 8300000, guid: b0b7f1ec4436abd42bc4132866704d76, type: 3}
+  - {fileID: 8300000, guid: 72704be511a711844ab1d884a31203a7, type: 3}
+  - {fileID: 8300000, guid: 98f8fa951b92c824e918efaf5a53fb4b, type: 3}
+  - {fileID: 8300000, guid: 03b90ebd4a7674442ae9891b19002836, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -58,10 +64,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1838379260092020110, guid: 3420e9129528250489ce94560d42b496,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 2b84a98b1c962a64598ae0f04c500ad8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b0b7f1ec4436abd42bc4132866704d76, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
-  m_Pitch: 0.7
+  m_Volume: 1
+  m_Pitch: 1.2
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -69,9 +75,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 70
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -122,7 +128,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.547
       inSlope: 0
       outSlope: 0
       tangentMode: 0

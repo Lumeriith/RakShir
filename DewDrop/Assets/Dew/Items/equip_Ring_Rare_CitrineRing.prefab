@@ -130,86 +130,6 @@ MonoBehaviour:
   - {fileID: 252760134462124397}
   - {fileID: 0}
   attachments: []
---- !u!1 &3756895863753804117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5424103584340558683}
-  - component: {fileID: 252760134462124397}
-  m_Layer: 11
-  m_Name: trg_Spell_Rare_LightOfHigherBeing
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5424103584340558683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &252760134462124397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85c590a562a9ad848a22b97b9f1880ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: e5ff9581805d44f4c8c3ca98fb413cec, type: 3}
-  abilityName: "\uC874\uC7AC\uC758 \uD615\uC0C1"
-  abilityDescription: "\uC790\uC2E0\uC774 3\uCD08 \uB3D9\uC548 [\uBB34\uC801] \uC0C1\uD0DC\uAC00
-    \uB429\uB2C8\uB2E4."
-  soundEffect:
-  - {fileID: 1607579122048388727, guid: 5372ce81d319eb744b09e5ccaa69936b, type: 3}
-  castAnimation: []
-  animationDuration: 0
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 1
-  targetingType: 0
-  range: 0
-  manaCost: 0
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 180
-  connectedGems: []
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -285,6 +205,93 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1612898456162796947}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2622042317102535867
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 1171060673960893934, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Rare_LightOfHigherBeing
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 17ecc67694808c0499091a2189fdb0f7, type: 3}
+--- !u!4 &5424103584340558683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8008830467496908768, guid: 17ecc67694808c0499091a2189fdb0f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2622042317102535867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &252760134462124397 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2874037189292778966, guid: 17ecc67694808c0499091a2189fdb0f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2622042317102535867}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c590a562a9ad848a22b97b9f1880ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3549982634276603956
 PrefabInstance:
   m_ObjectHideFlags: 0

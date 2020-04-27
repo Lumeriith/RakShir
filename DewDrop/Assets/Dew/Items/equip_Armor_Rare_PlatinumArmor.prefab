@@ -131,90 +131,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   attachments: []
---- !u!1 &3756895863753804117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5424103584340558683}
-  - component: {fileID: 4868704315382033070}
-  m_Layer: 11
-  m_Name: trg_Spell_Rare_HolyLight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5424103584340558683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4868704315382033070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30bd1ee492c37194f9535048a83bf390, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: bb1b324e3a3e37d4ab8d38634bf854ba, type: 3}
-  abilityName: "\uC2E0\uC131\uD55C \uBE5B"
-  abilityDescription: "\uBE5B\uC758 \uC12C\uAD11\uC744 \uBC1C\uC0B0\uD574 \uC790\uC2E0\uC774
-    60\uC758 [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD558\uACE0 \uC790\uC2E0 \uADFC\uCC98\uC758
-    \uBAA8\uB4E0 \uC801\uB4E4\uC5D0\uAC8C 30\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
-    \uC8FC\uACE0 2.5\uCD08 \uB3D9\uC548 [\uC2E4\uBA85]\uC2DC\uD0B5\uB2C8\uB2E4. \uC801\uC911\uD55C
-    \uC801 \uD558\uB098\uB2F9 \uCD94\uAC00\uB85C 30\uC758 [\uCCB4\uB825\uC744 \uD68C\uBCF5]\uD569\uB2C8\uB2E4."
-  soundEffect:
-  - {fileID: 1607579122048388727, guid: b11df9f563bc99643b2661431e4cb75d, type: 3}
-  castAnimation:
-  - {fileID: 7400000, guid: 65efb6895d6c7764ab8dc4d3cfee75f4, type: 2}
-  animationDuration: 0.7
-  indicator:
-    type: 1
-    range: 3.5
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 1
-  targetingType: 0
-  range: 0
-  manaCost: 70
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 12
-  connectedGems: []
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -385,3 +301,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3549982634276603956}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5380491655590410994
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 9117665286408205223, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Rare_HolyLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04, type: 3}
+--- !u!4 &5424103584340558683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 138786815441222057, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+    type: 3}
+  m_PrefabInstance: {fileID: 5380491655590410994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4868704315382033070 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 664919077766729820, guid: 26053d916e3ea2a46ad4f5c4b6e2ef04,
+    type: 3}
+  m_PrefabInstance: {fileID: 5380491655590410994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30bd1ee492c37194f9535048a83bf390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

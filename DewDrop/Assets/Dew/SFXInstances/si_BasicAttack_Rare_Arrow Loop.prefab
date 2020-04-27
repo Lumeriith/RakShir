@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c22b50688830204eb05af71a42c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.9, y: 1.1}
+  pitchRandomMultiplier: {x: 0.95, y: 1.05}
   destroyWhenNotPlaying: 1
+  _clips:
+  - {fileID: 8300000, guid: fabcf664207e0154c8de5fb0bff4322b, type: 3}
+  - {fileID: 8300000, guid: b876a9457b993964ca9d038341ee818b, type: 3}
+  - {fileID: 8300000, guid: 16c6a0babf9bbae489f83f0626ec2690, type: 3}
+  - {fileID: 8300000, guid: 2123373380b36114ca70b6445e5933e9, type: 3}
+  - {fileID: 8300000, guid: 1894ec8a1dbc91a4781a13e789f6e4f3, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -60,8 +66,8 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 60e3bb868224c6e438eea27de8caecdf, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.25
-  m_Pitch: 1
+  m_Volume: 0.8
+  m_Pitch: 1.6
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -69,9 +75,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 70
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

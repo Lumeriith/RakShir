@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class trg_BasicAttack_Elemental_Punch : AbilityTrigger
 {
+    [SerializeField]
+    private float _channelTime = 0.23f;
+
     public override void OnCast(CastInfo info)
     {
-        Channel channel = new Channel(selfValidator, 0.23f, false, false, false, true, ChannelSuccess, ResetCooldown, true);
+        Channel channel = new Channel(selfValidator, _channelTime, false, false, false, true, ChannelSuccess, ResetCooldown, true);
         owner.control.StartChanneling(channel);
         StartCooldown(true);
     }
@@ -15,6 +18,4 @@ public class trg_BasicAttack_Elemental_Punch : AbilityTrigger
     {
         CreateAbilityInstance("ai_BasicAttack_Elemental_Punch", info.target.GetRandomOffset() + info.target.transform.position, Quaternion.identity, info);
     }
-
-    
 }

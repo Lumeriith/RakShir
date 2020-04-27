@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1607579122048388713}
   - component: {fileID: 1607579122048388714}
   m_Layer: 0
-  m_Name: si_BasicAttack_Elemental_Punch 0
+  m_Name: si_BasicAttack_Reptile_Punch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c22b50688830204eb05af71a42c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.9, y: 1.1}
+  pitchRandomMultiplier: {x: 0.95, y: 1.05}
   destroyWhenNotPlaying: 1
+  _clips:
+  - {fileID: 8300000, guid: 96ccba6cb1b50e642b6f328553112138, type: 3}
+  - {fileID: 8300000, guid: 0d5f38174ad309b4fbea0db9d58257e6, type: 3}
+  - {fileID: 8300000, guid: 0d1bcc570dbc5224eae285f5a7f1b7bc, type: 3}
+  - {fileID: 8300000, guid: 45bd0ab141f5df046beb06a02e70da33, type: 3}
+  - {fileID: 8300000, guid: 9f3335da31af7b745b8fbf285f89787b, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -60,8 +66,8 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 14afde242cf203549ba56d97218b48c2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.65
-  m_Pitch: 1.2
+  m_Volume: 0.7
+  m_Pitch: 0.95
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -69,9 +75,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 70
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

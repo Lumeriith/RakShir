@@ -131,91 +131,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   attachments: []
---- !u!1 &3756895863753804117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5424103584340558683}
-  - component: {fileID: 5538355146824334797}
-  m_Layer: 11
-  m_Name: trg_Spell_Rare_IcyBlast
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5424103584340558683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5538355146824334797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4715b552283073f45a3a041ad8a49692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: 0e9c3dae701f66849899d7b363cfd58c, type: 3}
-  abilityName: "\uD55C\uAE30 \uD3ED\uBC1C"
-  abilityDescription: "\uC790\uC2E0\uC758 \uC8FC\uBCC0\uC5D0 \uD55C\uAE30\uB97C \uD3ED\uBC1C\uC2DC\uD0A4\uACE0
-    1.5\uCD08 \uD6C4\uC5D0 \uD55C\uBC88 \uB354 \uD3ED\uBC1C\uC2DC\uD0B5\uB2C8\uB2E4.\r\n\r\n\uAC01
-    \uD55C\uAE30 \uD3ED\uBC1C\uC740 \uC790\uC2E0 \uADFC\uCC98\uC758 \uBAA8\uB4E0 \uC801\uB4E4\uC5D0\uAC8C
-    60\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC8FC\uACE0 [\uC774\uB3D9 \uC18D\uB3C4]\uB97C
-    2\uCD08 \uB3D9\uC548 30% \uB290\uB824\uC9C0\uAC8C \uD569\uB2C8\uB2E4. \uC774\uBBF8
-    \uB290\uB824\uC9C4 \uC0C1\uB300\uB294 \uCD94\uAC00\uB85C 1\uCD08 \uB3D9\uC548
-    [\uC774\uB3D9 \uBD88\uAC00] \uC0C1\uD0DC\uB85C \uB9CC\uB4ED\uB2C8\uB2E4."
-  soundEffect:
-  - {fileID: 1607579122048388727, guid: 1034d0e2170c73748a780776cf5d1bc9, type: 3}
-  castAnimation: []
-  animationDuration: 0
-  indicator:
-    type: 1
-    range: 4
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 1
-  targetingType: 0
-  range: 0
-  manaCost: 65
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 12
-  connectedGems: []
 --- !u!1001 &1612898456162796947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -386,3 +301,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3549982634276603956}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7071783124834080242
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 6198969224996084903, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Rare_IcyBlast
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6398457094a4ada4792cfbdd87c18c1d, type: 3}
+--- !u!4 &5424103584340558683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2982029674292221609, guid: 6398457094a4ada4792cfbdd87c18c1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 7071783124834080242}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5538355146824334797 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3384514361027323967, guid: 6398457094a4ada4792cfbdd87c18c1d,
+    type: 3}
+  m_PrefabInstance: {fileID: 7071783124834080242}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4715b552283073f45a3a041ad8a49692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

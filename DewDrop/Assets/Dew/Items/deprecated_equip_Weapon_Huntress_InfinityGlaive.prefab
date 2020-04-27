@@ -1,88 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1061597444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1061597445}
-  - component: {fileID: 1061597446}
-  m_Layer: 0
-  m_Name: trg_Spell_Huntress_VenomKnives
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1061597445
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061597444}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1061597446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061597444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a53ebe8cee78d241a9474389b6dd461, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: cce8dcf6f9ae3ef41b935e096c84ff05, type: 3}
-  abilityName: "\uB2E8\uAC80 \uC138\uB840"
-  abilityDescription: "\uC790\uC2E0\uC758 \uC8FC\uBCC0\uC5D0 \uB3C5\uC744 \uBB3B\uD78C
-    \uB2E8\uAC80\uB4E4\uC744 \uB0A0\uB9BD\uB2C8\uB2E4.\n\n\uC8FC\uBCC0\uC758 \uBAA8\uB4E0
-    \uC801\uB4E4\uC5D0\uAC8C 20\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC8FC\uACE0
-    \uCD94\uAC00\uB85C 4\uCD08\uC5D0 \uAC78\uCCD0 80\uC758 [\uC9C0\uC18D \uD53C\uD574]\uB97C
-    \uC785\uAC8C \uD569\uB2C8\uB2E4."
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: b1baa556fdcafd445a64a9c9c2c2b6c8, type: 2}
-  animationDuration: 0.9
-  indicator:
-    type: 1
-    range: 4
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 0
-  targetingType: 0
-  range: 0
-  manaCost: 30
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 6
-  connectedGems: []
 --- !u!1 &2911441332996855045
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,89 +169,6 @@ Transform:
   m_Father: {fileID: 2911441332996855065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2911441333524566666
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2911441333524566664}
-  - component: {fileID: 2911441333524566667}
-  m_Layer: 0
-  m_Name: trg_BasicAttack_Huntress_InfinityGlaive
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2911441333524566664
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911441333524566666}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2911441333524566667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911441333524566666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37656b7d53f85ae4bbf1a317bd92608f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: bca86c8761a46cd4a9945837d6307cf3, type: 3}
-  abilityName: "\uBB34\uD55C\uC758 \uAE00\uB808\uC774\uBE0C"
-  abilityDescription: "\uCD5C\uB300 2\uBC88\uAE4C\uC9C0 \uD295\uAE30\uB294 \uB0A0\uCE74\uB85C\uC6B4
-    \uAE00\uB808\uC774\uBE0C\uB97C \uB0A0\uB824 \uC801\uC744 \uBCB1\uB2C8\uB2E4.\n\n\uBB38
-    \uAE00\uB808\uC774\uBE0C\uAC00 \uC9C0\uC18D \uD53C\uD574 \uD6A8\uACFC\uC758 \uC601\uD5A5\uC744
-    \uBC1B\uB294 \uC801\uC5D0\uAC8C \uC801\uC911\uD560 \uB54C\uB9C8\uB2E4 \uD55C\uBC88
-    \uB354 \uD295\uAE38 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: 54a0ffff7b39a0a40b01d755afe1b887, type: 2}
-  animationDuration: 0.7
-  indicator:
-    type: 1
-    range: 5.5
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 0
-  targetingType: 4
-  range: 5.5
-  manaCost: 0
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f01
-    invertResult: 0
-  cooldownTime: 0
-  connectedGems: []
 --- !u!1 &2911441333827877127
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,90 +201,6 @@ Transform:
   m_Father: {fileID: 2911441332996855065}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4266603601561224153
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5838845347579275088}
-  - component: {fileID: 4998456155197659036}
-  m_Layer: 0
-  m_Name: trg_Spell_Huntress_CursedDagger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5838845347579275088
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4266603601561224153}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4998456155197659036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4266603601561224153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1678e1534c1d449b91881300a48f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: eef693b90a5bf3642b7d1ab88b4743e2, type: 3}
-  abilityName: "\uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80"
-  abilityDescription: "\uB300\uC0C1\uC5D0\uAC8C \uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80\uC744
-    \uAF42\uC2B5\uB2C8\uB2E4.\n\n\uC800\uC8FC\uBC1B\uC740 \uB2E8\uAC80\uC740 3.5\uCD08\uAC04
-    \uC9C0\uC18D\uB418\uBA70 \uB0B4 \uAE30\uBCF8 \uACF5\uACA9\uC774 \uC801\uC911\uD558\uBA74
-    \uC9C0\uC18D \uC2DC\uAC04\uC774 \uCD08\uAE30\uD654\uB429\uB2C8\uB2E4. \uC800\uC8FC\uC758
-    \uC601\uD5A5\uC744 \uBC1B\uB294 \uB300\uC0C1\uC740 2.5\uCD08 \uB9C8\uB2E4 100\uC758
-    [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uC785\uACE0 1\uCD08 \uB3D9\uC548 [\uCE68\uBB35]\uB429\uB2C8\uB2E4."
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: cb140083f3934834cb8640ce494a6bca, type: 2}
-  animationDuration: 0.75
-  indicator:
-    type: 1
-    range: 6
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 0
-  targetingType: 4
-  range: 6
-  manaCost: 70
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 090a0b0c0d0e0f12
-    invertResult: 0
-  cooldownTime: 80
-  connectedGems: []
 --- !u!1001 &820476846516798787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -526,6 +276,93 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 820476846516798787}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1043147762111339463
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 2746497768670153037, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_BasicAttack_Huntress_InfinityGlaive
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d40b6149a065c3d4680522953676fa4e, type: 3}
+--- !u!4 &2911441333524566664 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2746497768670153039, guid: d40b6149a065c3d4680522953676fa4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1043147762111339463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2911441333524566667 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2746497768670153036, guid: d40b6149a065c3d4680522953676fa4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1043147762111339463}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37656b7d53f85ae4bbf1a317bd92608f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2911441333772217691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -842,3 +679,177 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2911441334612684722}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5562970518587242767
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 5562970517760788491, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Huntress_VenomKnives
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e77ddc33a74e8a544bdd30fc94610df8, type: 3}
+--- !u!4 &1061597445 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5562970517760788490, guid: e77ddc33a74e8a544bdd30fc94610df8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5562970518587242767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1061597446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5562970517760788489, guid: e77ddc33a74e8a544bdd30fc94610df8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5562970518587242767}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a53ebe8cee78d241a9474389b6dd461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &8676808659348677672
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 4853810434995087345, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Huntress_CursedDagger
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7b623b7dd1a766447a76c5da7a5a4c4c, type: 3}
+--- !u!4 &5838845347579275088 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2985193214168089464, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8676808659348677672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4998456155197659036 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4410188293042942900, guid: 7b623b7dd1a766447a76c5da7a5a4c4c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8676808659348677672}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1678e1534c1d449b91881300a48f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2911441332996855070}
   - component: {fileID: 8921393366854721625}
   m_Layer: 11
-  m_Name: equip_Helmet_Huntress_HuntressHelmet
+  m_Name: deprecated_equip_Helmet_Huntress_HuntressHelmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,90 +130,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8760781059359087813}
   attachments: []
---- !u!1 &3756895863753804117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5424103584340558683}
-  - component: {fileID: 8760781059359087813}
-  m_Layer: 11
-  m_Name: trg_Spell_Huntress_SwiftLikeWind
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5424103584340558683
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2911441332996855065}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8760781059359087813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3756895863753804117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb31191fad7b51f4190495ee01d93bc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  abilityIcon: {fileID: 21300000, guid: 36e7a504d74f1dd4eac149e27ea04a66, type: 3}
-  abilityName: "\uBC14\uB78C\uCC98\uB7FC \uBE60\uB974\uAC8C"
-  abilityDescription: "\uACF5\uACA9\uC744 \uD68C\uD53C\uD560 \uB54C\uB9C8\uB2E4 \uC790\uC2E0\uC758
-    [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 1.5\uCD08 \uB3D9\uC548 25% \uC99D\uAC00\uD558\uACE0
-    \uBAA8\uB4E0 \uC2A4\uD0AC\uC758 \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774
-    2.5\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4.\n\n\uC774 \uD6A8\uACFC\uB294 1.5\uCD08\uC5D0
-    \uD55C \uBC88\uC529\uB9CC \uBC1C\uB3D9\uD569\uB2C8\uB2E4."
-  soundEffect: []
-  castAnimation: []
-  animationDuration: 0
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
-  dontCancelBasicCommands: 0
-  targetingType: 0
-  range: 0
-  manaCost: 0
-  targetValidator:
-    canTargetSelf: 0
-    canTargetOwnSummon: 0
-    canTargetAlliedPlayer: 0
-    canTargetAlliedSummon: 0
-    canTargetAlliedMonster: 0
-    canTargetEnemyPlayer: 1
-    canTargetEnemySummon: 1
-    canTargetEnemyMonster: 1
-    evaluatesFalseIfDead: 1
-    excludes: 000203
-    invertResult: 0
-  selfValidator:
-    evaluatesFalseIfDead: 1
-    excludes: 
-    invertResult: 0
-  cooldownTime: 1.5
-  cooldownReductionAmount: 2.5
-  speedDuration: 1.5
-  speedAmount: 25
 --- !u!1001 &820476846516798787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -311,6 +227,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2911441332996855065}
     m_Modifications:
+    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
+        type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
     - target: {fileID: 6182557291494950518, guid: 0e634c1fb017a744b85d8122d8f3e45b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -366,11 +287,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6186371021895195906, guid: 0e634c1fb017a744b85d8122d8f3e45b,
-        type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e634c1fb017a744b85d8122d8f3e45b, type: 3}
 --- !u!4 &4877100979240223717 stripped
@@ -379,3 +295,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1612898456162796947}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7122614869320698911
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2911441332996855065}
+    m_Modifications:
+    - target: {fileID: 6267797501699982666, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_Name
+      value: trg_Spell_Huntress_SwiftLikeWind
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d3c3f4fd81226a540ab582603997c1ed, type: 3}
+--- !u!4 &5424103584340558683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2999068616311983940, guid: d3c3f4fd81226a540ab582603997c1ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 7122614869320698911}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8760781059359087813 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1966973012080529626, guid: d3c3f4fd81226a540ab582603997c1ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 7122614869320698911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb31191fad7b51f4190495ee01d93bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
