@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6267797501699982666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2999068616311983940}
+  - component: {fileID: 1966973012080529626}
+  m_Layer: 11
+  m_Name: trg_Spell_Huntress_SwiftLikeWind
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2999068616311983940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6267797501699982666}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1966973012080529626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6267797501699982666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb31191fad7b51f4190495ee01d93bc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: 36e7a504d74f1dd4eac149e27ea04a66, type: 3}
+  abilityName: "\uBC14\uB78C\uCC98\uB7FC \uBE60\uB974\uAC8C"
+  manaCost: 0
+  cooldownTime: 1.5
+  abilityDescription: "\uACF5\uACA9\uC744 \uD68C\uD53C\uD560 \uB54C\uB9C8\uB2E4 \uC790\uC2E0\uC758
+    [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 1.5\uCD08 \uB3D9\uC548 25% \uC99D\uAC00\uD558\uACE0
+    \uBAA8\uB4E0 \uC2A4\uD0AC\uC758 \uC7AC\uC0AC\uC6A9 \uB300\uAE30\uC2DC\uAC04\uC774
+    2.5\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4.\n\n\uC774 \uD6A8\uACFC\uB294 1.5\uCD08\uC5D0
+    \uD55C \uBC88\uC529\uB9CC \uBC1C\uB3D9\uD569\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 0
+  range: 0
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 
+    invertResult: 0
+  soundEffect: []
+  castAnimation: []
+  animationDuration: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  connectedGems: []
+  cooldownReductionAmount: 2.5
+  speedDuration: 1.5
+  speedAmount: 25

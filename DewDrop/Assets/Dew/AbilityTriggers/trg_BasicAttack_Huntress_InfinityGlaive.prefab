@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2746497768670153037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2746497768670153039}
+  - component: {fileID: 2746497768670153036}
+  m_Layer: 0
+  m_Name: trg_BasicAttack_Huntress_InfinityGlaive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2746497768670153039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2746497768670153037}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2746497768670153036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2746497768670153037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37656b7d53f85ae4bbf1a317bd92608f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: bca86c8761a46cd4a9945837d6307cf3, type: 3}
+  abilityName: "\uBB34\uD55C\uC758 \uAE00\uB808\uC774\uBE0C"
+  manaCost: 0
+  cooldownTime: 0
+  abilityDescription: "\uCD5C\uB300 2\uBC88\uAE4C\uC9C0 \uD295\uAE30\uB294 \uB0A0\uCE74\uB85C\uC6B4
+    \uAE00\uB808\uC774\uBE0C\uB97C \uB0A0\uB824 \uC801\uC744 \uBCB1\uB2C8\uB2E4.\n\n\uBB38
+    \uAE00\uB808\uC774\uBE0C\uAC00 \uC9C0\uC18D \uD53C\uD574 \uD6A8\uACFC\uC758 \uC601\uD5A5\uC744
+    \uBC1B\uB294 \uC801\uC5D0\uAC8C \uC801\uC911\uD560 \uB54C\uB9C8\uB2E4 \uD55C\uBC88
+    \uB354 \uD295\uAE38 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
+  dontCancelBasicCommands: 0
+  targetingType: 4
+  range: 5.5
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f01
+    invertResult: 0
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: 54a0ffff7b39a0a40b01d755afe1b887, type: 2}
+  animationDuration: 0.7
+  indicator:
+    type: 1
+    range: 5.5
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  connectedGems: []

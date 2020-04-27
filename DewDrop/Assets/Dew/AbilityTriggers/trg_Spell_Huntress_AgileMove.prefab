@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3793857149078811042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1273267461219515928}
+  - component: {fileID: 8630900313777788217}
+  m_Layer: 11
+  m_Name: trg_Spell_Huntress_AgileMove
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1273267461219515928
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793857149078811042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8630900313777788217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3793857149078811042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411d35046e61c98429ebf4a4e2d011ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: fd89f1ed95ca4ae48bdd5c39d1503e10, type: 3}
+  abilityName: "\uAE30\uBBFC\uD55C \uC6C0\uC9C1\uC784"
+  manaCost: 40
+  cooldownTime: 14
+  abilityDescription: "\uC9D1\uC911\uC744 \uB04C\uC5B4\uBAA8\uC544 \uAE30\uBBFC\uD558\uAC8C
+    \uC6C0\uC9C1\uC785\uB2C8\uB2E4.\n\n\uC790\uC2E0\uC5D0\uAC8C \uCD5C\uB300 4\uCD08
+    \uB3D9\uC548 \uC720\uC9C0\uB418\uB294 50\uC758 [\uBCF4\uD638\uB9C9]\uC744 \uBD80\uC5EC\uD558\uACE0
+    4\uCD08 \uB3D9\uC548 [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 20%, [\uD68C\uD53C]\uAC00
+    40 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 0
+  range: 0
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  soundEffect: []
+  castAnimation:
+  - {fileID: 0}
+  animationDuration: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  connectedGems: []

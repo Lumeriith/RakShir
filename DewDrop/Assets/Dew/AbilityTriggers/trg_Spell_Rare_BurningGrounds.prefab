@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6668499584149712583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2589042641629979849}
+  - component: {fileID: 7378766536218568116}
+  m_Layer: 11
+  m_Name: trg_Spell_Rare_BurningGrounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2589042641629979849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6668499584149712583}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7378766536218568116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6668499584149712583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8489c3559b26843b951ee4d0fec5b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: f6d6d2ac5c8d58e41a6d053483150cba, type: 3}
+  abilityName: "\uBD88\uD0C0\uB294 \uB300\uC9C0"
+  manaCost: 60
+  cooldownTime: 12
+  abilityDescription: "\uB300\uC0C1 \uC9C0\uC5ED\uC5D0 4\uCD08 \uB3D9\uC548 \uC9C0\uC18D\uB418\uB294
+    \uD654\uC5FC \uC9C0\uB300\uB97C \uD615\uC131\uD569\uB2C8\uB2E4. \uD654\uC5FC \uC9C0\uB300\uC5D0
+    \uC11C\uC788\uB294 \uC801\uB4E4\uC740 0.5\uCD08\uB9C8\uB2E4 25\uC758 [\uB9C8\uBC95
+    \uD53C\uD574]\uB97C \uC785\uC2B5\uB2C8\uB2E4. \uCC98\uC74C \uC601\uD5A5\uC744
+    \uBC1B\uB294 \uC801\uB4E4\uC740 [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 1.5\uCD08 \uB3D9\uC548
+    35% \uB290\uB824\uC9D1\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 1
+  range: 8.5
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f12
+    invertResult: 0
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: 0e01b5243b8d0114d82e7efacc76d09d, type: 3}
+  castAnimation:
+  - {fileID: 7400000, guid: a85b0d92de5b5af47919f587f2734656, type: 2}
+  animationDuration: 0.75
+  indicator:
+    type: 1
+    range: 8.5
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 1
+    secondRange: 3.25
+  connectedGems: []

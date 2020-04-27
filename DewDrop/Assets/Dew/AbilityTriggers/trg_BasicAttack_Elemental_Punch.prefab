@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1382845961330862611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1382845961330862610}
+  - component: {fileID: 1382845961330862609}
+  m_Layer: 0
+  m_Name: trg_BasicAttack_Elemental_Punch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1382845961330862610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382845961330862611}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.25, y: -1.95, z: 6.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1382845961330862609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382845961330862611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b22671b5667644db18eac238d71275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: 385e1e3b4db8d2e4a92877df69908239, type: 3}
+  abilityName: "\uC815\uC758"
+  manaCost: 0
+  cooldownTime: 0
+  abilityDescription: "\uC8FC\uBA39\uC73C\uB85C \uC801\uC744 \uD0C0\uACA9\uD569\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 4
+  range: 1.7
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 0f090a0b0c0d0e01
+    invertResult: 0
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: 2dfa212ab075ef740bb26ac95ff91568, type: 3}
+  castAnimation:
+  - {fileID: 7400000, guid: d51c81f3e3998ce489d9192c6d957685, type: 2}
+  - {fileID: 7400000, guid: b912064e9fcb70f48a660aa9f260b716, type: 2}
+  animationDuration: 0.5
+  indicator:
+    type: 1
+    range: 1.7
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0
+  connectedGems: []
+  _channelTime: 0.23

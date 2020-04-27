@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4959938995551792181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4301038412692727355}
+  - component: {fileID: 8041791287752301373}
+  m_Layer: 11
+  m_Name: trg_Spell_Rare_Breakthrough
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4301038412692727355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959938995551792181}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8041791287752301373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959938995551792181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fc069611de29340a3049911bf107e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: 0a0f92d75c2277e449d79b8e8609ab49, type: 3}
+  abilityName: "\uD654\uC5FC \uB3CC\uD30C"
+  manaCost: 50
+  cooldownTime: 10
+  abilityDescription: "\uB300\uC0C1 \uBC29\uD5A5\uC73C\uB85C \uBE60\uB974\uAC8C \uB3CC\uC9C4\uD558\uC5EC
+    \uC801\uB4E4\uC744 \uAD00\uD1B5\uD569\uB2C8\uB2E4. \uC601\uD5A5\uC744 \uBC1B\uC740
+    \uC801\uB4E4\uC740 \uBD88\uD0C0\uBA70 4\uCD08\uC5D0 \uAC78\uCCD0 100\uC758 [\uC9C0\uC18D
+    \uD53C\uD574]\uB97C \uC785\uACE0 [\uC774\uB3D9 \uC18D\uB3C4]\uAC00 35% \uB290\uB824\uC9D1\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 3
+  range: 0
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f1210
+    invertResult: 0
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: d34bdfeb089a4e043acded5e2e5bf1e1, type: 3}
+  castAnimation:
+  - {fileID: 7400000, guid: 2092c9ef6cb0e9d44a650e74d9e48f1b, type: 2}
+  animationDuration: 1
+  indicator:
+    type: 2
+    range: 0
+    arrowWidth: 1.2
+    arrowLength: 6.5
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  connectedGems: []
+  channelDuration: 0.3

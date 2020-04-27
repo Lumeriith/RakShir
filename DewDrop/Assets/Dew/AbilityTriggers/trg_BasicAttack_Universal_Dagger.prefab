@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3554695144663609577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3554695144663609579}
+  - component: {fileID: 4450989497034029019}
+  m_Layer: 0
+  m_Name: trg_BasicAttack_Universal 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3554695144663609579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554695144663609577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4450989497034029019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554695144663609577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882ec5854331c3247b5b5215f6b66a8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityIcon: {fileID: 21300000, guid: b4e68ab9922a3ba47b609e6e9d5800a4, type: 3}
+  abilityName: "\uC57D\uC810 \uD3EC\uCC29"
+  manaCost: 0
+  cooldownTime: 1
+  abilityDescription: "\uB2E8\uAC80\uC744 \uD718\uB458\uB7EC \uC801\uC744 \uBCB1\uB2C8\uB2E4.\n\n\uB0B4
+    \uAE30\uBCF8 \uACF5\uACA9\uC774 \uC801\uC911\uD55C \uC0C1\uB300\uAC00 \uB9CC\uC57D
+    \uC9C0\uC18D \uD53C\uD574 \uD6A8\uACFC\uC758 \uC601\uD5A5\uC744 \uBC1B\uB294 \uC911\uC774\uB77C\uBA74
+    45\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C \uCD94\uAC00\uB85C \uC90D\uB2C8\uB2E4."
+  dontCancelBasicCommands: 0
+  targetingType: 4
+  range: 1.8
+  targetValidator:
+    canTargetSelf: 0
+    canTargetOwnSummon: 0
+    canTargetAlliedPlayer: 0
+    canTargetAlliedSummon: 0
+    canTargetAlliedMonster: 0
+    canTargetEnemyPlayer: 1
+    canTargetEnemySummon: 1
+    canTargetEnemyMonster: 1
+    evaluatesFalseIfDead: 1
+    excludes: 000203
+    invertResult: 0
+  selfValidator:
+    evaluatesFalseIfDead: 1
+    excludes: 090a0b0c0d0e0f01
+    invertResult: 0
+  soundEffect:
+  - {fileID: 1607579122048388727, guid: 8cdaad1f5900a844880203a242521f97, type: 3}
+  castAnimation:
+  - {fileID: 7400000, guid: e6b434ad7bb930b48a2f2dae481b34ce, type: 2}
+  - {fileID: 7400000, guid: 0718fbe7c5b97d94f9999599860128bf, type: 2}
+  animationDuration: 0.7
+  indicator:
+    type: 1
+    range: 1.8
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
+  connectedGems: []
+  channelDuration: 0.05
+  abilityInstance: ai_Monster_Firebug_Basicattack
+  channelFinishedSoundEffects: []
