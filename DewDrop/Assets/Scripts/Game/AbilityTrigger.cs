@@ -48,31 +48,47 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     }
 #endif
-    [Header("Metadata Settings")]
+    [BoxGroup("Metadata"), HorizontalGroup("Metadata/horizontal", 50), VerticalGroup("Metadata/horizontal/icon")]
+    [PreviewField(50, ObjectFieldAlignment.Left)]
+    [HideLabel]
     public Sprite abilityIcon;
-    public string abilityName;
-    [MultiLineProperty]
-    public string abilityDescription;
-    [Header("Effect Settings")]
-    public GameObject[] soundEffect;
-    public AnimationClip[] castAnimation;
-    public float animationDuration;
-    public Indicator indicator = new Indicator();
+    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    [HideLabel]
+    public string abilityName = "Ability Name";
+    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    public float manaCost;
+    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    public float cooldownTime;
+
+    [HideLabel]
+    [MultiLineProperty(6)]
+    [BoxGroup("Metadata")]
+    public string abilityDescription = "This is an awesome ability!";
+
     [Header("Trigger Settings")]
     public bool dontCancelBasicCommands = false;
     public TargetingType targetingType;
     [ShowIf("ShouldRangeFieldShow")]
     public float range;
-    public float manaCost;
+
     [ShowIf("ShouldTargetValidatorFieldShow")]
     public TargetValidator targetValidator;
     public SelfValidator selfValidator;
+
+    [Header("Effect Settings")]
+    public GameObject[] soundEffect;
+    public AnimationClip[] castAnimation;
+    public float animationDuration;
+    public Indicator indicator = new Indicator();
+
+
+
 
     private float specialFillAmount = 0;
     private List<AbilityInstance> _instances = new List<AbilityInstance>();
 
 
-    public float cooldownTime;
+
 
     public List<Gem> connectedGems;
 
