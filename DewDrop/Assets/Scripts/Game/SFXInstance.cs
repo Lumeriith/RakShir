@@ -8,26 +8,32 @@ public class SFXInstance : MonoBehaviourPun
     public Vector2 pitchRandomMultiplier = new Vector2(0.9f, 1.1f);
     public bool destroyWhenNotPlaying = true;
 
-    private AudioSource source;
-    private Transform followTarget;
+    [SerializeField]
+    private AudioClip[] _clips = new AudioClip[0];
+
+    private AudioSource _source;
+    private Transform _followTarget;
 
     private void Awake()
     {
-        source = GetComponent<AudioSource>();
+        _source = GetComponent<AudioSource>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        source.pitch *= Random.Range(pitchRandomMultiplier.x, pitchRandomMultiplier.y);
+        _source.pitch *= Random.Range(pitchRandomMultiplier.x, pitchRandomMultiplier.y);
+        if (_clips.Length > 0) _source.clip = _clips[Random.Range(0, _clips.Length)];
+        else _source.clip = null;
+        _source.Play();
     }
 
     private void Update()
     {
-        if (followTarget != null) transform.position = followTarget.position;
+        if (_followTarget != null) transform.position = _followTarget.position;
     }
     private void FixedUpdate()
     {
-        if(photonView.IsMine && destroyWhenNotPlaying && !source.isPlaying)
+        if(photonView.IsMine && destroyWhenNotPlaying && !_source.isPlaying)
         {
             PhotonNetwork.Destroy(gameObject);
         }
@@ -42,7 +48,7 @@ public class SFXInstance : MonoBehaviourPun
     {
         PhotonView view = PhotonNetwork.GetPhotonView(viewID);
         if (view == null) return;
-        followTarget = view.transform;
+        _followTarget = view.transform;
     }
 
     public void Destroy()
@@ -73,14 +79,14 @@ public class SFXInstance : MonoBehaviourPun
     [PunRPC]
     private void RpcPlay()
     {
-        source.Stop();
-        source.Play();
+        _source.Stop();
+        _source.Play();
     }
     
     [PunRPC]
     private void RpcStop()
     {
-        source.Stop();
+        _source.Stop();
     }
 
     [PunRPC]
@@ -103,13 +109,13 @@ public class SFXInstance : MonoBehaviourPun
 
     private IEnumerator CoroutineDestroyFadingOut(float time)
     {
-        float volume = source.volume;
+        float volume = _source.volume;
         for(float t = 0; t < time; t += Time.deltaTime)
         {
-            source.volume = Mathf.Lerp(volume, 0f, t / time);
+            _source.volume = Mathf.Lerp(volume, 0f, t / time);
             yield return null;
         }
-        source.Stop();
+        _source.Stop();
         if (photonView.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);
@@ -118,8 +124,8 @@ public class SFXInstance : MonoBehaviourPun
 
     private IEnumerator CoroutineDestroyAfterFinished()
     {
-        source.loop = false;
-        while (source.isPlaying)
+        _source.loop = false;
+        while (_source.isPlaying)
         {
             yield return new WaitForSeconds(0.1f);
         }
