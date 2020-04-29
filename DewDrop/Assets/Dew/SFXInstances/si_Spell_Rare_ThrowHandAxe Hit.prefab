@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c22b50688830204eb05af71a42c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.9, y: 1.1}
+  pitchRandomMultiplier: {x: 1, y: 1.05}
   destroyWhenNotPlaying: 1
+  _clips:
+  - {fileID: 8300000, guid: fc5738711646b8942a1eb8bf3f829b24, type: 3}
+  - {fileID: 8300000, guid: db8dfa7534360fc4e83fed0d128ded22, type: 3}
+  - {fileID: 8300000, guid: 856a46fdc0c88054eb311df3ba685d94, type: 3}
+  - {fileID: 8300000, guid: 2ae453ded1548ce4caa474b5d8d0b3a4, type: 3}
+  - {fileID: 8300000, guid: 077eb648289f7fe4db5133fa9c7b2e90, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -60,7 +66,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: f81d1e3a640dbeb4f84c3a0bd99b8f62, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.8
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

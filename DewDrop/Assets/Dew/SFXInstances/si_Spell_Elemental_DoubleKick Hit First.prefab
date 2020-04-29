@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1607579122048388713}
   - component: {fileID: 1607579122048388714}
   m_Layer: 0
-  m_Name: si_BasicAttack_Rare_SharpHandAxe 0
+  m_Name: si_Spell_Elemental_DoubleKick Hit First
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pitchRandomMultiplier: {x: 0.9, y: 1.1}
   destroyWhenNotPlaying: 1
+  _clips:
+  - {fileID: 8300000, guid: 0f1d952db7e72974a83931027f3b95a2, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -58,10 +60,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1838379260092020110, guid: 3420e9129528250489ce94560d42b496,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: f39fd3f15d83e58409b3258ba4856ea3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0f1d952db7e72974a83931027f3b95a2, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
-  m_Pitch: 1
+  m_Volume: 0.8
+  m_Pitch: 1.2
   Loop: 0
   Mute: 0
   Spatialize: 0
