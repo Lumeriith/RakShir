@@ -60,6 +60,8 @@ public class Entity : MonoBehaviourPun
     private float _defaultMovementSpeed;
 
     #region Action Declarations
+    public System.Action<InfoAbilityInstance> OnAbilityInstanceCreated = (_) => { };
+
     public System.Action<InfoDamage> OnDealDamage = (InfoDamage _) => { };
     public System.Action<InfoDamage> OnTakeDamage = (InfoDamage _) => { };
 
@@ -867,7 +869,7 @@ public class Entity : MonoBehaviourPun
         stat.ValidateMana();
 
         InfoManaSpent info;
-        info.livingThing = this;
+        info.entity = this;
         info.amount = amount;
         OnSpendMana.Invoke(info);
         DewActionCaller.Retrieve(callerUID)?.OnSpendMana.Invoke(info);
@@ -1135,7 +1137,7 @@ public class Entity : MonoBehaviourPun
         stat.currentGold -= amount;
         if (photonView.IsMine) stat.SyncChangingStats();
         InfoSpendGold info;
-        info.livingThing = this;
+        info.entity = this;
         info.amount = amount;
         OnSpendGold.Invoke(info);
     }

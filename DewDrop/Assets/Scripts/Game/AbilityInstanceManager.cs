@@ -82,7 +82,9 @@ public class AbilityInstanceManager : MonoBehaviour
                 initData[5 + i] = data[i];
             }
         }
-
-        return PhotonNetwork.Instantiate("AbilityInstances/" + prefabName, position, rotation, 0, initData).GetComponent<AbilityInstance>();
+        
+        AbilityInstance instance = PhotonNetwork.Instantiate("AbilityInstances/" + prefabName, position, rotation, 0, initData).GetComponent<AbilityInstance>();
+        castInfo.owner.OnAbilityInstanceCreated(new InfoAbilityInstance { entity = castInfo.owner, instance = instance });
+        return instance;
     }
 }

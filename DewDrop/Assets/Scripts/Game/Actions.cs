@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+public struct InfoAbilityInstance
+{
+    public Entity entity;
+    public AbilityInstance instance;
+}
 public struct InfoManaSpent
 {
-    public Entity livingThing;
+    public Entity entity;
     public float amount;
 }
 public struct InfoDeath
@@ -54,7 +59,7 @@ public struct InfoMiss
 }
 public struct InfoChannel
 {
-    public Entity livingThing;
+    public Entity entity;
     public float remainingTime;
 }
 public struct InfoGold
@@ -65,19 +70,6 @@ public struct InfoGold
 }
 public struct InfoSpendGold
 {
-    public Entity livingThing;
+    public Entity entity;
     public float amount;
 }
-
-public delegate void ManaSpent(InfoManaSpent info);
-public delegate void DamageHandler(InfoDamage info);
-public delegate void MagicDamageHandler(InfoMagicDamage info);
-public delegate void HealHandler(InfoHeal info);
-public delegate void ManaHealHandler(InfoManaHeal info);
-public delegate void BasicAttackHitHandler(InfoBasicAttackHit info);
-public delegate void ChannelHandler(InfoChannel info);
-public delegate void GoldHandler(InfoGold info);
-public delegate void SpendGoldHandler(InfoGold info);
-
-
-
