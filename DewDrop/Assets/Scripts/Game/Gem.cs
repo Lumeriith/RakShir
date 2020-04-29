@@ -17,14 +17,6 @@ public abstract class Gem : Item
     private List<Collider> deactivatedColliders = new List<Collider>();
     private List<Rigidbody> deactivatedRigidbodies = new List<Rigidbody>();
 
-    public Action<InfoManaSpent> OnSpendMana { get; set; } = (_) => { };
-    public Action<InfoDamage> OnDealDamage { get; set; } = (_) => { };
-    public Action<InfoDamage> OnDealPureDamage { get; set; } = (_) => { };
-    public Action<InfoMagicDamage> OnDealMagicDamage { get; set; } = (_) => { };
-    public Action<InfoBasicAttackHit> OnDoBasicAttackHit { get; set; } = (_) => { };
-    public Action<InfoHeal> OnDoHeal { get; set; } = (_) => { };
-    public Action<InfoManaHeal> OnDoManaHeal { get; set; } = (_) => { };
-
     public AbilityInstance CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
         CastInfo info = new CastInfo { owner = owner };

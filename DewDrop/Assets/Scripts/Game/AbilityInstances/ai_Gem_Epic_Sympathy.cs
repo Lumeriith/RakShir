@@ -16,7 +16,7 @@ public class ai_Gem_Epic_Sympathy : AbilityInstance
         transform.rotation = Quaternion.LookRotation(info.owner.transform.position - info.target.transform.position, Vector3.up);
         StartCoroutine(CoroutineSympathy());
         if (!isMine) return;
-        SFXManager.CreateSFXInstance("si_Gem_Epic_Sympathy " + Random.Range(0, 3), Vector3.Lerp(info.target.transform.position + info.target.GetCenterOffset(), info.owner.transform.position + info.owner.GetCenterOffset(), .5f));
+        SFXManager.CreateSFXInstance("si_Gem_Epic_Sympathy", Vector3.Lerp(info.target.transform.position + info.target.GetCenterOffset(), info.owner.transform.position + info.owner.GetCenterOffset(), .5f));
 
         List<Entity> targets = info.owner.GetAllTargetsInLine(
             info.target.transform.position + info.target.GetCenterOffset(),
