@@ -331,8 +331,14 @@ public class UnitControlManager : MonoBehaviour
         {
             bool isReserveKeyPressed = Input.GetKey(reservationModifier);
             DrawAppropriateOutline();
-
-
+            CheckForActivate();
+            CheckForAction();
+            CheckForAttack();
+            CheckForNewCast();
+            CheckForItem();
+            CheckForStop();
+            SetAppropriateCursor();
+            DisplayAppropriateIndicator();
 
 
             switch (inputState)
@@ -397,15 +403,9 @@ public class UnitControlManager : MonoBehaviour
                     }
                     break;
             }
-            CheckForActivate();
-            CheckForAction();
-            CheckForAttack();
-            CheckForNewCast();
-            CheckForItem();
-            CheckForStop();
 
-            SetAppropriateCursor();
-            DisplayAppropriateIndicator();
+
+
         }
 
 
