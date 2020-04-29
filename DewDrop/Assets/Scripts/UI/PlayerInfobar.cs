@@ -82,8 +82,7 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
         universalHealthbar.SetTarget(target);
 
 
-        transform.position = Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset;
-
-
+        transform.position = (Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset).Quantitized();
     }
+
 }
