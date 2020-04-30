@@ -12,4 +12,6 @@ public class cons_GoldPouch : Consumable
         DestroySelf();
         return true;
     }
+
+    public override InfoTextIcon infoTextIcon => InfoTextIcon.Money;
 }

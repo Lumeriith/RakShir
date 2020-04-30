@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Sirenix.OdinInspector;
+
 public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public int consumableIndex = 1;
 
-    private Image image_icon;
-    private Image image_disabled;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Image _iconImage;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Image _disabledOverlay;
 
-
-    private PlayerInventory belt;
+    private PlayerInventory _inventory;
 
     private PointerEventData hover = null;
     public void OnPointerEnter(PointerEventData data)
     {
-        if (belt.consumableBelt[consumableIndex] != null)
+        if (_inventory.consumableBelt[consumableIndex] != null)
         {
-            DescriptionBox.ShowDescription(belt.consumableBelt[consumableIndex]);
+            DescriptionBox.ShowDescription(_inventory.consumableBelt[consumableIndex]);
             hover = data;
         }
         
@@ -42,35 +45,30 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
-    private void Awake()
-    {
-        image_icon = transform.Find("Mask/Icon Image").GetComponent<Image>();
-        image_disabled = transform.Find("Mask/Disabled Image").GetComponent<Image>();
-    }
     private void Update()
     {
         if (UnitControlManager.instance.selectedUnit == null) return;
-        if (belt == null) belt = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
+        if (_inventory == null) _inventory = GameManager.instance.localPlayer.GetComponent<PlayerInventory>();
         
-        if (belt == null || !GameManager.instance.localPlayer.photonView.IsMine)
+        if (_inventory == null || !GameManager.instance.localPlayer.photonView.IsMine)
         {
-            image_icon.sprite = null;
-            image_disabled.enabled = true;
+            _iconImage.sprite = null;
+            _disabledOverlay.enabled = true;
             return;
         }
 
-        if (belt.consumableBelt[consumableIndex] == null)
+        if (_inventory.consumableBelt[consumableIndex] == null)
         {
-            image_icon.sprite = null;
-            image_icon.enabled = false;
-            image_disabled.enabled = false;
+            _iconImage.sprite = null;
+            _iconImage.enabled = false;
+            _disabledOverlay.enabled = false;
         }
         else
         {
-            image_icon.sprite = belt.consumableBelt[consumableIndex].itemIcon;
-            image_icon.color = new Color(1f, 1f, 1f);
-            image_icon.enabled = true;
-            image_disabled.enabled = !(belt.consumableBelt[consumableIndex].selfValidator.Evaluate(GameManager.instance.localPlayer) && belt.consumableBelt[consumableIndex].IsReady());
+            _iconImage.sprite = _inventory.consumableBelt[consumableIndex].itemIcon;
+            _iconImage.color = new Color(1f, 1f, 1f);
+            _iconImage.enabled = true;
+            _disabledOverlay.enabled = !(_inventory.consumableBelt[consumableIndex].selfValidator.Evaluate(GameManager.instance.localPlayer) && _inventory.consumableBelt[consumableIndex].IsReady());
         }
 
 

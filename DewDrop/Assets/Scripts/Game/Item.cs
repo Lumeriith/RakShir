@@ -4,23 +4,36 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Sirenix.OdinInspector;
+using System;
 
-public abstract class Item : Activatable
+public abstract class Item : Activatable, IInfoTextable
 {
-    [Header("Metadata Settings")]
-    public Sprite itemIcon;
-    public string itemName;
-    public ItemTier itemTier;
-    public float value;
-    [MultiLineProperty]
-    public string itemDescription;
+    private readonly Type[] ComponentsToDisable = { typeof(Rigidbody), typeof(Collider), typeof(Renderer), typeof(Light) };
 
-    [HideInInspector]
-    public Entity owner = null;
+    [BoxGroup("Item Metadata"), HorizontalGroup("Item Metadata/horizontal", 50), VerticalGroup("Item Metadata/horizontal/icon")]
+    [PreviewField(50, ObjectFieldAlignment.Left)]
+    [HideLabel]
+    public Sprite itemIcon;
+    [HorizontalGroup("Item Metadata/horizontal"), VerticalGroup("Item Metadata/horizontal/text")]
+    [HideLabel]
+    public string itemName = "Item Name";
+    [HorizontalGroup("Item Metadata/horizontal"), VerticalGroup("Item Metadata/horizontal/text")]
+    public ItemTier itemTier;
+    [HorizontalGroup("Item Metadata/horizontal"), VerticalGroup("Item Metadata/horizontal/text")]
+    public float value;
+    
+    [HideLabel]
+    [MultiLineProperty(6)]
+    [BoxGroup("Item Metadata")]
+    public string itemDescription = "This is an awesome ability!";
+
+    public Entity owner { get; set; }
 
     private Vector3 startPosition;
 
     public override Entity entity => owner;
+
+    private List<Component> _disabledComponents;
 
     protected override void Start()
     {
@@ -45,20 +58,20 @@ public abstract class Item : Activatable
 
     }
 
-    public void TransferOwnership(Entity owner)
+    public void Own(Entity owner)
     {
-        photonView.RPC("RpcTransferOwnership", RpcTarget.All, owner.photonView.ViewID);
+        photonView.RPC(nameof(RpcOwn), RpcTarget.All, owner.photonView.ViewID);
     }
 
     public void Disown()
     {
         if (owner == null) return;
-        photonView.RPC("RpcDisown", RpcTarget.All);
+        photonView.RPC(nameof(RpcDisown), RpcTarget.All);
     }
 
     public void DestroySelf()
     {
-        photonView.RPC("RpcDestroySelf", photonView.Owner);
+        photonView.RPC(nameof(RpcDestroySelf), photonView.Owner);
     }
 
     [PunRPC]
@@ -87,7 +100,7 @@ public abstract class Item : Activatable
 
 
     [PunRPC]
-    protected void RpcTransferOwnership(int owner_id)
+    protected void RpcOwn(int owner_id)
     {
         Entity livingThing = PhotonNetwork.GetPhotonView(owner_id).GetComponent<Entity>();
 
@@ -99,7 +112,7 @@ public abstract class Item : Activatable
         owner = livingThing;
         transform.SetParent(owner.transform);
         transform.position = owner.transform.position;
-        gameObject.SetActive(false);
+        DisableComponents();
     }
 
 
@@ -111,7 +124,91 @@ public abstract class Item : Activatable
         startPosition = transform.position;
         owner = null;
         transform.SetParent(null);
-        gameObject.SetActive(true);
+        EnableComponents();
         SFXManager.CreateSFXInstance("si_local_ItemDrop", transform.position, true);
     }
+
+    private void DisableComponents()
+    {
+        if (_disabledComponents == null) _disabledComponents = new List<Component>();
+        for (int i = 0; i < ComponentsToDisable.Length; i++)
+        {
+            dynamic[] components = GetComponents(ComponentsToDisable[i]);
+            for (int j = 0; j < components.Length; j++)
+            {
+                if (IsComponentEnabled(components[j]))
+                {
+                    _disabledComponents.Add(components[j]);
+                    DisableComponent(components[j]);
+                }
+            }
+
+            components = GetComponentsInChildren(ComponentsToDisable[i]);
+            for (int j = 0; j < components.Length; j++)
+            {
+                if (IsComponentEnabled(components[j]))
+                {
+                    _disabledComponents.Add(components[j]);
+                    DisableComponent(components[j]);
+                }
+            }
+        }
+    }
+
+    private bool IsComponentEnabled(Component component)
+    {
+        if (component is Rigidbody rb) return rb.detectCollisions && !rb.isKinematic;
+
+        dynamic dComponent = component;
+        return dComponent.enabled;
+    }
+
+    private void DisableComponent(Component component)
+    {
+        if (component == null) return;
+        if (component is Rigidbody rb)
+        {
+            rb.detectCollisions = false;
+            rb.isKinematic = true;
+            return;
+        }
+
+        dynamic dComponent = component;
+        dComponent.enabled = false;
+    }
+
+    private void EnableComponent(Component component)
+    {
+        if (component == null) return;
+        if (component is Rigidbody rb)
+        {
+            rb.detectCollisions = true;
+            rb.isKinematic = false;
+            return;
+        }
+
+        dynamic dComponent = component;
+        dComponent.enabled = true;
+    }
+
+    private void EnableComponents()
+    {
+        if (_disabledComponents == null) return;
+        for (int i = 0; i < _disabledComponents.Count; i++)
+        {
+            EnableComponent(_disabledComponents[i]);
+        }
+        _disabledComponents = null;
+    }
+
+    public virtual void OnInfoTextClick()
+    {
+        UnitControlManager.instance.selectedUnit.control.CommandActivate(this, Input.GetKey(UnitControlManager.instance.reservationModifier));
+        Instantiate(UnitControlManager.instance.commandMarkerInterest, transform.position, Quaternion.identity, transform);
+    }
+
+    public virtual bool shouldShowInfoText => owner == null;
+    public virtual InfoTextIcon infoTextIcon => InfoTextIcon.Consumable;
+    public virtual Vector3 infoTextWorldPosition => transform.position;
+    public virtual string infoTextName => itemName;
 }

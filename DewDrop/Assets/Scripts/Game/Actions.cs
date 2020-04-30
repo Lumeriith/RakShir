@@ -10,6 +10,7 @@ public struct InfoAbilityInstance
 }
 public struct InfoManaSpent
 {
+    public DewActionCaller caller;
     public Entity entity;
     public float amount;
 }
@@ -20,6 +21,7 @@ public struct InfoDeath
 }
 public struct InfoDamage
 {
+    public DewActionCaller caller;
     public Entity to;
     public Entity from;
     public float damage;
@@ -27,6 +29,7 @@ public struct InfoDamage
 }
 public struct InfoMagicDamage
 {
+    public DewActionCaller caller;
     public Entity to;
     public Entity from;
     public float originalDamage;
@@ -34,6 +37,7 @@ public struct InfoMagicDamage
 }
 public struct InfoHeal
 {
+    public DewActionCaller caller;
     public Entity to;
     public Entity from;
     public float originalHeal;
@@ -41,6 +45,7 @@ public struct InfoHeal
 }
 public struct InfoManaHeal
 {
+    public DewActionCaller caller;
     public Entity to;
     public Entity from;
     public float originalManaHeal;
@@ -48,6 +53,7 @@ public struct InfoManaHeal
 }
 public struct InfoBasicAttackHit
 {
+    public DewActionCaller caller;
     public Entity to;
     public Entity from;
     public float damage;

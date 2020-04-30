@@ -10,6 +10,8 @@ public enum PlayerType { Elemental, Reptile }
 public enum IngameNodeType { Unknown, Ingame, Menu, Inventory, Shop, Map, MapObelisk, Moving }
 public class GameManager : MonoBehaviour
 {
+    public static System.Action<Entity> OnLocalPlayerSpawn;
+
     public Texture2D normalCursor;
     public Vector2 normalCursorHotspot;
     public Texture2D attackCursor;
@@ -135,6 +137,7 @@ public class GameManager : MonoBehaviour
 
         instance.localPlayer = localPlayer;
         localPlayer.SetReadableName(PlayerPrefs.GetString("characterName", "이름없는 영웅"));
+        OnLocalPlayerSpawn?.Invoke(localPlayer);
         return localPlayer;
     }
 

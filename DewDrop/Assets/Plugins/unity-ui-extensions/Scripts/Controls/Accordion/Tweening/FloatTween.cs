@@ -1,11 +1,9 @@
-﻿///Credit ChoMPHi
-///Sourced from - http://forum.unity3d.com/threads/accordion-type-layout.271818/
-
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityEngine.UI.Extensions.Tweens
+namespace DuloGames.UI.Tweens
 {
-    public struct FloatTween : ITweenValue
+	public struct FloatTween : ITweenValue
 	{
 		public class FloatTweenCallback : UnityEvent<float> {}
 		public class FloatFinishCallback : UnityEvent {}
@@ -14,6 +12,7 @@ namespace UnityEngine.UI.Extensions.Tweens
 		private float m_TargetFloat;
 		private float m_Duration;
 		private bool m_IgnoreTimeScale;
+		private TweenEasing m_Easing;
 		private FloatTweenCallback m_Target;
 		private FloatFinishCallback m_Finish;
 		
@@ -56,7 +55,17 @@ namespace UnityEngine.UI.Extensions.Tweens
 			get { return m_IgnoreTimeScale; }
 			set { m_IgnoreTimeScale = value; }
 		}
-
+		
+		/// <summary>
+		/// Gets or sets the tween easing.
+		/// </summary>
+		/// <value>The easing.</value>
+		public TweenEasing easing
+		{
+			get { return m_Easing; }
+			set { m_Easing = value; }
+		}
+		
 		/// <summary>
 		/// Tweens the float based on percentage.
 		/// </summary>

@@ -5,7 +5,7 @@ using UnityEngine;
 public static class Vector3QuantitizeExtension
 {
     /// <summary>
-    /// Returns a version of this vector rounded the coordinates to integer values.
+    /// Returns a copy of this vector with its coordinates rounded to the nearest integer values.
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
@@ -15,7 +15,7 @@ public static class Vector3QuantitizeExtension
     }
 
     /// <summary>
-    /// Round this vector's coordinates to integer values.
+    /// Round this vector's coordinates to the nearest integer values.
     /// </summary>
     /// <param name="v"></param>
     public static void Quantitize(this Vector3 v)

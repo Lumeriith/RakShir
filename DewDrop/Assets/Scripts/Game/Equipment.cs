@@ -25,7 +25,7 @@ public abstract class Equipment : Item
     public AbilityTrigger[] skillSetReplacements = new AbilityTrigger[7];
     public List<Attachment> attachments = new List<Attachment>();
 
-    private bool isEquipped = false;
+    public bool isEquipped { get; private set; }
 
 
     private void Awake()
@@ -45,10 +45,10 @@ public abstract class Equipment : Item
             if (skillSetReplacements[i] == null) continue;
             for(int j = 0; j < skillSetReplacements[i].connectedGems.Count; j++)
             {
-                skillSetReplacements[i].connectedGems[j].Reactivate();
+                skillSetReplacements[i].connectedGems[j].ActivateGem();
             }
         }
-        photonView.RPC("RpcEquip", RpcTarget.All);
+        photonView.RPC(nameof(RpcEquip), RpcTarget.All);
     }
 
     public void Unequip()
@@ -58,10 +58,10 @@ public abstract class Equipment : Item
             if (skillSetReplacements[i] == null) continue;
             for (int j = 0; j < skillSetReplacements[i].connectedGems.Count; j++)
             {
-                skillSetReplacements[i].connectedGems[j].Deactivate();
+                if(skillSetReplacements[i].connectedGems[j].isGemActivated) skillSetReplacements[i].connectedGems[j].DeactivateGem();
             }
         }
-        photonView.RPC("RpcUnequip", RpcTarget.All);
+        photonView.RPC(nameof(RpcUnequip), RpcTarget.All);
     }
 
     public abstract void OnEquip(Entity owner);
@@ -150,6 +150,17 @@ public abstract class Equipment : Item
     }
 
 
-
+    public override InfoTextIcon infoTextIcon
+    {
+        get
+        {
+            if (type == EquipmentType.Armor) return InfoTextIcon.Armor;
+            else if (type == EquipmentType.Boots) return InfoTextIcon.Boots;
+            else if (type == EquipmentType.Helmet) return InfoTextIcon.Helmet;
+            else if (type == EquipmentType.Ring) return InfoTextIcon.Ring;
+            else if (type == EquipmentType.Weapon) return InfoTextIcon.Weapon;
+            return base.infoTextIcon;
+        }
+    }
 
 }

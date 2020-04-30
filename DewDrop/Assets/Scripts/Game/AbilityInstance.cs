@@ -168,7 +168,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
     public void Despawn()
     {
         if (!isAlive) return;
-        photonView.RPC("RpcDespawn", RpcTarget.All, (byte)DespawnBehaviour.WaitForParticleSystems);
+        photonView.RPC(nameof(RpcDespawn), RpcTarget.All, (byte)DespawnBehaviour.WaitForParticleSystems);
     }
 
 
@@ -179,7 +179,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
     public void Despawn(DespawnBehaviour behaviour)
     {
         if (!isAlive) return;
-        photonView.RPC("RpcDespawn", RpcTarget.All, (byte)behaviour);
+        photonView.RPC(nameof(RpcDespawn), RpcTarget.All, (byte)behaviour);
     }
 
     /// <summary>
@@ -226,7 +226,7 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
         if (!isAlive) return;
         Vector3 attachOffset = attachTo.transform.InverseTransformPoint(transform.position);
         Quaternion attachRotation = Quaternion.Inverse(attachTo.transform.rotation) * transform.rotation;
-        photonView.RPC("RpcDespawnWithAttach", RpcTarget.All, (byte)behaviour, attachTo.photonView.ViewID, (byte)attachBehaviour, attachOffset, attachRotation);
+        photonView.RPC(nameof(RpcDespawnWithAttach), RpcTarget.All, (byte)behaviour, attachTo.photonView.ViewID, (byte)attachBehaviour, attachOffset, attachRotation);
     }
 
     [PunRPC]
@@ -253,6 +253,11 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
         if (_despawnBehaviour == DespawnBehaviour.StopAndWaitForParticleSystems) _mainParticleSystem.Stop();
         if (photonView.IsMine) PhotonNetwork.Destroy(gameObject);
         _isMarkedForDespawn = true;
+    }
+
+    public void SendEvent(string eventString)
+    {
+        photonView.RPC(nameof(RpcDoEvent), RpcTarget.All, eventString);
     }
 
     [PunRPC]

@@ -2,7 +2,7 @@
 ///Sourced from - http://forum.unity3d.com/threads/accordion-type-layout.271818/
 
 using System;
-using UnityEngine.UI.Extensions.Tweens;
+using DuloGames.UI.Tweens;
 
 namespace UnityEngine.UI.Extensions
 {

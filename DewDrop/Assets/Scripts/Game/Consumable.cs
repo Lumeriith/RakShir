@@ -19,7 +19,6 @@ public abstract class Consumable : Item
     public TargetValidator targetValidator;
     public SelfValidator selfValidator;
 
-
     protected bool ShouldTargetValidatorFieldShow()
     {
         return targetingType == AbilityTrigger.TargetingType.Target;
@@ -41,10 +40,9 @@ public abstract class Consumable : Item
         return isUsed;
     }
 
-
-
     public virtual bool IsReady() { return true; }
 
     public abstract bool OnUse(CastInfo info);
 
+    public override InfoTextIcon infoTextIcon => InfoTextIcon.Consumable;
 }

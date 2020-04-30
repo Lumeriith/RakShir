@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,42 +8,44 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
 {
     private Entity target;
 
-    private new Renderer renderer
+    private Renderer targetRenderer
     {
         get
         {
-            if (_renderer == null) _renderer = target.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
-            return _renderer;
+            if (_cachedTargetRenderer == null) _cachedTargetRenderer = target.transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
+            return _cachedTargetRenderer;
         }
     }
-    private Renderer _renderer;
+    private Renderer _cachedTargetRenderer;
 
-    public Vector3 worldOffset;
-    public Vector3 UIOffset;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Text _nameText;
+    [SerializeField, FoldoutGroup("Required References")]
+    private HealthFill _healthFill;
+    [SerializeField, FoldoutGroup("Required References")]
+    private ManaFill _manaFill;
 
-    public Color nameColor = Color.white;
-    public Color statusEffectColor = Color.yellow;
+    [SerializeField]
+    private Vector3 _worldOffset;
+    [SerializeField]
+    private Color _nameColor = Color.white;
+    [SerializeField]
+    private Color _statusEffectColor = Color.yellow;
 
-    private Text text_name;
-    private UniversalHealthbar universalHealthbar;
-    private Image image_mana_fill;
-    private Image image_status_effect_backdrop;
+    private CanvasGroup _canvasGroup;
+    private Canvas _parentCanvas;
 
-
-    private CanvasGroup canvasGroup;
     public void SetTarget(Entity target)
     {
         this.target = target;
+        _healthFill.Setup(target);
+        _manaFill.Setup(target);
     }
 
     private void Awake()
     {
-        text_name = transform.Find("Name").GetComponent<Text>();
-        universalHealthbar = GetComponentInChildren<UniversalHealthbar>();
-        image_mana_fill = transform.Find("Mana/Fill").GetComponent<Image>();
-        image_status_effect_backdrop = transform.Find("Status Effect Backdrop").GetComponent<Image>();
-        canvasGroup = GetComponent<CanvasGroup>();
-
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _parentCanvas = GetComponentInParent<Canvas>();
     }
 
     void LateUpdate()
@@ -52,37 +55,29 @@ public class PlayerInfobar : MonoBehaviour, IInfobar
             Destroy(gameObject);
             return;
         }
-        if (target.IsDead() || !renderer.isVisible)
+        if (target.IsDead() || !targetRenderer.isVisible)
         {
-            canvasGroup.alpha = 0;
-            universalHealthbar.enabled = false;
+            _canvasGroup.alpha = 0;
             return;
         }
         else
         {
-            canvasGroup.alpha = 1;
-            universalHealthbar.enabled = true;
+            _canvasGroup.alpha = 1;
         }
+
         string statusEffectName = StatusEffect.GetImportantStatusEffectName(target);
         if(statusEffectName == "")
         {
-            text_name.text = target.readableName;
-            text_name.color = nameColor;
-            image_status_effect_backdrop.enabled = false;
+            _nameText.text = target.readableName;
+            _nameText.color = _nameColor;
         }
         else
         {
-            text_name.text = statusEffectName;
-            text_name.color = statusEffectColor;
-            image_status_effect_backdrop.enabled = true;
+            _nameText.text = statusEffectName;
+            _nameText.color = _statusEffectColor;
         }
 
-        image_mana_fill.fillAmount = target.stat.currentMana / target.stat.finalMaximumMana;
-
-        universalHealthbar.SetTarget(target);
-
-
-        transform.position = (Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset).Quantitized();
+        ((RectTransform)transform).SetWorldPositionForScreenSpaceCamera(target.transform.position + targetRenderer.bounds.size.y * Vector3.up + _worldOffset, _parentCanvas);
     }
 
 }

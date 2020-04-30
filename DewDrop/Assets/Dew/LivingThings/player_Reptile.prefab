@@ -150,7 +150,6 @@ MonoBehaviour:
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 10
   angularSpeed: 1200
-  reservedCommands: []
   ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &685593335107112255
@@ -170,9 +169,9 @@ MonoBehaviour:
   currentGold: 0
   isDead: 0
   baseMaximumHealth: 400
-  baseHealthRegenerationPerSecond: 2.5
+  baseHealthRegenerationPerSecond: 0.5
   baseMaximumMana: 300
-  baseManaRegenerationPerSecond: 2
+  baseManaRegenerationPerSecond: 0.75
   baseMovementSpeed: 320
   baseAttackDamage: 0
   baseAttacksPerSecond: 0

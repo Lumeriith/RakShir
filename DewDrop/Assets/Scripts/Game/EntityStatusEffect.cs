@@ -120,7 +120,7 @@ public class EntityStatusEffect : MonoBehaviourPun
         statusEffects.Add(ce);
         _statusEffectCountMap[(int)ce.type] += 1;
         if(_statusEffectCountMap[(int)ce.type] == 1) StatusEffectVisualsManager.CreateVisual(_entity, ce.type);
-        photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler.GetActionCallerUID(), (byte)ce.type, ce.duration, ce.parameter);
+        photonView.RPC(nameof(RpcApplyStatusEffect), RpcTarget.Others, uid, ce.handler?.GetActionCallerUID(), (byte)ce.type, ce.duration, ce.parameter);
     }
 
     public void CleanseStatusEffect(StatusEffectType type)
@@ -352,14 +352,14 @@ public class EntityStatusEffect : MonoBehaviourPun
 
         for (int i = 0; i < reservedHealAmounts.Count; i++)
         {
-            if(reservedHealHandlers[i].entity == null) _entity.DoHeal(_entity, reservedHealAmounts[i], true, reservedHealHandlers[i]);
+            if(reservedHealHandlers[i] == null || reservedHealHandlers[i].entity == null) _entity.DoHeal(_entity, reservedHealAmounts[i], true, reservedHealHandlers[i]);
             else reservedHealHandlers[i].entity.DoHeal(_entity, reservedHealAmounts[i], true, reservedHealHandlers[i]);
 
         }
 
         for (int i = 0; i < reservedMagicDamageAmounts.Count; i++)
         {
-            if(reservedMagicDamageHandlers[i].entity == null) _entity.DoMagicDamage(_entity, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
+            if(reservedMagicDamageHandlers[i] == null || reservedMagicDamageHandlers[i].entity == null) _entity.DoMagicDamage(_entity, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
             else reservedMagicDamageHandlers[i].entity.DoMagicDamage(_entity, reservedMagicDamageAmounts[i], true, reservedMagicDamageHandlers[i]);
         }
 

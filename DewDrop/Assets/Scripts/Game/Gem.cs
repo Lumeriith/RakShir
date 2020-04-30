@@ -6,16 +6,14 @@ using System;
 
 public abstract class Gem : Item
 {
+    public bool isGemActivated { get; private set; }
+
     [Header("Gem Settings")]
     public AbilityTrigger trigger;
     public int level = 0;
     public int maxLevel = 4;
 
     private List<AbilityInstance> _instances = new List<AbilityInstance>();
-
-    private GameObject deactivatedModel;
-    private List<Collider> deactivatedColliders = new List<Collider>();
-    private List<Rigidbody> deactivatedRigidbodies = new List<Rigidbody>();
 
     public AbilityInstance CreateAbilityInstance(string prefabName, Vector3 position, Quaternion rotation, object[] data = null)
     {
@@ -28,7 +26,7 @@ public abstract class Gem : Item
         PurgeReferencesList();
         AbilityInstance reference = AbilityInstanceManager.CreateAbilityInstanceFromGem(prefabName, position, rotation, info, this, data);
         _instances.Add(reference);
-        return reference;
+        return reference; 
     }
 
     private void PurgeReferencesList()
@@ -59,8 +57,6 @@ public abstract class Gem : Item
         return _instances[0];
     }
 
-
-
     public void SendEventToAbilityInstance(string eventString, AbilityInstanceEventTargetType target)
     {
         if (!IsAnyInstanceActive())
@@ -73,21 +69,21 @@ public abstract class Gem : Item
             case AbilityInstanceEventTargetType.EveryInstance:
                 for (int i = 0; i < _instances.Count; i++)
                 {
-                    _instances[i].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                    _instances[i].SendEvent(eventString);
                 }
                 break;
             case AbilityInstanceEventTargetType.FirstInstance:
-                _instances[0].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _instances[0].SendEvent(eventString);
                 break;
             case AbilityInstanceEventTargetType.LastInstance:
-                _instances[_instances.Count - 1].photonView.RPC("RpcDoEvent", RpcTarget.All, eventString);
+                _instances[_instances.Count - 1].SendEvent(eventString);
                 break;
         }
     }
 
-    public virtual void OnEquip(Entity owner, AbilityTrigger trigger) { }
+    public virtual void OnGemActivate(Entity owner, AbilityTrigger trigger) { }
 
-    public virtual void OnUnequip(Entity owner, AbilityTrigger trigger) { }
+    public virtual void OnGemDeactivate(Entity owner, AbilityTrigger trigger) { }
 
     public virtual void OnTriggerCast(bool isMine) { }
 
@@ -102,29 +98,27 @@ public abstract class Gem : Item
 
     public void SetLevel(int level)
     {
-        photonView.RPC("RpcSetLevel", RpcTarget.All, level);
+        photonView.RPC(nameof(RpcSetLevel), RpcTarget.All, level);
     }
 
     public void Equip(string triggerName)
     {
-        photonView.RPC("RpcEquip", RpcTarget.All, triggerName);
+        photonView.RPC(nameof(RpcEquip), RpcTarget.All, triggerName);
     }
 
     public void Unequip()
     {
-        photonView.RPC("RpcUnequip", RpcTarget.All);
+        photonView.RPC(nameof(RpcUnequip), RpcTarget.All);
     }
 
-    // Reactivates gem that has been deactivated due to the connected equipment being unequipped.
-    public void Reactivate()
+    public void ActivateGem()
     {
-        photonView.RPC("RpcReactivate", RpcTarget.All);
+        photonView.RPC(nameof(RpcActivateGem), RpcTarget.All);
     }
 
-    // Deactivates gem due to the connected equipment being unequipped.
-    public void Deactivate()
+    public void DeactivateGem()
     {
-        photonView.RPC("RpcDeactivate", RpcTarget.All);
+        photonView.RPC(nameof(RpcDeactivateGem), RpcTarget.All);
     }
 
     [PunRPC]
@@ -135,15 +129,15 @@ public abstract class Gem : Item
 
 
     [PunRPC]
-    protected void RpcReactivate()
+    protected void RpcActivateGem()
     {
-        OnEquip(owner, trigger);
+        OnGemActivate(owner, trigger);
     }
 
     [PunRPC]
-    protected void RpcDeactivate()
+    protected void RpcDeactivateGem()
     {
-        OnUnequip(owner, trigger);
+        OnGemDeactivate(owner, trigger);
     }
 
     [PunRPC]
@@ -153,63 +147,22 @@ public abstract class Gem : Item
         trigger.connectedGems.Add(this);
         transform.parent = trigger.transform;
 
-        Transform t = transform.Find("Model");
-        if (t != null)
+        if (trigger.equipment.isEquipped)
         {
-            deactivatedModel = t.gameObject;
-            deactivatedModel.SetActive(false);
+            isGemActivated = true;
+            OnGemActivate(owner, trigger);
         }
-
-        deactivatedColliders.AddRange(GetComponents<Collider>());
-        deactivatedRigidbodies.AddRange(GetComponents<Rigidbody>());
-        for (int i = deactivatedColliders.Count - 1; i >= 0; i--)
-        {
-            if (!deactivatedColliders[i].enabled) deactivatedColliders.RemoveAt(i);
-            else deactivatedColliders[i].enabled = false;
-        }
-        for (int i = deactivatedRigidbodies.Count - 1; i >= 0; i--)
-        {
-            if (deactivatedRigidbodies[i].isKinematic) deactivatedRigidbodies.RemoveAt(i);
-            else
-            {
-                deactivatedRigidbodies[i].isKinematic = true;
-                deactivatedRigidbodies[i].detectCollisions = false;
-            }
-        }
-
-
-        gameObject.SetActive(true);
-
-        OnEquip(owner, trigger);
     }
 
     [PunRPC]
     protected void RpcUnequip()
     {
-        OnUnequip(owner, trigger);
         trigger.connectedGems.Remove(this);
         trigger = null;
         transform.parent = owner.transform;
-
-        for (int i = 0; i < deactivatedColliders.Count; i++)
-        {
-            deactivatedColliders[i].enabled = true;
-        }
-        for (int i = 0; i < deactivatedRigidbodies.Count; i++)
-        {
-            deactivatedRigidbodies[i].isKinematic = false;
-            deactivatedRigidbodies[i].detectCollisions = true;
-        }
-
-
-        if (deactivatedModel != null) deactivatedModel.gameObject.SetActive(true);
-
-        deactivatedColliders.Clear();
-        deactivatedModel = null;
-
-        gameObject.SetActive(false);
+        
+        if(isGemActivated) OnGemDeactivate(owner, trigger);
     }
-
 
     [PunRPC]
     protected void RpcSetLevel(int level)
@@ -223,4 +176,5 @@ public abstract class Gem : Item
         OnTriggerCast(false);
     }
 
+    public override InfoTextIcon infoTextIcon => InfoTextIcon.Gem;
 }

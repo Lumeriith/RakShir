@@ -79,7 +79,7 @@ public class PlayerInventory : MonoBehaviour
         {
             int index = inventoryFirstEmptyIndex;
             inventory[inventoryFirstEmptyIndex] = item;
-            item.TransferOwnership(livingThing);
+            item.Own(livingThing);
             EquipEquipmentFromInventory(index);
             SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
@@ -88,7 +88,7 @@ public class PlayerInventory : MonoBehaviour
         Consumable consumable = item as Consumable;
         if(consumable != null && consumable.useOnPickup)
         {
-            item.TransferOwnership(livingThing);
+            item.Own(livingThing);
             UseConsumable(consumable, new CastInfo { owner = livingThing });
             SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
@@ -102,7 +102,7 @@ public class PlayerInventory : MonoBehaviour
                 {
                     int index = inventoryFirstEmptyIndex;
                     inventory[index] = item;
-                    item.TransferOwnership(livingThing);
+                    item.Own(livingThing);
                     MoveConsumableFromInventoryToBelt(index, i);
                     SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
                     return true;
@@ -113,7 +113,7 @@ public class PlayerInventory : MonoBehaviour
         if (!isInventoryFull)
         {
             inventory[inventoryFirstEmptyIndex] = item;
-            item.TransferOwnership(livingThing);
+            item.Own(livingThing);
             SFXManager.CreateSFXInstance("si_local_ItemPickup", transform.position, true);
             return true;
         }

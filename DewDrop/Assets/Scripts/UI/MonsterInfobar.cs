@@ -1,62 +1,70 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MonsterInfobar : MonoBehaviour, IInfobar
 {
-    private Entity target;
 
-    private new Renderer renderer
+
+    private Renderer _targetRenderer
     {
         get
         {
-            if (_renderer == null) _renderer = target.transform.Find("Model").GetComponentInChildren<Renderer>();
-            return _renderer;
+            if (_cachedTargetRenderer == null) _cachedTargetRenderer = _target.transform.Find("Model").GetComponentInChildren<Renderer>();
+            return _cachedTargetRenderer;
         }
     }
-    private Renderer _renderer;
+    private Renderer _cachedTargetRenderer;
 
-    public Vector3 worldOffset;
-    public Vector3 UIOffset;
+    
+    [SerializeField, FoldoutGroup("Required References")]
+    private HealthFill _healthFill;
 
-    private UniversalHealthbar uhb;
+    [SerializeField]
+    private Vector3 _worldOffset;
 
-
-    private CanvasGroup canvasGroup;
+    private CanvasGroup _canvasGroup;
+    private Entity _target;
+    private RectTransform _rectTransform;
+    private Canvas _parentCanvas;
+    
 
     public void SetTarget(Entity target)
     {
-        this.target = target;
+        this._target = target;
     }
 
     private void Awake()
     {
-        uhb = GetComponentInChildren<UniversalHealthbar>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _rectTransform = (RectTransform)transform;
+        _parentCanvas = GetComponentInParent<Canvas>();
     }
 
     void LateUpdate()
     {
-        if (target == null)
+        if (_target == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        if (target.IsDead() || !renderer.isVisible)
+        if (_target.IsDead() || !_targetRenderer.isVisible)
         {
-            canvasGroup.alpha = 0f;
-            uhb.enabled = false;
+            _canvasGroup.alpha = 0f;
+            _healthFill.enabled = false;
             return;
         }
         else
         {
-            uhb.enabled = true;
-            canvasGroup.alpha = 1f;
+            _healthFill.enabled = true;
+            _canvasGroup.alpha = 1f;
         }
         
-        uhb.SetTarget(target);
-        transform.position = (Camera.main.WorldToScreenPoint(target.transform.position + renderer.bounds.size.y * Vector3.up + worldOffset) + UIOffset).Quantitized();
+        _healthFill.Setup(_target);
+
+        _rectTransform.SetWorldPositionForScreenSpaceCamera(_target.transform.position + _targetRenderer.bounds.size.y * Vector3.up + _worldOffset, _parentCanvas);
     }
 }

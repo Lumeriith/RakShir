@@ -1,161 +1,109 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class InfoText : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+using Sirenix.OdinInspector;
+
+
+public enum InfoTextIcon
 {
-    public static SortedList<float, Rect> drawnInfoTextRects = new SortedList<float, Rect>(new DuplicateKeyComparer<float>());
+    Weapon, Armor, Helmet, Boots, Ring, Consumable, Money, Book, Gem
+}
 
-    public bool clickable;
+public interface IInfoTextable
+{
+    bool shouldShowInfoText { get; }
+    InfoTextIcon infoTextIcon { get; }
+    Vector3 infoTextWorldPosition { get; }
+    string infoTextName { get; }
 
-    private Image image_image;
-    private Image image_icon;
-    private Text text_text;
-    private CanvasGroup canvasGroup;
-    private Camera main;
-    private RectTransform rectTransform;
+    void OnInfoTextClick();
+}
 
-    public string text;
 
-    public Transform follow;
-    public Vector3 offsetUI;
-    public Vector3 offsetWorld;
+public class InfoText : MonoBehaviour
+{
+    private readonly Vector3 GlobalWorldOffset = Vector3.up * 2f;
 
-    public System.Action OnClick = () => { };
+    private static SortedList<float, Rect> _drawnInfoTextRects = new SortedList<float, Rect>(new DuplicateKeyComparer<float>());
 
-    public Sprite weaponIcon;
-    public Sprite armorIcon;
-    public Sprite helmetIcon;
-    public Sprite bootsIcon;
-    public Sprite ringIcon;
-    public Sprite consumableIcon;
-    public Sprite moneyIcon;
-    public Sprite bookIcon;
-    public Sprite gemIcon;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Image _iconImage;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Text _text;
+    [SerializeField, FoldoutGroup("Required References")]
+    private Sprite[] _iconSprites;
 
-    private float creationTime;
+    private Camera _main;
+    private RectTransform _rectTransform;
+    private CanvasGroup _canvasGroup;
+    private IInfoTextable _target;
+
     private void Awake()
     {
-        image_image = GetComponent<Image>();
-        text_text = transform.Find("Text").GetComponent<Text>();
-        canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0f;
-        main = Camera.main;
-        image_icon = transform.Find("Icon").GetComponent<Image>();
-        creationTime = Time.time;
-        rectTransform = GetComponent<RectTransform>();
+        _main = Camera.main;
+        _rectTransform = GetComponent<RectTransform>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0f;
+        _canvasGroup.blocksRaycasts = false;
     }
 
-    private void Start()
+    public void Setup(IInfoTextable target)
     {
-        Consumable cons = follow.GetComponent<Consumable>();
-        if (cons != null)
-        {
-            image_icon.sprite = consumableIcon;
-            if (cons as cons_GoldPouch != null) image_icon.sprite = moneyIcon;
-            if (cons as cons_BookOfAgility != null || cons as cons_BookOfStrength != null || cons as cons_BookOfIntelligence != null) image_icon.sprite = bookIcon;
-            return;
-        }
-
-        Equipment equip = follow.GetComponent<Equipment>();
-        if (equip != null)
-        {
-            switch (equip.type)
-            {
-                case EquipmentType.Helmet:
-                    image_icon.sprite = helmetIcon;
-                    break;
-                case EquipmentType.Armor:
-                    image_icon.sprite = armorIcon;
-                    break;
-                case EquipmentType.Boots:
-                    image_icon.sprite = bootsIcon;
-                    break;
-                case EquipmentType.Weapon:
-                    image_icon.sprite = weaponIcon;
-                    break;
-                case EquipmentType.Ring:
-                    image_icon.sprite = ringIcon;
-                    break;
-            }
-        }
-        if(follow.GetComponent<Gem>() != null)
-        {
-            image_icon.sprite = gemIcon;
-        }
+        _target = target;
+        _iconImage.sprite = _iconSprites[(int)_target.infoTextIcon];
+        _text.text = _target.infoTextName;
     }
 
     private void Update()
     {
-        drawnInfoTextRects.Clear();
+        if(_drawnInfoTextRects.Count != 0) _drawnInfoTextRects.Clear();
     }
 
     private void LateUpdate() {
-        if (follow == null)
+        if (_target as Object == null)
         {
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
-            if(Time.time - creationTime > 1f) Destroy(gameObject);
+            Destroy(gameObject);
             return;
         }
-        Vector3 viewportPoint = main.WorldToViewportPoint(follow.transform.position);
-        if (viewportPoint.x < 0 || viewportPoint.x > 1 || viewportPoint.y < 0 || viewportPoint.y > 1||viewportPoint.z < 0|| !follow.gameObject.activeInHierarchy)
-        {
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
-        }
-        else
-        {
 
-            text_text.text = text;
-            canvasGroup.alpha = 1f;
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.interactable = true;
-            transform.position = main.WorldToScreenPoint(follow.transform.position + offsetWorld) + offsetUI;
-            Rect myRect = new Rect((Vector2)transform.position - rectTransform.sizeDelta/2f, rectTransform.sizeDelta);
-            for (int i = 0; i < drawnInfoTextRects.Count; i++)
+        Vector3 viewportPoint = _main.WorldToViewportPoint(_target.infoTextWorldPosition + GlobalWorldOffset).Quantitized();
+        if (!_target.shouldShowInfoText || viewportPoint.x < 0 || viewportPoint.x > 1 || viewportPoint.y < 0 || viewportPoint.y > 1 || viewportPoint.z < 0)
+        {
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.blocksRaycasts = false;   
+            return;
+        }
+
+        _canvasGroup.alpha = 1f;
+        _canvasGroup.blocksRaycasts = true;
+
+        Vector3 screenPoint = _main.WorldToScreenPoint(_target.infoTextWorldPosition + GlobalWorldOffset).Quantitized();
+
+        transform.position = screenPoint;
+
+        Rect myRect = new Rect((Vector2)transform.position - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
+        for (int i = 0; i < _drawnInfoTextRects.Count; i++)
+        {
+            if (myRect.Overlaps(_drawnInfoTextRects.Values[i]))
             {
-                if (myRect.Overlaps(drawnInfoTextRects.Values[i]))
-                {
-                    transform.position += Vector3.up * (drawnInfoTextRects.Values[i].yMax - myRect.yMin);
-                    myRect = new Rect((Vector2)transform.position - rectTransform.sizeDelta / 2f, rectTransform.sizeDelta);
+                transform.position += Vector3.up * (_drawnInfoTextRects.Values[i].yMax - myRect.yMin);
+                myRect = new Rect((Vector2)transform.position - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
 
-                }
             }
-            drawnInfoTextRects.Add(myRect.y, myRect);
         }
+        _drawnInfoTextRects.Add(myRect.y, myRect);
     }
 
-
-
-    public void OnPointerDown(PointerEventData data)
+    public void Click()
     {
-        if(data.button == PointerEventData.InputButton.Left) image_image.color = new Color(180f / 255f, 180f / 255f, 180f / 255f, 200f / 255f);
-
+        _target.OnInfoTextClick();
     }
-
-    public void OnPointerUp(PointerEventData data)
-    {
-        if (data.button == PointerEventData.InputButton.Left) image_image.color = new Color(0f, 0f, 0f, 189f / 255f);
-    }
-
-
-    public void OnPointerClick(PointerEventData data)
-    {
-        if (data.button == PointerEventData.InputButton.Left) OnClick.Invoke();
-    }
-
-
 }
 
-public class DuplicateKeyComparer<TKey> : IComparer<TKey> where TKey : IComparable
+public class DuplicateKeyComparer<TKey> : IComparer<TKey> where TKey : System.IComparable
 {
-    #region IComparer<TKey> Members
-
     public int Compare(TKey x, TKey y)
     {
         int result = x.CompareTo(y);
@@ -165,6 +113,4 @@ public class DuplicateKeyComparer<TKey> : IComparer<TKey> where TKey : IComparab
         else
             return result;
     }
-
-    #endregion
 }

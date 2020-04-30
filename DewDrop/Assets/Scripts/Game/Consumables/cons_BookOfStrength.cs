@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class cons_BookOfStrength : Consumable
 {
-
     public override bool OnUse(CastInfo info)
     {
         AbilityInstanceManager.CreateAbilityInstance("ai_cons_BookOfStrength", info.owner.transform.position, Quaternion.identity, info);
@@ -12,4 +11,6 @@ public class cons_BookOfStrength : Consumable
         DestroySelf();
         return true;
     }
+
+    public override InfoTextIcon infoTextIcon => InfoTextIcon.Book;
 }

@@ -22,6 +22,16 @@ public abstract class AbilityTrigger : MonoBehaviour
 {
     public const int maxGemPerTrigger = 3;
     public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
+    public Equipment equipment
+    {
+        get
+        {
+            if (_equipment == null) _equipment = GetComponentInParent<Equipment>();
+            return _equipment;
+        }
+    }
+    private Equipment _equipment;
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -48,16 +58,16 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     }
 #endif
-    [BoxGroup("Metadata"), HorizontalGroup("Metadata/horizontal", 50), VerticalGroup("Metadata/horizontal/icon")]
+    [BoxGroup("Trigger Metadata"), HorizontalGroup("Trigger Metadata/horizontal", 50), VerticalGroup("Trigger Metadata/horizontal/icon")]
     [PreviewField(50, ObjectFieldAlignment.Left)]
     [HideLabel]
     public Sprite abilityIcon;
-    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    [HorizontalGroup("Trigger Metadata/horizontal"), VerticalGroup("Trigger Metadata/horizontal/text")]
     [HideLabel]
     public string abilityName = "Ability Name";
-    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    [HorizontalGroup("Trigger Metadata/horizontal"), VerticalGroup("Trigger Metadata/horizontal/text")]
     public float manaCost;
-    [HorizontalGroup("Metadata/horizontal"), VerticalGroup("Metadata/horizontal/text")]
+    [HorizontalGroup("Trigger Metadata/horizontal"), VerticalGroup("Trigger Metadata/horizontal/text")]
     public float cooldownTime;
 
     [HideLabel]

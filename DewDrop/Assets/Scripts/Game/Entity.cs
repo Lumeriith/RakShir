@@ -644,7 +644,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoManaHeal(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
@@ -654,11 +654,11 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoBasicAttackImmediately(Entity to, DewActionCaller handler)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler?.GetActionCallerUID());
     }
     public void DoMagicDamage(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
@@ -668,7 +668,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoPureDamage(Entity to, float amount, DewActionCaller handler)
     {
@@ -678,8 +678,8 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.GetActionCallerUID());
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
+        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
     }
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
@@ -865,19 +865,19 @@ public class Entity : MonoBehaviourPun
     [PunRPC]
     protected void RpcSpendMana(float amount, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
+
         stat.currentMana -= amount;
         stat.ValidateMana();
-
-        InfoManaSpent info;
-        info.entity = this;
-        info.amount = amount;
+        InfoManaSpent info = new InfoManaSpent { caller = caller, entity = this, amount = amount };
         OnSpendMana.Invoke(info);
-        DewActionCaller.Retrieve(callerUID)?.OnSpendMana.Invoke(info);
+        caller?.OnSpendMana.Invoke(info);
     }
 
     [PunRPC]
     protected void RpcApplyMagicDamage(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) amount = 0f;
         float finalAmount;
         Entity from;
@@ -904,22 +904,24 @@ public class Entity : MonoBehaviourPun
         }
 
         InfoMagicDamage infoMagicDamage;
+        infoMagicDamage.caller = caller;
         infoMagicDamage.to = this;
         infoMagicDamage.from = from;
         infoMagicDamage.originalDamage = amount;
         infoMagicDamage.finalDamage = finalAmount;
         OnTakeMagicDamage.Invoke(infoMagicDamage);
         from.OnDealMagicDamage.Invoke(infoMagicDamage);
-        DewActionCaller.Retrieve(callerUID)?.OnDealMagicDamage.Invoke(infoMagicDamage);
+        caller?.OnDealMagicDamage.Invoke(infoMagicDamage);
 
         InfoDamage infoDamage;
+        infoDamage.caller = caller;
         infoDamage.damage = amount;
         infoDamage.from = from;
         infoDamage.to = this;
         infoDamage.type = DamageType.Spell;
         OnTakeDamage.Invoke(infoDamage);
         from.OnDealDamage.Invoke(infoDamage);
-        DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(infoDamage);
+        caller?.OnDealDamage.Invoke(infoDamage);
     }
 
     [PunRPC]
@@ -931,6 +933,7 @@ public class Entity : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyBasicAttackDamage(int from_id, float random, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
         Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
         if (from.statusEffect.IsAffectedBy(StatusEffectType.Blind))
@@ -974,21 +977,23 @@ public class Entity : MonoBehaviourPun
             }
 
             InfoBasicAttackHit infoBasicAttackHit;
+            infoBasicAttackHit.caller = caller;
             infoBasicAttackHit.damage = finalAmount;
             infoBasicAttackHit.from = from;
             infoBasicAttackHit.to = this;
             OnTakeBasicAttackHit.Invoke(infoBasicAttackHit);
             from.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
-            DewActionCaller.Retrieve(callerUID)?.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
+            caller?.OnDoBasicAttackHit.Invoke(infoBasicAttackHit);
 
             InfoDamage infoDamage;
+            infoDamage.caller = caller;
             infoDamage.damage = finalAmount;
             infoDamage.from = from;
             infoDamage.to = this;
             infoDamage.type = DamageType.Physical;
             OnTakeDamage.Invoke(infoDamage);
             from.OnDealDamage.Invoke(infoDamage);
-            DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(infoDamage);
+            caller?.OnDealDamage.Invoke(infoDamage);
         }
     }
 
@@ -1030,6 +1035,7 @@ public class Entity : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyPureDamage(float amount, int from_id, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
         if (!SelfValidator.CanBeDamaged.Evaluate(this)) return;
         Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
         stat.currentHealth -= Mathf.Max(0, amount);
@@ -1041,6 +1047,7 @@ public class Entity : MonoBehaviourPun
         }
 
         InfoDamage info;
+        info.caller = caller;
         info.damage = amount;
         info.from = from;
         info.to = this;
@@ -1050,8 +1057,8 @@ public class Entity : MonoBehaviourPun
         from.OnDealDamage.Invoke(info);
         OnTakePureDamage.Invoke(info);
         from.OnDealPureDamage.Invoke(info);
-        DewActionCaller.Retrieve(callerUID)?.OnDealDamage.Invoke(info);
-        DewActionCaller.Retrieve(callerUID)?.OnDealPureDamage.Invoke(info);
+        caller?.OnDealDamage.Invoke(info);
+        caller?.OnDealPureDamage.Invoke(info);
     }
 
 
@@ -1084,6 +1091,7 @@ public class Entity : MonoBehaviourPun
     [PunRPC]
     protected void RpcApplyHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
         float finalAmount;
         Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
@@ -1101,18 +1109,20 @@ public class Entity : MonoBehaviourPun
         if (finalAmount <= 0) return;
 
         InfoHeal info;
+        info.caller = caller;
         info.from = from;
         info.to = this;
         info.originalHeal = amount;
         info.finalHeal = finalAmount;
         from.OnDoHeal.Invoke(info);
         OnTakeHeal.Invoke(info);
-        DewActionCaller.Retrieve(callerUID)?.OnDoHeal.Invoke(info);
+        caller?.OnDoHeal.Invoke(info);
     }
 
     [PunRPC]
     protected void RpcApplyManaHeal(float amount, int from_id, bool ignoreSpellPower, int callerUID)
     {
+        DewActionCaller caller = DewActionCaller.Retrieve(callerUID);
         float finalAmount;
         Entity from = PhotonNetwork.GetPhotonView(from_id).GetComponent<Entity>();
 
@@ -1122,6 +1132,7 @@ public class Entity : MonoBehaviourPun
         stat.ValidateMana();
 
         InfoManaHeal info;
+        info.caller = caller;
         info.from = from;
         info.to = this;
         info.originalManaHeal = amount;
