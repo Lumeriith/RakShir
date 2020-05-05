@@ -185,6 +185,11 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public virtual void AliveUpdate(bool isMine) { }
 
+    private void Awake()
+    {
+        _equipment = GetComponentInParent<Equipment>();
+    }
+
     private void Update()
     {
         if(_owner != null)
