@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ContextualMenu : MonoBehaviour
 {
-    private CanvasGroup group;
-    private GameObject selection;
+    private CanvasGroup _group;
+    private GameObject _selection;
 
     private List<System.Action> callbacks = new List<System.Action>();
 
     private void Awake()
     {
-        group = GetComponent<CanvasGroup>();
-        selection = transform.Find("Selection").gameObject;
+        _group = GetComponent<CanvasGroup>();
+        _selection = transform.Find("Selection").gameObject;
     }
 
     private void Update()
@@ -33,7 +33,7 @@ public class ContextualMenu : MonoBehaviour
         GameObject newSelection;
         for(int i = 0; i < list.Length; i++)
         {
-            newSelection = Instantiate(selection, transform);
+            newSelection = Instantiate(_selection, transform);
             newSelection.transform.Find<Text>("Text").text = list[i];
             newSelection.GetComponent<ContextualMenuSelection>().index = i;
             newSelection.SetActive(true);

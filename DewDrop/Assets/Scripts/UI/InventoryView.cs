@@ -203,7 +203,7 @@ public class InventoryView : MonoBehaviour
 
     public void SocketContextMenuCalled(ItemSocket socket)
     {
-        ContextualMenu menu = Instantiate(contextualMenuPrefab, socket.transform.position, Quaternion.identity, transform);
+        ContextualMenu menu = Instantiate(contextualMenuPrefab, socket.transform.position, socket.transform.rotation, transform);
         if(socket.type == ItemSocket.SocketType.Equipped)
         {
             Equipment equipment = socket.item as Equipment;
