@@ -181,17 +181,17 @@ namespace Photon.Pun
         }
 
 
-        public bool SynchronizeEnabled = true;
+        public bool SynchronizeEnabled;
 
         public bool TeleportEnabled = true;
         public float TeleportIfDistanceGreaterThan = 3f;
 
-        public InterpolateOptions InterpolateOption = InterpolateOptions.Lerp;
+        public InterpolateOptions InterpolateOption = InterpolateOptions.EstimatedSpeed;
         public float InterpolateMoveTowardsSpeed = 1f;
 
-        public float InterpolateLerpSpeed = 10f;
+        public float InterpolateLerpSpeed = 1f;
 
-        public ExtrapolateOptions ExtrapolateOption = ExtrapolateOptions.EstimateSpeedAndTurn;
+        public ExtrapolateOptions ExtrapolateOption = ExtrapolateOptions.Disabled;
         public float ExtrapolateSpeed = 1f;
         public bool ExtrapolateIncludingRoundTripTime = true;
         public int ExtrapolateNumberOfStoredPositions = 1;
@@ -426,10 +426,10 @@ namespace Photon.Pun
         }
 
 
-        public bool SynchronizeEnabled = true;
+        public bool SynchronizeEnabled;
 
         public InterpolateOptions InterpolateOption = InterpolateOptions.RotateTowards;
-        public float InterpolateRotateTowardsSpeed = 800;
+        public float InterpolateRotateTowardsSpeed = 180;
         public float InterpolateLerpSpeed = 5;
     }
 
