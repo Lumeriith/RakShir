@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
+
 public class TestSansBehaviour : MonoBehaviourPun
 {
     private Entity livingThing;
