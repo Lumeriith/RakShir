@@ -32,7 +32,7 @@ public class InfobarCanvas : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         if (infobar != null)
         {
-            Instantiate(infobar, Vector3.zero, Quaternion.identity, transform.Find("/Common Game Logics/Infobar Canvas")).GetComponent<IInfobar>().SetTarget(target);
+            Instantiate(infobar, Vector3.zero, Quaternion.identity, transform).GetComponent<IInfobar>().SetTarget(target);
         }
     }
 }

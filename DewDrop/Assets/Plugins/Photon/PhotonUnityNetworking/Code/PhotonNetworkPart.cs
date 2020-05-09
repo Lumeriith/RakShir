@@ -26,6 +26,8 @@ namespace Photon.Pun
 
     public static partial class PhotonNetwork
     {
+        private const bool DisableObjectBeforeReturningToThePool = false;
+
         private static HashSet<byte> allowedReceivingGroups = new HashSet<byte>();
 
         private static HashSet<byte> blockedSendingGroups = new HashSet<byte>();
@@ -784,7 +786,7 @@ namespace Photon.Pun
                 Debug.Log("Network destroy Instantiated GO: " + go.name);
             }
 
-            go.SetActive(false);            // PUN 2 disables objects before the return to the pool
+            if(DisableObjectBeforeReturningToThePool) go.SetActive(false);            // PUN 2 disables objects before the return to the pool
             prefabPool.Destroy(go);         // PUN 2 always uses a PrefabPool (even for the default implementation)
         }
 
