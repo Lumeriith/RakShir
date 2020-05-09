@@ -24,8 +24,8 @@ Shader "EGA/Particles/FireSphere"
 		#include "UnityShaderVariables.cginc"
 		#include "UnityCG.cginc"
 		#pragma target 3.0
-		#pragma shader_feature _USEBLACK_ON
-		#pragma shader_feature _USEDEPTH_ON
+		#pragma shader_feature_local _USEBLACK_ON
+		#pragma shader_feature_local _USEDEPTH_ON
 		#pragma surface surf Unlit alpha:fade keepalpha noshadow 
 		struct Input
 		{

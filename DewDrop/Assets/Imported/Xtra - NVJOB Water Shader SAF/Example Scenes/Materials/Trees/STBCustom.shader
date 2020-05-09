@@ -57,9 +57,9 @@ LOD 400
 CGPROGRAM
 #pragma surface surf BlinnPhong vertex:TreeShaderBillboardVert exclude_path:prepass nolightmap dithercrossfade nodirlightmap nodynlightmap nometa noforwardadd nolppv noshadowmask halfasview interpolateview novertexlights addshadow noinstancing dithercrossfade
 #pragma target 3.0
-#pragma multi_compile __ BILLBOARD_FACE_CAMERA_POS
-#pragma shader_feature EFFECT_BUMP
-#pragma shader_feature EFFECT_HUE_VARIATION
+#pragma multi_compile_local __ BILLBOARD_FACE_CAMERA_POS
+#pragma shader_feature_local EFFECT_BUMP
+#pragma shader_feature_local EFFECT_HUE_VARIATION
 #define ENABLE_WIND
 
 //----------------------------------------------
@@ -90,9 +90,9 @@ CGPROGRAM
 #pragma fragment frag
 #pragma target 3.0
 #pragma multi_compile_fog
-#pragma multi_compile __ LOD_FADE_CROSSFADE
-#pragma multi_compile __ BILLBOARD_FACE_CAMERA_POS
-#pragma shader_feature EFFECT_HUE_VARIATION
+#pragma multi_compile_local __ LOD_FADE_CROSSFADE
+#pragma multi_compile_local __ BILLBOARD_FACE_CAMERA_POS
+#pragma shader_feature_local EFFECT_HUE_VARIATION
 #define ENABLE_WIND
 
 //----------------------------------------------

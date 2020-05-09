@@ -82,11 +82,11 @@ SubShader {
 		CGPROGRAM
 		#pragma vertex VertShader
 		#pragma fragment PixShader
-		#pragma shader_feature __ OUTLINE_ON
-		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
+		#pragma shader_feature_local __ OUTLINE_ON
+		#pragma shader_feature_local __ UNDERLAY_ON UNDERLAY_INNER
 
-		#pragma multi_compile __ UNITY_UI_CLIP_RECT
-		#pragma multi_compile __ UNITY_UI_ALPHACLIP
+		#pragma multi_compile_local __ UNITY_UI_CLIP_RECT
+		#pragma multi_compile_local __ UNITY_UI_ALPHACLIP
 
 		#include "UnityCG.cginc"
 		#include "UnityUI.cginc"

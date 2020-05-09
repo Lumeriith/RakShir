@@ -134,7 +134,7 @@
 			#pragma vertex metavert
 			#pragma fragment metafrag
 			#pragma fragmentoption ARB_precision_hint_fastest
-			#pragma shader_feature __ EDITOR_VISUALIZATION
+			#pragma shader_feature_local __ EDITOR_VISUALIZATION
 
 			#include "Inc/Meta/MKGlassMetaSetup.cginc"
 			#include "Inc/Meta/MKGlassMeta.cginc"
@@ -248,7 +248,7 @@
 			#pragma vertex metavert
 			#pragma fragment metafrag
 			#pragma fragmentoption ARB_precision_hint_fastest
-			#pragma shader_feature __ EDITOR_VISUALIZATION
+			#pragma shader_feature_local __ EDITOR_VISUALIZATION
 
 			#include "Inc/Meta/MKGlassMetaSetup.cginc"
 			#include "Inc/Meta/MKGlassMeta.cginc"
@@ -366,7 +366,7 @@
 			#pragma vertex metavert
 			#pragma fragment metafrag
 			#pragma fragmentoption ARB_precision_hint_fastest
-			#pragma shader_feature __ EDITOR_VISUALIZATION
+			#pragma shader_feature_local __ EDITOR_VISUALIZATION
 
 			#include "Inc/Meta/MKGlassMetaSetup.cginc"
 			#include "Inc/Meta/MKGlassMeta.cginc"

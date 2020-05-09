@@ -138,15 +138,15 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
             #pragma target 3.5
 
             // -------------------------------------
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature _SPECGLOSSMAP
-			//#pragma shader_feature ___ _DETAIL_MULX2	//Not supported in SM3.0
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _SPECGLOSSMAP
+			//#pragma shader_feature_local ___ _DETAIL_MULX2	//Not supported in SM3.0
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local _ _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
@@ -158,12 +158,12 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
 
 
-#pragma shader_feature _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
-#pragma shader_feature _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
-#pragma shader_feature _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
-#pragma shader_feature _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
-#pragma shader_feature _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
-#pragma shader_feature _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
+#pragma shader_feature_local _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
+#pragma shader_feature_local _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
+#pragma shader_feature_local _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
+#pragma shader_feature_local _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
+#pragma shader_feature_local _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
+#pragma shader_feature_local _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
 
 #define DISSOLVE_LEGACY_RENDER_PIPELIN
 #define DISSOLVE_LEGACY_MAINTEX
@@ -191,13 +191,13 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
             // -------------------------------------
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-			//#pragma shader_feature ___ _DETAIL_MULX2	//Not supported in SM3.0
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+			//#pragma shader_feature_local ___ _DETAIL_MULX2	//Not supported in SM3.0
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_fwdadd_fullshadows
             #pragma multi_compile_fog
@@ -208,12 +208,12 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
 
 
-#pragma shader_feature _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
-#pragma shader_feature _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
-#pragma shader_feature _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
-#pragma shader_feature _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
-#pragma shader_feature _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
-#pragma shader_feature _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
+#pragma shader_feature_local _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
+#pragma shader_feature_local _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
+#pragma shader_feature_local _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
+#pragma shader_feature_local _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
+#pragma shader_feature_local _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
+#pragma shader_feature_local _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
 
 #define DISSOLVE_LEGACY_RENDER_PIPELIN
 #define DISSOLVE_LEGACY_MAINTEX
@@ -237,9 +237,9 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
             // -------------------------------------
 
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
             #pragma multi_compile_shadowcaster
             #pragma multi_compile_instancing
 
@@ -249,12 +249,12 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
 
 
-#pragma shader_feature _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
-#pragma shader_feature _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
-#pragma shader_feature _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
-#pragma shader_feature _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
-#pragma shader_feature _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
-#pragma shader_feature _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
+#pragma shader_feature_local _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
+#pragma shader_feature_local _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
+#pragma shader_feature_local _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
+#pragma shader_feature_local _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
+#pragma shader_feature_local _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
+#pragma shader_feature_local _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
 
 #define DISSOLVE_LEGACY_RENDER_PIPELIN
 #define DISSOLVE_LEGACY_MAINTEX
@@ -279,14 +279,14 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
 
             // -------------------------------------
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-			//#pragma shader_feature ___ _DETAIL_MULX2	//Not supported in SM3.0
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+			//#pragma shader_feature_local ___ _DETAIL_MULX2	//Not supported in SM3.0
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_prepassfinal
             #pragma multi_compile_instancing
@@ -297,12 +297,12 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
 
 
 
-#pragma shader_feature _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
-#pragma shader_feature _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
-#pragma shader_feature _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
-#pragma shader_feature _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
-#pragma shader_feature _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
-#pragma shader_feature _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
+#pragma shader_feature_local _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
+#pragma shader_feature_local _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
+#pragma shader_feature_local _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
+#pragma shader_feature_local _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
+#pragma shader_feature_local _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
+#pragma shader_feature_local _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
 
 #define DISSOLVE_LEGACY_RENDER_PIPELIN
 #define DISSOLVE_LEGACY_MAINTEX
@@ -329,24 +329,24 @@ Shader "VacuumShaders/Advanced Dissolve/Standard/Roughness"
             #pragma fragment frag_meta
 			#pragma target 3.5
 
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _METALLICGLOSSMAP
-            #pragma shader_feature _SPECGLOSSMAP
-			//#pragma shader_feature ___ _DETAIL_MULX2	//Not supported in SM3.0
-            #pragma shader_feature EDITOR_VISUALIZATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local _SPECGLOSSMAP
+			//#pragma shader_feature_local ___ _DETAIL_MULX2	//Not supported in SM3.0
+            #pragma shader_feature_local EDITOR_VISUALIZATION
 
 
 
 
 
-#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
+#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON
 
-#pragma shader_feature _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
-#pragma shader_feature _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
-#pragma shader_feature _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
-#pragma shader_feature _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
-#pragma shader_feature _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
-#pragma shader_feature _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
+#pragma shader_feature_local _ _DISSOLVEGLOBALCONTROL_MASK_ONLY _DISSOLVEGLOBALCONTROL_MASK_AND_EDGE _DISSOLVEGLOBALCONTROL_ALL
+#pragma shader_feature_local _ _DISSOLVEMAPPINGTYPE_TRIPLANAR _DISSOLVEMAPPINGTYPE_SCREEN_SPACE
+#pragma shader_feature_local _ _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEALPHASOURCE_TWO_CUSTOM_MAPS _DISSOLVEALPHASOURCE_THREE_CUSTOM_MAPS
+#pragma shader_feature_local _ _DISSOLVEMASK_XYZ_AXIS _DISSOLVEMASK_PLANE _DISSOLVEMASK_SPHERE _DISSOLVEMASK_BOX _DISSOLVEMASK_CYLINDER _DISSOLVEMASK_CONE
+#pragma shader_feature_local _ _DISSOLVEEDGETEXTURESOURCE_GRADIENT _DISSOLVEEDGETEXTURESOURCE_MAIN_MAP _DISSOLVEEDGETEXTURESOURCE_CUSTOM
+#pragma shader_feature_local _ _DISSOLVEMASKCOUNT_TWO _DISSOLVEMASKCOUNT_THREE _DISSOLVEMASKCOUNT_FOUR
 
 #define DISSOLVE_LEGACY_RENDER_PIPELIN
 #define DISSOLVE_LEGACY_MAINTEX

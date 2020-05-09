@@ -28,7 +28,7 @@ Shader "ERB/Particles/Blend_Normals"
 		#include "UnityCG.cginc"
 		//#pragma target 3.0
 		#pragma surface surf Lambert alpha:fade keepalpha noshadow 
-		#pragma multi_compile _ SOFTPARTICLES_ON
+		#pragma multi_compile_local _ SOFTPARTICLES_ON
 		struct Input
 		{
 			float2 uv_texcoord;

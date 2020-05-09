@@ -69,12 +69,12 @@ Shader "Standard (Double Sided)"
 			
 			// -------------------------------------
 					
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _EMISSION
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
-			#pragma shader_feature _PARALLAXMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _EMISSION
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
+			#pragma shader_feature_local _PARALLAXMAP
 			
 			#pragma multi_compile_fwdbase
 			#pragma multi_compile_fog
@@ -105,11 +105,11 @@ Shader "Standard (Double Sided)"
 			// -------------------------------------
 
 			
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
-			#pragma shader_feature _PARALLAXMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
+			#pragma shader_feature_local _PARALLAXMAP
 			
 			#pragma multi_compile_fwdadd_fullshadows
 			#pragma multi_compile_fog
@@ -137,7 +137,7 @@ Shader "Standard (Double Sided)"
 			// -------------------------------------
 
 
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma multi_compile_shadowcaster
 
 			#pragma vertex vertShadowCaster
@@ -162,17 +162,17 @@ Shader "Standard (Double Sided)"
 
 			// -------------------------------------
 
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _EMISSION
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
-			#pragma shader_feature _PARALLAXMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _EMISSION
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
+			#pragma shader_feature_local _PARALLAXMAP
 
-			#pragma multi_compile ___ UNITY_HDR_ON
-			#pragma multi_compile LIGHTMAP_OFF LIGHTMAP_ON
-			#pragma multi_compile DIRLIGHTMAP_OFF DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
-			#pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
+			#pragma multi_compile_local ___ UNITY_HDR_ON
+			#pragma multi_compile_local LIGHTMAP_OFF LIGHTMAP_ON
+			#pragma multi_compile_local DIRLIGHTMAP_OFF DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
+			#pragma multi_compile_local DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
 			
 			#pragma vertex vertDeferred
 			#pragma fragment fragDeferred
@@ -196,9 +196,9 @@ Shader "Standard (Double Sided)"
 			#pragma vertex vert_meta
 			#pragma fragment frag_meta
 
-			#pragma shader_feature _EMISSION
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature_local _EMISSION
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
 
 			#include "UnityStandardMeta.cginc"
 			ENDCG
@@ -223,12 +223,12 @@ Shader "Standard (Double Sided)"
 			CGPROGRAM
 			#pragma target 2.0
 			
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _EMISSION 
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
-			// SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _EMISSION 
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
+			// SM2.0: NOT SUPPORTED shader_feature_local _PARALLAXMAP
 
 			#pragma skip_variants SHADOWS_SOFT DYNAMICLIGHTMAP_ON DIRLIGHTMAP_COMBINED DIRLIGHTMAP_SEPARATE
 			
@@ -256,11 +256,11 @@ Shader "Standard (Double Sided)"
 			CGPROGRAM
 			#pragma target 2.0
 
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
-			// SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
+			// SM2.0: NOT SUPPORTED shader_feature_local _PARALLAXMAP
 			#pragma skip_variants SHADOWS_SOFT
 			
 			#pragma multi_compile_fwdadd_fullshadows
@@ -284,7 +284,7 @@ Shader "Standard (Double Sided)"
 			CGPROGRAM
 			#pragma target 2.0
 
-			#pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
 			#pragma skip_variants SHADOWS_SOFT
 			#pragma multi_compile_shadowcaster
 
@@ -309,9 +309,9 @@ Shader "Standard (Double Sided)"
 			#pragma vertex vert_meta
 			#pragma fragment frag_meta
 
-			#pragma shader_feature _EMISSION
-			#pragma shader_feature _SPECGLOSSMAP
-			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature_local _EMISSION
+			#pragma shader_feature_local _SPECGLOSSMAP
+			#pragma shader_feature_local ___ _DETAIL_MULX2
 
 			#include "UnityStandardMeta.cginc"
 			ENDCG

@@ -73,21 +73,21 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
 
             // -------------------------------------
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local _ _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+            //#pragma multi_compile_local _ LOD_FADE_CROSSFADE
 
             #pragma vertex vertBase
             #pragma fragment fragBase
@@ -111,18 +111,18 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
 
             // -------------------------------------
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_fwdadd_fullshadows
             #pragma multi_compile_fog
             // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+            //#pragma multi_compile_local _ LOD_FADE_CROSSFADE
 
             #pragma vertex vertAdd
             #pragma fragment fragAdd
@@ -144,14 +144,14 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             // -------------------------------------
 
 
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _PARALLAXMAP
             #pragma multi_compile_shadowcaster
             #pragma multi_compile_instancing
             // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+            //#pragma multi_compile_local _ LOD_FADE_CROSSFADE
 
             #pragma vertex vertShadowCaster
             #pragma fragment fragShadowCaster
@@ -174,19 +174,19 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
 
             // -------------------------------------
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            #pragma shader_feature_local _PARALLAXMAP
 
             #pragma multi_compile_prepassfinal
             #pragma multi_compile_instancing
             // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-            //#pragma multi_compile _ LOD_FADE_CROSSFADE
+            //#pragma multi_compile_local _ LOD_FADE_CROSSFADE
 
             #pragma vertex vertDeferred
             #pragma fragment fragDeferred
@@ -210,11 +210,11 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             #pragma vertex vert_meta
             #pragma fragment frag_meta
 
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature EDITOR_VISUALIZATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            #pragma shader_feature_local EDITOR_VISUALIZATION
 
 #ifndef UNITY_PASS_META
 #define UNITY_PASS_META
@@ -244,15 +244,15 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             CGPROGRAM
             #pragma target 2.0
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature _ _GLOSSYREFLECTIONS_OFF
-            #pragma shader_feature ___ _DETAIL_MULX2
-            // SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local _ _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            // SM2.0: NOT SUPPORTED shader_feature_local _PARALLAXMAP
 
             #pragma skip_variants SHADOWS_SOFT DYNAMICLIGHTMAP_ON DIRLIGHTMAP_COMBINED
 
@@ -279,13 +279,13 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             CGPROGRAM
             #pragma target 2.0
 
-            #pragma shader_feature _NORMALMAP
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature _ _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature ___ _DETAIL_MULX2
-            // SM2.0: NOT SUPPORTED shader_feature _PARALLAXMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            // SM2.0: NOT SUPPORTED shader_feature_local _PARALLAXMAP
             #pragma skip_variants SHADOWS_SOFT
 
             #pragma multi_compile_fwdadd_fullshadows
@@ -308,9 +308,9 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             CGPROGRAM
             #pragma target 2.0
 
-            #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma skip_variants SHADOWS_SOFT
             #pragma multi_compile_shadowcaster
 
@@ -335,11 +335,11 @@ Shader "Custom/Standard (Specular setup) 2 Sided"
             #pragma vertex vert_meta
             #pragma fragment frag_meta
 
-            #pragma shader_feature _EMISSION
-            #pragma shader_feature _SPECGLOSSMAP
-            #pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature ___ _DETAIL_MULX2
-            #pragma shader_feature EDITOR_VISUALIZATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local ___ _DETAIL_MULX2
+            #pragma shader_feature_local EDITOR_VISUALIZATION
 
 
 #ifndef UNITY_PASS_META

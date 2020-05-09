@@ -77,9 +77,9 @@ CGPROGRAM
 #pragma target 3.0
 #pragma multi_compile_vertex  LOD_FADE_PERCENTAGE
 #pragma instancing_options assumeuniformscaling lodfade maxcount:50
-#pragma shader_feature GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
-#pragma shader_feature EFFECT_BUMP
-#pragma shader_feature EFFECT_HUE_VARIATION
+#pragma shader_feature_local GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
+#pragma shader_feature_local EFFECT_BUMP
+#pragma shader_feature_local EFFECT_HUE_VARIATION
 #define ENABLE_WIND
 
 //----------------------------------------------
@@ -115,8 +115,8 @@ CGPROGRAM
 #pragma multi_compile_fragment __ LOD_FADE_CROSSFADE
 #pragma multi_compile_instancing
 #pragma instancing_options assumeuniformscaling lodfade maxcount:50
-#pragma shader_feature GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
-#pragma shader_feature EFFECT_HUE_VARIATION
+#pragma shader_feature_local GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
+#pragma shader_feature_local EFFECT_HUE_VARIATION
 #define ENABLE_WIND
 
 //----------------------------------------------
@@ -181,7 +181,7 @@ CGPROGRAM
 #pragma target 3.0
 #pragma instancing_options assumeuniformscaling lodfade maxcount:50
 #pragma multi_compile_instancing
-#pragma shader_feature GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
+#pragma shader_feature_local GEOM_TYPE_BRANCH GEOM_TYPE_BRANCH_DETAIL GEOM_TYPE_FROND GEOM_TYPE_LEAF GEOM_TYPE_MESH
 #pragma multi_compile_shadowcaster
 #define ENABLE_WIND
 //----------------------------------------------

@@ -73,7 +73,7 @@ SubShader {
 	CGPROGRAM
 	#pragma surface PixShader BlinnPhong alpha:blend vertex:VertShader nolightmap nodirlightmap
 	#pragma target 3.0
-	#pragma shader_feature __ GLOW_ON
+	#pragma shader_feature_local __ GLOW_ON
 	#pragma glsl
 
 	#include "TMPro_Properties.cginc"

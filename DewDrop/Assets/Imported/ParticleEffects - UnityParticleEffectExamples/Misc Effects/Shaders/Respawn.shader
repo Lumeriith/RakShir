@@ -35,7 +35,7 @@ Shader "Custom/Respawn" {
 
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
-		#pragma multi_compile __ _USE_GRADIENT_ON
+		#pragma multi_compile_local __ _USE_GRADIENT_ON
 
 		sampler2D _MainTex;
 		sampler2D _Noise;

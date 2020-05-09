@@ -48,8 +48,8 @@ SubShader{
 		#pragma vertex vert
 		#pragma fragment frag
 
-		#pragma multi_compile __ UNITY_UI_CLIP_RECT
-		#pragma multi_compile __ UNITY_UI_ALPHACLIP
+		#pragma multi_compile_local __ UNITY_UI_CLIP_RECT
+		#pragma multi_compile_local __ UNITY_UI_ALPHACLIP
 
 
 		#include "UnityCG.cginc"
