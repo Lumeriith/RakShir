@@ -46,7 +46,8 @@ public class InventoryView : MonoBehaviour
 
     public void SocketDragging(ItemSocket socket)
     {
-        floatingItem.transform.position = Input.mousePosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)transform, Input.mousePosition, GUIManager.instance.uiCamera, out Vector2 localPoint);
+        floatingItem.transform.localPosition = localPoint;
     }
 
     public void SocketStartHoveringOverSocket(ItemSocket socket, ItemSocket to)

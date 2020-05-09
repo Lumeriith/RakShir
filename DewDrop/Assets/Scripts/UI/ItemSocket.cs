@@ -145,7 +145,7 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
             }
         }
 
-        if(item != null && RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition))
+        if(item != null && RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition, GUIManager.instance.uiCamera))
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -167,7 +167,7 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition)) status = HighlightStatus.MouseOver;
+        if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition, GUIManager.instance.uiCamera)) status = HighlightStatus.MouseOver;
         else status = HighlightStatus.None;
     }
 
@@ -195,7 +195,7 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
         fillCanvasGroup.alpha = 1f;
         if (!isDragSuccessful)
         {
-            if(RectTransformUtility.RectangleContainsScreenPoint(InventoryView.instance.GetComponent<RectTransform>(), Input.mousePosition))
+            if(RectTransformUtility.RectangleContainsScreenPoint(InventoryView.instance.GetComponent<RectTransform>(), Input.mousePosition, GUIManager.instance.uiCamera))
             {
                 InventoryView.instance.SocketDroppedOnNothing(this);
             }

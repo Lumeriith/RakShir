@@ -17,7 +17,7 @@ public class ContextualMenu : MonoBehaviour
 
     private void Update()
     {
-        if((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) && !RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition))
+        if((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) && !RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition, GUIManager.instance.uiCamera))
         {
             Destroy(gameObject, 0.05f);
         }

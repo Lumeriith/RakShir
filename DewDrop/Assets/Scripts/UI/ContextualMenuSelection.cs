@@ -36,7 +36,7 @@ public class ContextualMenuSelection : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition)) image.color = mouseOverColor;
+        if (RectTransformUtility.RectangleContainsScreenPoint((RectTransform)transform, Input.mousePosition, GUIManager.instance.uiCamera)) image.color = mouseOverColor;
         else image.color = defaultColor;
     }
 
