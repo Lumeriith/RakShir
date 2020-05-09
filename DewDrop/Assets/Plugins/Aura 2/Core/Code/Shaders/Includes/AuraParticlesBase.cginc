@@ -45,6 +45,7 @@ v2f vert(appdata_t v)
 
     o.frustumSpacePosition = float3(0.0f, 0.0f, 0.0f);
 
+	//////////////////// Start : AURA
 	#if defined(AURA)
     o.frustumSpacePosition = Aura2_GetFrustumSpaceCoordinates(v.vertex);
 		
@@ -55,14 +56,17 @@ v2f vert(appdata_t v)
 		#if defined(_USAGETYPE_FOG) || defined(_USAGETYPE_BOTH)
 	
 			//// Debug fog only
+			//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 			#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
 			o.color.xyz = float3(0.0f,0.0f,0.0f);
 			#endif
+			//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 
 			Aura2_ApplyFog(o.color, o.frustumSpacePosition);
 		#endif
 	#endif
 	#endif
+	//////////////////// End : AURA
 
 	return o;
 }
@@ -80,6 +84,7 @@ fixed4 frag(v2f i) : SV_Target
 	#endif
 	fixed4 col = i.color * _TintColor * textureColor;
 
+	//////////////////// Start : AURA
 	#if defined(AURA)
 	#if defined(_USAGESTAGE_PIXEL)
         #if defined(_USAGETYPE_LIGHT) || defined(_USAGETYPE_BOTH)
@@ -88,14 +93,17 @@ fixed4 frag(v2f i) : SV_Target
         #if defined(_USAGETYPE_FOG) || defined(_USAGETYPE_BOTH)
 	
 				//// Debug fog only
+				//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 				#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
 				col.xyz = float3(0.0f,0.0f,0.0f);
 				#endif
+				//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 
 				Aura2_ApplyFog(col, i.frustumSpacePosition);
         #endif
 	#endif
 	#endif
+	//////////////////// End : AURA
 
 	PREMULTIPLY_ALPHA(col)
 

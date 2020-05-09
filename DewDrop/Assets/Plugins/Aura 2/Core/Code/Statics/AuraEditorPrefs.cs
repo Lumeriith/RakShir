@@ -46,6 +46,7 @@ namespace Aura2API
         private const string _displayGizmosOnCamerasString = "AURA2_DisplayGizmosOnCameras";
         private const string _displayGizmosOnLightsString = "AURA2_DisplayGizmosOnLights";
         private const string _displayGizmosOnVolumesString = "AURA2_DisplayGizmosOnVolumes";
+        private const string _displayButtonsInHierarchyString = "AURA2_DisplayButtonsInHierarchy";
         #endregion
 
         #region Properties
@@ -274,6 +275,18 @@ namespace Aura2API
             set
             {
                 EditorPrefs.SetBool(_displayGizmosOnVolumesString, value);
+            }
+        }
+
+        public static bool DisplayButtonsInHierarchy
+        {
+            get
+            {
+                return EditorPrefs.GetBool(_displayButtonsInHierarchyString, true);
+            }
+            set
+            {
+                EditorPrefs.SetBool(_displayButtonsInHierarchyString, value);
             }
         }
         #endregion

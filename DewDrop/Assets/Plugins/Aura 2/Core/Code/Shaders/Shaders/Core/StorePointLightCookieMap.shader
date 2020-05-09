@@ -61,7 +61,7 @@ Shader "Hidden/Aura2/StorePointLightCookieMap"
 			{
 				float4 ray = float4(GetNormalizedVectorFromNormalizedYawPitch(i.uv), 1.0f);
 
-				return texCUBE(_MainTex, mul(_InverseWorldMatrix, ray));
+				return texCUBE(_MainTex, mul(ray, _InverseWorldMatrix)).w;
 			}
 			ENDCG
 		}

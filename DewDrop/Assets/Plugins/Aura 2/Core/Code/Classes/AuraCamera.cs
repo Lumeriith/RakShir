@@ -165,7 +165,7 @@ namespace Aura2API
         }
         #endregion
 
-        #region Monobehavious functions
+        #region Monobehaviour functions
         private void OnEnable()
         {
             if (!Aura.IsCompatible)

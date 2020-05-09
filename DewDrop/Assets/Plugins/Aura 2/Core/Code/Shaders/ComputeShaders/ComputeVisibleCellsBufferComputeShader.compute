@@ -25,10 +25,12 @@ uniform AppendStructuredBuffer<CellData> appendedCellsBuffer;
 uniform RWTexture2D<int> maximumSliceAmountTexture;
 uniform RWStructuredBuffer<uint3> sizeBuffer;
 uniform StructuredBuffer<uint> visibleCellsAmountBuffer;
-uniform bool useReprojection;
+//uniform bool useReprojection;
 
 #pragma kernel ComputeVisibleCells
+#pragma kernel ComputeVisibleCells USE_REPROJECTION
 #pragma kernel ComputeVisibleCells OCCLUSION
+#pragma kernel ComputeVisibleCells OCCLUSION USE_REPROJECTION
 
 [numthreads(NUM_THREAD_X, NUM_THREAD_Y, 1)]
 void ComputeVisibleCells(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupID : SV_GroupID, uint3 groupThreadID : SV_GroupThreadID)
@@ -52,12 +54,15 @@ void ComputeVisibleCells(uint3 dispatchThreadID : SV_DispatchThreadID, uint3 gro
 
 		//jittered local pos
 		normalizedLocalPos.w = GetNormalizedLocalDepth(z);
-		if (useReprojection)
-		{
-			cell.jitteredLocalPosition = normalizedLocalPos.xyw;
+		cell.jitteredLocalPosition = normalizedLocalPos.xyw;
+#if defined(USE_REPROJECTION)
+		//BRANCH
+		//if (useReprojection)
+		//{
 			JitterPosition(cell.jitteredLocalPosition, id);
 			cell.jitteredLocalPosition.z = BiasNormalizedDepth(cell.jitteredLocalPosition.z);
-		}
+		//}
+#endif
 
 		// local pos
 		normalizedLocalPos.z = BiasNormalizedDepth(normalizedLocalPos.w);

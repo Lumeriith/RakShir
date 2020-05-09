@@ -29,120 +29,123 @@ namespace Aura2API
 
         static void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
         {
-            GameObject gameObject = (GameObject)EditorUtility.InstanceIDToObject(instanceID);
-
-            if (gameObject != null)
+            if (AuraEditorPrefs.DisplayButtonsInHierarchy)
             {
-                float size = selectionRect.height;
-                Rect rect = new Rect(selectionRect.x + selectionRect.width, selectionRect.y, size, size);
-                string tooltip;
-                bool state;
+                GameObject gameObject = (GameObject)EditorUtility.InstanceIDToObject(instanceID);
 
-
-                //// Cameras
-                
-                Camera camera = gameObject.GetComponent<Camera>();
-                AuraCamera auraCamera = gameObject.GetComponent<AuraCamera>();
-                if (camera != null && auraCamera == null)
+                if (gameObject != null)
                 {
-                    tooltip = "Add Aura Camera Component";
-                    rect.x -= size;
+                    float size = selectionRect.height;
+                    Rect rect = new Rect(selectionRect.x + selectionRect.width, selectionRect.y, size, size);
+                    string tooltip;
+                    bool state;
 
-                    if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
+
+                    //// Cameras
+
+                    Camera camera = gameObject.GetComponent<Camera>();
+                    AuraCamera auraCamera = gameObject.GetComponent<AuraCamera>();
+                    if (camera != null && auraCamera == null)
                     {
-                        gameObject.AddComponent<AuraCamera>();
-                    }
-                }
+                        tooltip = "Add Aura Camera Component";
+                        rect.x -= size;
 
-                if (auraCamera != null)
-                {
-                    state = auraCamera.enabled;
-                    tooltip = (state ? "Disable" : "Enable") + " Aura Camera";
-                    rect.x -= size;
-
-                    if( GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.cameraMiniIconTexture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
-                    {
-                        auraCamera.enabled = !state;
-                    }
-                }
-
-                //// Lights
-
-                Light light = gameObject.GetComponent<Light>();
-                AuraLight auraLight = gameObject.GetComponent<AuraLight>();
-                if (light != null && auraLight == null)
-                {
-                    tooltip = "Add Aura Light Component";
-                    rect.x -= size;
-
-                    if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
-                    {
-                        gameObject.AddComponent<AuraLight>();
-                    }
-                }
-
-                if (auraLight != null && auraLight.Type != LightType.Area)
-                {
-                    state = auraLight.enabled;
-                    tooltip = (state ? "Disable" : "Enable") + " Aura Light";
-                    rect.x -= size;
-                    Texture2D texture = Aura.ResourcesCollection.pointLightMiniIconTexture;
-                    switch(auraLight.Type)
-                    {
-                        case LightType.Directional:
-                            {
-                                texture = Aura.ResourcesCollection.directionalLightMiniIconTexture;
-                            }
-                            break;
-
-                        case LightType.Spot:
-                            {
-                                texture = Aura.ResourcesCollection.spotLightMiniIconTexture;
-                            }
-                            break;
+                        if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
+                        {
+                            gameObject.AddComponent<AuraCamera>();
+                        }
                     }
 
-                    if (GUI.Button(rect, new GUIContent(texture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
+                    if (auraCamera != null)
                     {
-                        auraLight.enabled = !state;
-                    }
-                }
-                
-                //// Volumes
-                
-                AuraVolume auraVolume = gameObject.GetComponent<AuraVolume>();
-                if (auraVolume != null)
-                {
-                    state = auraVolume.enabled;
-                    tooltip = (state ? "Disable" : "Enable") + " Aura Volume";
-                    rect.x -= size;
+                        state = auraCamera.enabled;
+                        tooltip = (state ? "Disable" : "Enable") + " Aura Camera";
+                        rect.x -= size;
 
-                    if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.shapeMiniIconTexture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
+                        if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.cameraMiniIconTexture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
+                        {
+                            auraCamera.enabled = !state;
+                        }
+                    }
+
+                    //// Lights
+
+                    Light light = gameObject.GetComponent<Light>();
+                    AuraLight auraLight = gameObject.GetComponent<AuraLight>();
+                    if (light != null && auraLight == null)
                     {
-                        auraVolume.enabled = !state;
+                        tooltip = "Add Aura Light Component";
+                        rect.x -= size;
+
+                        if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
+                        {
+                            gameObject.AddComponent<AuraLight>();
+                        }
                     }
-                }
 
-                //// Sprites
-
-                SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-                AuraSprite auraSprite = gameObject.GetComponent<AuraSprite>();
-                if (spriteRenderer != null && auraSprite == null)
-                {
-                    tooltip = "Add Aura Sprite Component";
-                    rect.x -= size;
-
-                    if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
+                    if (auraLight != null && auraLight.Type != LightType.Area)
                     {
-                        gameObject.AddComponent<AuraSprite>();
-                    }
-                }
+                        state = auraLight.enabled;
+                        tooltip = (state ? "Disable" : "Enable") + " Aura Light";
+                        rect.x -= size;
+                        Texture2D texture = Aura.ResourcesCollection.pointLightMiniIconTexture;
+                        switch (auraLight.Type)
+                        {
+                            case LightType.Directional:
+                                {
+                                    texture = Aura.ResourcesCollection.directionalLightMiniIconTexture;
+                                }
+                                break;
 
-                if (auraSprite != null)
-                {
-                    tooltip = "Aura Sprite";
-                    rect.x -= size;
-                    GUI.Label(rect, new GUIContent(Aura.ResourcesCollection.spriteMiniIconTexture, tooltip), GuiStyles.ButtonPressedImageOnlyNoBorder);
+                            case LightType.Spot:
+                                {
+                                    texture = Aura.ResourcesCollection.spotLightMiniIconTexture;
+                                }
+                                break;
+                        }
+
+                        if (GUI.Button(rect, new GUIContent(texture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
+                        {
+                            auraLight.enabled = !state;
+                        }
+                    }
+
+                    //// Volumes
+
+                    AuraVolume auraVolume = gameObject.GetComponent<AuraVolume>();
+                    if (auraVolume != null)
+                    {
+                        state = auraVolume.enabled;
+                        tooltip = (state ? "Disable" : "Enable") + " Aura Volume";
+                        rect.x -= size;
+
+                        if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.shapeMiniIconTexture, tooltip), state ? GuiStyles.ButtonPressedImageOnlyNoBorder : GuiStyles.ButtonImageOnlyNoBorder)) // TODO : MAKE THIS A GENERIC HELPER
+                        {
+                            auraVolume.enabled = !state;
+                        }
+                    }
+
+                    //// Sprites
+
+                    SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+                    AuraSprite auraSprite = gameObject.GetComponent<AuraSprite>();
+                    if (spriteRenderer != null && auraSprite == null)
+                    {
+                        tooltip = "Add Aura Sprite Component";
+                        rect.x -= size;
+
+                        if (GUI.Button(rect, new GUIContent(Aura.ResourcesCollection.addIconTexture, tooltip), GuiStyles.ButtonImageOnlyNoBorder))
+                        {
+                            gameObject.AddComponent<AuraSprite>();
+                        }
+                    }
+
+                    if (auraSprite != null)
+                    {
+                        tooltip = "Aura Sprite";
+                        rect.x -= size;
+                        GUI.Label(rect, new GUIContent(Aura.ResourcesCollection.spriteMiniIconTexture, tooltip), GuiStyles.ButtonPressedImageOnlyNoBorder);
+                    }
                 }
             }
         }

@@ -75,7 +75,7 @@ namespace Aura2API
         /// <summary>
         /// The light's shadow map
         /// </summary>
-        public RenderTexture shadowMapRenderTexture;
+        [NonSerialized] public RenderTexture shadowMapRenderTexture;
         /// <summary>
         /// Allows to use light's cookie attenuation
         /// </summary>
@@ -100,7 +100,7 @@ namespace Aura2API
         /// <summary>
         /// The directional light's shadow data texture
         /// </summary>
-        public RenderTexture shadowDataRenderTexture;
+        [NonSerialized] public RenderTexture shadowDataRenderTexture;
         /// <summary>
         /// Custom distance falloff start (Spot/Point Lights only)
         /// </summary>
@@ -510,20 +510,6 @@ namespace Aura2API
 
                 if (_previousUseShadow)
                 {
-                    if (_previousLightType == LightType.Directional)
-                    {
-                        LightComponent.RemoveCommandBuffer(LightEvent.BeforeScreenspaceMask, _storeShadowDataCommandBuffer);
-
-                        _storeShadowDataCommandBuffer.Clear();
-                        _storeShadowDataCommandBuffer.Release();
-                        _storeShadowDataCommandBuffer = null;
-
-                        shadowDataRenderTexture.Release();
-                        shadowDataRenderTexture = null;
-
-                        AuraCamera.CommonDataManager.LightsCommonDataManager.OnCascadesCountChanged -= LightsCommonDataManager_OnCascadesCountChanged;
-                    }
-
                     LightComponent.RemoveCommandBuffer(LightEvent.AfterShadowMap, _copyShadowmapCommandBuffer);
 
                     _copyShadowmapCommandBuffer.Clear();
@@ -531,7 +517,41 @@ namespace Aura2API
                     _copyShadowmapCommandBuffer = null;
 
                     shadowMapRenderTexture.Release();
-                    shadowMapRenderTexture = null;
+                    shadowMapRenderTexture.Destroy();
+
+                    switch (_previousLightType)
+                    {
+                        case LightType.Point:
+                            {
+                                _storePointLightShadowMapMaterial.Destroy();
+                            }
+                            break;
+    
+                        case LightType.Directional:
+                            {
+                                LightComponent.RemoveCommandBuffer(LightEvent.BeforeScreenspaceMask, _storeShadowDataCommandBuffer);
+
+                                _storeShadowDataCommandBuffer.Clear();
+                                _storeShadowDataCommandBuffer.Release();
+                                _storeShadowDataCommandBuffer = null;
+                                
+                                _storeShadowDataMaterial.Destroy();
+
+                                shadowDataRenderTexture.Release();
+                                shadowDataRenderTexture.Destroy();
+
+                                AuraCamera.CommonDataManager.LightsCommonDataManager.OnCascadesCountChanged -= LightsCommonDataManager_OnCascadesCountChanged;
+                            }
+                            break;
+                    }
+                }
+ 
+                if (_previousUseCookie)
+                {
+                    _storeCookieMapMaterial.Destroy();
+
+                    cookieMapRenderTexture.Release ();
+                    cookieMapRenderTexture.Destroy();
                 }
 
                 Camera.onPreCull -= Camera_onPreCull;
@@ -762,7 +782,7 @@ namespace Aura2API
             {
                 case LightType.Point :
                     {
-                        _storeCookieMapMaterial.SetMatrix("_InverseWorldMatrix", LightComponent.transform.worldToLocalMatrix);
+                        _storeCookieMapMaterial.SetMatrix("_InverseWorldMatrix", LightComponent.transform.localToWorldMatrix);
                     }
                     break;
             }

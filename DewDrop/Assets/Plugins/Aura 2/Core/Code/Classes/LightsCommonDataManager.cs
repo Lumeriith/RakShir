@@ -383,6 +383,11 @@ namespace Aura2API
                     _directionalLightsShadowMapsCollector.Resize(DirectionalLightsManager.ShadowMapSize.x, DirectionalLightsManager.ShadowMapSize.y);
                 }
 
+                if (_directionalLightsShadowDataCollector != null)
+                {
+                    _directionalLightsShadowDataCollector.ClearTexturesList(true);
+                }
+
                 if (OnCascadesCountChanged != null)
                 {
                     OnCascadesCountChanged();

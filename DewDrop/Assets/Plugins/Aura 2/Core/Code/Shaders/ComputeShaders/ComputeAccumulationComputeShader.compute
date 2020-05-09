@@ -68,10 +68,11 @@ void AccumulateLighting(uint3 dispatchThreadID : SV_DispatchThreadID)
 	half traveledDistance = 0.0f;
     FP4 currentSliceValue = FP4(0, 0, 0, 1);
 	FP4 nextValue = FP4(0, 0, 0, 0);
-
+	
+	uint sliceIndex;
 	uint z;
 	[loop]
-	for(z = 0; z < maximumSliceAmount; ++z)
+	for(z = 0; z < maximumSliceAmount && currentSliceValue.w > 0.0f; ++z)
 	{
 		id.z = z;
 		nextValue = lightingTexture[id];
@@ -81,18 +82,19 @@ void AccumulateLighting(uint3 dispatchThreadID : SV_DispatchThreadID)
 		previousWorldPosition = worldPosition;
         currentSliceValue = AccumulateFog(currentSliceValue, nextValue, traveledDistance, extinction);
 		WriteInOutputTexture(id, currentSliceValue);
+		sliceIndex = z;
     }
 
-#if defined(OCCLUSION)
-#if defined(DEBUG)
-	currentSliceValue = FP4(1.0f, 0.0f, 0.0f, 0.0f);
-#endif
-
 	[loop]
-	for (z = maximumSliceAmount; z < (uint)Aura_BufferResolution.z; ++z)
+	for (z = sliceIndex; z < (uint)Aura_BufferResolution.z; ++z)
 	{
+#if defined(DEBUG)
+		if (z > maximumSliceAmount)
+		{
+			currentSliceValue = FP4(1.0f, 0.0f, 0.0f, 0.0f);
+		}
+#endif
 		id.z = z;
 		WriteInOutputTexture(id, currentSliceValue);
 	}
-#endif
 }

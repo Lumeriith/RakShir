@@ -40,9 +40,11 @@ Shader "Hidden/TerrainEngine/BillboardTree"
 				UNITY_FOG_COORDS(1)
 				UNITY_VERTEX_OUTPUT_STEREO
 
+				//////////////////// Start : AURA
 				#if defined(AURA)
 				float3 frustrumSpacePosition : TEXCOORD2;
 				#endif
+				//////////////////// End : AURA
 			};
  
 			v2f vert (appdata_tree_billboard v)
@@ -58,9 +60,11 @@ Shader "Hidden/TerrainEngine/BillboardTree"
 				UNITY_TRANSFER_FOG(o,o.pos);
 
 				//For Aura
+				//////////////////// Start : AURA
 				#if defined(AURA)
 				o.frustrumSpacePosition = Aura2_GetFrustumSpaceCoordinates(v.vertex);
 				#endif
+				//////////////////// End : AURA
 
 				return o;
 			}
@@ -74,15 +78,19 @@ Shader "Hidden/TerrainEngine/BillboardTree"
 				UNITY_APPLY_FOG(input.fogCoord, col);
 
 				//Aura
+				//////////////////// Start : AURA
 				#if defined(AURA)
 
 				//// Debug fog only
+				//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 				#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
 				col.xyz = float3(0.0f,0.0f,0.0f);
 				#endif
+				//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 
 				Aura2_ApplyFog(col, input.frustrumSpacePosition);
 				#endif
+				//////////////////// End : AURA
 
 				return col;
 			}

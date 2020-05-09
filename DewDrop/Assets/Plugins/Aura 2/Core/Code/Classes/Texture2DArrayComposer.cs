@@ -209,7 +209,7 @@ namespace Aura2API
         {
             if(NeedsToUpdateTexture || alwaysGenerateOnUpdate)
             {
-                if(_texturesList.Count > 0)
+                if (_texturesList.Count > 0)
                 {
                     if(NeedsToUpdateTexture)
                     {
@@ -251,6 +251,15 @@ namespace Aura2API
         public void ClearTexturesList()
         {
             _texturesList.Clear();
+        }
+        /// <summary>
+        /// Clears the candidate Textures list
+        /// </summary>
+        /// <param name="needToUpdate">Should the texture array be forced regenerated on next call</param>
+        public void ClearTexturesList(bool needToUpdate)
+        {
+            NeedsToUpdateTexture = needToUpdate;
+            ClearTexturesList();
         }
 
         /// <summary>

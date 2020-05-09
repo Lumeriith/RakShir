@@ -154,6 +154,13 @@ namespace Aura2API
             {
                 AuraEditorPrefs.DisplayGizmosWhenUnselected = !AuraEditorPrefs.DisplayGizmosWhenUnselected;
             }
+            EditorGUILayout.Separator();
+            EditorGUI.BeginChangeCheck();
+            GuiHelpers.DrawToggleChecker(AuraEditorPrefs.DisplayButtonsInHierarchy, " Display buttons in the hierarchy");
+            if (EditorGUI.EndChangeCheck())
+            {
+                AuraEditorPrefs.DisplayButtonsInHierarchy = !AuraEditorPrefs.DisplayButtonsInHierarchy;
+            }
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Separator();

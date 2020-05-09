@@ -84,6 +84,7 @@ namespace Aura2API
         /// Array with the names of the found quality settings
         /// </summary>
         private string[] _foundQualitySettingsPresetsName;
+        private bool _shouldRefreshLists;
         #endregion
 
         #region Overriden base class functions (https://docs.unity3d.com/ScriptReference/Editor.html)
@@ -100,13 +101,25 @@ namespace Aura2API
             _previousQualitySettings = (AuraQualitySettings)_qualitySettingsProperty.objectReferenceValue;
 
             PopulateExistingBaseSettingsPresetsList();
-
             PopulateExistingQualitySettingsPresetsList();
+
+            AssetsWatcher.OnAnyAssetModified += AssetsWatcher_OnAnyAssetModified;
+        }
+
+        private void OnDisable()
+        {
+            AssetsWatcher.OnAnyAssetModified -= AssetsWatcher_OnAnyAssetModified;
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            if(_shouldRefreshLists)
+            {
+                RefreshLists();
+                _shouldRefreshLists = false;
+            }
 
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
@@ -169,6 +182,19 @@ namespace Aura2API
         #endregion
 
         #region Functions
+        // Called when any change is made on any asset. Populate presets lists and repaints the inspector
+        private void AssetsWatcher_OnAnyAssetModified()
+        {
+            _shouldRefreshLists = true;
+            Repaint();
+        }
+
+        private void RefreshLists()
+        {
+            PopulateExistingBaseSettingsPresetsList();
+            PopulateExistingQualitySettingsPresetsList();
+        }
+
         /// <summary>
         /// Retrievse all the quality settings
         /// </summary>
@@ -256,10 +282,10 @@ namespace Aura2API
 
             GuiHelpers.DrawContextualHelpBox("The \"Base Settings Preset\" is the asset that holds the base settings for the data computation.");
 
-            if(_foundBaseSettingsPresets.Length != AssetDatabase.FindAssets("t:AuraBaseSettings").Length)
-            {
-                PopulateExistingBaseSettingsPresetsList();
-            }
+            //if(_foundBaseSettingsPresets.Length != AssetDatabase.FindAssets("t:AuraBaseSettings").Length)
+            //{
+            //    PopulateExistingBaseSettingsPresetsList();
+            //}
 
             if (_foundBaseSettingsPresets.Length > 0)
             {
@@ -335,10 +361,10 @@ namespace Aura2API
             EditorGUILayout.Separator();
             GuiHelpers.DrawContextualHelpBox("The \"Quality Settings Preset\" is the asset that holds the quality settings for the data computation.");
 
-            if (_foundQualitySettingsPresets.Count != AssetDatabase.FindAssets("t:AuraQualitySettings").Length)
-            {
-                PopulateExistingQualitySettingsPresetsList();
-            }
+            //if (_foundQualitySettingsPresets.Count != AssetDatabase.FindAssets("t:AuraQualitySettings").Length)
+            //{
+            //    PopulateExistingQualitySettingsPresetsList();
+            //}
 
             if (_foundQualitySettingsPresets.Count > 0)
             {

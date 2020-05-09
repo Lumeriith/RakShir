@@ -74,17 +74,21 @@ Shader "Aura 2/Surface/Standard Alpha Blend"
 		// From https://github.com/Unity-Technologies/VolumetricLighting/blob/master/Assets/Scenes/Materials/StandardAlphaBlended-VolumetricFog.shader
 		void Aura2_Fog(Input IN, SurfaceOutputStandard o, inout fixed4 color)
 		{
+				//////////////////// Start : AURA
 				#if defined(AURA)
 				half3 screenSpacePosition = IN.screenPos.xyz/IN.screenPos.w;
 				screenSpacePosition.z = InverseLerp(Aura_FrustumRanges.x, Aura_FrustumRanges.y, LinearEyeDepth(screenSpacePosition.z));
 
 				//// Debug fog only
+				//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 				#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
 				color.xyz = float3(0.0f,0.0f,0.0f);
 				#endif
-				
+				//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
+
 				Aura2_ApplyFog(color, screenSpacePosition);
 				#endif
+				//////////////////// End : AURA
 		}
 
 		half _Glossiness;

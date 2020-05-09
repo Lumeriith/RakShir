@@ -14,33 +14,58 @@
 *                                                                          *
 ***************************************************************************/
 
+using System;
 using UnityEngine;
+using UnityEditor;
 
 namespace Aura2API
 {
     /// <summary>
-    /// Collection of extension functions for Object objects
+    /// Class that will raise an event if any action is performed on any asset
     /// </summary>
-    public static class ObjectExtensions
+    public class AssetsWatcher : UnityEditor.AssetModificationProcessor
     {
+        #region Events
         /// <summary>
-        /// Destroys an Object derived object
+        /// Event raised when an action is made on an asset in the project
         /// </summary>
-        /// <param name="objectToDelete">The object to delete</param>
-        public static void Destroy(this Object objectToDelete)
+        public static event Action OnAnyAssetModified;
+        #endregion
+
+        #region Functions 
+        private static void RaiseOnAnyAssetModified()
         {
-#if UNITY_EDITOR
-            if (Application.isPlaying)
+            if (OnAnyAssetModified != null)
             {
-                Object.Destroy(objectToDelete);
+                OnAnyAssetModified();
             }
-            else
-            {
-                Object.DestroyImmediate(objectToDelete);
-            }
-#else
-            Object.Destroy(objectToDelete);
-#endif
         }
+        #endregion
+
+        #region Inherited messages
+        private static void OnWillCreateAsset(string path)
+        {
+            RaiseOnAnyAssetModified();
+        }
+
+        private static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions options)
+        {
+            RaiseOnAnyAssetModified();
+
+            return AssetDeleteResult.DidNotDelete;
+        }
+
+        private static AssetMoveResult OnWillMoveAsset(string oldPath, string newpath)
+        {
+            RaiseOnAnyAssetModified();
+
+            return AssetMoveResult.DidNotMove;
+        }
+
+        private static void OnWillSaveAssets(string[] paths)
+        {
+            RaiseOnAnyAssetModified();
+        }
+        #endregion
     }
 }

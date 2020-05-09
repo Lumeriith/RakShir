@@ -447,7 +447,7 @@ namespace Aura2API
             _frustumSettingsToId.ComputeFlags();
 
             bool useReprojection = _frustumSettingsToId.HasFlags(FrustumParameters.EnableTemporalReprojection);
-            _computeVisibleCellsComputeShader.SetBool("useReprojection", useReprojection);
+            //_computeVisibleCellsComputeShader.SetBool("useReprojection", useReprojection);
 
             #region Occlusion culling
             _dispatchBuffers[5].SetCounterValue(0);
@@ -474,16 +474,17 @@ namespace Aura2API
                 Profiler.EndSample();
 
                 Profiler.BeginSample("Aura 2 : Compute visibility");
-                _computeVisibleCellsComputeShader.SetTexture(1, "occlusionTexture", OcclusionTexture.ReadBuffer);
-                _computeVisibleCellsComputeShader.SetBuffer(1, "appendedCellsBuffer", _dispatchBuffers[5]);
-                _computeVisibleCellsComputeShader.SetTexture(1, "maximumSliceAmountTexture", SliceTexture.WriteBuffer);
-                _computeVisibleCellsComputeShader.DispatchIndirect(1, _dispatchBuffers[3]);
+                int kernelIndex = 2 + (useReprojection ? 1 : 0);
+                _computeVisibleCellsComputeShader.SetTexture(kernelIndex, "occlusionTexture", OcclusionTexture.ReadBuffer);
+                _computeVisibleCellsComputeShader.SetBuffer(kernelIndex, "appendedCellsBuffer", _dispatchBuffers[5]);
+                _computeVisibleCellsComputeShader.SetTexture(kernelIndex, "maximumSliceAmountTexture", SliceTexture.WriteBuffer);
+                _computeVisibleCellsComputeShader.DispatchIndirect(kernelIndex, _dispatchBuffers[3]);
                 ComputeBuffer.CopyCount(_dispatchBuffers[5], _dispatchBuffers[0], 0);
                 SliceTexture.Swap();
 
-                _computeVisibleCellsComputeShader.SetBuffer(2, "visibleCellsAmountBuffer", _dispatchBuffers[0]);
-                _computeVisibleCellsComputeShader.SetBuffer(2, "sizeBuffer", _dispatchBuffers[1]);
-                _computeVisibleCellsComputeShader.DispatchIndirect(2, _dispatchBuffers[4]);
+                _computeVisibleCellsComputeShader.SetBuffer(4, "visibleCellsAmountBuffer", _dispatchBuffers[0]);
+                _computeVisibleCellsComputeShader.SetBuffer(4, "sizeBuffer", _dispatchBuffers[1]);
+                _computeVisibleCellsComputeShader.DispatchIndirect(kernelIndex, _dispatchBuffers[4]);
                 Profiler.EndSample();
 
                 Profiler.EndSample();
@@ -497,16 +498,11 @@ namespace Aura2API
                     ComputeDispatchSizes();
                 }
 
-                _computeVisibleCellsComputeShader.SetTexture(0, "occlusionTexture", Aura.ResourcesCollection.dummyTexture);
-                _computeVisibleCellsComputeShader.SetTexture(0, "maximumSliceAmountTexture", Aura.ResourcesCollection.DummyTextureUAV);
-                _computeVisibleCellsComputeShader.SetBuffer(0, "appendedCellsBuffer", _dispatchBuffers[5]);
-                _computeVisibleCellsComputeShader.DispatchIndirect(0, _dispatchBuffers[3]);
-
-                //uint[] tst = new uint[3];
-                //_dispatchBuffers[1].GetData(tst);
-                //Debug.Log(tst[0] + ", " + tst[1] + ", " + tst[2]);
-                //_dispatchBuffers[0].GetData(tst);
-                //Debug.Log(tst[0] + ", " + tst[1] + ", " + tst[2]);
+                int kernelIndex = useReprojection ? 1 : 0;
+                _computeVisibleCellsComputeShader.SetTexture(kernelIndex, "occlusionTexture", Aura.ResourcesCollection.dummyTexture);
+                _computeVisibleCellsComputeShader.SetTexture(kernelIndex, "maximumSliceAmountTexture", Aura.ResourcesCollection.DummyTextureUAV);
+                _computeVisibleCellsComputeShader.SetBuffer(kernelIndex, "appendedCellsBuffer", _dispatchBuffers[5]);
+                _computeVisibleCellsComputeShader.DispatchIndirect(kernelIndex, _dispatchBuffers[3]);
             }
             #endregion
 

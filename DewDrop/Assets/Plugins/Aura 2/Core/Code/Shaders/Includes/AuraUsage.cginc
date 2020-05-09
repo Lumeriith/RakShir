@@ -60,18 +60,21 @@ FP4 Aura2_GetData(FP3 screenSpacePosition)
     return Aura2_SampleDataTexture(FP3(screenSpacePosition.xy, Aura2_RescaleDepth(screenSpacePosition.z)));
 }
 
-void Aura2_ApplyLighting(inout FP3 colorToApply, FP3 screenSpacePosition, FP lightingFactor, FP lightingValue)
-{
-	colorToApply *= lightingValue * lightingFactor;
-}
 void Aura2_ApplyLighting(inout FP3 colorToApply, FP3 screenSpacePosition, FP lightingFactor)
 {
+	//////////////////// Start : AURA_USE_DITHERING
 	#if defined(AURA_USE_DITHERING)
     screenSpacePosition.xy += GetBlueNoise(screenSpacePosition.xy, 0).xy;
 	#endif
+	//////////////////// End : AURA_USE_DITHERING
 
 	FP3 lightingValue = Aura2_GetData(screenSpacePosition).xyz;
-	Aura2_ApplyLighting(colorToApply, screenSpacePosition, lightingFactor, lightingValue);
+	colorToApply *= lightingValue * lightingFactor;
+}
+
+void Aura2_ApplyLighting(inout FP3 colorToApply, FP3 screenSpacePosition, FP lightingFactor, FP3 lightingValue)
+{
+	colorToApply *= lightingValue * lightingFactor;
 }
 
 //////////// Fog
@@ -91,9 +94,11 @@ void Aura2_ApplyFog(inout FP3 colorToApply, FP3 screenSpacePosition, FP4 fogValu
 }
 void Aura2_ApplyFog(inout FP3 colorToApply, FP3 screenSpacePosition)
 {
+	//////////////////// Start : AURA_USE_DITHERING
 	#if defined(AURA_USE_DITHERING)
     screenSpacePosition.xyz += GetBlueNoise(screenSpacePosition.xy, 1).xyz;
 	#endif
+	//////////////////// End : AURA_USE_DITHERING
 
     FP4 fogValue = Aura2_GetFogValue(screenSpacePosition);
     Aura2_ApplyFog(colorToApply, screenSpacePosition, fogValue);
@@ -117,9 +122,11 @@ void Aura2_ApplyFog(inout FP4 colorToApply, FP3 screenSpacePosition, FP4 fogValu
 }
 void Aura2_ApplyFog(inout FP4 colorToApply, FP3 screenSpacePosition)
 {    
+	//////////////////// Start : AURA_USE_DITHERING
 	#if defined(AURA_USE_DITHERING)
     screenSpacePosition.xy += GetBlueNoise(screenSpacePosition.xy, 2).xy;
 	#endif
+	//////////////////// End : AURA_USE_DITHERING
 
     FP4 fogValue = Aura2_GetFogValue(screenSpacePosition);
     Aura2_ApplyFog(colorToApply, screenSpacePosition, fogValue);

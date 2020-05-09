@@ -61,12 +61,12 @@
 
 // Compilation defines
 #if defined(UNITY_COMPILER_HLSL) // HLSL only attributes
-	#define BRANCH					[branch]
-	#define FLATTEN					[flatten]
-	#define UNROLL					[unroll]
-	#define LOOP					[loop]
-	#define FASTOPT					[fastopt]
-	#define ALLOW_UAV_CONDITION		[allow_uav_condition]
+	#define BRANCH					//[branch]
+	#define FLATTEN					//[flatten]
+	#define UNROLL					//[unroll]
+	#define LOOP					//[loop]
+	#define FASTOPT					//[fastopt]
+	#define ALLOW_UAV_CONDITION		//[allow_uav_condition]
 #else
 	#define BRANCH
 	#define FLATTEN

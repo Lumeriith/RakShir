@@ -82,9 +82,11 @@ FP4 SampleTexture3D_Cubic(TEXTURE3D_SAMPLER_DECLARATION tex, FP3 texCoords, FP3 
 // Generic texture sampling function
 FP4 SampleTexture3D(TEXTURE3D_SAMPLER_DECLARATION tex, FP3 texCoords, FP3 texelSize)
 {
+	//////////////////// Start : AURA_USE_CUBIC_FILTERING
 	#if defined(AURA_USE_CUBIC_FILTERING)
 		return SampleTexture3D_Cubic(tex, texCoords, texelSize);
 	#else
 		return SampleTexture3D_Linear(tex, texCoords);
 	#endif
+	//////////////////// End : AURA_USE_CUBIC_FILTERING
 }

@@ -70,14 +70,17 @@ Shader "Hidden/Aura2/PostProcessShader"
 
 				float4 backColor = tex2D(_MainTex, stereoUv);
 				
+				//////////////////// Start : AURA
 				#if defined(AURA)
 				float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, stereoUv);
 				depth = GetLinearEyeDepth(depth);
 
 				//// Debug fog only
+				//////////////////// Start : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 				#if defined(AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY)
 				backColor.xyz = float3(0.0f,0.0f,0.0f);
 				#endif
+				//////////////////// End : AURA_DISPLAY_VOLUMETRIC_LIGHTING_ONLY
 
 				Aura2_ApplyFog(backColor.xyz, float3(stereoUv, depth));
 
@@ -88,6 +91,7 @@ Shader "Hidden/Aura2/PostProcessShader"
 				//backColor = lerp(backColor, thumbnail, thumbnailMask);
 
 				#endif
+				//////////////////// End : AURA
 
 				return backColor;
 			}
