@@ -39,6 +39,7 @@ public class InfoText : MonoBehaviour
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
     private IInfoTextable _target;
+    private Canvas _parentCanvas;
 
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class InfoText : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0f;
         _canvasGroup.blocksRaycasts = false;
+        _parentCanvas = transform.parent.GetComponent<Canvas>();
     }
 
     public void Setup(IInfoTextable target)
@@ -79,17 +81,15 @@ public class InfoText : MonoBehaviour
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
 
-        Vector3 screenPoint = _main.WorldToScreenPoint(_target.infoTextWorldPosition + GlobalWorldOffset).Quantitized();
+        _rectTransform.SetWorldPositionForScreenSpaceCamera(_target.infoTextWorldPosition + GlobalWorldOffset, _parentCanvas);
 
-        transform.position = screenPoint;
-
-        Rect myRect = new Rect((Vector2)transform.position - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
+        Rect myRect = new Rect((Vector2)transform.localPosition - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
         for (int i = 0; i < _drawnInfoTextRects.Count; i++)
         {
             if (myRect.Overlaps(_drawnInfoTextRects.Values[i]))
             {
                 transform.position += Vector3.up * (_drawnInfoTextRects.Values[i].yMax - myRect.yMin);
-                myRect = new Rect((Vector2)transform.position - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
+                myRect = new Rect((Vector2)transform.localPosition - _rectTransform.sizeDelta / 2f, _rectTransform.sizeDelta);
 
             }
         }

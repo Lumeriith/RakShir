@@ -295,7 +295,7 @@ public class Entity : MonoBehaviourPun
     
     private void Update()
     {
-        if(unitBase == null && GameManager.instance.localPlayer != null)
+        if (unitBase == null && GameManager.instance.localPlayer != null)
         {
             GameObject basePrefab;
             Relation relation = GameManager.instance.localPlayer.GetRelationTo(this);
@@ -482,7 +482,7 @@ public class Entity : MonoBehaviourPun
         }
         if (stat.currentMana >= amount)
         {
-            photonView.RPC("RpcSpendMana", RpcTarget.All, amount, handler?.GetActionCallerUID());
+            photonView.RPC(nameof(RpcSpendMana), RpcTarget.All, amount, handler?.GetActionCallerUID());
             return true;
         }
         else
@@ -579,11 +579,11 @@ public class Entity : MonoBehaviourPun
     }
     public void CancelDisplacement()
     {
-        photonView.RPC("RpcCancelDisplacement", RpcTarget.All);
+        photonView.RPC(nameof(RpcCancelDisplacement), RpcTarget.All);
     }
     public void SetReadableName(string readableName)
     {
-        photonView.RPC("RpcSetReadableName", RpcTarget.All, readableName);
+        photonView.RPC(nameof(RpcSetReadableName), RpcTarget.All, readableName);
     }
     public void ApplyStatusEffect(StatusEffect statusEffect, DewActionCaller caller)
     {
@@ -591,11 +591,11 @@ public class Entity : MonoBehaviourPun
     }
     public void Destroy()
     {
-        photonView.RPC("RpcDestroy", RpcTarget.All);
+        photonView.RPC(nameof(RpcDestroy), RpcTarget.All);
     }
     public void SetCurrentRoom(Room room)
     {
-        photonView.RPC("RpcSetCurrentRoom", RpcTarget.All, room.photonView.ViewID);
+        photonView.RPC(nameof(RpcSetCurrentRoom), RpcTarget.All, room.photonView.ViewID);
     }
     public void ActivateImmediately(Activatable activatable)
     {
@@ -604,11 +604,11 @@ public class Entity : MonoBehaviourPun
     }
     public void ChangeWalkAnimation(string animationName)
     {
-        photonView.RPC("RpcChangeWalkAnimation", RpcTarget.All, animationName);
+        photonView.RPC(nameof(RpcChangeWalkAnimation), RpcTarget.All, animationName);
     }
     public void ChangeStandAnimation(string animationName)
     {
-        photonView.RPC("RpcChangeStandAnimation", RpcTarget.All, animationName);
+        photonView.RPC(nameof(RpcChangeStandAnimation), RpcTarget.All, animationName);
     }
     public bool SpendGold(float amount)
     {
@@ -620,7 +620,7 @@ public class Entity : MonoBehaviourPun
         }
         if (stat.currentGold >= amount)
         {
-            photonView.RPC("RpcSpendGold", RpcTarget.All, amount);
+            photonView.RPC(nameof(RpcSpendGold), RpcTarget.All, amount);
             return true;
         }
         else
@@ -630,11 +630,11 @@ public class Entity : MonoBehaviourPun
     }
     public void Teleport(Vector3 location)
     {
-        photonView.RPC("RpcTeleport", RpcTarget.All, location);
+        photonView.RPC(nameof(RpcTeleport), RpcTarget.All, location);
     }
     public void LookAt(Vector3 lookPosition, bool immediately = false)
     {
-        photonView.RPC("RpcLookAt", photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
+        photonView.RPC(nameof(RpcLookAt), photonView.Owner ?? PhotonNetwork.MasterClient, lookPosition, immediately);
     }
     public void DoHeal(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
@@ -644,7 +644,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyHeal), RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoManaHeal(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
@@ -654,11 +654,11 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do mana heal of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyManaHeal", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyManaHeal), RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoBasicAttackImmediately(Entity to, DewActionCaller handler)
     {
-        to.photonView.RPC("RpcApplyBasicAttackDamage", RpcTarget.All, photonView.ViewID, Random.value, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyBasicAttackDamage), RpcTarget.All, photonView.ViewID, Random.value, handler?.GetActionCallerUID());
     }
     public void DoMagicDamage(Entity to, float amount, bool ignoreSpellPower, DewActionCaller handler)
     {
@@ -668,7 +668,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do magic damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyMagicDamage", RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyMagicDamage), RpcTarget.All, amount, photonView.ViewID, ignoreSpellPower, handler?.GetActionCallerUID());
     }
     public void DoPureDamage(Entity to, float amount, DewActionCaller handler)
     {
@@ -678,8 +678,8 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to do pure damage of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
-        to.photonView.RPC("RpcApplyPureDamage", RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyPureDamage), RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
+        to.photonView.RPC(nameof(RpcApplyPureDamage), RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
     }
     public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
     {
@@ -693,15 +693,15 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
             return;
         }
-        photonView.RPC("RpcPlayCustomAnimation", RpcTarget.All, animationName, duration);
+        photonView.RPC(nameof(RpcPlayCustomAnimation), RpcTarget.All, animationName, duration);
     }
     public void Kill()
     {
-        photonView.RPC("RpcDeath", RpcTarget.All);
+        photonView.RPC(nameof(RpcDeath), RpcTarget.All);
     }
     public void Revive()
     {
-        photonView.RPC("RpcRevive", RpcTarget.All);
+        photonView.RPC(nameof(RpcRevive), RpcTarget.All);
     }
     public void FlashForDuration(Color color, float multiplier, float duration)
     {
@@ -711,7 +711,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to flash for negative duration! (" + duration.ToString() + ")");
             return;
         }
-        photonView.RPC("RpcFlashForDuration", RpcTarget.All, color.r, color.g, color.b, color.a, multiplier, duration);
+        photonView.RPC(nameof(RpcFlashForDuration), RpcTarget.All, color.r, color.g, color.b, color.a, multiplier, duration);
     }
     public void ScaleForDuration(float multiplier, float duration)
     {
@@ -721,7 +721,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to scale for negative duration! (" + duration.ToString() + ")");
             return;
         }
-        photonView.RPC("RpcScaleForDuration", RpcTarget.All, multiplier, duration);
+        photonView.RPC(nameof(RpcScaleForDuration), RpcTarget.All, multiplier, duration);
     }
     public void GiveGold(Entity to, float amount)
     {
@@ -731,7 +731,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to give gold of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        photonView.RPC("RpcGiveGold", RpcTarget.All, amount, to.photonView.ViewID);
+        photonView.RPC(nameof(RpcGiveGold), RpcTarget.All, amount, to.photonView.ViewID);
     }
     public void EarnGold(float amount)
     {
@@ -741,7 +741,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to earn gold of negative amount! (" + amount.ToString() + ")");
             return;
         }
-        photonView.RPC("RpcEarnGold", RpcTarget.All, amount);
+        photonView.RPC(nameof(RpcEarnGold), RpcTarget.All, amount);
     }
     public void StartDisplacement(Displacement displacement)
     {
@@ -764,11 +764,11 @@ public class Entity : MonoBehaviourPun
 
             if (displacement.type == Displacement.DisplacementType.ByVector)
             {
-                photonView.RPC("RpcStartDisplacementByVector", RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.vector, displacement.duration, displacement.ignoreCollision, (byte)displacement.ease);
+                photonView.RPC(nameof(RpcStartDisplacementByVector), RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.vector, displacement.duration, displacement.ignoreCollision, (byte)displacement.ease);
             }
             else if (displacement.type == Displacement.DisplacementType.TowardsTarget)
             {
-                photonView.RPC("RpcStartDisplacementTowardsTarget", RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.to.photonView.ViewID, displacement.gap, displacement.speed);
+                photonView.RPC(nameof(RpcStartDisplacementTowardsTarget), RpcTarget.Others, displacement.isFriendly, displacement.lookForward, displacement.to.photonView.ViewID, displacement.gap, displacement.speed);
             }
         }
     }
@@ -1079,11 +1079,12 @@ public class Entity : MonoBehaviourPun
         stat.currentHealth = 0;
         control.enabled = false;
         control.agent.enabled = false;
-        OnDeath.Invoke(info);
-        
-        killer.OnKill.Invoke(info);
+
         _animator.SetBool("IsDead", true);
         timeOfDeath = Time.time;
+
+        OnDeath.Invoke(info);
+        killer.OnKill.Invoke(info);
     }
 
 

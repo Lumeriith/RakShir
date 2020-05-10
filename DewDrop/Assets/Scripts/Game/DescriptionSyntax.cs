@@ -7,7 +7,7 @@ public class DescriptionSyntax
 {
     const string prefixMagic = "<b><color=magenta>";
     const string suffixMagic = "</color></b>";
-    public static string Decode(string raw)
+    public static string Decode(string raw, object context = null)
     {
         string remainingString = raw;
         string decodedString = "";
@@ -33,8 +33,6 @@ public class DescriptionSyntax
             totalDescription += description;
             remainingString = remainingString.Substring(endIndex + 1);
 
-
-
             startIndex = remainingString.IndexOf("[");
         }
 
@@ -46,9 +44,6 @@ public class DescriptionSyntax
         {
             return decodedString + remainingString + "<size=13>" + totalDescription + "</size>";
         }
-
-        
-            
     }
 
     private static string DecodeSyntaxElement(string element, ref string description)

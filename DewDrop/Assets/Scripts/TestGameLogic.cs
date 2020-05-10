@@ -10,7 +10,7 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
     public Transform reptileSpawnPoint;
 
 
-    private void Start()
+    private void Awake()
     {
         DecalSystem.DecalUtils.UpdateAffectedObjects();
         if (!PhotonNetwork.InRoom)

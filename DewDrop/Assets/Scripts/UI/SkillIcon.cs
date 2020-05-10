@@ -25,32 +25,29 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public int skillIndex = 1;
 
-    private PointerEventData hover;
+    private bool _isTooltipShown;
 
     public void OnPointerEnter(PointerEventData data)
     {
-        if(UnitControlManager.instance.selectedUnit.control.skillSet[skillIndex] != null)
-        {
-            DescriptionBox.ShowDescription(UnitControlManager.instance.selectedUnit.control.skillSet[skillIndex]);
-            hover = data;
-        }
+        TooltipInfo.instance.Show(skillIndex);
+        _isTooltipShown = true;
     }
 
     public void OnPointerExit(PointerEventData data)
     {
-        if(hover != null)
+        if (_isTooltipShown)
         {
-            DescriptionBox.HideDescription();
-            hover = null;
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
         }
     }
 
     private void OnDisable()
     {
-        if (hover != null)
+        if (_isTooltipShown)
         {
-            DescriptionBox.HideDescription();
-            hover = null;
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
         }
     }
 

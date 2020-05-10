@@ -16,32 +16,33 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private PlayerInventory _inventory;
 
-    private PointerEventData hover = null;
+    private bool _isTooltipShown;
+
     public void OnPointerEnter(PointerEventData data)
     {
         if (_inventory.consumableBelt[consumableIndex] != null)
         {
-            DescriptionBox.ShowDescription(_inventory.consumableBelt[consumableIndex]);
-            hover = data;
+            TooltipInfo.instance.Show(_inventory.consumableBelt[consumableIndex]);
+            _isTooltipShown = true;
         }
         
     }
 
     public void OnPointerExit(PointerEventData data)
     {
-        if (hover != null)
+        if (_isTooltipShown)
         {
-            DescriptionBox.HideDescription();
-            hover = null;
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
         }
     }
 
     private void OnDisable()
     {
-        if (hover != null)
+        if (_isTooltipShown)
         {
-            DescriptionBox.HideDescription();
-            hover = null;
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
         }
     }
 

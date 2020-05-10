@@ -19,28 +19,29 @@ public class PoolManager : MonoBehaviour
         return _poolRoot;
     }
 
-    public static GameObject GetPooledGameObjectFromPool(GameObject original)
+
+    public static GameObject Spawn(GameObject original, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         if (!_pools.TryGetValue(original, out Queue<GameObject> pool))
         {
             pool = new Queue<GameObject>();
             _pools.Add(original, pool);
         }
+
+        GameObject spawnling;
+
         if (pool.Count == 0)
         {
-            pool.Enqueue(Object.Instantiate(original, _poolRoot));
+            spawnling = Instantiate(original, position, rotation, parent);
         }
-        GameObject spawnling = pool.Dequeue();
+        else
+        {
+            spawnling = pool.Dequeue();
+            spawnling.transform.position = position;
+            spawnling.transform.rotation = rotation;
+            spawnling.transform.SetParent(parent, true);
+        }
         _originalBySpawnling.Add(spawnling, original);
-        return spawnling;
-    }
-
-    public static GameObject Spawn(GameObject original, Vector3 position, Quaternion rotation, Transform parent = null)
-    {
-        GameObject spawnling = GetPooledGameObjectFromPool(original);
-        spawnling.transform.position = position;
-        spawnling.transform.rotation = rotation;
-        spawnling.transform.SetParent(parent, false);
         spawnling.SetActive(true);
         return spawnling;
     }

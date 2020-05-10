@@ -17,6 +17,7 @@ public class FloatingText : MonoBehaviour
     private Text _uiText;
     private Outline _outline;
     private Shadow _shadow;
+    private Canvas _parentCanvas;
     private Camera _main;
     private float _elapsedTime
     {
@@ -31,8 +32,10 @@ public class FloatingText : MonoBehaviour
         _uiText = GetComponentInChildren<Text>();
         _outline = GetComponentInChildren<Outline>();
         _shadow = GetComponentInChildren<Shadow>();
+        _parentCanvas = transform.parent.GetComponent<Canvas>();
         _main = Camera.main;
     }
+
 
     private void OnEnable()
     {
@@ -81,8 +84,7 @@ public class FloatingText : MonoBehaviour
             _uiText.enabled = true;
         }
 
-
-        transform.position = _main.WorldToScreenPoint(_worldPosition);
+        ((RectTransform)transform).SetWorldPositionForScreenSpaceCamera(_worldPosition, _parentCanvas);
 
         transform.localScale = Vector3.one * sizeCurve.Evaluate(_elapsedTime / duration);
 

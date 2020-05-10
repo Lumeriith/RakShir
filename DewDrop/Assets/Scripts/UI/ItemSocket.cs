@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI.Extensions;
 
 public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
@@ -44,6 +45,8 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
 
     private Image[] gemSprites;
     private bool shouldUpdateGems = true;
+
+    private bool _isTooltipShown = false;
 
     private void Awake()
     {
@@ -150,9 +153,20 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
             if (Input.GetKeyDown(KeyCode.E))
             {
                 InventoryView.instance.SocketDefaultActionCalled(this);
-            } else if (Input.GetKeyDown(KeyCode.R))
+                if (_isTooltipShown)
+                {
+                    _isTooltipShown = false;
+                    TooltipInfo.instance.Hide();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
             {
                 InventoryView.instance.SocketDropActionCalled(this);
+                if (_isTooltipShown)
+                {
+                    _isTooltipShown = false;
+                    TooltipInfo.instance.Hide();
+                }
             }
         }
     }
@@ -181,6 +195,12 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
         fillCanvasGroup.alpha = .2f;
         isDragSuccessful = false;
         draggedSocket = this;
+
+        if (_isTooltipShown)
+        {
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -218,11 +238,24 @@ public class ItemSocket : MonoBehaviour, IDragHandler, IDropHandler, IBeginDragH
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (draggedSocket != null && draggedSocket.item != null) InventoryView.instance.SocketStartHoveringOverSocket(draggedSocket, this);
-        else status = HighlightStatus.MouseOver;
+        else
+        {
+            status = HighlightStatus.MouseOver;
+            if (item != null)
+            {
+                TooltipInfo.instance.Show(item);
+                _isTooltipShown = true;
+            }
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         status = HighlightStatus.None;
+        if (_isTooltipShown)
+        {
+            _isTooltipShown = false;
+            TooltipInfo.instance.Hide();
+        }
     }
 
     private void StatusChanged()

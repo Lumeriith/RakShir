@@ -52,7 +52,7 @@ public struct EntityStatus : IReadOnlyEntityStatus
 
 public class EntityStatusEffect : MonoBehaviourPun
 {
-    private const float OverTimeStatusEffectTickInterval = 0.5f;
+    private const float OverTimeStatusEffectTickInterval = 0.25f;
 
     public List<StatusEffect> statusEffects = new List<StatusEffect>();
     private Entity _entity;
