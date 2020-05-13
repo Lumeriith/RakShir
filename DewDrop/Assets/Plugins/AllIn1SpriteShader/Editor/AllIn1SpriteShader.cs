@@ -50,33 +50,34 @@ public class AllIn1SpriteShader : ShaderGUI
         Blur(materialEditor, properties, style, oldKeyWords.Contains("BLUR_ON"));
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("MOTIONBLUR_ON"), "15.Motion Blur", "MOTIONBLUR_ON", 62, 63);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("GHOST_ON"), "16.Ghost", "GHOST_ON", 64, 65);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("INNEROUTLINE_ON"), "17.Inner Outline", "INNEROUTLINE_ON", 66, 69);
+        InnerOutline(materialEditor, properties, style, oldKeyWords.Contains("INNEROUTLINE_ON"), "17.Inner Outline", "INNEROUTLINE_ON", 66, 69);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("HOLOGRAM_ON"), "18.Hologram", "HOLOGRAM_ON", 73, 77);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("CHROMABERR_ON"), "19.Chromatic Aberration", "CHROMABERR_ON", 78, 79);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("GLITCH_ON"), "20.Glitch", "GLITCH_ON", 80, 80);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FLICKER_ON"), "21.Flicker", "FLICKER_ON", 81, 83);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHADOW_ON"), "22.Shadow", "SHADOW_ON", 84, 87);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ALPHACUTOFF_ON"), "23.Alpha Cutoff", "ALPHACUTOFF_ON", 70, 70);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHINE_ON"), "23.Shine", "SHINE_ON", 133, 137);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ALPHACUTOFF_ON"), "24.Alpha Cutoff", "ALPHACUTOFF_ON", 70, 70);
 
         EditorGUILayout.Separator();
         GUILayout.Label("___UV Effects___", EditorStyles.boldLabel);
 
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DOODLE_ON"), "24.Hand Drawn", "DOODLE_ON", 88, 89);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DOODLE_ON"), "25.Hand Drawn", "DOODLE_ON", 88, 89);
         Grass(materialEditor, properties, style, oldKeyWords.Contains("WIND_ON"));
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("WAVEUV_ON"), "26.Wave", "WAVEUV_ON", 94, 98);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROUNDWAVEUV_ON"), "27.Round Wave", "ROUNDWAVEUV_ON", 127, 128);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("RECTSIZE_ON"), "28.Rect Size (Enable wireframe to see result)", "RECTSIZE_ON", 99, 99);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("OFFSETUV_ON"), "29.Offset", "OFFSETUV_ON", 100, 101);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("CLIPPING_ON"), "30.Clipping / Fill Amount", "CLIPPING_ON", 102, 105);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TEXTURESCROLL_ON"), "31.Texture Scroll", "TEXTURESCROLL_ON", 106, 107);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ZOOMUV_ON"), "32.Zoom", "ZOOMUV_ON", 108, 108);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DISTORT_ON"), "33.Distortion", "DISTORT_ON", 109, 112);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TWISTUV_ON"), "34.Twist", "TWISTUV_ON", 113, 116);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROTATEUV_ON"), "35.Rotate", "ROTATEUV_ON", 117, 117);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("POLARUV_ON"), "36.Polar Coordinates (Tile texture for good results)", "POLARUV_ON", -1, -1);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FISHEYE_ON"), "37.Fish Eye", "FISHEYE_ON", 118, 118);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("PINCH_ON"), "38.Pinch", "PINCH_ON", 119, 119);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHAKEUV_ON"), "39.Shake", "SHAKEUV_ON", 120, 122);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("WAVEUV_ON"), "27.Wave", "WAVEUV_ON", 94, 98);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROUNDWAVEUV_ON"), "28.Round Wave", "ROUNDWAVEUV_ON", 127, 128);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("RECTSIZE_ON"), "29.Rect Size (Enable wireframe to see result)", "RECTSIZE_ON", 99, 99);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("OFFSETUV_ON"), "30.Offset", "OFFSETUV_ON", 100, 101);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("CLIPPING_ON"), "31.Clipping / Fill Amount", "CLIPPING_ON", 102, 105);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TEXTURESCROLL_ON"), "32.Texture Scroll", "TEXTURESCROLL_ON", 106, 107);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ZOOMUV_ON"), "33.Zoom", "ZOOMUV_ON", 108, 108);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DISTORT_ON"), "34.Distortion", "DISTORT_ON", 109, 112);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TWISTUV_ON"), "35.Twist", "TWISTUV_ON", 113, 116);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROTATEUV_ON"), "36.Rotate", "ROTATEUV_ON", 117, 117);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("POLARUV_ON"), "37.Polar Coordinates (Tile texture for good results)", "POLARUV_ON", -1, -1);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FISHEYE_ON"), "38.Fish Eye", "FISHEYE_ON", 118, 118);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("PINCH_ON"), "39.Pinch", "PINCH_ON", 119, 119);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHAKEUV_ON"), "40.Shake", "SHAKEUV_ON", 120, 122);
     }
 
     private void Blending(MaterialEditor materialEditor, MaterialProperty[] properties, GUIStyle style, bool toggle, string inspector, string flag)
@@ -229,6 +230,12 @@ public class AllIn1SpriteShader : ShaderGUI
                     materialEditor.ShaderProperty(properties[30], properties[30].displayName);
                 }
                 else targetMat.DisableKeyword("OUTDIST_ON");
+
+                EditorGUILayout.Separator();
+                materialEditor.ShaderProperty(properties[71], properties[71].displayName);
+                MaterialProperty onlyOutline = ShaderGUI.FindProperty("_OnlyOutline", properties);
+                if (onlyOutline.floatValue == 1) targetMat.EnableKeyword("ONLYOUTLINE_ON");
+                else targetMat.DisableKeyword("ONLYOUTLINE_ON");
             }
             EditorGUILayout.EndVertical();
         }
@@ -378,7 +385,7 @@ public class AllIn1SpriteShader : ShaderGUI
     private void Grass(MaterialEditor materialEditor, MaterialProperty[] properties, GUIStyle style, bool toggle)
     {
         bool ini = toggle;
-        toggle = EditorGUILayout.BeginToggleGroup("25.Grass Movement / Wind", toggle);
+        toggle = EditorGUILayout.BeginToggleGroup("26.Grass Movement / Wind", toggle);
         if (ini != toggle && !Application.isPlaying) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         if (toggle)
         {
@@ -396,6 +403,33 @@ public class AllIn1SpriteShader : ShaderGUI
             EditorGUILayout.EndVertical();
         }
         else targetMat.DisableKeyword("WIND_ON");
+        EditorGUILayout.EndToggleGroup();
+    }
+
+    private void InnerOutline(MaterialEditor materialEditor, MaterialProperty[] properties, GUIStyle style, bool toggle, string inspector, string flag, int first, int last)
+    {
+        bool ini = toggle;
+        toggle = EditorGUILayout.BeginToggleGroup(inspector, toggle);
+        if (ini != toggle && !Application.isPlaying) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        if (toggle)
+        {
+            targetMat.EnableKeyword(flag);
+            if (first > 0)
+            {
+                EditorGUILayout.BeginVertical(style);
+                {
+                    for (int i = first; i <= last; i++) materialEditor.ShaderProperty(properties[i], properties[i].displayName);
+
+                    EditorGUILayout.Separator();
+                    materialEditor.ShaderProperty(properties[72], properties[72].displayName);
+                    MaterialProperty onlyInOutline = ShaderGUI.FindProperty("_OnlyInnerOutline", properties);
+                    if (onlyInOutline.floatValue == 1) targetMat.EnableKeyword("ONLYINNEROUTLINE_ON");
+                    else targetMat.DisableKeyword("ONLYINNEROUTLINE_ON");
+                }
+                EditorGUILayout.EndVertical();
+            }
+        }
+        else targetMat.DisableKeyword(flag);
         EditorGUILayout.EndToggleGroup();
     }
 }

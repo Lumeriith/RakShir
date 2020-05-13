@@ -22,6 +22,7 @@
 		_FadeBurnColor("Fade Burn Color", Color) = (1,1,0,1) //11
 		_FadeBurnTex("Fade Burn Texture", 2D) = "white" {} //12
 		_FadeBurnGlow("Fade Burn Glow",  Range(1,50)) = 2//13
+
 		[Header(_Outline Basic Properties_)]
 		_OutlineColor("Outline Base Color", Color) = (1,1,1,1) //14
 		_OutlineAlpha("Outline Base Alpha",  Range(0,1)) = 1 //15
@@ -107,12 +108,12 @@
 		_InnerOutlineColor("Inner Outline Color", Color) = (1,0,0,1) //66
 		_InnerOutlineThickness("Inner Outline Thickness",  Range(0,3)) = 1 //67
 		_InnerOutlineAlpha("Inner Outline Alpha",  Range(0,1)) = 1 //68
-		_InnerOutlineGlow("Inner Outline Glow",  Range(1,100)) = 1 //69
+		_InnerOutlineGlow("Inner Outline Glow",  Range(1,250)) = 1 //69
 
 		_AlphaCutoffValue("Alpha cutoff value", Range(0, 1)) = 0.25 //70
 
-		_HologramFlickerFreq("Hologram Flicker Frequence", Range(0, 5)) = 0.2 //71
-		_HologramFlickerAlpha("Hologram Flicker Alpha", Range(0, 1)) = 0 //72
+		[Toggle()] _OnlyOutline("Only render outline?", float) = 0 //71
+		[Toggle()] _OnlyInnerOutline("Only render innerr outline?", float) = 0 //72
 
 		_HologramStripesAmount("Hologram Stripes Amount", Range(1, 100)) = 50 //73
 		_HologramStripesFill("Hologram Stripes Fill", Range(0, 2)) = 0.4 //74
@@ -201,6 +202,12 @@
 		_MySrcMode ("SrcMode", Float) = 5 // 131
 		_MyDstMode ("DstMode", Float) = 10 // 132
 
+        _ShineColor("Shine Color", Color) = (1,1,1,1) // 133
+        _ShineLocation("Shine Location", Range(0,1)) = 0.5 // 134
+        _ShineWidth("Shine Width", Range(0.05,1)) = 0.1 // 135
+        _ShineGlow("Shine Glow", Range(0,100)) = 1 // 136
+		_ShineMask("Shine Mask", 2D) = "white" {} // 137
+
 		[HideInInspector] _MinXUV("_MinXUV", Range(0, 1)) = 0.0
 		[HideInInspector] _MaxXUV("_MaxXUV", Range(0, 1)) = 1.0
 		[HideInInspector] _MinYUV("_MinYUV", Range(0, 1)) = 0.0
@@ -224,6 +231,7 @@
 			#pragma shader_feature GLOW_ON
 			#pragma shader_feature FADE_ON
 			#pragma shader_feature OUTBASE_ON
+			#pragma shader_feature ONLYOUTLINE_ON
 			#pragma shader_feature GRADIENT_ON
 			#pragma shader_feature COLORSWAP_ON
 			#pragma shader_feature HSV_ON
@@ -238,11 +246,13 @@
 			#pragma shader_feature MOTIONBLUR_ON
 			#pragma shader_feature GHOST_ON
 			#pragma shader_feature INNEROUTLINE_ON
+			#pragma shader_feature ONLYINNEROUTLINE_ON
 			#pragma shader_feature HOLOGRAM_ON
 			#pragma shader_feature CHROMABERR_ON
 			#pragma shader_feature GLITCH_ON
 			#pragma shader_feature FLICKER_ON
 			#pragma shader_feature SHADOW_ON
+			#pragma shader_feature SHINE_ON
 			#pragma shader_feature ALPHACUTOFF_ON
 			#pragma shader_feature DOODLE_ON
 			#pragma shader_feature WIND_ON
@@ -487,6 +497,12 @@
 			fixed4 _ShadowColor;
 			#endif
 
+			#if SHINE_ON
+			sampler2D _ShineMask;
+			fixed4 _ShineColor;
+			fixed _ShineLocation, _ShineWidth, _ShineGlow;
+			#endif
+			
 			#if ALPHACUTOFF_ON
 			fixed _AlphaCutoffValue;
 			#endif
@@ -790,9 +806,14 @@
 				#if INNEROUTLINE_ON
 				fixed3 innerT = abs(GetPixel(0, _InnerOutlineThickness, i.uv, _MainTex) - GetPixel(0, -_InnerOutlineThickness, i.uv, _MainTex));
 				innerT += abs(GetPixel(_InnerOutlineThickness, 0, i.uv, _MainTex) - GetPixel(-_InnerOutlineThickness, 0, i.uv, _MainTex));
-				innerT /= 2.0;
-				innerT *= col.a * _InnerOutlineAlpha;
+				#if !ONLYINNEROUTLINE_ON
+				innerT = (innerT / 2.0) * col.a * _InnerOutlineAlpha;
 				col.rgb += length(innerT) * _InnerOutlineColor.rgb * _InnerOutlineGlow;
+				#else
+				innerT *= col.a * _InnerOutlineAlpha;
+				col.rgb = length(innerT) * _InnerOutlineColor.rgb * _InnerOutlineGlow;
+				col.a = step(0.3, col.r+col.g+col.b);
+				#endif
 				#endif
 
 				#if HITEFFECT_ON
@@ -861,7 +882,11 @@
 
 					fixed4 outline = result * _OutlineColor;
 					outline.rgb *= _OutlineGlow * 2;
+					#if ONLYOUTLINE_ON
+					col = outline;
+					#else
 					col += outline;
+					#endif
 				#endif
 				//-----------------------------------------------------------------------------
 				
@@ -914,6 +939,15 @@
 					+ (.587 * _HsvBright - .588 * cosHsv - 1.05 * sinHsv) * col.y
 					+ (.114 * _HsvBright + .886 * cosHsv - .203 * sinHsv) * col.z;
 				col.rgb = resultHsv;
+				#endif
+
+				#if SHINE_ON
+				fixed shineMask = tex2D(_ShineMask, i.uv).a;
+				fixed lowLevel = _ShineLocation - _ShineWidth;
+				fixed highLevel = _ShineLocation + _ShineWidth;
+				fixed currentDistanceProjection = (i.uv.x + i.uv.y) / 2;
+				fixed whitePower = 1 - (abs(currentDistanceProjection - _ShineLocation) / _ShineWidth);
+				col.rgb +=  col.a * whitePower * _ShineGlow * (currentDistanceProjection > lowLevel) * (currentDistanceProjection < highLevel) * _ShineColor * shineMask;
 				#endif
 
 				col.a *= _Alpha;

@@ -55,6 +55,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 74087f6d03f233e4a8a142fa01f9e5cf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShineMask:
+        m_Texture: {fileID: 2800000, guid: e2278b1c9c3855a4eab719f24f468bc0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Alpha: 1
     - _AlphaCutoffValue: 0.25
@@ -125,6 +129,8 @@ Material:
     - _NegativeAmount: 1
     - _OffsetUvX: 0
     - _OffsetUvY: 0
+    - _OnlyInnerOutline: 0
+    - _OnlyOutline: 0
     - _Outline8Directions: 0
     - _OutlineAlpha: 1
     - _OutlineDistortAmount: 0.5
@@ -155,6 +161,9 @@ Material:
     - _ShakeUvSpeed: 2.5
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
+    - _ShineGlow: 31.4
+    - _ShineLocation: 1
+    - _ShineWidth: 1
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1
@@ -186,3 +195,4 @@ Material:
     - _InnerOutlineColor: {r: 1, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShineColor: {r: 1, g: 1, b: 1, a: 1}

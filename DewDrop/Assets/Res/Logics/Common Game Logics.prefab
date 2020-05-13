@@ -1575,6 +1575,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -6612,6 +6619,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -6699,6 +6713,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_Inert: 0
   m_InertDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
@@ -41715,6 +41736,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -72289,6 +72317,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -82817,6 +82852,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -87721,6 +87763,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_Inert: 0
   m_InertDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
@@ -92906,12 +92955,17 @@ MonoBehaviour:
   minimumHeight: 200
   enablePopup: 1
   startInPopupMode: 1
+  startMinimized: 0
   toggleWithKey: 1
   toggleKey: 96
+  enableSearchbar: 1
+  topSearchbarMinWidth: 360
   clearCommandAfterExecution: 1
   commandHistorySize: 15
   receiveLogcatLogsInAndroid: 0
   logcatArguments: 
+  avoidScreenCutout: 1
+  maxLogLength: 10000
   logItemPrefab: {fileID: 11408050, guid: 391be5df5ef62f345bb76a1051c04da7, type: 3}
   infoLog: {fileID: 21300000, guid: 5a97d5afa6254804f81b7ba956296996, type: 3}
   warningLog: {fileID: 21300000, guid: 05c7216c78d4dd34ebe2bac9c1e274d7, type: 3}
@@ -92930,6 +92984,9 @@ MonoBehaviour:
   infoEntryCountText: {fileID: 2785446601326570712}
   warningEntryCountText: {fileID: 103992192876928059}
   errorEntryCountText: {fileID: 5189615104782305222}
+  searchbar: {fileID: 0}
+  searchbarSlotTop: {fileID: 0}
+  searchbarSlotBottom: {fileID: 0}
   snapToBottomButton: {fileID: 558172444122187344}
   logWindowCanvasGroup: {fileID: 3154308147615560920}
   popupManager: {fileID: 4746821447329065367}

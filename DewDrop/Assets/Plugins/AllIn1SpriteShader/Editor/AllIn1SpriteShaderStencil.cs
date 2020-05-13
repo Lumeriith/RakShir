@@ -52,27 +52,28 @@ public class AllIn1SpriteShaderStencil : ShaderGUI
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("GLITCH_ON"), "20.Glitch", "GLITCH_ON", 80, 80);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FLICKER_ON"), "21.Flicker", "FLICKER_ON", 81, 83);
         GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHADOW_ON"), "22.Shadow", "SHADOW_ON", 84, 87);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ALPHACUTOFF_ON"), "23.Alpha Cutoff", "ALPHACUTOFF_ON", 70, 70);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHINE_ON"), "23.Shine", "SHINE_ON", 130, 134);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ALPHACUTOFF_ON"), "24.Alpha Cutoff", "ALPHACUTOFF_ON", 70, 70);
 
         EditorGUILayout.Separator();
         GUILayout.Label("___UV Effects___", EditorStyles.boldLabel);
 
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DOODLE_ON"), "24.Hand Drawn", "DOODLE_ON", 88, 89);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DOODLE_ON"), "25.Hand Drawn", "DOODLE_ON", 88, 89);
         Grass(materialEditor, properties, style, oldKeyWords.Contains("WIND_ON"));
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("WAVEUV_ON"), "26.Wave", "WAVEUV_ON", 94, 98);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROUNDWAVEUV_ON"), "27.Round Wave", "ROUNDWAVEUV_ON", 127, 128);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("RECTSIZE_ON"), "28.Rect Size (Enable wireframe to see result)", "RECTSIZE_ON", 99, 99);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("OFFSETUV_ON"), "29.Offset", "OFFSETUV_ON", 100, 101);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("CLIPPING_ON"), "30.Clipping / Fill Amount", "CLIPPING_ON", 102, 105);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TEXTURESCROLL_ON"), "31.Texture Scroll", "TEXTURESCROLL_ON", 106, 107);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ZOOMUV_ON"), "32.Zoom", "ZOOMUV_ON", 108, 108);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DISTORT_ON"), "33.Distortion", "DISTORT_ON", 109, 112);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TWISTUV_ON"), "34.Twist", "TWISTUV_ON", 113, 116);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROTATEUV_ON"), "35.Rotate", "ROTATEUV_ON", 117, 117);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("POLARUV_ON"), "36.Polar Coordinates (Tile texture for good results)", "POLARUV_ON", -1, -1);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FISHEYE_ON"), "37.Fish Eye", "FISHEYE_ON", 118, 118);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("PINCH_ON"), "38.Pinch", "PINCH_ON", 119, 119);
-        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHAKEUV_ON"), "39.Shake", "SHAKEUV_ON", 120, 122);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("WAVEUV_ON"), "27.Wave", "WAVEUV_ON", 94, 98);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROUNDWAVEUV_ON"), "28.Round Wave", "ROUNDWAVEUV_ON", 127, 128);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("RECTSIZE_ON"), "29.Rect Size (Enable wireframe to see result)", "RECTSIZE_ON", 99, 99);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("OFFSETUV_ON"), "30.Offset", "OFFSETUV_ON", 100, 101);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("CLIPPING_ON"), "31.Clipping / Fill Amount", "CLIPPING_ON", 102, 105);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TEXTURESCROLL_ON"), "32.Texture Scroll", "TEXTURESCROLL_ON", 106, 107);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ZOOMUV_ON"), "33.Zoom", "ZOOMUV_ON", 108, 108);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("DISTORT_ON"), "34.Distortion", "DISTORT_ON", 109, 112);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("TWISTUV_ON"), "35.Twist", "TWISTUV_ON", 113, 116);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("ROTATEUV_ON"), "36.Rotate", "ROTATEUV_ON", 117, 117);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("POLARUV_ON"), "37.Polar Coordinates (Tile texture for good results)", "POLARUV_ON", -1, -1);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("FISHEYE_ON"), "38.Fish Eye", "FISHEYE_ON", 118, 118);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("PINCH_ON"), "39.Pinch", "PINCH_ON", 119, 119);
+        GenericEffect(materialEditor, properties, style, oldKeyWords.Contains("SHAKEUV_ON"), "40.Shake", "SHAKEUV_ON", 120, 122);
     }
 
     private void SpriteAtlas(MaterialEditor materialEditor, GUIStyle style, bool toggle, string inspector, string flag)
@@ -300,7 +301,7 @@ public class AllIn1SpriteShaderStencil : ShaderGUI
     private void Grass(MaterialEditor materialEditor, MaterialProperty[] properties, GUIStyle style, bool toggle)
     {
         bool ini = toggle;
-        toggle = EditorGUILayout.BeginToggleGroup("25.Grass Movement / Wind", toggle);
+        toggle = EditorGUILayout.BeginToggleGroup("26.Grass Movement / Wind", toggle);
         if (ini != toggle && !Application.isPlaying) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         if (toggle)
         {

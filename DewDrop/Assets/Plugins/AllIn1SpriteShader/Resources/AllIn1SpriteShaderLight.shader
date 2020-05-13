@@ -203,6 +203,12 @@
 		[Toggle()] _BillboardY("Billboard on both axis?", float) = 0 //133
 		_ZWrite ("Depth Write", Float) = 0.0 // 134
 
+		_ShineColor("Shine Color", Color) = (1,1,1,1) // 135
+        _ShineLocation("Shine Location", Range(0,1)) = 0.5 // 136
+        _ShineWidth("Shine Width", Range(0.05,1)) = 0.1 // 137
+        _ShineGlow("Shine Glow", Range(0,100)) = 1 // 138
+		_ShineMask("Shine Mask", 2D) = "white" {} // 139
+
 		[HideInInspector] _MinXUV("_MinXUV", Range(0, 1)) = 0.0
 		[HideInInspector] _MaxXUV("_MaxXUV", Range(0, 1)) = 1.0
 		[HideInInspector] _MinYUV("_MinYUV", Range(0, 1)) = 0.0
@@ -246,6 +252,7 @@
 				#pragma shader_feature GLITCH_ON
 				#pragma shader_feature FLICKER_ON
 				#pragma shader_feature SHADOW_ON
+				#pragma shader_feature SHINE_ON
 				#pragma shader_feature ALPHACUTOFF_ON
 				#pragma shader_feature DOODLE_ON
 				#pragma shader_feature WIND_ON
@@ -485,6 +492,12 @@
 				#if SHADOW_ON
 				fixed _ShadowX, _ShadowY, _ShadowAlpha;
 				fixed4 _ShadowColor;
+				#endif
+
+				#if SHINE_ON
+				sampler2D _ShineMask;
+				fixed4 _ShineColor;
+				fixed _ShineLocation, _ShineWidth, _ShineGlow;
 				#endif
 
 				#if ALPHACUTOFF_ON
@@ -945,6 +958,15 @@
 						+ (.587 * _HsvBright - .588 * cosHsv - 1.05 * sinHsv) * col.y
 						+ (.114 * _HsvBright + .886 * cosHsv - .203 * sinHsv) * col.z;
 					col.rgb = resultHsv;
+					#endif
+
+					#if SHINE_ON
+					fixed shineMask = tex2D(_ShineMask, i.uv).a;
+					fixed lowLevel = _ShineLocation - _ShineWidth;
+					fixed highLevel = _ShineLocation + _ShineWidth;
+					fixed currentDistanceProjection = (i.uv.x + i.uv.y) / 2;
+					fixed whitePower = 1 - (abs(currentDistanceProjection - _ShineLocation) / _ShineWidth);
+					col.rgb +=  col.a * whitePower * _ShineGlow * (currentDistanceProjection > lowLevel) * (currentDistanceProjection < highLevel) * _ShineColor * shineMask;
 					#endif
 
 					col.a *= _Alpha;

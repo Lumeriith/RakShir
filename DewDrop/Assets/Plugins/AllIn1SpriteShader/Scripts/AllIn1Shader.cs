@@ -177,6 +177,7 @@ public class AllIn1Shader : MonoBehaviour
         SetKeyword("TEXTURESCROLL_ON");
         SetKeyword("GLOW_ON");
         SetKeyword("OUTBASE_ON");
+        SetKeyword("ONLYOUTLINE_ON");
         SetKeyword("OUTTEX_ON");
         SetKeyword("OUTDIST_ON");
         SetKeyword("DISTORT_ON");
@@ -194,6 +195,7 @@ public class AllIn1Shader : MonoBehaviour
         SetKeyword("MOTIONBLUR_ON");
         SetKeyword("GHOST_ON");
         SetKeyword("INNEROUTLINE_ON");
+        SetKeyword("ONLYINNEROUTLINE_ON");
         SetKeyword("HOLOGRAM_ON");
         SetKeyword("CHROMABERR_ON");
         SetKeyword("GLITCH_ON");

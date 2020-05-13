@@ -50,11 +50,11 @@ namespace Substance.Platform
             string buildTarget = "UNKNOWN";
 
 #if (UNITY_STANDALONE)
-                buildTarget = "StandAlone";
+            buildTarget = "StandAlone";
 #elif (UNITY_IOS)
-                buildTarget = "IOS";
+            buildTarget = "IOS";
 #elif (UNITY_ANDROID)
-                buildTarget = "Android";
+            buildTarget = "Android";
 #endif
 
             return buildTarget;
@@ -85,7 +85,8 @@ namespace Substance.Platform
             return format;
         }
 
-        public static void ShowBuildTargetEnvironment()
+#if DEBUG
+        public static void ShowBuildTargetEnvironment() // dev/debug tool
         {
 #if (UNITY_EDITOR)
             Debug.Log("UNITY_EDITOR");
@@ -124,7 +125,7 @@ namespace Substance.Platform
             Debug.Log("ENABLE_IL2CPP");
 #endif
         }
-
+#endif // DEBUG
 
         // ========================================================================================
 
@@ -152,16 +153,16 @@ namespace Substance.Platform
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool FreeLibrary(IntPtr hModule);
 
-            [DllImport("libdl.dylib")]
+            [DllImport("libdl")]
             protected static extern IntPtr dlopen(string filename, int flags);
 
-            [DllImport("libdl.dylib")]
+            [DllImport("libdl")]
             protected static extern IntPtr dlsym(IntPtr handle, string symbol);
 
-            [DllImport("libdl.dylib")]
+            [DllImport("libdl")]
             protected static extern IntPtr dlerror();
 
-            [DllImport("libdl.dylib")]
+            [DllImport("libdl")]
             protected static extern int dlclose(IntPtr handle);
 
             internal static IntPtr DllHandle = IntPtr.Zero;
@@ -192,11 +193,16 @@ namespace Substance.Platform
 
                         DllHandle = dlopen(LibDestination, 3);
                     }
+                    else if (IsLinux())
+                    {
+                        LibDestination = Path.Combine(dataPath, "Plugins/libSubstance.Engine.so");
+
+                        DllHandle = dlopen(LibDestination, 3);
+                    }
 
                     if (DllHandle == IntPtr.Zero)
                     {
-                        //Debug.LogError("Substance engine failed to load.");
-                        Debug.Log("Substance engine failed to load.");
+                        Debug.LogError("Substance engine failed to load.");
                     }
                 }
             }
@@ -209,7 +215,7 @@ namespace Substance.Platform
                     {
                         FreeLibrary(DllHandle);
                     }
-                    else if (IsMac())
+                    else if (IsMac() || IsLinux())
                     {
                         dlclose(DllHandle);
                     }
@@ -228,7 +234,7 @@ namespace Substance.Platform
                 {
                     ptr = GetProcAddress(DllHandle, funcname);
                 }
-                else if (IsMac())
+                else if (IsMac() || IsLinux())
                 {
                     ptr = dlsym(DllHandle, funcname);
                 }
@@ -281,8 +287,8 @@ namespace Substance.Platform
 #endif
 
 #if IMPORT_DYNAMIC
-        public delegate void cppInitSubstanceDelegate(string applicationDataPath);
-        public static void cppInitSubstance(string applicationDataPath)
+        public delegate void cppInitSubstanceDelegate(string applicationDataPath, int pTextureClampExposant);
+        public static void cppInitSubstance(string applicationDataPath, int pTextureClampExposant)
         {
             string myName = System.Reflection.MethodBase.GetCurrentMethod().Name;
 
@@ -292,11 +298,11 @@ namespace Substance.Platform
 
             cppInitSubstanceDelegate function = DLLHelpers.GetFunction(
                 myName, typeof(cppInitSubstanceDelegate)) as cppInitSubstanceDelegate;
-            function.Invoke(applicationDataPath);
+            function.Invoke(applicationDataPath, pTextureClampExposant);
         }
 #else
         [DllImport(attributeValue)]
-        public static extern void cppInitSubstance(string applicationDataPath);
+        public static extern void cppInitSubstance(string applicationDataPath, int pTextureClampExposant);
 #endif
 
 #if IMPORT_DYNAMIC
