@@ -1,46 +1,52 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class TargetValidator : System.ICloneable
+public enum TargetValidatorPreset
 {
+    Custom = 0,
+    Beneficial = 1,
+    Harmful = 2
+}
 
+[System.Serializable]
+public class TargetValidator
+{
+    [SerializeField, HideLabel, EnumToggleButtons]
+    private TargetValidatorPreset _preset = TargetValidatorPreset.Custom;
+
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetSelf = false;
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetOwnSummon = false;
 
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetAlliedPlayer = false;
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetAlliedSummon = false;
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetAlliedMonster = false;
 
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetEnemyPlayer = true;
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetEnemySummon = true;
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool canTargetEnemyMonster = true;
 
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool evaluatesFalseIfDead = true;
 
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stasis, StatusEffectType.Invulnerable, StatusEffectType.Untargetable };
 
+    [ShowIf("_preset", Value = TargetValidatorPreset.Custom)]
     public bool invertResult = false;
 
-    public object Clone()
+    public static TargetValidator HarmfulPreset = new TargetValidator
     {
-        TargetValidator tv = new TargetValidator();
-        tv.canTargetSelf = canTargetSelf;
-        tv.canTargetOwnSummon = canTargetOwnSummon;
-        tv.canTargetAlliedPlayer = canTargetAlliedPlayer;
-        tv.canTargetAlliedSummon = canTargetAlliedSummon;
-        tv.canTargetAlliedMonster = canTargetAlliedMonster;
-        tv.canTargetEnemyPlayer = canTargetEnemyPlayer;
-        tv.canTargetEnemySummon = canTargetEnemySummon;
-        tv.canTargetEnemyMonster = canTargetEnemyMonster;
-        tv.excludes = new List<StatusEffectType>(excludes);
-        return tv;
-    }
-
-
-    public static TargetValidator HarmfulSpellDefault = new TargetValidator
-    {
+        _preset = TargetValidatorPreset.Custom,
         canTargetSelf = false,
         canTargetOwnSummon = false,
         canTargetAlliedPlayer = false,
@@ -56,8 +62,9 @@ public class TargetValidator : System.ICloneable
           StatusEffectType.Untargetable }
     };
 
-    public static TargetValidator BeneficialSpellDefault = new TargetValidator
+    public static TargetValidator BeneficialPreset = new TargetValidator
     {
+        _preset = TargetValidatorPreset.Custom,
         canTargetSelf = true,
         canTargetOwnSummon = true,
         canTargetAlliedPlayer = true,
@@ -72,9 +79,11 @@ public class TargetValidator : System.ICloneable
           StatusEffectType.Untargetable }
     };
 
-
     public bool Evaluate(Entity self, Entity target)
     {
+        if (_preset == TargetValidatorPreset.Beneficial) return BeneficialPreset.Evaluate(self, target);
+        if (_preset == TargetValidatorPreset.Harmful) return HarmfulPreset.Evaluate(self, target);
+
         if (target == null || self == null || (evaluatesFalseIfDead && target.IsDead())) return invertResult ? true : false;
 
         Relation relation = self.GetRelationTo(target);
@@ -109,14 +118,70 @@ public class TargetValidator : System.ICloneable
 
 }
 
+public enum SelfValidatorPreset
+{
+    Custom = 0,
+    Default = 1,
+    Movement = 2
+}
 
 [System.Serializable]
-public class SelfValidator : System.ICloneable
+public class SelfValidator
 {
-    public bool evaluatesFalseIfDead = true;
-    public List<StatusEffectType> excludes = new List<StatusEffectType>() { StatusEffectType.Stun, StatusEffectType.Airborne, StatusEffectType.Sleep, StatusEffectType.Polymorph, StatusEffectType.MindControl, StatusEffectType.Charm, StatusEffectType.Fear, StatusEffectType.Silence };
+    [SerializeField, HideLabel, EnumToggleButtons]
+    private SelfValidatorPreset _preset = SelfValidatorPreset.Custom;
 
+    [ShowIf("_preset", Value = SelfValidatorPreset.Custom)]
+    public bool evaluatesFalseIfDead = true;
+    [ShowIf("_preset", Value = SelfValidatorPreset.Custom)]
+    public List<StatusEffectType> excludes = new List<StatusEffectType>() {
+        StatusEffectType.Stun, 
+        StatusEffectType.Airborne,
+        StatusEffectType.Sleep,
+        StatusEffectType.Polymorph,
+        StatusEffectType.MindControl,
+        StatusEffectType.Charm,
+        StatusEffectType.Fear,
+        StatusEffectType.Silence
+    };
+    [ShowIf("_preset", Value = SelfValidatorPreset.Custom)]
     public bool invertResult = false;
+
+    public static SelfValidator DefaultPreset = new SelfValidator()
+    {
+        _preset = SelfValidatorPreset.Custom,
+        excludes = new List<StatusEffectType>()
+        {
+            StatusEffectType.Stun,
+            StatusEffectType.Airborne,
+            StatusEffectType.Sleep,
+            StatusEffectType.Polymorph,
+            StatusEffectType.MindControl,
+            StatusEffectType.Charm,
+            StatusEffectType.Fear,
+            StatusEffectType.Silence
+        },
+        evaluatesFalseIfDead = true,
+        invertResult = false
+    };
+    public static SelfValidator MovementPreset = new SelfValidator()
+    {
+        _preset = SelfValidatorPreset.Custom,
+        excludes = new List<StatusEffectType>()
+        {
+            StatusEffectType.Stun,
+            StatusEffectType.Airborne,
+            StatusEffectType.Sleep,
+            StatusEffectType.Polymorph,
+            StatusEffectType.MindControl,
+            StatusEffectType.Charm,
+            StatusEffectType.Fear,
+            StatusEffectType.Silence,
+            StatusEffectType.Root
+        },
+        evaluatesFalseIfDead = true,
+        invertResult = false
+    };
 
     public static SelfValidator CanTick = new SelfValidator
     {
@@ -163,10 +228,6 @@ public class SelfValidator : System.ICloneable
         invertResult = true
     };
 
-
-
-
-
     public static SelfValidator CanBeDamaged = new SelfValidator
     {
         excludes = new List<StatusEffectType>()
@@ -182,19 +243,11 @@ public class SelfValidator : System.ICloneable
           StatusEffectType.Unstoppable }
     };
 
-
-
-
-    public object Clone()
-    {
-        SelfValidator sv = new SelfValidator();
-        sv.excludes = new List<StatusEffectType>(excludes);
-        return sv;
-    }
-
-
     public bool Evaluate(Entity self)
     {
+        if (_preset == SelfValidatorPreset.Default) return DefaultPreset.Evaluate(self);
+        if (_preset == SelfValidatorPreset.Movement) return MovementPreset.Evaluate(self);
+
         if (self == null || (evaluatesFalseIfDead && self.IsDead())) return invertResult ? true : false;
 
         foreach (StatusEffectType type in excludes)

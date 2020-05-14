@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 317494059}
   - component: {fileID: 317494062}
   - component: {fileID: 317494061}
-  - component: {fileID: 317494060}
   m_Layer: 14
   m_Name: ArrowBase
   m_TagString: Untagged
@@ -79,20 +78,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &317494060
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317494058}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &441678164
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +89,6 @@ GameObject:
   - component: {fileID: 441678165}
   - component: {fileID: 441678168}
   - component: {fileID: 441678167}
-  - component: {fileID: 441678166}
   m_Layer: 14
   m_Name: ArrowHead
   m_TagString: Untagged
@@ -172,20 +156,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &441678166
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 441678164}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &710559693
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +387,6 @@ GameObject:
   - component: {fileID: 1448050266}
   - component: {fileID: 1448050269}
   - component: {fileID: 1448050268}
-  - component: {fileID: 1448050267}
   m_Layer: 14
   m_Name: Range Indicator
   m_TagString: Untagged
@@ -485,20 +454,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1448050267
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448050265}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1553996235
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +560,6 @@ GameObject:
   - component: {fileID: 1936474393}
   - component: {fileID: 1936474396}
   - component: {fileID: 1936474395}
-  - component: {fileID: 1936474394}
   m_Layer: 14
   m_Name: Second Range Indicator
   m_TagString: Untagged
@@ -673,20 +627,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1936474394
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936474392}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1938356541
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,7 +892,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2262550681225800936}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.2144522
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -90489,6 +90429,7 @@ MonoBehaviour:
   Item3Key: 51
   ItemUseMethod: 0
   canDrawOutline:
+    _preset: 0
     canTargetSelf: 1
     canTargetOwnSummon: 1
     canTargetAlliedPlayer: 1
@@ -93714,6 +93655,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3520770249292364003, guid: 31cc4043de3608c49bd720cdb84f6f93,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -821.96466
       objectReference: {fileID: 0}
     - target: {fileID: 3520773811785850698, guid: 31cc4043de3608c49bd720cdb84f6f93,
         type: 3}

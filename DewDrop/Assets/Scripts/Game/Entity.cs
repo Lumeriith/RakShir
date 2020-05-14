@@ -59,6 +59,11 @@ public class Entity : MonoBehaviourPun
 
     private float _defaultMovementSpeed;
 
+    public static Entity GetFromViewID(int viewID)
+    {
+        return PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
+    }
+
     #region Action Declarations
     public System.Action<InfoAbilityInstance> OnAbilityInstanceCreated = (_) => { };
 

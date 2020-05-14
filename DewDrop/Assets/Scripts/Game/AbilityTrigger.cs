@@ -9,10 +9,14 @@ public enum IndicatorType { None, Range, Arrow }
 public class Indicator
 {
     public IndicatorType type;
+    [ShowIf("type", Value = IndicatorType.Range)]
     public float range;
+    [ShowIf("type", Value = IndicatorType.Arrow)]
     public float arrowWidth;
+    [ShowIf("type", Value = IndicatorType.Arrow)]
     public float arrowLength;
     public bool enableSecondRangeIndicator = false;
+    [ShowIf("enableSecondRangeIndicator")]
     public float secondRange = 0.35f;
 }
 

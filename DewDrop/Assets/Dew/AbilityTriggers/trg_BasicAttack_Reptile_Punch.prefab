@@ -53,6 +53,7 @@ MonoBehaviour:
   targetingType: 4
   range: 1.7
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -65,15 +66,16 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
   soundEffect:
   - {fileID: 1607579122048388727, guid: 51667560ed0549e4ebebaa9dcbcd3fa2, type: 3}
   castAnimation:
-  - {fileID: 7400000, guid: 9c51cfab0b355964e8969d81d2de0f77, type: 2}
-  - {fileID: 7400000, guid: b2d3f65e11c788049aaaf705be73c46e, type: 2}
-  animationDuration: 0.7
+  - {fileID: 7400000, guid: e7353986ee106a641ae693e0931b39c3, type: 2}
+  - {fileID: 7400000, guid: d3a3dc0e4dfef884fa2abeb3b10f2a1b, type: 2}
+  animationDuration: 1
   indicator:
     type: 0
     range: 0

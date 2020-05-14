@@ -280,4 +280,26 @@ public abstract class AbilityInstance : DewActionCaller, IPunInstantiateMagicCal
     }
 
     public int Serialize() => photonView.ViewID;
+
+    /// <summary>
+    /// Instantiate the given particle effect and play at the position and destroy afterwards. This is only executed locally.
+    /// </summary>
+    /// <param name="particleEffect"></param>
+    /// <param name="position"></param>
+    public void PlayNew(GameObject particleEffect, Vector3 position)
+    {
+        PlayNew(particleEffect, position, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// Instantiate the given particle effect and play at the position with the given rotation and destroy afterwards. This is only executed locally.
+    /// </summary>
+    /// <param name="particleEffect"></param>
+    /// <param name="position"></param>
+    public void PlayNew(GameObject particleEffect, Vector3 position, Quaternion rotation)
+    {
+        GameObject newEffect = Instantiate(particleEffect, position, rotation);
+        newEffect.GetComponent<ParticleSystem>().Play();
+        newEffect.AddComponent<ParticleSystemAutoDestroy>();
+    }
 }
