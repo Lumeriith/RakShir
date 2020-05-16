@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
+//using UnityEngine.UI.Extensions;
 using System;
 using Doozy.Engine;
 
+[System.Obsolete]
 public class MapView : MonoBehaviour
 {
     private Image mapNode;
 
     private Room[] rooms;
     private Image[] nodes;
-    private NicerOutline[] outlines;
+    //private NicerOutline[] outlines;
     private Color[] nodeColors;
 
     public Vector2 mapWorldSize = new Vector2(300f, 600f);
@@ -125,11 +126,11 @@ public class MapView : MonoBehaviour
         {
             if(i == selectedNode)
             {
-                outlines[i].enabled = true;
+                //outlines[i].enabled = true;
             }
             else
             {
-                outlines[i].enabled = false;
+                //outlines[i].enabled = false;
             }
         }
 
@@ -155,7 +156,7 @@ public class MapView : MonoBehaviour
         }
         rooms = FindObjectsOfType<Room>();
         nodes = new Image[rooms.Length];
-        outlines = new NicerOutline[rooms.Length];
+        //outlines = new NicerOutline[rooms.Length];
         nodeColors = new Color[rooms.Length];
         minPoint = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
         maxPoint = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
@@ -174,8 +175,8 @@ public class MapView : MonoBehaviour
             {
                 NodeClicked(index);
             });
-            outlines[i] = newNode.GetComponent<NicerOutline>();
-            outlines[i].enabled = false;
+            //outlines[i] = newNode.GetComponent<NicerOutline>();
+            //outlines[i].enabled = false;
             nodes[i] = newNode;
         }
         Vector2 delta = (Vector2)mapRect.transform.position - (minPoint + maxPoint) / 2f;

@@ -52,7 +52,7 @@ public class ai_BasicAttack_Rare_LeechingOrb : AbilityInstance
         land.Play();
         heal.transform.position = info.owner.transform.position + info.owner.GetCenterOffset();
         heal.transform.parent = info.owner.transform;
-        heal.gameObject.AddComponent<AutoDestroyPS>();
+        heal.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         heal.Play();
     }
 }

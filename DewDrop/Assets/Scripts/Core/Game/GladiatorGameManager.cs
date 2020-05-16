@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Text.RegularExpressions;
-using DecalSystem;
 using Doozy.Engine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -16,7 +15,7 @@ public class RoomListWrapper
     public List<Room> rooms;
 }
 
-
+[System.Obsolete]
 public class GladiatorGameManager : MonoBehaviourPunCallbacks
 {
     public static GladiatorGameManager instance
@@ -261,7 +260,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         }
         PhotonNetwork.CurrentRoom.IsOpen = false;
         CreateMap();
-        photonView.RPC("RpcUpdateDecalUtils", RpcTarget.All);
+        //photonView.RPC("RpcUpdateDecalUtils", RpcTarget.All);
         BuildLootDecks();
         RegisterKillDropLootEvent();
         RegisterKillRewardGoldEvent();
@@ -274,11 +273,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
         RegisterPlayerRoomEnterEvent();
     }
 
-    [PunRPC]
-    private void RpcUpdateDecalUtils()
-    {
-        DecalUtils.UpdateAffectedObjects();
-    }
+
 
     [PunRPC]
     private void RpcSendGameStartedEvent()
@@ -476,7 +471,7 @@ public class GladiatorGameManager : MonoBehaviourPunCallbacks
             if (!gamePlayers[players[i]].currentRoom.name.Contains("Nether")) return;
         }
         Transform nethergos = transform.Find("/monster_BossNethergos(Clone)");
-        if (nethergos != null) nethergos.GetComponent<BossNethergosBehaviour>().Disappear();
+        //if (nethergos != null) nethergos.GetComponent<BossNethergosBehaviour>().Disappear();
         SetPhase(GladiatorGamePhase.PvP);
         
         for (int i = 0; i < players.Length; i++)

@@ -12,7 +12,6 @@ public class TestGameLogic : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        DecalSystem.DecalUtils.UpdateAffectedObjects();
         if (!PhotonNetwork.InRoom)
         {
             PhotonNetwork.OfflineMode = true;

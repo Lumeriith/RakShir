@@ -15,7 +15,7 @@ public class ai_BasicAttack_Huntress_InfinityGlaive : AbilityInstance
     private List<Entity> hitEnemies = new List<Entity>();
 
     private Entity currentTarget;
-
+    
     private ParticleSystem fly;
     private ParticleSystem land;
 
