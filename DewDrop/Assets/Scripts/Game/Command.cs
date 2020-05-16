@@ -134,7 +134,7 @@ public class Command
         else
         {
             if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
-            if (self.control.IsMoveProhibitedByChannel()) return false;
+            if (self.control.IsMoveProhibitedByChannel(true)) return false;
             self.control.agentDestination = target.transform.position;
             if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
             {
@@ -148,7 +148,7 @@ public class Command
     private bool ProcessMove(Vector3 destination)
     {
         if (SelfValidator.CancelsMoveCommand.Evaluate(self)) return true;
-        if (self.control.IsMoveProhibitedByChannel()) return false;
+        if (self.control.IsMoveProhibitedByChannel(true)) return false;
         self.control.agentDestination = destination;
         Vector3 temp = destination - self.transform.position;
         temp.y = 0f;
@@ -192,7 +192,7 @@ public class Command
             List<Entity> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].range, 6f), self.control.skillSet[0].targetValidator);
             if (targets.Count == 0)
             {
-                if (self.control.IsMoveProhibitedByChannel()) return false;
+                if (self.control.IsMoveProhibitedByChannel(true)) return false;
                 self.control.agentDestination = destination;
                 return false;
             }
@@ -236,7 +236,7 @@ public class Command
         else
         {
             if (self.control.IsAttackProhibitedByChannel(false)) return false;
-            if (self.control.IsMoveProhibitedByChannel()) return false;
+            if (self.control.IsMoveProhibitedByChannel(true)) return false;
 
             self.control.agentDestination = target.transform.position;
             if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)

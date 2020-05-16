@@ -27,14 +27,14 @@ public class Channel
 
     public bool isBasicAttack = false;
 
-    public UnityAction finishedCallback = null;
-    public UnityAction canceledCallback = null;
+    public System.Action finishedCallback = null;
+    public System.Action canceledCallback = null;
 
     
 
     private bool hasEnded = false;
 
-    public Channel(SelfValidator channelValidator, float duration, bool canMove, bool canAttack, bool canUseAbility, bool canBeCanceledByCaster, UnityAction finishedCallback = null, UnityAction canceledCallback = null, bool isBasicAttack = false)
+    public Channel(SelfValidator channelValidator, float duration, bool canMove, bool canAttack, bool canUseAbility, bool canBeCanceledByCaster, System.Action finishedCallback = null, System.Action canceledCallback = null, bool isBasicAttack = false)
     {
         this.channelValidator = channelValidator;
         this.duration = duration;
@@ -50,12 +50,15 @@ public class Channel
     public void Tick()
     {
         if (hasEnded) return;
-        duration = Mathf.MoveTowards(duration, 0, Time.deltaTime * (100f + owner.statusEffect.status.haste) / 100f);
+
         if(duration == 0)
         {
             hasEnded = true;
             if (finishedCallback != null) finishedCallback.Invoke();
         }
+
+        if (isBasicAttack) duration = Mathf.MoveTowards(duration, 0, Time.deltaTime * (100f + owner.statusEffect.status.haste) / 100f);
+        else duration = Mathf.MoveTowards(duration, 0, Time.deltaTime);
     }
     public bool HasEnded()
     {
@@ -97,7 +100,7 @@ public class EntityControl : MonoBehaviourPun
     private float lastAICheckTime = 0f;
 
     private Animator animator;
-    private Entity livingThing;
+    private Entity entity;
 
     
 
@@ -137,66 +140,55 @@ public class EntityControl : MonoBehaviourPun
 
     public void CommandActivate(Activatable target, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Activate, target);
+        Command command = new Command(entity, CommandType.Activate, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
     public void CommandMove(Vector3 destination, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Move, destination);
+        Command command = new Command(entity, CommandType.Move, destination);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
     public void CommandAttack(Entity target, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Attack, target);
+        Command command = new Command(entity, CommandType.Attack, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
     public void CommandAttackMove(Vector3 destination, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.AttackMove, destination);
+        Command command = new Command(entity, CommandType.AttackMove, destination);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
     public void CommandChase(Entity target, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Chase, target);
+        Command command = new Command(entity, CommandType.Chase, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
     public void CommandAutoChase(Entity target, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.AutoChase, target);
+        Command command = new Command(entity, CommandType.AutoChase, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
     public void CommandAutoAttackInRange(Entity target, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.AutoAttackInRange, target);
+        Command command = new Command(entity, CommandType.AutoAttackInRange, target);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
 
-
-    /*
     public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Ability, trigger, info);
-
-        if (!reserve) reservedCommands.Clear();
-        reservedCommands.Add(command);
-    }
-    */
-
-    public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
-    {
-        Command command = new Command(livingThing, CommandType.Ability, trigger, info);
+        Command command = new Command(entity, CommandType.Ability, trigger, info);
         Command temp = null;
         if (!trigger.dontCancelBasicCommands)
         {
@@ -220,16 +212,11 @@ public class EntityControl : MonoBehaviourPun
                 reservedCommands.Add(command);
             }
         }
-
-
-
-
-
     }
 
     public void CommandConsumable(Consumable consumable, CastInfo info, bool reserve = false)
     {
-        Command command = new Command(livingThing, CommandType.Consumable, consumable, info);
+        Command command = new Command(entity, CommandType.Consumable, consumable, info);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
@@ -256,33 +243,32 @@ public class EntityControl : MonoBehaviourPun
 
     public void StartChanneling(Channel channel)
     {
-        channel.owner = livingThing;
+        channel.owner = entity;
         if (channel.isBasicAttack)
         {
-            channel.duration *= 1f / livingThing.stat.finalAttacksPerSecond;
+            channel.duration *= 1f / entity.stat.finalAttacksPerSecond;
         }
         ongoingChannels.Add(channel);
     }
     
-    public bool IsMoveProhibitedByChannel()
+    public bool IsMoveProhibitedByChannel(bool cancelCancelableChannels)
     {
-        bool result = false;
         for(int i = 0; i < ongoingChannels.Count; i++)
         {
             if (ongoingChannels[i].HasEnded()) continue;
             if (!ongoingChannels[i].canMove)
             {
-                if (ongoingChannels[i].canBeCanceledByCaster)
+                if (ongoingChannels[i].canBeCanceledByCaster && cancelCancelableChannels)
                 {
                     ongoingChannels[i].Cancel();
                 }
                 else
                 {
-                    result = true;
+                    return true;
                 }
             }
         }
-        return result;
+        return false;
     }
 
 
@@ -331,7 +317,7 @@ public class EntityControl : MonoBehaviourPun
     #endregion Functions For Local
     private void Awake()
     {
-        livingThing = GetComponent<Entity>();
+        entity = GetComponent<Entity>();
         agent = GetComponent<NavMeshAgent>();
         animator = transform.Find("Model").GetComponent<Animator>();
         agent.updateRotation = false;
@@ -355,10 +341,10 @@ public class EntityControl : MonoBehaviourPun
 
     private void Update()
     {
-        bool canTick = SelfValidator.CanTick.Evaluate(livingThing);
-        if ((livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.type == Displacement.DisplacementType.TowardsTarget) ||
-            livingThing.statusEffect.IsAffectedBy(StatusEffectType.Stasis) ||
-            livingThing.ongoingDisplacement != null && livingThing.ongoingDisplacement.type == Displacement.DisplacementType.ByVector && livingThing.ongoingDisplacement.ignoreCollision)
+        bool canTick = SelfValidator.CanTick.Evaluate(entity);
+        if ((entity.ongoingDisplacement != null && entity.ongoingDisplacement.type == Displacement.DisplacementType.TowardsTarget) ||
+            entity.statusEffect.IsAffectedBy(StatusEffectType.Stasis) ||
+            entity.ongoingDisplacement != null && entity.ongoingDisplacement.type == Displacement.DisplacementType.ByVector && entity.ongoingDisplacement.ignoreCollision)
         {
             agent.enabled = false;
         }
@@ -372,7 +358,7 @@ public class EntityControl : MonoBehaviourPun
             cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime);
             for (int i = 1; i < cooldownTime.Length; i++)
             {
-                cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (livingThing.stat.finalCooldownReduction / 100)));
+                cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (entity.stat.finalCooldownReduction / 100)));
             }
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);
@@ -381,15 +367,15 @@ public class EntityControl : MonoBehaviourPun
         if (agent.enabled) Debug.DrawLine(transform.position, agent.destination, Color.green);
 
 
-
-        if (SelfValidator.CancelsMoveCommand.Evaluate(livingThing))
+        bool canWalk = !SelfValidator.CancelsMoveCommand.Evaluate(entity);
+        if (!canWalk)
         {
             agent.speed = 0f;
 
         }
         else
         {
-            agent.speed = livingThing.stat.finalMovementSpeed / 100f * (100f + livingThing.statusEffect.status.speed) / 100f * (100f - livingThing.statusEffect.status.slow) / 100f;
+            agent.speed = entity.stat.finalMovementSpeed / 100f * (100f + entity.statusEffect.status.speed) / 100f * (100f - entity.statusEffect.status.slow) / 100f;
         }
 
 
@@ -409,7 +395,7 @@ public class EntityControl : MonoBehaviourPun
             }
             else
             {
-                if (ongoingChannels[i].channelValidator.Evaluate(livingThing))
+                if (ongoingChannels[i].channelValidator.Evaluate(entity))
                 {
                     ongoingChannels[i].Tick();
                 }
@@ -436,22 +422,22 @@ public class EntityControl : MonoBehaviourPun
                 {
                     if (cooldownTime[i] > 0) continue;
                     if (skillSet[i] == null) continue;
-                    if (!skillSet[i].selfValidator.Evaluate(livingThing)) continue;
-                    if (!livingThing.HasMana(skillSet[i].manaCost)) continue;
+                    if (!skillSet[i].selfValidator.Evaluate(entity)) continue;
+                    if (!entity.HasMana(skillSet[i].manaCost)) continue;
                     if (!skillSet[i].IsReady()) continue;
                     if (IsAbilityProhibitedByChannel()) continue;
                     if (skillSet[i].targetingType == AbilityTrigger.TargetingType.Target)
                     {
-                        List<Entity> targets = livingThing.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
+                        List<Entity> targets = entity.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
                         if(targets.Count != 0)
                         {
-                            CommandAbility(skillSet[i], new CastInfo { target = targets[0], owner = livingThing, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
+                            CommandAbility(skillSet[i], new CastInfo { target = targets[0], owner = entity, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
                             break;
                         }
                     }
                     else if (skillSet[i].targetingType == AbilityTrigger.TargetingType.None)
                     {
-                        CommandAbility(skillSet[i], new CastInfo { owner = livingThing });
+                        CommandAbility(skillSet[i], new CastInfo { owner = entity });
                         break;
                     }
                 }
@@ -484,11 +470,11 @@ public class EntityControl : MonoBehaviourPun
                         break;
                     case AIMode.AutoAttackInRange:
                         if (skillSet[0] == null) break;
-                        if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
-                        acTargets = livingThing.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
+                        if (!skillSet[0].selfValidator.Evaluate(entity)) break;
+                        acTargets = entity.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
                         for (int i = 0; i < acTargets.Count; i++)
                         {
-                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, acTargets[i]))
+                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(entity, acTargets[i]))
                             {
                                 CommandAutoAttackInRange(acTargets[i]);
                                 break;
@@ -511,11 +497,11 @@ public class EntityControl : MonoBehaviourPun
                     */
                     case AIMode.AutoChaseToAttack:
                         if (skillSet[0] == null) break;
-                        if (!skillSet[0].selfValidator.Evaluate(livingThing)) break;
-                        acTargets = livingThing.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
+                        if (!skillSet[0].selfValidator.Evaluate(entity)) break;
+                        acTargets = entity.GetAllTargetsInRange(transform.position, autoChaseRange, skillSet[0].targetValidator);
                         for (int i = 0; i < acTargets.Count; i++)
                         {
-                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(livingThing, acTargets[i]))
+                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(entity, acTargets[i]))
                             {
                                 CommandAutoChase(acTargets[i]);
                                 break;
@@ -571,13 +557,16 @@ public class EntityControl : MonoBehaviourPun
     private bool wasWalking = false;
     private void WalkCheck()
     {
-        if(!wasWalking && agent.enabled && agent.desiredVelocity.magnitude > float.Epsilon)
+        bool isMoveProhibited = IsMoveProhibitedByChannel(false);
+        bool isMoveCommandCanceled = SelfValidator.CancelsMoveCommand.Evaluate(entity);
+        if (!wasWalking && agent.enabled && agent.desiredVelocity.magnitude > float.Epsilon && !isMoveProhibited && !isMoveCommandCanceled)
         {
-            photonView.RPC("RpcStartWalking", RpcTarget.All, agent.destination);
+            photonView.RPC(nameof(RpcStartWalking), RpcTarget.All, agent.destination);
             wasWalking = true;
-        } else if (wasWalking && (!agent.enabled || agent.desiredVelocity.magnitude < float.Epsilon))
+        }
+        else if (wasWalking && (!agent.enabled || agent.desiredVelocity.magnitude < float.Epsilon || isMoveProhibited || isMoveCommandCanceled))
         {
-            photonView.RPC("RpcStopWalking", RpcTarget.All);
+            photonView.RPC(nameof(RpcStopWalking), RpcTarget.All);
             wasWalking = false;
         }
     }

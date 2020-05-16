@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 public class DewResourceReferences : SerializedScriptableObject
 {
     private const string AbilityInstancesPath = "Assets/Dew/AbilityInstances";
-    private const string AnimationsPath = "Assets/Res/Animations";
+    private const string AnimationsPath = "Assets/Animations";
     private const string LivingThingsPath = "Assets/Dew/LivingThings";
     private const string ItemsPath = "Assets/Dew/Items";
     private const string RoomsPath = "Assets/Dew/Rooms";

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3554695144663609579}
   - component: {fileID: 4450989497034029019}
   m_Layer: 0
-  m_Name: trg_BasicAttack_Universal 2
+  m_Name: trg_BasicAttack_Universal_Dagger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,7 @@ MonoBehaviour:
   targetingType: 4
   range: 1.8
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -67,6 +68,7 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 1
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f01
     invertResult: 0

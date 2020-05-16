@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5414562010467726193}
   - component: {fileID: 5167216802317415489}
   m_Layer: 0
-  m_Name: trg_BasicAttack_Universal 4
+  m_Name: trg_BasicAttack_Universal_OrbOfLeech
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
   targetingType: 4
   range: 5.5
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -69,6 +70,7 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 1
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f01
     invertResult: 0

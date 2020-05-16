@@ -137,6 +137,7 @@ public class SelfValidator
     public List<StatusEffectType> excludes = new List<StatusEffectType>() {
         StatusEffectType.Stun, 
         StatusEffectType.Airborne,
+        StatusEffectType.Dash,
         StatusEffectType.Sleep,
         StatusEffectType.Polymorph,
         StatusEffectType.MindControl,
@@ -154,6 +155,7 @@ public class SelfValidator
         {
             StatusEffectType.Stun,
             StatusEffectType.Airborne,
+            StatusEffectType.Dash,
             StatusEffectType.Sleep,
             StatusEffectType.Polymorph,
             StatusEffectType.MindControl,
@@ -171,6 +173,7 @@ public class SelfValidator
         {
             StatusEffectType.Stun,
             StatusEffectType.Airborne,
+            StatusEffectType.Dash,
             StatusEffectType.Sleep,
             StatusEffectType.Polymorph,
             StatusEffectType.MindControl,
