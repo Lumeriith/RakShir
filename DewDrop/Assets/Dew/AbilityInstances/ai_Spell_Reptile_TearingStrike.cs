@@ -12,39 +12,40 @@ public class ai_Spell_Reptile_TearingStrike : AbilityInstance
     public float slowDuration;
     public float slowAmount;
 
-    public float bonusDamage;
+    public float damage = 40f;
     public TargetValidator targetValidator;
 
     private Vector3 start;
 
+    public float postChannelTime = 0.25f;
 
-    ParticleSystem whoof;
-    GameObject flash;
+    private ParticleSystem _whoof;
+    private GameObject _flash;
 
     private bool didHit;
 
     protected override void OnCreate(CastInfo castInfo, object[] data)
     {
         didHit = false;
-        whoof = transform.Find("Whoof").GetComponent<ParticleSystem>();
-        flash = transform.Find("Flash").gameObject;
+        _whoof = transform.Find("Whoof").GetComponent<ParticleSystem>();
+        _flash = transform.Find("Flash").gameObject;
         if (photonView.IsMine)
         {
-            Channel channel = new Channel(channelValidator, duration, false, false, false, false, null, End);
+            Channel channel = new Channel(channelValidator, duration + postChannelTime, false, false, false, false, null, EndStrike);
             info.owner.control.StartChanneling(channel);
         }
 
-        whoof.Play();
+        _whoof.Play();
         start = transform.position;
     }
 
     protected override void AliveUpdate()
     {
-        transform.position += info.directionVector * distance / duration * Time.deltaTime;
-        if(Vector3.Distance(transform.position, start) >= distance && photonView.IsMine)
+        if(isMine && Vector3.Distance(transform.position, start) > distance)
         {
-            End();
+            EndStrike();
         }
+        transform.position += info.directionVector * distance / duration * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,17 +57,15 @@ public class ai_Spell_Reptile_TearingStrike : AbilityInstance
 
         lv.ApplyStatusEffect(StatusEffect.Slow(slowDuration, slowAmount), this);
 
-        info.owner.DoBasicAttackImmediately(lv, this);
-        info.owner.DoMagicDamage(lv, bonusDamage, false, this);
+        info.owner.DoMagicDamage(lv, damage, false, this);
         Vector3 hitPos = other.ClosestPoint(transform.position);
-        photonView.RPC("CreateFlash", RpcTarget.All, hitPos);
+        photonView.RPC(nameof(CreateFlash), RpcTarget.All, hitPos);
         SFXManager.CreateSFXInstance("si_Spell_Reptile_TearingStrike Hit", transform.position);
         if(!didHit)
         {
             didHit = true;
             if (info.owner.control.skillSet[2] == null) return;
-            trg_Spell_Elemental_DoubleKick trg = info.owner.control.skillSet[2] as trg_Spell_Elemental_DoubleKick;
-            if (trg != null) trg.ResetCooldown();
+            if (info.owner.control.skillSet[2] is trg_Spell_Reptile_Swipe trigger) trigger.ResetCooldown();
         }
         
     }
@@ -77,15 +76,21 @@ public class ai_Spell_Reptile_TearingStrike : AbilityInstance
     {
         Quaternion rotation = Quaternion.LookRotation(location - info.owner.transform.position - info.owner.GetCenterOffset(), Vector3.up);
         
-        Instantiate(flash, location, rotation, transform).GetComponent<ParticleSystem>().Play();
+        Instantiate(_flash, location, rotation, transform).GetComponent<ParticleSystem>().Play();
     }
 
 
-    private void End()
+    private void EndStrike()
     {
         if (!isAlive) return;
+        photonView.RPC(nameof(RpcStopWhoof), RpcTarget.All);
         Despawn();
+    }
 
+    [PunRPC]
+    private void RpcStopWhoof()
+    {
+        _whoof.Stop();
     }
 
 }
