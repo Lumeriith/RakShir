@@ -34,7 +34,7 @@ public class ai_Spell_Elemental_FlyingKick : AbilityInstance
         if (!photonView.IsMine) return;
         flyingSound = SFXManager.CreateSFXInstance("si_Spell_Elemental_FlyingKick", transform.position);
         flyingSound.Follow(this);
-        displacement = Displacement.ByVector(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, false, Ease.EaseOutSine, Stopped, Stopped);
+        displacement = Displacement.ByVector(info.directionVector * distance, (info.directionVector * distance).magnitude / speed, true, true, true, Ease.EaseOutSine, Stopped, Stopped);
         info.owner.StartDisplacement(displacement);
     }
 
