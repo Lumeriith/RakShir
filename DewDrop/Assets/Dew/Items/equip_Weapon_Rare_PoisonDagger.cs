@@ -26,14 +26,14 @@ public class equip_Weapon_Rare_PoisonDagger : Equipment
         owner.stat.bonusMaximumHealth -= 100f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
             owner.OnDoBasicAttackHit -= BasicAttackHit;
         }
     }
 
     private void BasicAttackHit(InfoBasicAttackHit info)
     {
-        if (info.to.IsAffectedBy(StatusEffectType.DamageOverTime)) info.from.DoMagicDamage(info.to, 45f, false, null);
+        if (info.to.IsAffectedBy(StatusEffectType.DamageOverTime) && bonusDamageToPoisoned > 0) info.from.DoMagicDamage(info.to, bonusDamageToPoisoned, false, null);
     }
 }

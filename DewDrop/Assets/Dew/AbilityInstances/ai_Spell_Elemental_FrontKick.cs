@@ -9,6 +9,8 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
     public float duration;
     public float distance;
 
+    public float afterFinishChannelTime;
+
     public float airborneDuration;
     public float pushDistance;
 
@@ -30,7 +32,7 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
         flash = transform.Find("Flash").gameObject;
         if (photonView.IsMine)
         {
-            Channel channel = new Channel(channelValidator, duration, false, false, false, false, null, End);
+            Channel channel = new Channel(channelValidator, duration, false, false, false, false, ExtraChannel, End);
             info.owner.control.StartChanneling(channel);
         }
 
@@ -45,6 +47,11 @@ public class ai_Spell_Elemental_FrontKick : AbilityInstance
         {
             End();
         }
+    }
+
+    private void ExtraChannel()
+    {
+        info.owner.control.StartChanneling(new Channel(channelValidator, afterFinishChannelTime, false, false, false, false));
     }
 
     private void OnTriggerEnter(Collider other)

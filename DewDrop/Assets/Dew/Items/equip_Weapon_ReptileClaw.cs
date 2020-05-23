@@ -21,8 +21,8 @@ public class equip_Weapon_ReptileClaw : Equipment
         owner.stat.baseAttacksPerSecond = 1f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
         }
     }
 }

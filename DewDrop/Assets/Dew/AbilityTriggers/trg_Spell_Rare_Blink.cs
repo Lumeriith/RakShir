@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class trg_Spell_Rare_Blink : AbilityTrigger
 {
+    public float channelTime = 0.1f;
     public override void OnCast(CastInfo info)
     {
-        info.owner.control.StartChanneling(new Channel(selfValidator, 0.2f, false, false, false, false, ChannelFinished, null));
+        info.owner.control.StartChanneling(new Channel(selfValidator, channelTime, false, false, false, false, ChannelFinished, null));
         
         StartCooldown();
         SpendMana();

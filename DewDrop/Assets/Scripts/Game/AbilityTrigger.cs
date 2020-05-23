@@ -92,7 +92,8 @@ public abstract class AbilityTrigger : MonoBehaviour
     [Header("Effect Settings")]
     public GameObject[] soundEffect;
     public AnimationClip[] castAnimation;
-    public float animationDuration;
+    public float animationDuration = 1f;
+    public Ease timeCurve = Ease.Linear;
     public Indicator indicator = new Indicator();
 
 
@@ -171,7 +172,7 @@ public abstract class AbilityTrigger : MonoBehaviour
 
         if (castAnimation != null && castAnimation.Length != 0)
         {
-            owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier);
+            owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier, timeCurve);
         }
         this.info = info;
         for(int i = 0; i < connectedGems.Count; i++)

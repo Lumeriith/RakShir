@@ -12,7 +12,6 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
         if (photonView.IsMine)
         {
             owner.ChangeStandAnimation("Rare - SharpHandAxe Stand");
-            //owner.ChangeWalkAnimation("Rare - SharpHandAxe Walk");
             owner.ChangeWalkAnimation("Walk");
         }
     }
@@ -24,8 +23,8 @@ public class equip_Weapon_Rare_SharpHandAxe : Equipment
         owner.stat.bonusMaximumHealth -= 100f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using UnityEngine.Events;
-
+using System;
 
 public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable, AutoAttackInRange }
 
@@ -79,6 +79,8 @@ public class EntityControl : MonoBehaviourPun
     public NavMeshAgent agent { get; private set; }
 
     public AbilityTrigger[] skillSet = new AbilityTrigger[7];
+    
+    [NonSerialized]
     public float[] cooldownTime = new float[7];
 
     [Header("AI Settings")]
@@ -108,7 +110,6 @@ public class EntityControl : MonoBehaviourPun
 
     private Command currentCommand { get { return reservedCommands.Count == 0 ? null : reservedCommands[0]; } }
 
-    [SerializeField]
     private List<Channel> ongoingChannels = new List<Channel>();
     private Quaternion desiredRotation = Quaternion.identity;
 
@@ -416,7 +417,7 @@ public class EntityControl : MonoBehaviourPun
 
         if (Time.time - lastAICheckTime >= aiInterval)
         { 
-            if (autocastSpells && (currentCommand == null || currentCommand.type != CommandType.Ability) && Random.value < spellCastChance)
+            if (autocastSpells && (currentCommand == null || currentCommand.type != CommandType.Ability) && UnityEngine.Random.value < spellCastChance)
             {
                 for(int i = 1; i < skillSet.Length; i++)
                 {

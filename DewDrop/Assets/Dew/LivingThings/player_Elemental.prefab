@@ -10570,6 +10570,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -15473,6 +15480,10 @@ MonoBehaviour:
   tier: 0
   droppedGold: 100
   summoner: {fileID: 0}
+  defaultStand: {fileID: 7400000, guid: e2708c73d6812ab41a049fcdc800b378, type: 2}
+  defaultWalk: {fileID: 7400000, guid: 5673fd45d5d1b4c4791761e215081e4b, type: 2}
+  defaultStunned: {fileID: 7400000, guid: 5794e32516b91ca45ba0edc3f528e1fa, type: 2}
+  defaultDeath: {fileID: 7400000, guid: 022de32ca98830449934a0c6bc23b866, type: 2}
   head: {fileID: 1252739929992565672}
   leftHand: {fileID: 1173925695}
   rightHand: {fileID: 811767912059051737}
@@ -15507,14 +15518,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 1
   aiInterval: 0.05
   autoChaseRange: 0
@@ -15524,7 +15527,6 @@ MonoBehaviour:
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 10
   angularSpeed: 1200
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &5597723862311284506
 MonoBehaviour:
@@ -49589,15 +49591,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5597723862311284582}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
+    - target: {fileID: -6057140222963153312, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
         type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
         type: 3}
@@ -49679,16 +49681,21 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.025456829
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
+    - target: {fileID: -927199367670048503, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
-    - target: {fileID: -6057140222963153312, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
+      propertyPath: m_Name
+      value: Model
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -439442403230824263, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c33bf2605e880745a63b7f932ab30b7, type: 2}
     - target: {fileID: 1407692631590770613, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -49699,11 +49706,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.05475164
       objectReference: {fileID: 0}
-    - target: {fileID: -439442403230824263, guid: 5be9bf4fb67080e48ad2086d06e14dc1,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 8c33bf2605e880745a63b7f932ab30b7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5be9bf4fb67080e48ad2086d06e14dc1, type: 3}
 --- !u!4 &8884679641498213939 stripped

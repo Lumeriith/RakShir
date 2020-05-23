@@ -45,23 +45,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 0}
   abilityName: 
+  manaCost: 0
+  cooldownTime: 0
   abilityDescription: 
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: ecb8ae5e46a185343a6b17b91dce3502, type: 2}
-  animationDuration: 1
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
   dontCancelBasicCommands: 0
   targetingType: 4
   range: 1.5
-  manaCost: 0
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -74,10 +65,22 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 0
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: ecb8ae5e46a185343a6b17b91dce3502, type: 2}
+  animationDuration: 1
+  timeCurve: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
   connectedGems: []
 --- !u!1 &2267645393786994888
 GameObject:
@@ -1079,7 +1082,7 @@ Animator:
   m_GameObject: {fileID: 2267645393787058070}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a2cd2cbace323984280bd454427467b3, type: 3}
-  m_Controller: {fileID: 9100000, guid: cbf42b1afc154be41bbf1ff68cd4e4e1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1910,23 +1913,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 0}
   abilityName: 
+  manaCost: 0
+  cooldownTime: 6
   abilityDescription: 
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: 920f6bd0c5a88d34998afaec103bb8c3, type: 2}
-  animationDuration: 1
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
   dontCancelBasicCommands: 0
   targetingType: 4
   range: 2.4
-  manaCost: 0
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -1939,10 +1933,22 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 6
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: 920f6bd0c5a88d34998afaec103bb8c3, type: 2}
+  animationDuration: 1
+  timeCurve: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
   connectedGems: []
 --- !u!1 &8111927861675432374
 GameObject:
@@ -2004,6 +2010,10 @@ MonoBehaviour:
   tier: 2
   droppedGold: 10
   summoner: {fileID: 0}
+  defaultStand: {fileID: 7400000, guid: 786445104502c2a4f8f66ce0f065293d, type: 2}
+  defaultWalk: {fileID: 7400000, guid: 967f56c1a8a51c346a9536a3e583c0ca, type: 2}
+  defaultStunned: {fileID: 7400000, guid: 786445104502c2a4f8f66ce0f065293d, type: 2}
+  defaultDeath: {fileID: 7400000, guid: 793ca803765bc1247b5ef5c025eda934, type: 2}
   head: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
@@ -2037,13 +2047,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 2
   aiInterval: 0.5
   autoChaseRange: 10
@@ -2053,8 +2056,6 @@ MonoBehaviour:
   spellCastChance: 1
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
-  reservedCommands: []
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &424373039145737387
 MonoBehaviour:

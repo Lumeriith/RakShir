@@ -10,8 +10,8 @@ public class equip_Weapon_ElementalJustice : Equipment
         owner.stat.baseAttacksPerSecond = 1.6f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Elemental - Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
         }
     }
 
@@ -21,8 +21,8 @@ public class equip_Weapon_ElementalJustice : Equipment
         owner.stat.baseAttacksPerSecond = 1f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
         }
     }
 }

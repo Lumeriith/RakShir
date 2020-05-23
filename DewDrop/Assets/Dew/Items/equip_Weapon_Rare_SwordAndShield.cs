@@ -23,8 +23,8 @@ public class equip_Weapon_Rare_SwordAndShield : Equipment
         owner.stat.bonusMaximumHealth -= 150f;
         if (photonView.IsMine)
         {
-            owner.ChangeStandAnimation("Stand");
-            owner.ChangeWalkAnimation("Walk");
+            owner.ChangeStandAnimation();
+            owner.ChangeWalkAnimation();
         }
     }
 }

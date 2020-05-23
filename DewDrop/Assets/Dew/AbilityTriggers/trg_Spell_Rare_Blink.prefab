@@ -51,10 +51,11 @@ MonoBehaviour:
     \uD6C4 \uC8FC\uBCC0 \uC801\uB4E4\uC5D0\uAC8C 80\uC758 [\uB9C8\uBC95 \uD53C\uD574]\uB97C
     \uC90D\uB2C8\uB2E4. \uC801\uC5D0\uAC8C \uC801\uC911\uD558\uBA74 \uC7AC\uC0AC\uC6A9
     \uB300\uAE30\uC2DC\uAC04\uC774 6\uCD08 \uAC10\uC18C\uD569\uB2C8\uB2E4."
-  dontCancelBasicCommands: 1
+  dontCancelBasicCommands: 0
   targetingType: 2
-  range: 3
+  range: 4.5
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -67,6 +68,7 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f120110
     invertResult: 0
@@ -75,9 +77,10 @@ MonoBehaviour:
   castAnimation:
   - {fileID: 7400000, guid: fcfc33be89816744fafbe85610d46bf3, type: 2}
   animationDuration: 0.6
+  timeCurve: 0
   indicator:
     type: 1
-    range: 3
+    range: 4.5
     arrowWidth: 0
     arrowLength: 0
     enableSecondRangeIndicator: 1

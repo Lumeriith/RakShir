@@ -99,6 +99,10 @@ MonoBehaviour:
   tier: 0
   droppedGold: 100
   summoner: {fileID: 0}
+  defaultStand: {fileID: 7400000, guid: fdf6ef6dd9efe94409f30e29ec1defc1, type: 2}
+  defaultWalk: {fileID: 7400000, guid: ebc6760e2f82ae74c8e5177753b48cd1, type: 2}
+  defaultStunned: {fileID: 7400000, guid: 5794e32516b91ca45ba0edc3f528e1fa, type: 2}
+  defaultDeath: {fileID: 7400000, guid: 022de32ca98830449934a0c6bc23b866, type: 2}
   head: {fileID: 0}
   leftHand: {fileID: 3057924908592697304}
   rightHand: {fileID: 7287998581594020495}
@@ -133,14 +137,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 1
   aiInterval: 0.05
   autoChaseRange: 0
@@ -150,7 +146,6 @@ MonoBehaviour:
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 10
   angularSpeed: 1200
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &685593335107112255
 MonoBehaviour:
@@ -407,6 +402,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -462,6 +464,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_Inert: 0
   m_InertDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
@@ -527,6 +536,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -582,6 +598,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_Inert: 0
   m_InertDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
@@ -647,6 +670,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -707,6 +737,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_Friction: 0
+  m_FrictionDistrib:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_Radius: 0
   m_RadiusDistrib:
     serializedVersion: 2
@@ -731,11 +768,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 685593335107112259}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
+    - target: {fileID: -6057140222963153312, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
         type: 3}
-      propertyPath: m_Name
-      value: Model
-      objectReference: {fileID: 0}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
     - target: {fileID: -4216859302048453862, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -806,21 +843,21 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.4
       objectReference: {fileID: 0}
-    - target: {fileID: 4961324629445295650, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
+    - target: {fileID: -927199367670048503, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
+      propertyPath: m_Name
+      value: Model
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
     - target: {fileID: 3155797159684275112, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8f8a6dc1fe9c2cd4397f70cca10461fb, type: 2}
+    - target: {fileID: 4961324629445295650, guid: ce8320b9222a0b149a0c5e79ba4bbcca,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce8320b9222a0b149a0c5e79ba4bbcca, type: 3}
 --- !u!1 &8948345883780625646 stripped

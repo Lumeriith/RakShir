@@ -59,6 +59,10 @@ MonoBehaviour:
   tier: 1
   droppedGold: 5
   summoner: {fileID: 0}
+  defaultStand: {fileID: 7400000, guid: ea273be7938ae21458b7aa5eed9b1598, type: 2}
+  defaultWalk: {fileID: 7400000, guid: b9a1b6f802b64da47b155841f0a6d03f, type: 2}
+  defaultStunned: {fileID: 7400000, guid: ea273be7938ae21458b7aa5eed9b1598, type: 2}
+  defaultDeath: {fileID: 7400000, guid: 8f55006ae515be242a70b43d5b1c380d, type: 2}
   head: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
@@ -92,13 +96,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 2
   aiInterval: 0.5
   autoChaseRange: 10
@@ -108,8 +105,6 @@ MonoBehaviour:
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
-  reservedCommands: []
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &1152925636380131602
 MonoBehaviour:
@@ -330,23 +325,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 0}
   abilityName: 
+  manaCost: 0
+  cooldownTime: 0
   abilityDescription: 
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: 42f14193e28f26842874b18008e8227c, type: 2}
-  animationDuration: 1
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
   dontCancelBasicCommands: 0
   targetingType: 4
   range: 1
-  manaCost: 0
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -359,10 +345,22 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 0
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: 42f14193e28f26842874b18008e8227c, type: 2}
+  animationDuration: 1
+  timeCurve: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
   connectedGems: []
   channelDurationRatio: 0.5
   channelAfterDelayRatio: 0
@@ -1052,7 +1050,7 @@ Animator:
   m_GameObject: {fileID: 3153139494638875953}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 66ca9bf0145725543a1e8a693589f362, type: 3}
-  m_Controller: {fileID: 9100000, guid: 507d4d3b023257042b79631b30aafebf, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

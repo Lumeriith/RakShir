@@ -45,23 +45,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityIcon: {fileID: 0}
   abilityName: 
+  manaCost: 0
+  cooldownTime: 0
   abilityDescription: 
-  soundEffect: []
-  castAnimation:
-  - {fileID: 7400000, guid: a844b25af62d89247a5a06bbea0d44cc, type: 2}
-  animationDuration: 1
-  indicator:
-    type: 0
-    range: 0
-    arrowWidth: 0
-    arrowLength: 0
-    enableSecondRangeIndicator: 0
-    secondRange: 0.35
   dontCancelBasicCommands: 0
   targetingType: 4
   range: 2
-  manaCost: 0
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -74,10 +65,22 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f12
     invertResult: 0
-  cooldownTime: 0
+  soundEffect: []
+  castAnimation:
+  - {fileID: 7400000, guid: a844b25af62d89247a5a06bbea0d44cc, type: 2}
+  animationDuration: 1
+  timeCurve: 0
+  indicator:
+    type: 0
+    range: 0
+    arrowWidth: 0
+    arrowLength: 0
+    enableSecondRangeIndicator: 0
+    secondRange: 0.35
   connectedGems: []
   channelDurationRatio: 0.4
   channelAfterDelayRatio: 0.3
@@ -140,6 +143,10 @@ MonoBehaviour:
   tier: 2
   droppedGold: 10
   summoner: {fileID: 0}
+  defaultStand: {fileID: 7400000, guid: 9c2021180934958439a77048991189b8, type: 2}
+  defaultWalk: {fileID: 7400000, guid: 9b3a79b0ed738194baad21f5a2856894, type: 2}
+  defaultStunned: {fileID: 7400000, guid: 9c2021180934958439a77048991189b8, type: 2}
+  defaultDeath: {fileID: 7400000, guid: 4c2079f49b149c84488715d7fd633d8d, type: 2}
   head: {fileID: 5016449059479450941}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
@@ -173,13 +180,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 2
   aiInterval: 0.5
   autoChaseRange: 10
@@ -189,8 +189,6 @@ MonoBehaviour:
   spellCastChance: 0.5
   attackMoveTargetChecksForSecond: 4
   angularSpeed: 800
-  reservedCommands: []
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &1822146169533988940
 MonoBehaviour:
@@ -409,7 +407,7 @@ Animator:
   m_GameObject: {fileID: 5016449059479283901}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ad06d063abfc3154689b117ab50e2afb, type: 3}
-  m_Controller: {fileID: 9100000, guid: cdc42f545f87c0c40bc93d502c24a7c7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1

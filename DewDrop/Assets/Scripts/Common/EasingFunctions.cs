@@ -59,7 +59,8 @@ using UnityEngine;
 
 public enum Ease : byte
 {
-    EaseInQuad = 0,
+    Linear = 0,
+    EaseInQuad,
     EaseOutQuad,
     EaseInOutQuad,
     EaseInCubic,
@@ -80,7 +81,6 @@ public enum Ease : byte
     EaseInCirc,
     EaseOutCirc,
     EaseInOutCirc,
-    Linear,
     Spring,
     EaseInBounce,
     EaseOutBounce,

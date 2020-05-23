@@ -59,6 +59,11 @@ public class Entity : MonoBehaviourPun
 
     private float _defaultMovementSpeed;
 
+    private float _customAnimationLinearNormalizedTime = 0f;
+    private float _customAnimationDuration = 0f;
+    private EaseFunction _customAnimationEaseMethod;
+
+
     public static Entity GetFromViewID(int viewID)
     {
         return PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
@@ -155,6 +160,12 @@ public class Entity : MonoBehaviourPun
     [ShowIf("ShouldShowSummonerField")]
     public Entity summoner = null;
 
+    [Header("Animation Settings")]
+    public AnimationClip defaultStand;
+    public AnimationClip defaultWalk;
+    public AnimationClip defaultStunned;
+    public AnimationClip defaultDeath;
+
     [Header("Optional Explicit Transforms")]
     public Transform head;
     public Transform leftHand;
@@ -241,6 +252,32 @@ public class Entity : MonoBehaviourPun
         _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _overrideController;
 
+        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        foreach (AnimationClip oldClip in _defaultClips)
+        {
+            if (oldClip.name == "Stand")
+            {
+                overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, defaultStand));
+                _overrideController.ApplyOverrides(overrides);
+            }
+            else if (oldClip.name == "Walk")
+            {
+                overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, defaultWalk));
+                _overrideController.ApplyOverrides(overrides);
+            }
+            else if (oldClip.name == "Stunned")
+            {
+                overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, defaultStunned));
+                _overrideController.ApplyOverrides(overrides);
+            }
+            else if (oldClip.name == "Death")
+            {
+                overrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(oldClip, defaultDeath));
+                _overrideController.ApplyOverrides(overrides);
+            }
+        }
+        _overrideController.ApplyOverrides(overrides);
+
         outline = gameObject.AddComponent<MeshOutline>();
         /*
         Renderer renderer = transform.Find("Model").GetComponentInChildren<SkinnedMeshRenderer>();
@@ -300,6 +337,8 @@ public class Entity : MonoBehaviourPun
     
     private void Update()
     {
+        UpdateCustomAnimationNormalizedTime();
+
         if (unitBase == null && GameManager.instance.localPlayer != null)
         {
             GameObject basePrefab;
@@ -445,8 +484,13 @@ public class Entity : MonoBehaviourPun
 
     #region Private Functions
 
+    private void UpdateCustomAnimationNormalizedTime()
+    {
+        _customAnimationLinearNormalizedTime += Time.deltaTime / _customAnimationDuration;
+        if (_customAnimationEaseMethod != null) _animator.SetFloat("CustomAnimationNormalizedTime", _customAnimationEaseMethod(0f, 1f, _customAnimationLinearNormalizedTime));
+    }
 
-    void AssignMissingTransforms()
+    private void AssignMissingTransforms()
     {
         if(head == null) head = transform.FindDeepChild("Bip001-Head") ?? transform.FindDeepChild("Bip01 Head");
         if(leftHand == null) leftHand = transform.FindDeepChild("Bip001-L-Hand") ?? transform.FindDeepChild("Bip01 L Hand");
@@ -607,14 +651,25 @@ public class Entity : MonoBehaviourPun
         activatable.photonView.RPC("RpcChannelStart", RpcTarget.All, this.photonView.ViewID);
         activatable.photonView.RPC("RpcChannelSuccess", RpcTarget.All, this.photonView.ViewID);
     }
-    public void ChangeWalkAnimation(string animationName)
+
+    /// <summary>
+    /// Change the walk animation of this entity to a clip with the provided name. Provide an empty string to revert back to default.
+    /// </summary>
+    /// <param name="animationName"></param>
+    public void ChangeWalkAnimation(string animationName = "")
     {
         photonView.RPC(nameof(RpcChangeWalkAnimation), RpcTarget.All, animationName);
     }
-    public void ChangeStandAnimation(string animationName)
+
+    /// <summary>
+    /// Change the stand animation of this entity to a clip with the provided name. Provide an empty string to revert back to default.
+    /// </summary>
+    /// <param name="animationName"></param>
+    public void ChangeStandAnimation(string animationName = "")
     {
         photonView.RPC(nameof(RpcChangeStandAnimation), RpcTarget.All, animationName);
     }
+
     public bool SpendGold(float amount)
     {
         if (amount == 0) return true;
@@ -686,11 +741,11 @@ public class Entity : MonoBehaviourPun
         to.photonView.RPC(nameof(RpcApplyPureDamage), RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
         to.photonView.RPC(nameof(RpcApplyPureDamage), RpcTarget.All, amount, photonView.ViewID, handler?.GetActionCallerUID());
     }
-    public void PlayCustomAnimation(AnimationClip animation, float duration = -1)
+    public void PlayCustomAnimation(AnimationClip animation, float duration = -1, Ease timeCurve = Ease.Linear)
     {
-        PlayCustomAnimation(animation.name, duration);
+        PlayCustomAnimation(animation.name, duration, timeCurve);
     }
-    public void PlayCustomAnimation(string animationName, float duration = -1)
+    public void PlayCustomAnimation(string animationName, float duration = -1, Ease timeCurve = Ease.Linear)
     {
         if (duration == 0) return;
         if (duration < 0 && duration != -1)
@@ -698,7 +753,7 @@ public class Entity : MonoBehaviourPun
             Debug.LogWarning(name + ": Attempted to play animation for negative duration! (" + duration.ToString() + ")");
             return;
         }
-        photonView.RPC(nameof(RpcPlayCustomAnimation), RpcTarget.All, animationName, duration);
+        photonView.RPC(nameof(RpcPlayCustomAnimation), RpcTarget.All, animationName, duration, (int)timeCurve);
     }
     public void Kill()
     {
@@ -1162,7 +1217,7 @@ public class Entity : MonoBehaviourPun
     [PunRPC]
     private void RpcChangeWalkAnimation(string name)
     {
-        AnimationClip newClip = DewResources.GetAnimationClip(name);
+        AnimationClip newClip = string.IsNullOrEmpty(name) ? defaultWalk : DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         foreach (AnimationClip oldClip in _defaultClips)
         {
@@ -1172,13 +1227,12 @@ public class Entity : MonoBehaviourPun
                 _overrideController.ApplyOverrides(overrideList);
             }
         }
-        _animator.runtimeAnimatorController = _overrideController;
     }
 
     [PunRPC]
     private void RpcChangeStandAnimation(string name)
     {
-        AnimationClip newClip = DewResources.GetAnimationClip(name);
+        AnimationClip newClip = string.IsNullOrEmpty(name) ? defaultStand : DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
         foreach (AnimationClip oldClip in _defaultClips)
         {
@@ -1188,12 +1242,11 @@ public class Entity : MonoBehaviourPun
                 _overrideController.ApplyOverrides(overrideList);
             }
         }
-        _animator.runtimeAnimatorController = _overrideController;
     }
 
 
     [PunRPC]
-    private void RpcPlayCustomAnimation(string name, float duration)
+    private void RpcPlayCustomAnimation(string name, float duration, int easeMethod)
     {
         AnimationClip newClip = DewResources.GetAnimationClip(name);
         var overrideList = new List<KeyValuePair<AnimationClip, AnimationClip>>();
@@ -1205,9 +1258,12 @@ public class Entity : MonoBehaviourPun
                 _overrideController.ApplyOverrides(overrideList);
             }
         }
-        _animator.runtimeAnimatorController = _overrideController;
         _animator.SetTrigger("PlayCustomAnimation");
-        _animator.SetFloat("CustomAnimationSpeed", duration == -1 ? 1f : newClip.length / duration);
+        _customAnimationLinearNormalizedTime = 0f;
+        _customAnimationDuration = duration == -1 ? newClip.length : duration;
+        _customAnimationEaseMethod = EasingFunction.GetEasingFunction((Ease)easeMethod);
+        _animator.SetFloat("CustomAnimationNormalizedTime", 0f);
+        _animator.SetFloat("CustomAnimationSpeed", newClip.length / _customAnimationDuration);
     }
 
     [PunRPC]

@@ -57,6 +57,7 @@ MonoBehaviour:
   targetingType: 3
   range: 0
   targetValidator:
+    _preset: 0
     canTargetSelf: 0
     canTargetOwnSummon: 0
     canTargetAlliedPlayer: 0
@@ -69,6 +70,7 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
+    _preset: 0
     evaluatesFalseIfDead: 1
     excludes: 12090a0b0c0d0e1001
     invertResult: 0
@@ -77,6 +79,7 @@ MonoBehaviour:
   castAnimation:
   - {fileID: 7400000, guid: 0fb0943055f89b640b38897db7672f70, type: 2}
   animationDuration: 0.7
+  timeCurve: 2
   indicator:
     type: 2
     range: 0
@@ -85,3 +88,4 @@ MonoBehaviour:
     enableSecondRangeIndicator: 0
     secondRange: 0
   connectedGems: []
+  channelTime: 0

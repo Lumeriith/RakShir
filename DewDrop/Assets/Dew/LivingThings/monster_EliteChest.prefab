@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 2550130061145325017}
   - component: {fileID: 8054078586958367277}
   - component: {fileID: 5516361091466344426}
-  - component: {fileID: 2890593941917648887}
   m_Layer: 0
   m_Name: monster_EliteChest
   m_TagString: Untagged
@@ -119,6 +118,10 @@ MonoBehaviour:
   tier: 3
   droppedGold: 400
   summoner: {fileID: 0}
+  defaultStand: {fileID: 0}
+  defaultWalk: {fileID: 0}
+  defaultStunned: {fileID: 0}
+  defaultDeath: {fileID: 0}
   head: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
@@ -152,13 +155,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cooldownTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   mode: 0
   aiInterval: 60
   autoChaseRange: 0
@@ -168,8 +164,6 @@ MonoBehaviour:
   spellCastChance: 0
   attackMoveTargetChecksForSecond: 0
   angularSpeed: 800
-  reservedCommands: []
-  ongoingChannels: []
   agentDestination: {x: 0, y: 0, z: 0}
 --- !u!114 &6732183865566102251
 MonoBehaviour:
@@ -345,91 +339,6 @@ CapsuleCollider:
   m_Height: 3.02
   m_Direction: 1
   m_Center: {x: 0, y: 0.87, z: 0}
---- !u!114 &2890593941917648887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2890593941917648886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a30dfa09cd20264cb2455740ef1a8b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.20361373
-      value: 1.219752
-      inSlope: 1.265726
-      outSlope: 1.265726
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.48853567
-    - serializedVersion: 3
-      time: 0.32202142
-      value: 0.8669076
-      inSlope: -9.89552
-      outSlope: -9.89552
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.102712065
-    - serializedVersion: 3
-      time: 0.48636317
-      value: 1.0679264
-      inSlope: 0.07085398
-      outSlope: 0.07085398
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.14640638
-    - serializedVersion: 3
-      time: 0.5862434
-      value: 0.95367754
-      inSlope: -0.11890249
-      outSlope: -0.11890249
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.7492256
-      value: 1.0251801
-      inSlope: 0.1965659
-      outSlope: 0.1965659
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9943786
-      value: 1.0018389
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  targetTransform: {fileID: 4931605648707880187}
-  closedTransform: {fileID: 1334898433589243357}
-  openTransform: {fileID: 1334898433986502076}
-  animationDuration: 1.5
 --- !u!1 &4928306696388541063
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +462,7 @@ Animator:
   m_GameObject: {fileID: 4928577322153029859}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 33e85c48005b6fb448bfd0ae3b1f7d71, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0655d741763b76449a1f8a1fdc643897, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
