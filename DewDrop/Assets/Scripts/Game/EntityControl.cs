@@ -355,10 +355,10 @@ public class EntityControl : MonoBehaviourPun
 
         if (canTick)
         {
-            cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime);
+            cooldownTime[0] = Mathf.MoveTowards(cooldownTime[0], 0, Time.deltaTime * (1f + (entity.statusEffect.status.haste / 100f)));
             for (int i = 1; i < cooldownTime.Length; i++)
             {
-                cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (entity.stat.finalCooldownReduction / 100)));
+                cooldownTime[i] = Mathf.MoveTowards(cooldownTime[i], 0, Time.deltaTime * (1f + (entity.stat.finalCooldownReduction / 100f)));
             }
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, angularSpeed * Time.deltaTime);

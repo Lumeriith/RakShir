@@ -220,7 +220,7 @@ public abstract class AbilityTrigger : MonoBehaviour
         if (isBasicAttack)
         {
 
-            owner.control.cooldownTime[skillIndex] = (1 / owner.stat.finalAttacksPerSecond) / ((100 + owner.statusEffect.status.haste) / 100f);
+            owner.control.cooldownTime[skillIndex] = 1 / owner.stat.finalAttacksPerSecond;
 
         }
         else
