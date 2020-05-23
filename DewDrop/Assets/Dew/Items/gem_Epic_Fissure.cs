@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class gem_Epic_Fissure : Gem
 {
@@ -14,7 +15,6 @@ public class gem_Epic_Fissure : Gem
     public float delay => _delay;
     public float totalDamage { get => _baseDamage + _damagePerFissureStack[level] * _fissureStacks; }
     private int _fissureStacks = 0;
-    
 
     public override void OnAbilityInstanceCreatedFromTrigger(bool isMine, AbilityInstance instance)
     {
