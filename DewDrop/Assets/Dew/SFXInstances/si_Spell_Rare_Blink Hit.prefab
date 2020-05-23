@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1607579122048388713}
   - component: {fileID: 1607579122048388714}
   m_Layer: 0
-  m_Name: si_Spell_Rare_Blink
+  m_Name: si_Spell_Rare_Blink Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c22b50688830204eb05af71a42c6b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchRandomMultiplier: {x: 0.95, y: 1.05}
+  pitchRandomMultiplier: {x: 0.9, y: 1.1}
   destroyWhenNotPlaying: 1
   _clips:
-  - {fileID: 8300000, guid: e3df856edbf7c1e4eb97110f7a592ecf, type: 3}
+  - {fileID: 8300000, guid: a00138ee5f232374ba60daa6fda12f16, type: 3}
 --- !u!82 &1607579122048388713
 AudioSource:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 074416b72c7a1024880db0a029354fde, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0

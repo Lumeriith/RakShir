@@ -28,6 +28,7 @@ public class ai_Spell_Rare_Blink : AbilityInstance
             for(int i = 0; i < targets.Count; i++)
             {
                 info.owner.DoMagicDamage(targets[i], damage, false, this);
+                SFXManager.CreateSFXInstance("si_Spell_Rare_Blink Hit", targets[i].transform.position);
             }
             
             Despawn();
