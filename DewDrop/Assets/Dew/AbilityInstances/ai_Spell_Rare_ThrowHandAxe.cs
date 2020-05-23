@@ -67,6 +67,7 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
         {
             loopSFX.DestroyFadingOut(.35f);
             SFXManager.CreateSFXInstance("si_Spell_Rare_ThrowHandAxe Stop", transform.position);
+            photonView.RPC(nameof(RpcDestroyModel), RpcTarget.All);
             Despawn(DespawnBehaviour.StopAndWaitForParticleSystems);
         }
 
@@ -88,5 +89,11 @@ public class ai_Spell_Rare_ThrowHandAxe : AbilityInstance
     {
         Entity thing = PhotonNetwork.GetPhotonView(viewID).GetComponent<Entity>();
         Instantiate(hit, thing.transform.position, Quaternion.identity, transform).GetComponent<ParticleSystem>().Play();
+    }
+
+    [PunRPC]
+    private void RpcDestroyModel()
+    {
+        Destroy(model.gameObject);
     }
 }

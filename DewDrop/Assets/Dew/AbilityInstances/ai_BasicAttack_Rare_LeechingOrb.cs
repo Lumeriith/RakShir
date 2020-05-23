@@ -54,5 +54,6 @@ public class ai_BasicAttack_Rare_LeechingOrb : AbilityInstance
         heal.transform.parent = info.owner.transform;
         heal.gameObject.AddComponent<ParticleSystemAutoDestroy>();
         heal.Play();
+        Destroy(transform.Find("Model").gameObject);
     }
 }
