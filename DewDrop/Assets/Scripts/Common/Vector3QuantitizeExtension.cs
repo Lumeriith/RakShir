@@ -18,10 +18,8 @@ public static class Vector3QuantitizeExtension
     /// Round this vector's coordinates to the nearest integer values.
     /// </summary>
     /// <param name="v"></param>
-    public static void Quantitize(this Vector3 v)
+    public static void Quantitize(this ref Vector3 v)
     {
-        v.x = Mathf.Round(v.x);
-        v.y = Mathf.Round(v.y);
-        v.z = Mathf.Round(v.z);
+        v = new Vector3(Mathf.Round(v.x), Mathf.Round(v.y), Mathf.Round(v.z));
     }
 }
