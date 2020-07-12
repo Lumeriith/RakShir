@@ -36,7 +36,7 @@ public class trg_Spell_Rare_Annihilation : AbilityTrigger
         SetSpecialFillAmount(0f);
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !IsAnyInstanceActive();
     }

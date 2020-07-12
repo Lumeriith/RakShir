@@ -46,7 +46,7 @@ public class trg_Spell_Rare_BurningFootsteps : AbilityTrigger
         }
         isCoroutineRunning = false;
     }
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !isCoroutineRunning;
     }

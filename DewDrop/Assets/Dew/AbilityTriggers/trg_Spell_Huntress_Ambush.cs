@@ -80,7 +80,7 @@ public class trg_Spell_Huntress_Ambush : AbilityTrigger
 
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return huntressMarkTarget != null || dashTarget != null;
     }

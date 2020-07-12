@@ -86,7 +86,7 @@ public class SkillIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             _icon.color = new Color(1f, 1f, 1f);
             _icon.enabled = true;
             _icon.sprite = target.control.skillSet[skillIndex].abilityIcon ?? null;
-            _disabledOverlay.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].IsReady() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
+            _disabledOverlay.enabled = !target.control.skillSet[skillIndex].isCooledDown || !target.control.skillSet[skillIndex].CanBeCast() || !target.control.skillSet[skillIndex].selfValidator.Evaluate(target) || !target.HasMana(target.control.skillSet[skillIndex].manaCost);
             if (skillIndex == 0) _disabledOverlay.enabled = false;
             _wrappingSpecialFill.fillAmount = target.control.skillSet[skillIndex].GetSpecialFillAmount();
             _verticalSpecialFill.fillAmount = target.control.skillSet[skillIndex].GetSpecialFillAmount();

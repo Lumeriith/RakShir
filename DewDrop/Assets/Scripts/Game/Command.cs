@@ -38,84 +38,15 @@ public class Command
                 return ProcessChase((Entity)parameters[0]);
             case CommandType.AutoChase:
                 return ProcessAutoChase((Entity)parameters[0]);
-            case CommandType.Ability:
-                return ProcessAbility((AbilityTrigger)parameters[0], (CastInfo)parameters[1]);
+            case CommandType.Cast:
+                return ProcessCastable((AbilityTrigger)parameters[0], (CastInfo)parameters[1]);
             case CommandType.Activate:
                 return ProcessActivate((Activatable)parameters[0]);
-            case CommandType.Consumable:
-                return ProcessConsumable((Consumable)parameters[0], (CastInfo)parameters[1]);
             case CommandType.AutoAttackInRange:
                 return ProcessAutoAttackInRange((Entity)parameters[0]);
         }
         return false;
     }
-
-
-
-    private bool ProcessConsumable(Consumable consumable, CastInfo info)
-    {
-        if (self.control.IsAbilityProhibitedByChannel()) return false;
-        if (!consumable.selfValidator.Evaluate(self) || !consumable.IsReady()) return true;
-        PlayerInventory belt = self.GetComponent<PlayerInventory>();
-
-        switch (consumable.targetingType)
-        {
-            case AbilityTrigger.TargetingType.None:
-                self.control.agentDestination = self.transform.position;
-                belt.UseConsumable(consumable, info);
-                return true;
-            case AbilityTrigger.TargetingType.Target:
-                if (!consumable.targetValidator.Evaluate(self, info.target)) return true;
-                if (Vector3.Distance(self.transform.position, info.target.transform.position) > consumable.range)
-                {
-                    self.control.agentDestination = info.target.transform.position;
-                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
-                    {
-                        self.LookAt(self.control.agent.path.corners[1]);
-                    }
-                    return false;
-                }
-                else
-                {
-                    self.control.agentDestination = self.transform.position;
-                    self.LookAt(info.target.transform.position);
-                    belt.UseConsumable(consumable, info);
-                    return true;
-                }
-            case AbilityTrigger.TargetingType.Direction:
-                self.LookAt(self.transform.position + info.directionVector);
-                belt.UseConsumable(consumable, info);
-                return true;
-            case AbilityTrigger.TargetingType.PointStrict:
-                if (Vector3.Distance(self.transform.position, info.point) > consumable.range)
-                {
-                    self.control.agentDestination = info.point;
-                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
-                    {
-                        self.LookAt(self.control.agent.path.corners[1]);
-                    }
-                    return false;
-                }
-                else
-                {
-                    self.control.agentDestination = self.transform.position;
-                    self.LookAt(info.point);
-                    belt.UseConsumable(consumable, info);
-                    return true;
-                }
-            case AbilityTrigger.TargetingType.PointNonStrict:
-                if (Vector3.Distance(self.transform.position, info.point) > consumable.range)
-                {
-                    info.point = self.transform.position + (info.point - self.transform.position).normalized * consumable.range;
-                }
-                self.LookAt(info.point);
-                belt.UseConsumable(consumable, info);
-                return true;
-        }
-
-        return false;
-    }
-
 
     private bool ProcessActivate(Activatable target)
     {
@@ -165,15 +96,12 @@ public class Command
         if (target.IsDead()) return true;
         self.LookAt(target.transform.position);
         if (self.control.skillSet[0] == null) return true;
-        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].range) return true;
-        if (!self.control.skillSet[0].selfValidator.Evaluate(self)) return true;
-        if (!self.control.skillSet[0].targetValidator.Evaluate(self, target)) return true;
-        if (!self.control.skillSet[0].isCooledDown) return true;
-        if (!self.control.skillSet[0].IsReady()) return true;
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].castMethod.range) return true;
+        if (!((ICastable)self.control.skillSet[0]).IsReady()) return true;
+        CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
+        if (!((ICastable)self.control.skillSet[1]).IsCastValid(info)) return true;
         if (self.control.IsAttackProhibitedByChannel()) return true;
 
-        CastInfo info = new CastInfo { owner = self, directionVector = Vector3.zero, point = Vector3.zero, target = target };
-        //self.control.skillSet[0].Cast(info, 1f);
         self.control.skillSet[0].Cast(info, (1 / self.stat.finalAttacksPerSecond) / (1f + self.statusEffect.status.haste / 100f));
         return true;
     }
@@ -189,7 +117,7 @@ public class Command
         if (lastAttackMoveCheckTime < 0 || Time.time - lastAttackMoveCheckTime >= 1f / self.control.attackMoveTargetChecksForSecond)
         {
             lastAttackMoveCheckTime = Time.time;
-            List<Entity> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].range, 6f), self.control.skillSet[0].targetValidator);
+            List<Entity> targets = self.GetAllTargetsInRange(self.transform.position, Mathf.Max(self.control.skillSet[0].castMethod.range, 6f), self.control.skillSet[0].targetValidator);
             if (targets.Count == 0)
             {
                 if (self.control.IsMoveProhibitedByChannel(true)) return false;
@@ -227,7 +155,7 @@ public class Command
 
         // if (!self.control.skillSet[0].isCooledDown || !self.control.skillSet[0].IsReady()) return false;
 
-        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius < self.control.skillSet[0].range)
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius < self.control.skillSet[0].castMethod.range)
         {
 
             self.control.agentDestination = self.transform.position;
@@ -272,7 +200,7 @@ public class Command
     private bool ProcessAutoAttackInRange(Entity target)
     {
         if (self.control.skillSet[0] == null) return true;
-        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].range)
+        if (Vector3.Distance(self.transform.position, target.transform.position) - target.unitRadius > self.control.skillSet[0].castMethod.range)
         {
             return true;
         }
@@ -280,25 +208,34 @@ public class Command
     }
 
 
-    private bool ProcessAbility(AbilityTrigger trigger, CastInfo info)
+    private bool ProcessCastable(ICastable castable, CastInfo info)
     {
         if (self.control.IsAbilityProhibitedByChannel()) return false;
-        if (!trigger.isCooledDown) return true;
-        if (!trigger.selfValidator.Evaluate(self)) return true;
-        if (!self.HasMana(trigger.manaCost)) return true;
-        if (!trigger.IsReady()) return true;
+        if (!castable.IsReady()) return true;
+        if (!castable.IsCastValid(info)) return true;
 
         if (info.target != null && self.currentRoom != info.target.currentRoom) return true;
 
-        switch (trigger.targetingType)
+
+
+        switch (castable.castMethod.type)
         {
-            case AbilityTrigger.TargetingType.None:
+            case CastMethodType.None:
                 self.control.agentDestination = self.transform.position;
-                trigger.Cast(info);
+                castable.Cast(info);
                 return true;
-            case AbilityTrigger.TargetingType.Target:
-                if (!trigger.targetValidator.Evaluate(self, info.target)) return true;
-                if (Vector3.Distance(self.transform.position, info.target.transform.position) - info.target.unitRadius > trigger.range)
+            case CastMethodType.Arrow:
+                self.LookAt(self.transform.position + info.directionVector);
+                self.control.agentDestination = self.transform.position;
+                castable.Cast(info);
+                return true;
+            case CastMethodType.Cone:
+                self.LookAt(self.transform.position + info.directionVector);
+                self.control.agentDestination = self.transform.position;
+                castable.Cast(info);
+                return true;
+            case CastMethodType.Target:
+                if (Vector3.Distance(self.transform.position, info.target.transform.position) - info.target.unitRadius > castable.castMethod.range)
                 {
                     self.control.agentDestination = info.target.transform.position;
                     if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
@@ -311,42 +248,41 @@ public class Command
                 {
                     self.control.agentDestination = self.transform.position;
                     self.LookAt(info.target.transform.position);
-                    trigger.Cast(info);
+                    castable.Cast(info);
                     return true;
                 }
-            case AbilityTrigger.TargetingType.Direction:
-                self.LookAt(self.transform.position + info.directionVector);
-                self.control.agentDestination = self.transform.position;
-                trigger.Cast(info);
-                return true;
-            case AbilityTrigger.TargetingType.PointStrict:
-                if (Vector3.Distance(self.transform.position, info.point) > trigger.range)
+            case CastMethodType.Point:
+                if (castable.castMethod.isClamping)
                 {
-                    self.control.agentDestination = info.point;
-                    if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                    if (Vector3.Distance(self.transform.position, info.point) > castable.castMethod.range)
                     {
-                        self.LookAt(self.control.agent.path.corners[1]);
+                        self.control.agentDestination = info.point;
+                        if (self.control.agent.enabled && self.control.agent.path != null && self.control.agent.path.corners.Length > 1)
+                        {
+                            self.LookAt(self.control.agent.path.corners[1]);
+                        }
+                        return false;
                     }
-                    return false;
+                    else
+                    {
+                        self.control.agentDestination = self.transform.position;
+                        self.LookAt(info.point);
+                        castable.Cast(info);
+                        return true;
+                    }
                 }
                 else
                 {
+                    if (Vector3.Distance(self.transform.position, info.point) > castable.castMethod.range)
+                    {
+                        info.point = self.transform.position + (info.point - self.transform.position).normalized * castable.castMethod.range;
+                    }
                     self.control.agentDestination = self.transform.position;
                     self.LookAt(info.point);
-                    trigger.Cast(info);
+                    castable.Cast(info);
                     return true;
                 }
-            case AbilityTrigger.TargetingType.PointNonStrict:
-                if (Vector3.Distance(self.transform.position, info.point) > trigger.range)
-                {
-                    info.point = self.transform.position + (info.point - self.transform.position).normalized * trigger.range;
-                }
-                self.control.agentDestination = self.transform.position;
-                self.LookAt(info.point);
-                trigger.Cast(info);
-                return true;
         }
-
         return false;
     }
 

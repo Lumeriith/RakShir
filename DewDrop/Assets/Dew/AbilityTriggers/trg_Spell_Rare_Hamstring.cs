@@ -51,7 +51,7 @@ public class trg_Spell_Rare_Hamstring : AbilityTrigger
         StartCooldown();
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !isHamstringActive;
     }

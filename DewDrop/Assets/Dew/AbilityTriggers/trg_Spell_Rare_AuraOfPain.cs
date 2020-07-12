@@ -13,7 +13,7 @@ public class trg_Spell_Rare_AuraOfPain : AbilityTrigger
 
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !IsAnyInstanceActive();
     }

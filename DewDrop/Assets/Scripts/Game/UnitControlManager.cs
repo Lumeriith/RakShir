@@ -4,15 +4,22 @@ using UnityEngine;
 using System.Linq;
 using Doozy.Engine.Nody;
 using Doozy.Engine.Nody.Nodes;
-public class UnitControlManager : MonoBehaviour
+using System.Runtime.CompilerServices;
+using UnityEngine.EventSystems;
+using System.Reflection;
+
+public enum CastInputMethod { Normal, Quick, OnRelease }
+
+public class UnitControlManager : SingletonBehaviour<UnitControlManager>
 {
     public Entity selectedUnit;
 
     [Header("General Key Configurations")]
-    public KeyCode castConfirmKey = KeyCode.Mouse0;
+    public KeyCode confirmKey = KeyCode.Mouse0;
     public KeyCode actionKey = KeyCode.Mouse1;
 
     public KeyCode attackKey = KeyCode.A;
+    public CastInputMethod attackInputMethod = CastInputMethod.Normal;
     public KeyCode stopKey = KeyCode.S;
 
     public KeyCode reservationModifier = KeyCode.LeftShift;
@@ -21,39 +28,23 @@ public class UnitControlManager : MonoBehaviour
     public KeyCode activateKey = KeyCode.G;
 
     [Header("Skill Key Configurations")]
-    public KeyCode WeaponSkillKey = KeyCode.Q;
-    public AbilityCastMethod WeaponSkillCastMethod = AbilityCastMethod.OnRelease;
-    public KeyCode ArmorSkillKey = KeyCode.W;
-    public AbilityCastMethod ArmorSkillCastMethod = AbilityCastMethod.OnRelease;
-    public KeyCode BootsSkillKey = KeyCode.E;
-    public AbilityCastMethod BootsSkillCastMethod = AbilityCastMethod.OnRelease;
-    public KeyCode WeaponUltimateSkillKey = KeyCode.R;
-    public AbilityCastMethod WeaponUltimateSkillCastMethod = AbilityCastMethod.OnRelease;
-    public KeyCode RingSkillKey = KeyCode.Space;
-    public AbilityCastMethod RingSkillCastMethod = AbilityCastMethod.OnRelease;
+    public KeyCode weaponSkillKey = KeyCode.Q;
+    public CastInputMethod weaponSkillInputMethod = CastInputMethod.OnRelease;
+    public KeyCode armorSkillKey = KeyCode.W;
+    public CastInputMethod armorSkillInputMethod = CastInputMethod.OnRelease;
+    public KeyCode bootsSkillKey = KeyCode.E;
+    public CastInputMethod bootsSkillInputMethod = CastInputMethod.OnRelease;
+    public KeyCode weaponUltimateSkillKey = KeyCode.R;
+    public CastInputMethod weaponUltimateInputMethod = CastInputMethod.OnRelease;
+    public KeyCode ringSkillKey = KeyCode.Space;
+    public CastInputMethod ringSkillInputMethod = CastInputMethod.OnRelease;
 
     [Header("Item Key Configurations")]
-    public KeyCode Item1Key = KeyCode.Alpha1;
-    public KeyCode Item2Key = KeyCode.Alpha2;
-    public KeyCode Item3Key = KeyCode.Alpha3;
+    public KeyCode item1Key = KeyCode.Alpha1;
+    public KeyCode item2Key = KeyCode.Alpha2;
+    public KeyCode item3Key = KeyCode.Alpha3;
 
-    public AbilityCastMethod ItemUseMethod = AbilityCastMethod.OnRelease;
-
-
-
-    private InputState inputState = InputState.None;
-
-    private AbilityTrigger pendingTrigger;
-    private Consumable pendingConsumable;
-    private KeyCode pendingTriggerActivationKey;
-
-    private Camera mainCamera;
-    private Transform rangeIndicator;
-    private Transform secondRangeIndicator;
-    private Transform arrowHead;
-    private Transform arrowBase;
-
-    private GraphController nodyGraphController;
+    public CastInputMethod itemInputMethod = CastInputMethod.OnRelease;
 
     [Header("Outline Settings")]
     public TargetValidator canDrawOutline;
@@ -61,38 +52,26 @@ public class UnitControlManager : MonoBehaviour
     public Color allyOutlineColor;
     public Color enemyOutlineColor;
 
-
-    private CanvasGroup debugLogWindow;
-
     public GameObject commandMarkerAttackMove;
     public GameObject commandMarkerAttack;
     public GameObject commandMarkerMove;
     public GameObject commandMarkerInterest;
 
+    private InputState _inputState = InputState.None;
 
+    private ICastMethod _pendingCastMethod;
+    private ICastable _pendingCastable;
 
+    private Camera _mainCamera;
 
-    public enum AbilityCastMethod { Normal, Quick, OnRelease }
-    private enum InputState { None, ContinousMove, Attack, PendingOnReleaseCast, PendingNormalCast }
+    private GraphController _nodyGraphControlelr;
+    private CanvasGroup _debugLogWindow;
 
-
-
-    private static UnitControlManager _instance;
-    public static UnitControlManager instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<UnitControlManager>();
-            }
-            return _instance;
-        }
-    }
+    private enum InputState { None, HoldingMove, PendingCast }
 
     private Activatable GetFirstActivatable()
     {
-        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray cursorRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("Activatable"));
         IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
         foreach (RaycastHit hit in hits)
@@ -104,10 +83,9 @@ public class UnitControlManager : MonoBehaviour
         return null;
     }
 
-
     private Entity GetFirstValidTarget(TargetValidator tv)
     {
-        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray cursorRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(cursorRay, 100, LayerMask.GetMask("LivingThing"));
         IEnumerable<RaycastHit> byDistance = hits.OrderBy(hit => hit.distance);
         foreach(RaycastHit hit in hits)
@@ -124,31 +102,16 @@ public class UnitControlManager : MonoBehaviour
 
 
 
-    Vector3 GetCurrentCursorPositionInWorldSpace()
+    private Vector3 GetCurrentCursorPositionInWorldSpace()
     {
-        Ray cursorRay = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray cursorRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
         float targetY = selectedUnit.transform.position.y;
         return cursorRay.origin - (cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y)) * (cursorRay.origin.y - targetY) / cursorRay.origin.y;
-
-        /*
-        
-        RaycastHit hit;
-
-        if(Physics.Raycast(cursorRay, out hit, 100, LayerMask.GetMask("Ground")))
-        {
-            return hit.point;
-        }
-        else
-        {
-            float targetY = selectedUnit.transform.position.y;
-            return cursorRay.origin - (cursorRay.direction * (cursorRay.origin.y / cursorRay.direction.y)) * (cursorRay.origin.y - targetY) / cursorRay.origin.y;
-        }
-        */
     }
 
-    private bool CommandAbilityOnContext(AbilityTrigger trigger, bool isReservation)
+    /*
+    private bool CommandCastableOnContext(ICastable castable, bool isReservation)
     {
-        if (trigger == null) return false;
         CastInfo info = new CastInfo
         {
             owner = selectedUnit,
@@ -157,7 +120,7 @@ public class UnitControlManager : MonoBehaviour
             target = null
         };
 
-        switch (trigger.targetingType)
+        switch (castable.castMethod.type)
         {
             case AbilityTrigger.TargetingType.Direction:
                 info.directionVector = GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position;
@@ -192,66 +155,15 @@ public class UnitControlManager : MonoBehaviour
         }
         return false;
     }
-    private bool CommandConsumableOnContext(Consumable consumable, bool isReservation)
-    {
-        if (consumable == null) return false;
-        CastInfo info = new CastInfo
-        {
-            owner = selectedUnit,
-            point = Vector3.zero,
-            directionVector = Vector3.zero,
-            target = null
-        };
-
-        switch (consumable.targetingType)
-        {
-            case AbilityTrigger.TargetingType.Direction:
-                info.directionVector = GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position;
-                info.directionVector.y = 0;
-                info.directionVector.Normalize();
-
-                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
-                return true;
-            case AbilityTrigger.TargetingType.None:
-                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
-                return true;
-            case AbilityTrigger.TargetingType.PointNonStrict:
-                info.point = GetCurrentCursorPositionInWorldSpace();
-                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
-                return true;
-            case AbilityTrigger.TargetingType.PointStrict:
-                info.point = GetCurrentCursorPositionInWorldSpace();
-                selectedUnit.control.CommandConsumable(consumable, info, isReservation);
-                return true;
-            case AbilityTrigger.TargetingType.Target:
-                Entity result = GetFirstValidTarget(consumable.targetValidator);
-                if (result != null)
-                {
-                    info.target = result;
-                    selectedUnit.control.CommandConsumable(consumable, info, isReservation);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-        }
-        return false;
-    }
-
-
+    */
 
     private void Awake()
     {
-        mainCamera = Camera.main;
-        rangeIndicator = transform.Find("Range Indicator");
-        secondRangeIndicator = transform.Find("Second Range Indicator");
-        arrowHead = transform.Find("ArrowHead");
-        arrowBase = transform.Find("ArrowBase");
-        nodyGraphController = FindObjectOfType<GraphController>();
+        _mainCamera = Camera.main;
+        _nodyGraphControlelr = FindObjectOfType<GraphController>();
 
         IngameDebugConsole.DebugLogManager dbg = FindObjectOfType<IngameDebugConsole.DebugLogManager>();
-        if (dbg != null) debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
+        if (dbg != null) _debugLogWindow = dbg.transform.Find("DebugLogWindow").GetComponent<CanvasGroup>();
 
         GameManager.instance.OnLivingThingInstantiate += (Entity thing) =>
         {
@@ -289,42 +201,28 @@ public class UnitControlManager : MonoBehaviour
                 previousOutline = null;
             }
         }
-
-
-
-
     }
+
     private void DisableOutline()
     {
-
         if (previousOutline != null)
         {
             previousOutline.OutlineMode = MeshOutline.Mode.SilhouetteOnly;
             previousOutline = null;
         }
-
-
-
     }
 
 
-    void Update()
+    private void Update()
     {
         if (selectedUnit == null) return;
 
-        bool shouldTakeInputs = false;
-
-        if (debugLogWindow.alpha == 0 && GameManager.cachedCurrentNodeType == IngameNodeType.Ingame)
-            shouldTakeInputs = true;
-        
-
-
+        bool shouldTakeInputs = _debugLogWindow.alpha == 0 && GameManager.cachedCurrentNodeType == IngameNodeType.Ingame;
 
         if (!shouldTakeInputs)
         {
-            inputState = InputState.None;
-            pendingTrigger = null;
-            pendingConsumable = null;
+            _inputState = InputState.None;
+            _pendingCastable = null;
             DisableOutline();
         }
         else
@@ -332,102 +230,99 @@ public class UnitControlManager : MonoBehaviour
             bool isReserveKeyPressed = Input.GetKey(reservationModifier);
             DrawAppropriateOutline();
             CheckForActivate();
-            CheckForAction();
             CheckForAttack();
             CheckForNewCast();
-            CheckForItem();
             CheckForStop();
+            CheckForGameViewEvents();
             SetAppropriateCursor();
-            DisplayAppropriateIndicator();
+
+            if(_inputState == InputState.HoldingMove) selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace());
+        }
+    }
 
 
-            switch (inputState)
+    private bool IsPointerHoveringGameView()
+    {
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, results);
+        if (results.Count == 0) return false;
+        results.Sort((x, y) => x.distance.CompareTo(y.distance));
+        return results[0].gameObject.CompareTag(Tags.GameView);
+    }
+
+    private void CheckForGameViewEvents()
+    {
+        if (Input.GetKeyDown(actionKey))
+        {
+            if (!IsPointerHoveringGameView()) return;
+
+            ClearInputState();
+
+            if (selectedUnit.control.skillSet[0] != null)
             {
-                case InputState.None:
-                    break;
-                case InputState.Attack:
-                    if (Input.GetKeyDown(castConfirmKey))
-                    {
-                        Entity target = selectedUnit.control.skillSet[0] != null ? GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator) : null;
-                        if (target != null)
-                        {
-                            selectedUnit.control.CommandChase(target, isReserveKeyPressed);
-                            Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
-                            inputState = InputState.None;
-                        }
-                        else
-                        {
-                            Vector3 pos = GetCurrentCursorPositionInWorldSpace();
-                            selectedUnit.control.CommandAttackMove(pos, isReserveKeyPressed);
-                            Instantiate(commandMarkerAttackMove, pos, Quaternion.identity);
-                            inputState = InputState.None;
-                        }
-                    }
-                    break;
-                case InputState.ContinousMove:
-                    if (Input.GetKeyUp(actionKey))
-                    {
-                        inputState = InputState.None;
-                    }
-                    else
-                    {
-                        selectedUnit.control.CommandMove(GetCurrentCursorPositionInWorldSpace(), isReserveKeyPressed);
-                    }
-                    break;
-                case InputState.PendingNormalCast:
-                    if (Input.GetKeyDown(castConfirmKey))
-                    {
-
-                        bool commandSuccess = pendingTrigger != null ? CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed) : CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
-                        if (commandSuccess)
-                        {
-                            inputState = InputState.None;
-                            pendingTrigger = null;
-                            pendingConsumable = null;
-                        }
-                    }
-                    break;
-                case InputState.PendingOnReleaseCast:
-                    if (Input.GetKeyUp(pendingTriggerActivationKey) || Input.GetKeyDown(castConfirmKey))
-                    {
-                        if (pendingTrigger != null)
-                        {
-                            CommandAbilityOnContext(pendingTrigger, isReserveKeyPressed);
-                        }
-                        else
-                        {
-                            CommandConsumableOnContext(pendingConsumable, isReserveKeyPressed);
-                        }
-                        pendingTrigger = null;
-                        pendingConsumable = null;
-                    }
-                    break;
+                Entity target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
+                if (target != null)
+                {
+                    selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
+                    Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
+                    return;
+                }
             }
 
+            Activatable activatable = GetFirstActivatable();
+            if (activatable != null)
+            {
+                selectedUnit.control.CommandActivate(activatable, Input.GetKey(reservationModifier));
+                Instantiate(commandMarkerInterest, activatable.transform.position, Quaternion.identity, activatable.transform);
+                return;
+            }
 
+            _inputState = InputState.HoldingMove;
+            Vector3 pos = GetCurrentCursorPositionInWorldSpace();
+            selectedUnit.control.CommandMove(pos, true);
+            Instantiate(commandMarkerMove, pos, Quaternion.identity);
+        }
+        else if (Input.GetKeyUp(actionKey) || _inputState == InputState.HoldingMove)
+        {
+            ClearInputState();
+        }
+        else if (Input.GetKeyDown(confirmKey) && _inputState == InputState.PendingCast)
+        {
+            if (!IsPointerHoveringGameView()) return;
+            _pendingCastMethod.OnCastConfirmKeyDown(Input.mousePosition);
 
         }
-
-
+        else if (Input.GetKeyUp(confirmKey) && _inputState == InputState.PendingCast)
+        {
+            _pendingCastMethod.OnCastConfirmKeyUp(Input.mousePosition);
+        }
     }
+
 
     private void CheckForActivate()
     {
-        if (Input.GetKeyDown(activateKey))
+        if (!Input.GetKeyDown(activateKey)) return;
+
+        Collider[] colliders;
+        colliders = Physics.OverlapSphere(selectedUnit.transform.position, 5f, LayerMask.GetMask("Activatable"));
+        if (colliders.Length != 0)
         {
-            Collider[] colliders;
-            colliders = Physics.OverlapSphere(selectedUnit.transform.position, 5f, LayerMask.GetMask("Activatable"));
-            if(colliders.Length != 0)
-            {
-                colliders = colliders.OrderBy(collider => Vector3.Distance(selectedUnit.transform.position, collider.transform.position)).ToArray();
-                pendingTrigger = null;
-                pendingConsumable = null;
-                inputState = InputState.None;
-                selectedUnit.control.CommandActivate(colliders[0].GetComponent<Activatable>(), Input.GetKey(reservationModifier));
-            }
-
-
+            colliders = colliders.OrderBy(collider => Vector3.Distance(selectedUnit.transform.position, collider.transform.position)).ToArray();
+            _pendingCastable = null;
+            selectedUnit.control.CommandActivate(colliders[0].GetComponent<Activatable>(), Input.GetKey(reservationModifier));
+            ClearInputState();
         }
+    }
+
+    private void ClearInputState()
+    {
+        if(_inputState == InputState.PendingCast)
+        {
+            _pendingCastMethod.CancelCast();
+            _pendingCastMethod = null;
+            _pendingCastable = null;
+        }
+        _inputState = InputState.None;
     }
 
     private void CheckForStop()
@@ -440,345 +335,91 @@ public class UnitControlManager : MonoBehaviour
 
     private void CheckForAttack()
     {
-        if (Input.GetKeyDown(attackKey))
-        {
-            pendingTrigger = null;
-            pendingConsumable = null;
-            inputState = InputState.Attack;
-        }
+        if (!Input.GetKeyDown(attackKey)) return;
+        if (selectedUnit.control.skillSet[0] == null) return;
+        ClearInputState();
+        _pendingCastMethod = CastMethodTargetOrPoint.instance;
+        _pendingCastMethod.StartCast(selectedUnit.control.skillSet[0].castMethod, attackInputMethod, attackKey, OnAttackCastInfoYielded, OnCastCanceled);
     }
 
     private void CheckForNewCast()
     {
-        if (Input.GetKeyDown(WeaponSkillKey))
+        // Not using else-ifs to take account in castables in uncastable states...
+        if (Input.GetKeyDown(weaponSkillKey)) CastableButtonPressed(selectedUnit.control.skillSet[1], weaponSkillInputMethod, weaponSkillKey);
+        if (Input.GetKeyDown(armorSkillKey)) CastableButtonPressed(selectedUnit.control.skillSet[2], armorSkillInputMethod, armorSkillKey);
+        if (Input.GetKeyDown(bootsSkillKey)) CastableButtonPressed(selectedUnit.control.skillSet[3], bootsSkillInputMethod, bootsSkillKey);
+        if (Input.GetKeyDown(weaponUltimateSkillKey)) CastableButtonPressed(selectedUnit.control.skillSet[4], weaponUltimateInputMethod, weaponUltimateSkillKey);
+        if (Input.GetKeyDown(ringSkillKey)) CastableButtonPressed(selectedUnit.control.skillSet[5], ringSkillInputMethod, ringSkillKey);
+
+        bool item1KeyPressed = Input.GetKeyDown(item1Key);
+        bool item2KeyPressed = Input.GetKeyDown(item2Key);
+        bool item3KeyPressed = Input.GetKeyDown(item3Key);
+        
+        if((item1KeyPressed || item2KeyPressed || item3KeyPressed) && selectedUnit.TryGetComponent(out PlayerInventory inventory))
         {
-            CastButtonPressed(selectedUnit.control.skillSet[1], WeaponSkillCastMethod, WeaponSkillKey);
-        }
-        if (Input.GetKeyDown(ArmorSkillKey))
-        {
-            CastButtonPressed(selectedUnit.control.skillSet[2], ArmorSkillCastMethod, ArmorSkillKey);
-        }
-        if (Input.GetKeyDown(BootsSkillKey))
-        {
-            CastButtonPressed(selectedUnit.control.skillSet[3], BootsSkillCastMethod, BootsSkillKey);
-        }
-        if (Input.GetKeyDown(WeaponUltimateSkillKey))
-        {
-            CastButtonPressed(selectedUnit.control.skillSet[4], WeaponUltimateSkillCastMethod, WeaponUltimateSkillKey);
-        }
-        if (Input.GetKeyDown(RingSkillKey))
-        {
-            CastButtonPressed(selectedUnit.control.skillSet[5], RingSkillCastMethod, RingSkillKey);
+            if (item1KeyPressed) CastableButtonPressed(inventory.consumableBelt[0], itemInputMethod, item1Key);
+            if (item2KeyPressed) CastableButtonPressed(inventory.consumableBelt[0], itemInputMethod, item2Key);
+            if (item3KeyPressed) CastableButtonPressed(inventory.consumableBelt[0], itemInputMethod, item3Key);
         }
     }
 
-    private void CheckForItem()
+    private void CastableButtonPressed(ICastable castable, CastInputMethod inputMethod, KeyCode button)
     {
-        if (Input.GetKeyDown(Item1Key))
+        if (!castable.castMethod.selfValidator.Evaluate(selectedUnit) || !castable.IsReady()) return;
+        _pendingCastable = castable;
+
+        ICastMethod usedMethod = null;
+        switch (castable.castMethod.type)
         {
-            ItemButtonPressed(1, ItemUseMethod, Item1Key);
-        }
-        if (Input.GetKeyDown(Item2Key))
-        {
-            ItemButtonPressed(2, ItemUseMethod, Item2Key);
-        }
-        if (Input.GetKeyDown(Item3Key))
-        {
-            ItemButtonPressed(3, ItemUseMethod, Item3Key);
-        }
-    }
-
-
-
-    private void IndicateCooldown(AbilityTrigger trigger)
-    {
-
-    }
-
-    private void ItemButtonPressed(int itemIndex, AbilityCastMethod method, KeyCode button)
-    {
-        PlayerInventory belt = selectedUnit.GetComponent<PlayerInventory>();
-
-        if (belt == null) return;
-        if (belt.consumableBelt[itemIndex - 1] == null) return;
-        if (!belt.consumableBelt[itemIndex - 1].selfValidator.Evaluate(selectedUnit) || !belt.consumableBelt[itemIndex - 1].IsReady()) return;
-
-        if (belt.consumableBelt[itemIndex - 1].targetingType == AbilityTrigger.TargetingType.None)
-        {
-            selectedUnit.control.CommandConsumable(belt.consumableBelt[itemIndex - 1], new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
-            return;
-        }
-        switch (method)
-        {
-            case AbilityCastMethod.Normal:
-                inputState = InputState.PendingNormalCast;
-                pendingTrigger = null;
-                pendingConsumable = belt.consumableBelt[itemIndex - 1];
+            case CastMethodType.None:
+                usedMethod = CastMethodNone.instance;
                 break;
-            case AbilityCastMethod.OnRelease:
-                inputState = InputState.PendingOnReleaseCast;
-                pendingTrigger = null;
-                pendingConsumable = belt.consumableBelt[itemIndex - 1];
-                pendingTriggerActivationKey = button;
+            case CastMethodType.Cone:
+                usedMethod = CastMethodCone.instance;
                 break;
-            case AbilityCastMethod.Quick:
-                CommandConsumableOnContext(belt.consumableBelt[itemIndex - 1], Input.GetKey(reservationModifier));
+            case CastMethodType.Arrow:
+                usedMethod = CastMethodArrow.instance;
+                break;
+            case CastMethodType.Target:
+                usedMethod = CastMethodTarget.instance;
+                break;
+            case CastMethodType.Point:
+                usedMethod = CastMethodPoint.instance;
                 break;
         }
+        ClearInputState();
+        _inputState = InputState.PendingCast;
+        usedMethod?.StartCast(castable.castMethod, inputMethod, button, OnCastInfoYielded, OnCastCanceled);
     }
 
-
-    private void CastButtonPressed(AbilityTrigger trigger, AbilityCastMethod method, KeyCode button)
+    private void OnCastInfoYielded(CastInfo info)
     {
-        if (trigger == null) return;
-        if (!trigger.isCooledDown)
-        {
-            IndicateCooldown(trigger);
-            return;
-        }
-        if (!trigger.selfValidator.Evaluate(selectedUnit)) return;
-        if (!selectedUnit.HasMana(trigger.manaCost)) return;
-        if (!trigger.IsReady()) return;
-        if (trigger.targetingType == AbilityTrigger.TargetingType.None)
-        {
-            selectedUnit.control.CommandAbility(trigger, new CastInfo() { owner = selectedUnit }, Input.GetKey(reservationModifier));
-            return;
-        }
-        switch (method)
-        {
-            case AbilityCastMethod.Normal:
-                inputState = InputState.PendingNormalCast;
-                pendingTrigger = trigger;
-                break;
-            case AbilityCastMethod.OnRelease:
-                inputState = InputState.PendingOnReleaseCast;
-                pendingTrigger = trigger;
-                pendingTriggerActivationKey = button;
-                break;
-            case AbilityCastMethod.Quick:
-                CommandAbilityOnContext(trigger, Input.GetKey(reservationModifier));
-                break;
-        }
+        selectedUnit.control.CommandCast(_pendingCastable, info, Input.GetKey(reservationModifier));
     }
 
-
-
-    private void CheckForAction()
+    private void OnAttackCastInfoYielded(CastInfo info)
     {
-        if (Input.GetKeyDown(actionKey))
-        {
-            if(selectedUnit.control.skillSet[0] == null)
-            {
-                Activatable act = GetFirstActivatable();
-                if (act != null)
-                {
-                    pendingTrigger = null;
-                    pendingConsumable = null;
-                    inputState = InputState.None;
-                    selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
-                    Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
-                } else if (Input.GetKey(reservationModifier))
-                {
-                    pendingTrigger = null;
-                    pendingConsumable = null;
-                    inputState = InputState.None;
-                    Vector3 pos = GetCurrentCursorPositionInWorldSpace();
-                    selectedUnit.control.CommandMove(pos, true);
-                    Instantiate(commandMarkerMove, pos, Quaternion.identity);
-                }
-                else
-                {
-                    pendingTrigger = null;
-                    pendingConsumable = null;
-                    inputState = InputState.ContinousMove;
-                    Vector3 pos = GetCurrentCursorPositionInWorldSpace();
-                    selectedUnit.control.CommandMove(pos, false);
-                    Instantiate(commandMarkerMove, pos, Quaternion.identity);
-                }
-            }
-            else
-            {
-                Entity target = GetFirstValidTarget(selectedUnit.control.skillSet[0].targetValidator);
-                Activatable act = GetFirstActivatable();
-
-                if (target != null)
-                {
-                    pendingTrigger = null;
-                    pendingConsumable = null;
-                    inputState = InputState.None;
-                    selectedUnit.control.CommandChase(target, Input.GetKey(reservationModifier));
-                    Instantiate(commandMarkerAttack, target.transform.position, Quaternion.identity, target.transform);
-                }
-                else if (act != null)
-                {
-                    pendingTrigger = null;
-                    pendingConsumable = null;
-                    inputState = InputState.None;
-                    selectedUnit.control.CommandActivate(act, Input.GetKey(reservationModifier));
-                    Instantiate(commandMarkerInterest, act.transform.position, Quaternion.identity, act.transform);
-                }
-                else
-                {
-                    if (Input.GetKey(reservationModifier))
-                    {
-                        pendingTrigger = null;
-                        pendingConsumable = null;
-                        inputState = InputState.None;
-                        Vector3 pos = GetCurrentCursorPositionInWorldSpace();
-                        selectedUnit.control.CommandMove(pos, true);
-                        Instantiate(commandMarkerMove, pos, Quaternion.identity);
-                    }
-                    else
-                    {
-                        pendingTrigger = null;
-                        pendingConsumable = null;
-                        inputState = InputState.ContinousMove;
-                        Vector3 pos = GetCurrentCursorPositionInWorldSpace();
-                        selectedUnit.control.CommandMove(pos, false);
-                        Instantiate(commandMarkerMove, pos, Quaternion.identity);
-                    }
-                }
-            }
-
-
-
-
-        }
+        if (info.target != null) selectedUnit.control.CommandAttack(info.target, Input.GetKey(reservationModifier));
+        else selectedUnit.control.CommandAttackMove(info.point, Input.GetKey(reservationModifier));
     }
 
-    private void DisplayAppropriateIndicator()
+    private void OnCastCanceled()
     {
-        Indicator indicator = null;
-        AbilityTrigger.TargetingType targetingType = AbilityTrigger.TargetingType.None;
-        TargetValidator targetValidator = null;
-
-        float targetingRange = 0f;
-        if (pendingTrigger != null)
-        {
-            indicator = pendingTrigger.indicator;
-            targetingType = pendingTrigger.targetingType;
-            targetingRange = pendingTrigger.range;
-            targetValidator = pendingTrigger.targetValidator;
-        }
-        else if (pendingConsumable != null)
-        {
-            indicator = pendingConsumable.indicator;
-            targetingType = pendingConsumable.targetingType;
-            targetingRange = pendingConsumable.range;
-            targetValidator = pendingConsumable.targetValidator;
-        }
-
-        if(inputState == InputState.Attack && selectedUnit.control.skillSet[0] != null)
-        {
-            rangeIndicator.transform.position = selectedUnit.transform.position;
-            rangeIndicator.gameObject.SetActive(true);
-            secondRangeIndicator.gameObject.SetActive(false);
-            arrowHead.gameObject.SetActive(false);
-            arrowBase.gameObject.SetActive(false);
-            rangeIndicator.transform.localScale = new Vector3(selectedUnit.control.skillSet[0].indicator.range * 2, selectedUnit.control.skillSet[0].indicator.range * 2, 4);
-            
-        }
-        else if(indicator != null && indicator.type == IndicatorType.Range)
-        {
-            rangeIndicator.transform.position = selectedUnit.transform.position;
-            rangeIndicator.gameObject.SetActive(true);
-            if (indicator.enableSecondRangeIndicator)
-            {
-                secondRangeIndicator.gameObject.SetActive(true);
-                if (targetingType == AbilityTrigger.TargetingType.PointNonStrict) secondRangeIndicator.transform.position = selectedUnit.transform.position + Vector3.ClampMagnitude(GetCurrentCursorPositionInWorldSpace() - selectedUnit.transform.position, targetingRange);
-                else if (targetingType == AbilityTrigger.TargetingType.PointStrict) secondRangeIndicator.transform.position = GetCurrentCursorPositionInWorldSpace();
-                else if (targetingType == AbilityTrigger.TargetingType.Target)
-                {
-                    Entity thing = GetFirstValidTarget(targetValidator);
-                    if(thing == null)
-                    {
-                        secondRangeIndicator.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        secondRangeIndicator.transform.position = thing.transform.position;
-                    }
-                    
-                }
-                secondRangeIndicator.transform.localScale = new Vector3(indicator.secondRange * 2, indicator.secondRange * 2, 4);
-            }
-            else
-            {
-                secondRangeIndicator.gameObject.SetActive(false);
-            }
-            arrowHead.gameObject.SetActive(false);
-            arrowBase.gameObject.SetActive(false);
-            rangeIndicator.transform.localScale = new Vector3(indicator.range * 2, indicator.range * 2, 4);
-        } else if (indicator != null && indicator.type == IndicatorType.Arrow)
-        {
-            rangeIndicator.gameObject.SetActive(false);
-
-            arrowHead.gameObject.SetActive(true);
-            arrowBase.gameObject.SetActive(true);
-
-            Vector3 headScale = Vector3.one;
-            Vector3 rotation = new Vector3(90, 0, 0);
-            Vector3 baseScale = Vector3.one;
-            Vector3 cursorPos = GetCurrentCursorPositionInWorldSpace();
-            rotation.z = -Quaternion.LookRotation(cursorPos - selectedUnit.transform.position, Vector3.up).eulerAngles.y;
-
-            baseScale.x = indicator.arrowWidth;
-            baseScale.y = indicator.arrowLength - 1f;
-            baseScale.z = 4f;
-
-            headScale.x = indicator.arrowWidth;
-            headScale.y = 1f;
-            headScale.z = 4f;
-
-            arrowBase.transform.localScale = baseScale;
-            arrowBase.transform.rotation = Quaternion.Euler(rotation);
-            arrowBase.transform.position = selectedUnit.transform.position + (cursorPos - selectedUnit.transform.position).normalized * (baseScale.y / 2);
-
-            arrowHead.transform.localScale = headScale;
-            arrowHead.transform.rotation = Quaternion.Euler(rotation);
-            arrowHead.transform.position = arrowBase.transform.position + (cursorPos - selectedUnit.transform.position).normalized * (baseScale.y / 2 + headScale.y / 2);
-
-            if (indicator.enableSecondRangeIndicator)
-            {
-                secondRangeIndicator.gameObject.SetActive(true);
-                secondRangeIndicator.transform.position = selectedUnit.transform.position + (cursorPos - selectedUnit.transform.position).normalized * indicator.arrowLength;
-                secondRangeIndicator.transform.localScale = new Vector3(indicator.secondRange * 2, indicator.secondRange * 2, 4);
-            }
-            else
-            {
-                secondRangeIndicator.gameObject.SetActive(false);
-            }
-
-        }
-        else
-        {
-            rangeIndicator.gameObject.SetActive(false);
-            secondRangeIndicator.gameObject.SetActive(false);
-            arrowHead.gameObject.SetActive(false);
-            arrowBase.gameObject.SetActive(false);
-        }
-
-
+        _pendingCastable = null;
+        _inputState = InputState.None;
     }
-
 
     private void SetAppropriateCursor()
     {
-        switch (inputState)
+        switch (_inputState)
         {
             case InputState.None:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
-            case InputState.Attack:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.Attack;
-                break;
-            case InputState.ContinousMove:
+            case InputState.HoldingMove:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
-            case InputState.PendingNormalCast:
-                GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
-                break;
-            case InputState.PendingOnReleaseCast:
+            case InputState.PendingCast:
                 GameManager.instance.cursorShape = GameManager.CursorShapeType.Normal;
                 break;
         }

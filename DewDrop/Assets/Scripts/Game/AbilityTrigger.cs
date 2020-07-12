@@ -4,28 +4,47 @@ using UnityEngine;
 using Photon.Pun;
 using Sirenix.OdinInspector;
 
-public enum IndicatorType { None, Range, Arrow }
+
+public enum CastMethodType { None, Cone, Arrow, Target, Point }
+
+/// <summary>
+/// Data container for describing and serializing a cast method for an AbilityTrigger.
+/// </summary>
 [System.Serializable]
-public class Indicator
+public class CastMethodData
 {
-    public IndicatorType type;
-    [ShowIf("type", Value = IndicatorType.Range)]
+    [HideLabel, EnumToggleButtons]
+    public CastMethodType type;
+    [HideLabel, BoxGroup]
+    public SelfValidator selfValidator;
+    [HideLabel, BoxGroup]
+    public TargetValidator targetValidator;
+    [ShowIf(nameof(ShouldAngleFieldShow))]
+    public float angle;
+    [ShowIf(nameof(ShouldLengthFieldShow))]
+    public float length;
+    [ShowIf(nameof(ShouldWidthFieldShow))]
+    public float width;
+    [ShowIf(nameof(ShouldRangeFieldShow))]
     public float range;
-    [ShowIf("type", Value = IndicatorType.Arrow)]
-    public float arrowWidth;
-    [ShowIf("type", Value = IndicatorType.Arrow)]
-    public float arrowLength;
-    public bool enableSecondRangeIndicator = false;
-    [ShowIf("enableSecondRangeIndicator")]
-    public float secondRange = 0.35f;
+    [ShowIf(nameof(ShouldRadiusFieldShow))]
+    public float radius;
+    [ShowIf(nameof(ShouldIsClampingFieldShow))]
+    public bool isClamping;
+
+    private bool ShouldAngleFieldShow => type == CastMethodType.Cone;
+    private bool ShouldLengthFieldShow => type == CastMethodType.Arrow;
+    private bool ShouldWidthFieldShow => type == CastMethodType.Arrow;
+    private bool ShouldRangeFieldShow => type == CastMethodType.Target || type == CastMethodType.Point;
+    private bool ShouldRadiusFieldShow => type == CastMethodType.None || type == CastMethodType.Cone || type == CastMethodType.Target || type == CastMethodType.Point;
+    private bool ShouldIsClampingFieldShow => type == CastMethodType.Point;
 }
 
 public enum AbilityInstanceEventTargetType { EveryInstance, FirstInstance, LastInstance };
 
-public abstract class AbilityTrigger : MonoBehaviour
+public abstract class AbilityTrigger : MonoBehaviour, ICastable
 {
     public const int maxGemPerTrigger = 3;
-    public enum TargetingType { None, PointStrict, PointNonStrict, Direction, Target }
     public Equipment equipment
     {
         get
@@ -36,32 +55,6 @@ public abstract class AbilityTrigger : MonoBehaviour
     }
     private Equipment _equipment;
 
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-
-        if (targetingType == TargetingType.PointNonStrict || targetingType == TargetingType.PointStrict || targetingType == TargetingType.Target)
-        {
-            UnityEditor.Handles.color = new Color(1, 0, 0, 1);
-            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, range);
-        }
-
-        if (indicator != null && indicator.type == IndicatorType.Range)
-        {
-            UnityEditor.Handles.color = new Color(1, 0, 0, 1);
-            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, indicator.range);
-        }
-        if (indicator != null && indicator.type == IndicatorType.Arrow)
-        {
-            UnityEditor.Handles.color = new Color(0, 1, 0, 1);
-            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, indicator.arrowLength);
-        }
-
-
-
-    }
-#endif
     [BoxGroup("Trigger Metadata"), HorizontalGroup("Trigger Metadata/horizontal", 50), VerticalGroup("Trigger Metadata/horizontal/icon")]
     [PreviewField(50, ObjectFieldAlignment.Left)]
     [HideLabel]
@@ -80,22 +73,16 @@ public abstract class AbilityTrigger : MonoBehaviour
     public string abilityDescription = "This is an awesome ability!";
 
     [Header("Trigger Settings")]
-    public bool dontCancelBasicCommands = false;
-    public TargetingType targetingType;
-    [ShowIf("ShouldRangeFieldShow")]
-    public float range;
+    public CastMethodData castMethod = new CastMethodData();
+    public SelfValidator selfValidator => castMethod.selfValidator;
+    public TargetValidator targetValidator => castMethod.targetValidator;
 
-    [ShowIf("ShouldTargetValidatorFieldShow")]
-    public TargetValidator targetValidator;
-    public SelfValidator selfValidator;
 
     [Header("Effect Settings")]
     public GameObject[] soundEffect;
     public AnimationClip[] castAnimation;
     public float animationDuration = 1f;
     public Ease timeCurve = Ease.Linear;
-    public Indicator indicator = new Indicator();
-
 
 
 
@@ -163,9 +150,15 @@ public abstract class AbilityTrigger : MonoBehaviour
         }
     }
 
-    public void Cast(CastInfo info, float animationDurationMultiplier = 1f)
+
+    public void Cast(CastInfo info)
     {
-        if(soundEffect != null && soundEffect.Length != 0)
+        Cast(info, 1f);
+    }
+
+    public void Cast(CastInfo info, float animationDurationMultiplier)
+    {
+        if (soundEffect != null && soundEffect.Length != 0)
         {
             SFXManager.CreateSFXInstance(soundEffect[Random.Range(0, soundEffect.Length)].name, owner.transform.position);
         }
@@ -175,7 +168,7 @@ public abstract class AbilityTrigger : MonoBehaviour
             owner.PlayCustomAnimation(castAnimation[Random.Range(0, castAnimation.Length)], animationDuration * animationDurationMultiplier, timeCurve);
         }
         this.info = info;
-        for(int i = 0; i < connectedGems.Count; i++)
+        for (int i = 0; i < connectedGems.Count; i++)
         {
             connectedGems[i].photonView.RPC("RpcOnTriggerCast", RpcTarget.Others);
             connectedGems[i].OnTriggerCast(true);
@@ -205,16 +198,11 @@ public abstract class AbilityTrigger : MonoBehaviour
 
     public virtual void OnUnequip() { }
 
-    public virtual bool IsReady() { return true; }
-    protected bool ShouldTargetValidatorFieldShow()
-    {
-        return targetingType == TargetingType.Target;
-    }
-
-    protected bool ShouldRangeFieldShow()
-    {
-        return targetingType == TargetingType.Target || targetingType == TargetingType.PointStrict || targetingType == TargetingType.PointNonStrict;
-    }
+    /// <summary>
+    /// Can this AbilityTrigger be cast? Always returns true by default.
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool CanBeCast() => true;
 
     public void StartCooldown(bool isBasicAttack = false)
     {
@@ -344,4 +332,16 @@ public abstract class AbilityTrigger : MonoBehaviour
                 break;
         }
     }
+
+    void ICastable.Cast(CastInfo info) => Cast(info);
+
+    bool ICastable.IsReady() => isCooledDown && owner.HasMana(manaCost) && castMethod.selfValidator.Evaluate(owner) && CanBeCast();
+
+    bool ICastable.IsCastValid(CastInfo info)
+    {
+        if (castMethod.type != CastMethodType.Target) return true;
+        else return info.target != null && castMethod.targetValidator.Evaluate(info.owner, info.target);
+    }
+
+    CastMethodData ICastable.castMethod => castMethod;
 }

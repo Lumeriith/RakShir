@@ -23,7 +23,7 @@ public class trg_Spell_Elemental_DoubleKick : AbilityTrigger
 
     private float lastCheckTime;
     private bool cachedIsReady = false;
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         if (Time.time - lastCheckTime > 0.1f)
         {

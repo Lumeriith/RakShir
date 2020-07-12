@@ -45,7 +45,7 @@ public class trg_Spell_Rare_IHaveManyDaggers : AbilityTrigger
         }
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return (startTime == 0 || Time.time - startTime > duration);
     }

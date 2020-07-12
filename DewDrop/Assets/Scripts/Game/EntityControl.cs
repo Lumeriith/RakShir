@@ -6,7 +6,7 @@ using Photon.Pun;
 using UnityEngine.Events;
 using System;
 
-public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Ability, Activate, Consumable, AutoAttackInRange }
+public enum CommandType { Move, Attack, AttackMove, Chase, AutoChase, Cast, Activate, Consumable, AutoAttackInRange }
 
 public enum AIMode { None, AutoAttackInRange, AutoChaseToAttack }
 
@@ -187,42 +187,12 @@ public class EntityControl : MonoBehaviourPun
         reservedCommands.Add(command);
     }
 
-    public void CommandAbility(AbilityTrigger trigger, CastInfo info, bool reserve = false)
+    public void CommandCast(ICastable castable, CastInfo info, bool reserve = false)
     {
-        Command command = new Command(entity, CommandType.Ability, trigger, info);
-        Command temp = null;
-        if (!trigger.dontCancelBasicCommands)
-        {
-            if (!reserve) reservedCommands.Clear();
-            reservedCommands.Add(command);
-        }
-        else
-        {
-            if (!reserve && reservedCommands.Count != 0)
-            {
-                if (reservedCommands[0].type != CommandType.Ability && reservedCommands[0].type != CommandType.Consumable)
-                {
-                    temp = reservedCommands[0];
-                }
-                reservedCommands.Clear();
-                reservedCommands.Add(command);
-                if (temp != null) reservedCommands.Add(temp);
-            }
-            else
-            {
-                reservedCommands.Add(command);
-            }
-        }
-    }
-
-    public void CommandConsumable(Consumable consumable, CastInfo info, bool reserve = false)
-    {
-        Command command = new Command(entity, CommandType.Consumable, consumable, info);
+        Command command = new Command(entity, CommandType.Cast, castable, info);
         if (!reserve) reservedCommands.Clear();
         reservedCommands.Add(command);
     }
-
-
 
     #endregion Commands For Local
 
@@ -417,7 +387,7 @@ public class EntityControl : MonoBehaviourPun
 
         if (Time.time - lastAICheckTime >= aiInterval)
         { 
-            if (autocastSpells && (currentCommand == null || currentCommand.type != CommandType.Ability) && UnityEngine.Random.value < spellCastChance)
+            if (autocastSpells && (currentCommand == null || currentCommand.type != CommandType.Cast) && UnityEngine.Random.value < spellCastChance)
             {
                 for(int i = 1; i < skillSet.Length; i++)
                 {
@@ -425,20 +395,20 @@ public class EntityControl : MonoBehaviourPun
                     if (skillSet[i] == null) continue;
                     if (!skillSet[i].selfValidator.Evaluate(entity)) continue;
                     if (!entity.HasMana(skillSet[i].manaCost)) continue;
-                    if (!skillSet[i].IsReady()) continue;
+                    if (!skillSet[i].CanBeCast()) continue;
                     if (IsAbilityProhibitedByChannel()) continue;
-                    if (skillSet[i].targetingType == AbilityTrigger.TargetingType.Target)
+                    if (skillSet[i].castMethod.type == CastMethodType.Target)
                     {
-                        List<Entity> targets = entity.GetAllTargetsInRange(transform.position, skillSet[i].range, skillSet[i].targetValidator);
+                        List<Entity> targets = entity.GetAllTargetsInRange(transform.position, skillSet[i].castMethod.range, skillSet[i].castMethod.targetValidator);
                         if(targets.Count != 0)
                         {
-                            CommandAbility(skillSet[i], new CastInfo { target = targets[0], owner = entity, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
+                            CommandCast(skillSet[i], new CastInfo { target = targets[0], owner = entity, point = targets[0].transform.position, directionVector = (targets[0].transform.position - transform.position).normalized });
                             break;
                         }
                     }
-                    else if (skillSet[i].targetingType == AbilityTrigger.TargetingType.None)
+                    else if (skillSet[i].castMethod.type == CastMethodType.None)
                     {
-                        CommandAbility(skillSet[i], new CastInfo { owner = entity });
+                        CommandCast(skillSet[i], new CastInfo { owner = entity });
                         break;
                     }
                 }
@@ -472,10 +442,10 @@ public class EntityControl : MonoBehaviourPun
                     case AIMode.AutoAttackInRange:
                         if (skillSet[0] == null) break;
                         if (!skillSet[0].selfValidator.Evaluate(entity)) break;
-                        acTargets = entity.GetAllTargetsInRange(transform.position, skillSet[0].range, skillSet[0].targetValidator);
+                        acTargets = entity.GetAllTargetsInRange(transform.position, skillSet[0].castMethod.range, skillSet[0].castMethod.targetValidator);
                         for (int i = 0; i < acTargets.Count; i++)
                         {
-                            if (!acTargets[i].IsDead() && skillSet[0].targetValidator.Evaluate(entity, acTargets[i]))
+                            if (!acTargets[i].IsDead() && skillSet[0].castMethod.targetValidator.Evaluate(entity, acTargets[i]))
                             {
                                 CommandAutoAttackInRange(acTargets[i]);
                                 break;

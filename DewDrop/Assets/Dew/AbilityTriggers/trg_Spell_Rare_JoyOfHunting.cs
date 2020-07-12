@@ -12,7 +12,7 @@ public class trg_Spell_Rare_JoyOfHunting : AbilityTrigger
         SpendMana();
     }
 
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !IsAnyInstanceActive();
     }

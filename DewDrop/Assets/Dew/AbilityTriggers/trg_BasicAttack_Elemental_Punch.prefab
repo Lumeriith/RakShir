@@ -75,6 +75,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: d51c81f3e3998ce489d9192c6d957685, type: 2}
   - {fileID: 7400000, guid: b912064e9fcb70f48a660aa9f260b716, type: 2}
   animationDuration: 0.5
+  timeCurve: 0
   indicator:
     type: 1
     range: 1.7
@@ -82,5 +83,26 @@ MonoBehaviour:
     arrowLength: 0
     enableSecondRangeIndicator: 0
     secondRange: 0
+  castMethod:
+    type: 2
+    targets:
+      _preset: 0
+      canTargetSelf: 0
+      canTargetOwnSummon: 0
+      canTargetAlliedPlayer: 0
+      canTargetAlliedSummon: 0
+      canTargetAlliedMonster: 0
+      canTargetEnemyPlayer: 1
+      canTargetEnemySummon: 1
+      canTargetEnemyMonster: 1
+      evaluatesFalseIfDead: 1
+      excludes: 000203
+      invertResult: 0
+    angle: 0
+    length: 0
+    width: 0
+    range: 0
+    radius: 0
+    isClamping: 0
   connectedGems: []
   _channelTime: 0.23

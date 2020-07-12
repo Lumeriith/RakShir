@@ -69,10 +69,7 @@ public class ConsumableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             _iconImage.sprite = _inventory.consumableBelt[consumableIndex].itemIcon;
             _iconImage.color = new Color(1f, 1f, 1f);
             _iconImage.enabled = true;
-            _disabledOverlay.enabled = !(_inventory.consumableBelt[consumableIndex].selfValidator.Evaluate(GameManager.instance.localPlayer) && _inventory.consumableBelt[consumableIndex].IsReady());
+            _disabledOverlay.enabled = !((ICastable)_inventory.consumableBelt[consumableIndex]).IsReady();
         }
-
-
-
     }
 }

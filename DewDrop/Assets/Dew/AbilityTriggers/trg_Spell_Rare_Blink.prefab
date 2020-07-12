@@ -68,7 +68,7 @@ MonoBehaviour:
     excludes: 000203
     invertResult: 0
   selfValidator:
-    _preset: 0
+    _preset: 2
     evaluatesFalseIfDead: 1
     excludes: 090a0b0c0d0e0f120110
     invertResult: 0
@@ -85,4 +85,26 @@ MonoBehaviour:
     arrowLength: 0
     enableSecondRangeIndicator: 1
     secondRange: 1.5
+  castMethod:
+    type: 0
+    targets:
+      _preset: 0
+      canTargetSelf: 0
+      canTargetOwnSummon: 0
+      canTargetAlliedPlayer: 0
+      canTargetAlliedSummon: 0
+      canTargetAlliedMonster: 0
+      canTargetEnemyPlayer: 1
+      canTargetEnemySummon: 1
+      canTargetEnemyMonster: 1
+      evaluatesFalseIfDead: 1
+      excludes: 000203
+      invertResult: 0
+    angle: 0
+    length: 0
+    width: 0
+    range: 0
+    radius: 0
+    isClamping: 0
   connectedGems: []
+  channelTime: 0.1

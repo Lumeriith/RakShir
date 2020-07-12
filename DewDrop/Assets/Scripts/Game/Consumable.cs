@@ -3,46 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Sirenix.OdinInspector;
-public abstract class Consumable : Item
+public abstract class Consumable : Item, ICastable
 {
     [Header("Consumable Settings")]
     public bool useOnPickup = false;
     public AnimationClip useAnimation;
     public float animationDuration;
-    public Indicator indicator = new Indicator();
 
     [Header("Trigger Settings")]
-    public AbilityTrigger.TargetingType targetingType;
-    [ShowIf("ShouldRangeFieldShow")]
-    public float range;
-    [ShowIf("ShouldTargetValidatorFieldShow")]
-    public TargetValidator targetValidator;
-    public SelfValidator selfValidator;
+    public CastMethodData castMethod;
 
-    protected bool ShouldTargetValidatorFieldShow()
+    public void Cast(CastInfo info)
     {
-        return targetingType == AbilityTrigger.TargetingType.Target;
+        owner.PlayCustomAnimation(useAnimation, animationDuration);
+        OnUse(info);
     }
 
-    protected bool ShouldRangeFieldShow()
-    {
-        return targetingType == AbilityTrigger.TargetingType.Target || targetingType == AbilityTrigger.TargetingType.PointStrict || targetingType == AbilityTrigger.TargetingType.PointNonStrict;
-    }
+    /// <summary>
+    /// Can this Consumable be cast? Always returns true by default.
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool CanBeCast() => true;
 
-    public bool Use(CastInfo info)
-    {
-        bool isUsed = OnUse(info);
-        if (useAnimation != null && isUsed)
-        {
-            owner.PlayCustomAnimation(useAnimation, animationDuration);
-        }
+    public abstract void OnUse(CastInfo info);
 
-        return isUsed;
-    }
+    void ICastable.Cast(CastInfo info) => Cast(info);
 
-    public virtual bool IsReady() { return true; }
+    bool ICastable.IsReady() => castMethod.selfValidator.Evaluate(owner) && CanBeCast();
 
-    public abstract bool OnUse(CastInfo info);
+    bool ICastable.IsCastValid(CastInfo info) => castMethod.targetValidator.Evaluate(info.owner, info.target);
 
     public override InfoTextIcon infoTextIcon => InfoTextIcon.Consumable;
+
+    CastMethodData ICastable.castMethod => castMethod;
 }

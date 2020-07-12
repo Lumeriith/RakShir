@@ -10,7 +10,7 @@ public class trg_Spell_Rare_CurrentOfSwiftness : AbilityTrigger
         StartCooldown();
         SpendMana();
     }
-    public override bool IsReady()
+    public override bool CanBeCast()
     {
         return !IsAnyInstanceActive();
     }
